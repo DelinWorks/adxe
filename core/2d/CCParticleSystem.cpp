@@ -613,6 +613,8 @@ void ParticleSystem::addParticles(int count)
         return;
     uint32_t RANDSEED = rand();
 
+    count = MIN((int)(_totalParticles * __totalParticleCountFactor) - _particleCount, count);
+
     int start = _particleCount;
     _particleCount += count;
 
@@ -848,6 +850,11 @@ bool ParticleSystem::isFull()
 // ParticleSystem - MainLoop
 void ParticleSystem::update(float dt)
 {
+    if (_componentContainer && !_componentContainer->isEmpty())
+    {
+        _componentContainer->visit(dt);
+    }
+
     CC_PROFILER_START_CATEGORY(kProfilerCategoryParticles, "CCParticleSystem - update");
 
     if (_isActive && _emissionRate)
