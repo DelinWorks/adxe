@@ -29,7 +29,9 @@ set(APP_NAME HelloLua)
 
 project(${APP_NAME})
 
+set(_AX_TOP_LEVEL_APP FALSE)
 if(NOT DEFINED BUILD_ENGINE_DONE) # to test HelloLua into root project
+    set(_AX_TOP_LEVEL_APP TRUE)
     if(XCODE)
         set(CMAKE_XCODE_GENERATE_TOP_LEVEL_PROJECT_ONLY TRUE)
     endif()
@@ -80,8 +82,11 @@ set(res_script_folders
 if(APPLE OR VS)
     cocos_mark_multi_resources(res_res RES_TO "Resources/res" FOLDERS ${res_res_folders})
     cocos_mark_multi_resources(res_src RES_TO "Resources/src" FOLDERS ${res_src_folders})
-    cocos_mark_multi_resources(res_script RES_TO "Resources/src/cocos" FOLDERS ${res_script_folders})
-    set(cc_common_res ${res_res} ${res_src} ${res_script})
+    set(cc_common_res ${res_res} ${res_src})
+    if (NOT _AX_TOP_LEVEL_APP)
+        cocos_mark_multi_resources(res_script RES_TO "Resources/src/cocos" FOLDERS ${res_script_folders})
+        set(cc_common_res ${cc_common_res} ${res_script})
+    endif()
 endif()
 
 # record sources, headers
@@ -154,7 +159,9 @@ else()
     config_android_shared_libs("org.cocos2dx.lib" "${CMAKE_CURRENT_SOURCE_DIR}/frameworks/runtime-src/proj.android/app/src")
 endif()
 
-target_link_libraries(${APP_NAME} ${ADXE_LUA_LIB})
+if (NOT _AX_USE_PREBUILT)
+    target_link_libraries(${APP_NAME} ${ADXE_LUA_LIB})
+endif()
 
 target_include_directories(${APP_NAME} PRIVATE ${RUNTIME_SRC_ROOT}/Classes)
 
@@ -355,15 +362,15 @@ if (_AX_USE_PREBUILT) # support windows only
     
     if (AX_ENABLE_MSEDGE_WEBVIEW2)
         if(CMAKE_GENERATOR STREQUAL "Ninja")
-            target_link_libraries(${ADXE_CORE_LIB} ${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/${ARCH_ALIAS}/WebView2Loader.dll.lib)
-            target_include_directories(${ADXE_CORE_LIB} PUBLIC ${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/include)
+            target_link_libraries(${APP_NAME} ${ADXE_ROOT_PATH}/build/packages/Microsoft.Web.WebView2/build/native/${ARCH_ALIAS}/WebView2Loader.dll.lib)
+            target_include_directories(${APP_NAME} ${ADXE_ROOT_PATH}/build/packages/Microsoft.Web.WebView2/build/native/include)
             add_custom_command(TARGET ${cocos_target} POST_BUILD
                COMMAND ${CMAKE_COMMAND} -E copy_if_different
-               "${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/${ARCH_ALIAS}/WebView2Loader.dll"
+               "${ADXE_ROOT_PATH}/build/packages/Microsoft.Web.WebView2/build/native/${ARCH_ALIAS}/WebView2Loader.dll"
                 $<TARGET_FILE_DIR:${APP_NAME}>
             )
         else()
-            target_link_libraries(${ADXE_CORE_LIB} ${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/Microsoft.Web.WebView2.targets)
+            target_link_libraries(${APP_NAME} ${ADXE_ROOT_PATH}/build/packages/Microsoft.Web.WebView2/build/native/Microsoft.Web.WebView2.targets)
         endif()
     endif()
 endif()
