@@ -8,7 +8,6 @@
 #ifndef ZCONF_H
 #define ZCONF_H
 /* #undef Z_PREFIX */
-
 #if !defined(_WIN32)
 #  define Z_HAVE_UNISTD_H
 #endif
