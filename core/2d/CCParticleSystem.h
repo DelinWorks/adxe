@@ -716,67 +716,87 @@ public:
      */
     void setEndColorVar(const Color4F& color) { _endColorVar = color; }
 
+    /** Sets wether to use HSV color system.
+     * WARNING: careful when using HSV with too many particles because it's expensive.
+     * 
+     * @param hsv Use hsv color system.
+     */
+    void useHSV(bool hsv) { _isHsv = hsv; };
+    bool isHSV() { return _isHsv; };
+
     /** Gets the hue value of each particle.
-     *
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
+     * 
      * @return The hue value of each particle in degress (i.e. 360).
      */
     float getHue() const { return _hueValue; }
     /** Sets the hue value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @param degrees The hue value of each particle in degress (i.e. 360).
      */
     void setHue(float degrees) { _hueValue = degrees; }
 
     /** Gets the hue variance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @return The hue variance value of each particle in degress (i.e. 360).
      */
     float getHueVar() const { return _hueValueVar; }
     /** Sets the hue variance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @param degrees The hue variance value of each particle in degress (i.e. 360).
      */
     void setHueVar(float degrees) { _hueValueVar = degrees; }
 
     /** Gets the saturation value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @return The saturation value of each particle.
      */
     float getSaturation() const { return _saturationValue; }
     /** Sets the saturation value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @param value The saturation value of each particle.
      */
     void setSaturation(float value) { _saturationValue = value; }
 
     /** Gets the saturation variance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @return The saturation variance value of each particle.
      */
     float getSaturationVar() const { return _saturationValueVar; }
     /** Sets the saturation variance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @param value The saturation variance value of each particle.
      */
     void setSaturationVar(float value) { _saturationValueVar = value; }
 
     /** Gets the luminance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @return The luminance value of each particle.
      */
     float getLuminance() const { return _luminanceValue; }
     /** Sets the luminance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @param value The luminance value of each particle.
      */
     void setLuminance(float value) { _luminanceValue = value; }
 
     /** Gets the luminance variance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @return The luminance variance value of each particle.
      */
     float getLuminanceVar() const { return _luminanceValueVar; }
     /** Sets the luminance variance value of each particle.
+     * NOTE: hsv has to be enabled using useHSV(true) for this function to work.
      *
      * @param value The luminance variance value of each particle.
      */
@@ -1305,6 +1325,8 @@ protected:
     Color4F _endColor;
     /** end color variance of each particle */
     Color4F _endColorVar;
+    //* Is the hsv system used or not.
+    bool _isHsv;
     //* Hue value of each particle
     float _hueValue;
     //* Hue value variance of each particle

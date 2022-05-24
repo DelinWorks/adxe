@@ -235,6 +235,7 @@ ParticleSystem::ParticleSystem()
     , _angle(0)
     , _angleVar(0)
     , _emitterMode(Mode::GRAVITY)
+    , _isHsv(false)
     , _hueValue(0)
     , _hueValueVar(0)
     , _saturationValue(1)
@@ -1133,9 +1134,9 @@ void ParticleSystem::update(float dt)
         _componentContainer->visit(dt);
     }
 
-    if (dt > 0.5F)
+    if (dt > 0.3F)
     {
-        this->simulate(dt, 15);
+        this->simulate(dt, 10);
         return;
     }
 
