@@ -433,6 +433,7 @@ void ParticleSystemQuad::updateParticleQuads()
             auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
             hsv.s          = int(*hue) == 0 ? 0.0F : 1.0F;
             hsv.h += *hue;
+            hsv.h    = abs(fmod(hsv.h, 360.0F));
             auto col = Color4B(hsv);
             quad->bl.colors.set(col.r, col.g, col.b, col.a);
             quad->br.colors.set(col.r, col.g, col.b, col.a);
@@ -458,6 +459,7 @@ void ParticleSystemQuad::updateParticleQuads()
             auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
             hsv.s          = int(*hue) == 0 ? 0.0F : 1.0F;
             hsv.h += *hue;
+            hsv.h    = abs(fmod(hsv.h, 360.0F));
             auto col = Color4B(hsv);
             quad->bl.colors.set(col.r, col.g, col.b, col.a);
             quad->br.colors.set(col.r, col.g, col.b, col.a);
