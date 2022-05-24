@@ -422,17 +422,22 @@ void ParticleSystemQuad::updateParticleQuads()
         float* g                  = _particleData.colorG;
         float* b                  = _particleData.colorB;
         float* a                  = _particleData.colorA;
+        float* hue                = _particleData.hueValue;
 
-        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a)
+        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue)
         {
-            uint8_t colorR = *r * *a * 255;
-            uint8_t colorG = *g * *a * 255;
-            uint8_t colorB = *b * *a * 255;
-            uint8_t colorA = *a * 255;
-            quad->bl.colors.set(colorR, colorG, colorB, colorA);
-            quad->br.colors.set(colorR, colorG, colorB, colorA);
-            quad->tl.colors.set(colorR, colorG, colorB, colorA);
-            quad->tr.colors.set(colorR, colorG, colorB, colorA);
+            float colorR   = *r * *a;
+            float colorG   = *g * *a;
+            float colorB   = *b * *a;
+            float colorA   = *a;
+            auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
+            hsv.s          = int(*hue) == 0 ? 0.0F : 1.0F;
+            hsv.h += *hue;
+            auto col = Color4B(hsv);
+            quad->bl.colors.set(col.r, col.g, col.b, col.a);
+            quad->br.colors.set(col.r, col.g, col.b, col.a);
+            quad->tl.colors.set(col.r, col.g, col.b, col.a);
+            quad->tr.colors.set(col.r, col.g, col.b, col.a);
         }
     }
     else
@@ -442,17 +447,22 @@ void ParticleSystemQuad::updateParticleQuads()
         float* g                  = _particleData.colorG;
         float* b                  = _particleData.colorB;
         float* a                  = _particleData.colorA;
-
-        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a)
+        float* hue                = _particleData.hueValue;
+		
+        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue)
         {
-            uint8_t colorR = *r * 255;
-            uint8_t colorG = *g * 255;
-            uint8_t colorB = *b * 255;
-            uint8_t colorA = *a * 255;
-            quad->bl.colors.set(colorR, colorG, colorB, colorA);
-            quad->br.colors.set(colorR, colorG, colorB, colorA);
-            quad->tl.colors.set(colorR, colorG, colorB, colorA);
-            quad->tr.colors.set(colorR, colorG, colorB, colorA);
+            float colorR   = *r;
+            float colorG   = *g;
+            float colorB   = *b;
+            float colorA   = *a;
+            auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
+            hsv.s          = int(*hue) == 0 ? 0.0F : 1.0F;
+            hsv.h += *hue;
+            auto col = Color4B(hsv);
+            quad->bl.colors.set(col.r, col.g, col.b, col.a);
+            quad->br.colors.set(col.r, col.g, col.b, col.a);
+            quad->tl.colors.set(col.r, col.g, col.b, col.a);
+            quad->tr.colors.set(col.r, col.g, col.b, col.a);
         }
     }
 

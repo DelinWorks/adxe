@@ -138,6 +138,7 @@ bool ParticleData::init(int count)
     deltaColorG        = (float*)malloc(count * sizeof(float));
     deltaColorB        = (float*)malloc(count * sizeof(float));
     deltaColorA        = (float*)malloc(count * sizeof(float));
+    hueValue           = (float*)malloc(count * sizeof(float));
     size               = (float*)malloc(count * sizeof(float));
     deltaSize          = (float*)malloc(count * sizeof(float));
     rotation           = (float*)malloc(count * sizeof(float));
@@ -162,7 +163,7 @@ bool ParticleData::init(int count)
     modeB.radius           = (float*)malloc(count * sizeof(float));
 
     return posx && posy && startPosX && startPosY && colorR && colorG && colorB && colorA && deltaColorR &&
-           deltaColorG && deltaColorB && deltaColorA && size && deltaSize && rotation && staticRotation &&
+           deltaColorG && deltaColorB && deltaColorA && size && hueValue && deltaSize && rotation && staticRotation &&
            deltaRotation && totalTimeToLive && timeToLive && animTimeLength && animTimeDelta && animIndex &&
            animCellIndex && atlasIndex && modeA.dirX && modeA.dirY && modeA.radialAccel && modeA.tangentialAccel &&
            modeB.angle && modeB.degreesPerSecond && modeB.deltaRadius && modeB.radius;
@@ -182,6 +183,7 @@ void ParticleData::release()
     CC_SAFE_FREE(deltaColorG);
     CC_SAFE_FREE(deltaColorB);
     CC_SAFE_FREE(deltaColorA);
+    CC_SAFE_FREE(hueValue);
     CC_SAFE_FREE(size);
     CC_SAFE_FREE(deltaSize);
     CC_SAFE_FREE(rotation);
@@ -228,6 +230,8 @@ ParticleSystem::ParticleSystem()
     , _angle(0)
     , _angleVar(0)
     , _emitterMode(Mode::GRAVITY)
+    , _hueValue(0)
+    , _hueValueVar(0)
     , _startSize(0)
     , _startSizeVar(0)
     , _endSize(0)
@@ -249,6 +253,7 @@ ParticleSystem::ParticleSystem()
     , _animIndexCount(0)
     , _isAnimationReversed(false)
     , _undefinedIndexRect({0,0,0,0})
+    , _animationTimescaleInd(false)
     , _yCoordFlipped(1)
     , _positionType(PositionType::FREE)
     , _paused(false)
@@ -741,6 +746,12 @@ void ParticleSystem::addParticles(int count, int animationCellIndex, int animati
     SET_DELTA_COLOR(_particleData.colorG, _particleData.deltaColorG);
     SET_DELTA_COLOR(_particleData.colorB, _particleData.deltaColorB);
     SET_DELTA_COLOR(_particleData.colorA, _particleData.deltaColorA);
+
+    // hue color value
+    for (int i = start; i < _particleCount; ++i)
+    {
+        _particleData.hueValue[i] = _hueValue + _hueValueVar * RANDOM_KISS();
+    }
 
     // size
     for (int i = start; i < _particleCount; ++i)

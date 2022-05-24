@@ -92,6 +92,7 @@ public:
     float* deltaColorB;
     float* deltaColorA;
 
+    float* hueValue;
     float* size;
     float* deltaSize;
     float* rotation;
@@ -146,17 +147,22 @@ public:
         deltaColorB[p1] = deltaColorB[p2];
         deltaColorA[p1] = deltaColorA[p2];
 
+        hueValue[p1]  = hueValue[p2];
         size[p1]      = size[p2];
         deltaSize[p1] = deltaSize[p2];
 
-        rotation[p1]      = rotation[p2];
-        deltaRotation[p1] = deltaRotation[p2];
-
+        rotation[p1]       = rotation[p2];
+        staticRotation[p1] = staticRotation[p2];
+        deltaRotation[p1]  = deltaRotation[p2];
+		
         totalTimeToLive[p1] = totalTimeToLive[p2];
-        timeToLive[p1] = timeToLive[p2];
+        timeToLive[p1]      = timeToLive[p2];
+        animTimeDelta[p1]   = animTimeDelta[p2];
+        animTimeLength[p1]  = animTimeLength[p2];
 
+        animIndex[p1]     = animIndex[p2];
         animCellIndex[p1] = animCellIndex[p2];
-        atlasIndex[p1] = atlasIndex[p2];
+        atlasIndex[p1]    = atlasIndex[p2];
 
         modeA.dirX[p1]            = modeA.dirX[p2];
         modeA.dirY[p1]            = modeA.dirY[p2];
@@ -705,6 +711,28 @@ public:
      */
     void setEndColorVar(const Color4F& color) { _endColorVar = color; }
 
+    /** Gets the hue value of each particle.
+     *
+     * @return The hue value of each particle in degress (i.e. 360).
+     */
+    float getHue() const { return _hueValue; }
+    /** Sets the hue value of each particle.
+     *
+     * @param degrees The hue value of each particle in degress (i.e. 360).
+     */
+    void setHue(float degrees) { _hueValue = degrees; }
+
+    /** Gets the hue variance value of each particle.
+     *
+     * @return The hue variance value of each particle in degress (i.e. 360).
+     */
+    float getHueVar() const { return _hueValueVar; }
+    /** Sets the hue variance value of each particle.
+     *
+     * @param degrees The hue variance value of each particle in degress (i.e. 360).
+     */
+    void setHueVar(float degrees) { _hueValueVar = degrees; }
+
     /** Gets the start spin of each particle.
      *
      * @return The start spin of each particle.
@@ -1228,6 +1256,10 @@ protected:
     Color4F _endColor;
     /** end color variance of each particle */
     Color4F _endColorVar;
+    //* Hue value of each particle
+    float _hueValue;
+    //* Hue value variance of each particle
+    float _hueValueVar;
     //* initial angle of each particle
     float _startSpin;
     //* initial angle of each particle
