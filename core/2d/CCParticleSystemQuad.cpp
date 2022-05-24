@@ -415,15 +415,15 @@ void ParticleSystemQuad::updateParticleQuads()
     }
 
     // set color
+    V3F_C4B_T2F_Quad* quad = startQuad;
+    float* r               = _particleData.colorR;
+    float* g               = _particleData.colorG;
+    float* b               = _particleData.colorB;
+    float* a               = _particleData.colorA;
+    float* hue             = _particleData.hueValue;
+
     if (_opacityModifyRGB)
     {
-        V3F_C4B_T2F_Quad* quad    = startQuad;
-        float* r                  = _particleData.colorR;
-        float* g                  = _particleData.colorG;
-        float* b                  = _particleData.colorB;
-        float* a                  = _particleData.colorA;
-        float* hue                = _particleData.hueValue;
-
         for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue)
         {
             float colorR   = *r * *a;
@@ -431,7 +431,7 @@ void ParticleSystemQuad::updateParticleQuads()
             float colorB   = *b * *a;
             float colorA   = *a;
             auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
-            hsv.s          = int(*hue) == 0 ? 0.0F : 1.0F;
+            hsv.s          = *hue == 0.0F ? 0.0F : 1.0F;
             hsv.h += *hue;
             hsv.h    = abs(fmod(hsv.h, 360.0F));
             auto col = Color4B(hsv);
@@ -443,13 +443,6 @@ void ParticleSystemQuad::updateParticleQuads()
     }
     else
     {
-        V3F_C4B_T2F_Quad* quad    = startQuad;
-        float* r                  = _particleData.colorR;
-        float* g                  = _particleData.colorG;
-        float* b                  = _particleData.colorB;
-        float* a                  = _particleData.colorA;
-        float* hue                = _particleData.hueValue;
-		
         for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue)
         {
             float colorR   = *r;
@@ -457,7 +450,7 @@ void ParticleSystemQuad::updateParticleQuads()
             float colorB   = *b;
             float colorA   = *a;
             auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
-            hsv.s          = int(*hue) == 0 ? 0.0F : 1.0F;
+            hsv.s          = *hue == 0.0F ? 0.0F : 1.0F;
             hsv.h += *hue;
             hsv.h    = abs(fmod(hsv.h, 360.0F));
             auto col = Color4B(hsv);
