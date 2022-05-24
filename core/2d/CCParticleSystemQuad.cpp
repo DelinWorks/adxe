@@ -421,19 +421,22 @@ void ParticleSystemQuad::updateParticleQuads()
     float* b               = _particleData.colorB;
     float* a               = _particleData.colorA;
     float* hue             = _particleData.hueValue;
+    float* sat             = _particleData.saturationValue;
+    float* lum             = _particleData.luminanceValue;
 
     if (_opacityModifyRGB)
     {
-        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue)
+        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue, ++sat, ++lum)
         {
             float colorR   = *r * *a;
             float colorG   = *g * *a;
             float colorB   = *b * *a;
             float colorA   = *a;
             auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
-            hsv.s          = *hue == 0.0F ? 0.0F : 1.0F;
-            hsv.h += *hue;
+            hsv.h   += *hue;
             hsv.h    = abs(fmod(hsv.h, 360.0F));
+            hsv.s    = abs(*sat);
+            hsv.v    = abs(*lum);
             auto col = Color4B(hsv);
             quad->bl.colors.set(col.r, col.g, col.b, col.a);
             quad->br.colors.set(col.r, col.g, col.b, col.a);
@@ -443,16 +446,17 @@ void ParticleSystemQuad::updateParticleQuads()
     }
     else
     {
-        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue)
+        for (int i = 0; i < _particleCount; ++i, ++quad, ++r, ++g, ++b, ++a, ++hue, ++sat, ++lum)
         {
             float colorR   = *r;
             float colorG   = *g;
             float colorB   = *b;
             float colorA   = *a;
             auto hsv       = HSV(Color4F(colorR, colorG, colorB, colorA));
-            hsv.s          = *hue == 0.0F ? 0.0F : 1.0F;
-            hsv.h += *hue;
+            hsv.h   += *hue;
             hsv.h    = abs(fmod(hsv.h, 360.0F));
+            hsv.s    = abs(*sat);
+            hsv.v    = abs(*lum);
             auto col = Color4B(hsv);
             quad->bl.colors.set(col.r, col.g, col.b, col.a);
             quad->br.colors.set(col.r, col.g, col.b, col.a);

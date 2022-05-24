@@ -139,6 +139,8 @@ bool ParticleData::init(int count)
     deltaColorB        = (float*)malloc(count * sizeof(float));
     deltaColorA        = (float*)malloc(count * sizeof(float));
     hueValue           = (float*)malloc(count * sizeof(float));
+    saturationValue    = (float*)malloc(count * sizeof(float));
+    luminanceValue     = (float*)malloc(count * sizeof(float));
     size               = (float*)malloc(count * sizeof(float));
     deltaSize          = (float*)malloc(count * sizeof(float));
     rotation           = (float*)malloc(count * sizeof(float));
@@ -163,10 +165,11 @@ bool ParticleData::init(int count)
     modeB.radius           = (float*)malloc(count * sizeof(float));
 
     return posx && posy && startPosX && startPosY && colorR && colorG && colorB && colorA && deltaColorR &&
-           deltaColorG && deltaColorB && deltaColorA && size && hueValue && deltaSize && rotation && staticRotation &&
-           deltaRotation && totalTimeToLive && timeToLive && animTimeLength && animTimeDelta && animIndex &&
-           animCellIndex && atlasIndex && modeA.dirX && modeA.dirY && modeA.radialAccel && modeA.tangentialAccel &&
-           modeB.angle && modeB.degreesPerSecond && modeB.deltaRadius && modeB.radius;
+           deltaColorG && deltaColorB && deltaColorA && size && hueValue && saturationValue && luminanceValue &&
+           deltaSize && rotation && staticRotation && deltaRotation && totalTimeToLive && timeToLive &&
+           animTimeLength && animTimeDelta && animIndex && animCellIndex && atlasIndex && modeA.dirX && modeA.dirY &&
+           modeA.radialAccel && modeA.tangentialAccel && modeB.angle && modeB.degreesPerSecond && modeB.deltaRadius &&
+           modeB.radius;
 }
 
 void ParticleData::release()
@@ -184,6 +187,8 @@ void ParticleData::release()
     CC_SAFE_FREE(deltaColorB);
     CC_SAFE_FREE(deltaColorA);
     CC_SAFE_FREE(hueValue);
+    CC_SAFE_FREE(saturationValue);
+    CC_SAFE_FREE(luminanceValue);
     CC_SAFE_FREE(size);
     CC_SAFE_FREE(deltaSize);
     CC_SAFE_FREE(rotation);
@@ -232,6 +237,10 @@ ParticleSystem::ParticleSystem()
     , _emitterMode(Mode::GRAVITY)
     , _hueValue(0)
     , _hueValueVar(0)
+    , _saturationValue(1)
+    , _saturationValueVar(0)
+    , _luminanceValue(1)
+    , _luminanceValueVar(0)
     , _startSize(0)
     , _startSizeVar(0)
     , _endSize(0)
@@ -747,10 +756,22 @@ void ParticleSystem::addParticles(int count, int animationCellIndex, int animati
     SET_DELTA_COLOR(_particleData.colorB, _particleData.deltaColorB);
     SET_DELTA_COLOR(_particleData.colorA, _particleData.deltaColorA);
 
-    // hue color value
-    for (int i = start; i < _particleCount; ++i)
+    // hue saturation luminance color values
     {
-        _particleData.hueValue[i] = _hueValue + _hueValueVar * RANDOM_KISS();
+        for (int i = start; i < _particleCount; ++i)
+        {
+            _particleData.hueValue[i] = _hueValue + _hueValueVar * RANDOM_KISS();
+        }
+
+        for (int i = start; i < _particleCount; ++i)
+        {
+            _particleData.saturationValue[i] = _saturationValue + _saturationValueVar * RANDOM_KISS();
+        }
+
+        for (int i = start; i < _particleCount; ++i)
+        {
+            _particleData.luminanceValue[i] = _luminanceValue + _luminanceValueVar * RANDOM_KISS();
+        }
     }
 
     // size
