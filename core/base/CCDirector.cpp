@@ -360,7 +360,7 @@ void Director::calculateDeltaTime()
 
 #if COCOS2D_DEBUG
     // If we are debugging our code, prevent big delta time
-    if (_deltaTime > 0.2f)
+    if (_deltaTime > 20.0F)
     {
         _deltaTime = 1 / 60.0f;
     }
@@ -610,6 +610,8 @@ void Director::setProjection(Projection projection)
         Mat4::createOrthographicOffCenter(0, size.width, 0, size.height, -1024, 1024, &orthoMatrix);
         loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, orthoMatrix);
         loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+
+        CCLOG("cocos2d: Director: projection mode set to 2D (Orthographic)");
         break;
     }
 
@@ -629,6 +631,8 @@ void Director::setProjection(Projection projection)
 
         loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION, proj3d);
         loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+
+        CCLOG("cocos2d: Director: projection mode set to 3D (Perspective)");
         break;
     }
 
