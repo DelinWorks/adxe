@@ -740,8 +740,6 @@ void ParticleSystem::addParticles(int count, int animationIndex, int animationCe
     animationCellIndex = MIN(animationCellIndex, _animIndexCount - 1);
     animationIndex     = MIN(animationIndex, _animIndexCount - 1);
 
-    count = MIN((int)(_totalParticles * __totalParticleCountFactor) - _particleCount, count);
-
     int start = _particleCount;
     _particleCount += count;
 
