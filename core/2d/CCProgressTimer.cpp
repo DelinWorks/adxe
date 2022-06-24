@@ -327,9 +327,28 @@ void ProgressTimer::updateRadial()
     {
         return;
     }
-    float alpha = _percentage / 100.f;
 
-    float angle = 2.f * ((float)M_PI) * (_reverseDirection ? alpha : 1.0f - alpha);
+    float alpha = 1.0F;
+
+    if (_percentage != 100.0F)
+    {
+        alpha = fmod(_percentage, 25.0F) / 25.0F;
+
+        alpha = _reverseDirection ? tweenfunc::bounceEaseOut(alpha) : 1.0F - tweenfunc::bounceEaseOut(1.0F - alpha);
+
+        alpha /= 4.0F;
+
+        if (_percentage >= 75.0F)
+            alpha += .75F;
+        else if (_percentage >= 50.0F)
+            alpha += .50F;
+        else if (_percentage >= 25.0F)
+            alpha += .25F;
+
+        alpha = clampf(alpha, 0.0F, 1.0F);
+    }
+
+    float angle = 2.f * ((float)M_PI) * (_reverseDirection ? alpha : 1.0f - (alpha));
 
     //    We find the vector to do a hit detection based on the percentage
     //    We know the first vector is the one @ 12 o'clock (top,mid) so we rotate
