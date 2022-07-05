@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2014 cocos2d-x.org
 
  https://adxeproject.github.io/
 
@@ -22,35 +22,37 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-//
-//  Bug-15594.cpp
-//  cocos2d_tests
-//
-//  Created by Ricardo Quesada on 5/24/16.
-//
-//
+#ifndef __cocos2d_libs__Sprite3DReader__
+#define __cocos2d_libs__Sprite3DReader__
 
-// https://github.com/cocos2d/cocos2d-x/pull/15594
+#include "math/Vec2.h"
+#include "CocosStudioExport.h"
+#include "WidgetReader/NodeReaderProtocol.h"
+#include "WidgetReader/NodeReaderDefine.h"
 
-#include "Bug-15594.h"
-
-USING_NS_CC;
-
-bool Bug15594Layer::init()
+namespace cocostudio
 {
-    if (BugsTestBase::init())
-    {
-        auto mesh = MeshRenderer::create("Images/bugs/bug15594.c3t", "Images/bugs/bug15594.jpg");
-        addChild(mesh);
-        auto size = Director::getInstance()->getWinSize();
-        mesh->setPosition(size / 2);
+class CCS_DLL MeshReader : public cocos2d::Ref, public NodeReaderProtocol
+{
+    DECLARE_CLASS_NODE_READER_INFO
 
-        auto animation = Animation3D::create("Images/bugs/bug15594.c3t");
-        auto animate   = Animate3D::create(animation);
-        auto repeat    = RepeatForever::create(animate);
-        mesh->runAction(repeat);
-        return true;
-    }
+public:
+    MeshReader();
+    ~MeshReader();
 
-    return false;
-}
+    static MeshReader* getInstance();
+    /** @deprecated Use method destroyInstance() instead */
+    CC_DEPRECATED_ATTRIBUTE static void purge();
+    static void destroyInstance();
+
+    flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
+                                                                         flatbuffers::FlatBufferBuilder* builder);
+    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* sprite3DOptions);
+    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* sprite3DOptions);
+
+protected:
+    cocos2d::Vec2 getVec2Attribute(pugi::xml_attribute attribute) const;
+};
+}  // namespace cocostudio
+
+#endif /* defined(__cocos2d_libs__Sprite3DReader__) */

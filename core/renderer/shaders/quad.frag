@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+ Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
 
  https://adxeproject.github.io/
 
@@ -21,36 +21,38 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+ 
 
-//
-//  Bug-15594.cpp
-//  cocos2d_tests
-//
-//  Created by Ricardo Quesada on 5/24/16.
-//
-//
+const char* CC2D_quadTexture_frag = R"(
 
-// https://github.com/cocos2d/cocos2d-x/pull/15594
+#ifdef GL_ES
+varying mediump vec2 TextureCoordOut;
+varying mediump vec4 ColorOut;
+#else
+varying vec4 ColorOut;
+varying vec2 TextureCoordOut;
+#endif
+uniform vec4 u_color;
 
-#include "Bug-15594.h"
+uniform sampler2D u_tex0;
 
-USING_NS_CC;
-
-bool Bug15594Layer::init()
+void main(void)
 {
-    if (BugsTestBase::init())
-    {
-        auto mesh = MeshRenderer::create("Images/bugs/bug15594.c3t", "Images/bugs/bug15594.jpg");
-        addChild(mesh);
-        auto size = Director::getInstance()->getWinSize();
-        mesh->setPosition(size / 2);
-
-        auto animation = Animation3D::create("Images/bugs/bug15594.c3t");
-        auto animate   = Animate3D::create(animation);
-        auto repeat    = RepeatForever::create(animate);
-        mesh->runAction(repeat);
-        return true;
-    }
-
-    return false;
+    gl_FragColor = texture2D(u_tex0, TextureCoordOut) * ColorOut * u_color;
 }
+)";
+
+const char* CC2D_quadColor_frag = R"(
+
+#ifdef GL_ES
+varying mediump vec4 ColorOut;
+#else
+varying vec4 ColorOut;
+#endif
+uniform vec4 u_color;
+
+void main(void)
+{
+    gl_FragColor = ColorOut * u_color;
+}
+)";
