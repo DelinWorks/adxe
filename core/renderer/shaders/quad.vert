@@ -1,5 +1,5 @@
 /****************************************************************************
- Copyright (c) 2014 cocos2d-x.org
+ Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
 
  https://adxeproject.github.io/
 
@@ -21,38 +21,24 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
+ 
 
-#ifndef __cocos2d_libs__Sprite3DReader__
-#define __cocos2d_libs__Sprite3DReader__
+const char* CC2D_quad_vert = R"(
+                                              
+attribute vec4 a_position;
+attribute vec4 a_color;
+attribute vec2 a_texCoord;
 
-#include "math/Vec2.h"
-#include "CocosStudioExport.h"
-#include "WidgetReader/NodeReaderProtocol.h"
-#include "WidgetReader/NodeReaderDefine.h"
+varying vec2 TextureCoordOut;
+varying vec4 ColorOut;
 
-namespace cocostudio
+uniform mat4 u_PMatrix;
+void main()
 {
-class CCS_DLL Sprite3DReader : public cocos2d::Ref, public NodeReaderProtocol
-{
-    DECLARE_CLASS_NODE_READER_INFO
+    ColorOut = a_color;
+    TextureCoordOut = a_texCoord;
+    TextureCoordOut.y = 1.0 - TextureCoordOut.y;
+    gl_Position = u_PMatrix * a_position;
+}
 
-public:
-    Sprite3DReader();
-    ~Sprite3DReader();
-
-    static Sprite3DReader* getInstance();
-    /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
-    static void destroyInstance();
-
-    flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
-                                                                         flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* sprite3DOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* sprite3DOptions);
-
-protected:
-    cocos2d::Vec2 getVec2Attribute(pugi::xml_attribute attribute) const;
-};
-}  // namespace cocostudio
-
-#endif /* defined(__cocos2d_libs__Sprite3DReader__) */
+)";

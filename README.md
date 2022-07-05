@@ -35,7 +35,10 @@
 * Windows video player support (based on microsoft media foundation)
 * Windows x64 build support
 * Reimplement HttpClient based on yasio for concorrent http requests processing.
-* **clearer third-party libs ['Upstream-Version-License'](thirdparty/README.md) for easier publishing of your commercial apps based on adxe. Also some links to third party libs which support adxe too.**
+* ['Upstream-Version-License'](thirdparty/README.md) 
+  * Third-party license overview for easier publishing of your commercial apps based on adxe. 
+  * Some links to third party libs which support adxe too.
+  * Extensions having own license as part of there package.
 * Refactor AudioEngine, OpenAL for all platforms
   * [OpenAL Soft](https://github.com/kcat/openal-soft), pass -DAX_USE_ALSOFT=ON to cmake to force enabling it
   * [OpenAL.framework](https://opensource.apple.com/tarballs/OpenAL), if no ```AX_USE_ALSOFT``` option specified, cmake script will choose it on osx/ios, even though it was marked as deprecated, but still available.
@@ -109,8 +112,6 @@ Open [APPENDIX.md](APPENDIX.md) for additional information and see [Milestones](
   2. Execute the following command   
   ```sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer```  
   3. Generate xcode project  
-     - for any device   
-     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=$ADXE_ROOT/cmake/ios.mini.cmake```
      - for arm64:  
      ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=$ADXE_ROOT/cmake/ios.mini.cmake -DCMAKE_OSX_ARCHITECTURES=arm64```
      - for armv7,arm64 combined:  
