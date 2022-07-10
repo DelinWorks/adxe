@@ -3,7 +3,7 @@
 
  Portions copyright (c) 2017 Serge Zaitsev
 
- https://adxeproject.github.io/
+ https://axis-project.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && defined(ADXE_HAVE_WEBVIEW2)
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && defined(AXIS_HAVE_WEBVIEW2)
 
 #    include "UIWebViewImpl-win32.h"
 #    include "UIWebView.h"

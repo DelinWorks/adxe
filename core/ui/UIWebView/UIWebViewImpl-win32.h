@@ -2,7 +2,7 @@
  Copyright (c) 2014 cocos2d-x.org
  Author: Jeff Wang <wohaaitinciu@gmail.com>
 
- https://adxeproject.github.io/
+ https://axis-project.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 
 #include "platform/CCPlatformConfig.h"
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && defined(ADXE_HAVE_WEBVIEW2)
+#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 && defined(AXIS_HAVE_WEBVIEW2)
 
 #    include <string>
 #    include "CCStdC.h"

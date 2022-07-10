@@ -6,7 +6,7 @@ Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2021-2022 Bytedance Inc.
 
-https://adxeproject.github.io/
+https://axis-project.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,14 +30,15 @@ THE SOFTWARE.
 #ifndef __COCOS2D_H__
 #define __COCOS2D_H__
 
-#include "adxe.h"
+#include "axis.h"
 
 #define COCOS2D_VERSION 0x00040000
-#define ENGINEX_VERSION ADXE_VERSION
 
 NS_CC_BEGIN
 
 CC_DLL const char* cocos2dVersion();
+
+/** Backward compatibility with old axis projects */
 
 using Sprite3D              = MeshRenderer;
 using Sprite3DMaterial      = MeshMaterial;
