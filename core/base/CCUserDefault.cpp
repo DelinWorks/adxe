@@ -65,7 +65,7 @@ THE SOFTWARE.
 
 typedef int32_t udflen_t;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * implements of UserDefault
@@ -365,7 +365,7 @@ UserDefault* UserDefault::getInstance()
 
 void UserDefault::destroyInstance()
 {
-    CC_SAFE_DELETE(_userDefault);
+    AX_SAFE_DELETE(_userDefault);
 }
 
 void UserDefault::setDelegate(UserDefault* delegate)
@@ -445,7 +445,7 @@ void UserDefault::lazyInit()
         pugi::xml_parse_result ret = doc.load_buffer_inplace(data.getBytes(), data.getSize());
         if (ret)
         {
-            for (auto& elem : doc.document_element())
+            for (auto&& elem : doc.document_element())
                 updateValueForKey(elem.name(), elem.text().as_string());
         }
         else
@@ -466,7 +466,7 @@ void UserDefault::flush()
     {
         yasio::obstream obs;
         obs.write<int>(static_cast<int>(this->_values.size()));
-        for (auto& item : this->_values)
+        for (auto&& item : this->_values)
         {
             if (_encryptEnabled)
             {
@@ -506,7 +506,7 @@ void UserDefault::flush()
     doc.load_string(R"(<?xml version="1.0" ?>
 <r />)");
     auto r = doc.document_element();
-    for (auto& kv : _values)
+    for (auto&& kv : _values)
         r.append_child(kv.first.c_str()).append_child(pugi::xml_node_type::node_pcdata).set_value(kv.second.c_str());
 
     std::stringstream ss;
@@ -521,4 +521,4 @@ void UserDefault::deleteValueForKey(const char* key)
         flush();
 }
 
-NS_CC_END
+NS_AX_END

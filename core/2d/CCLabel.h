@@ -34,14 +34,14 @@
 #include "2d/CCFontAtlas.h"
 #include "base/ccTypes.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _2d
  * @{
  */
 
-#define CC_DEFAULT_FONT_LABEL_SIZE 12
+#define AX_DEFAULT_FONT_LABEL_SIZE 12
 
 /**
  * @struct TTFConfig
@@ -64,7 +64,7 @@ typedef struct _ttfConfig
     bool strikethrough;
 
     _ttfConfig(std::string_view filePath              = {},
-               float size                             = CC_DEFAULT_FONT_LABEL_SIZE,
+               float size                             = AX_DEFAULT_FONT_LABEL_SIZE,
                const GlyphCollection& glyphCollection = GlyphCollection::DYNAMIC,
                const char* customGlyphCollection      = nullptr, /* nullable */
                bool useDistanceField                  = false,
@@ -113,7 +113,7 @@ class TextureAtlas;
  * - http://www.angelcode.com/products/bmfont/ (Free, Windows only)
  * @js NA
  */
-class CC_DLL Label : public Node, public LabelProtocol, public BlendProtocol
+class AX_DLL Label : public Node, public LabelProtocol, public BlendProtocol
 {
 public:
     enum class Overflow
@@ -274,7 +274,7 @@ public:
      * @return An automatically released Label object.
      * @see setBMFontFilePath setMaxLineWidth
      */
-    CC_DEPRECATED_ATTRIBUTE static Label* createWithBMFont(std::string_view bmfontPath,
+    AX_DEPRECATED_ATTRIBUTE static Label* createWithBMFont(std::string_view bmfontPath,
                                                            std::string_view text,
                                                            const TextHAlignment& hAlignment,
                                                            int maxLineWidth,
@@ -344,7 +344,7 @@ public:
     virtual bool setBMFontFilePath(std::string_view bmfontFilePath, std::string_view subTextureKey, float fontSize = 0);
 
     /** Sets a new bitmap font to Label */
-    CC_DEPRECATED_ATTRIBUTE virtual bool setBMFontFilePath(std::string_view bmfontFilePath,
+    AX_DEPRECATED_ATTRIBUTE virtual bool setBMFontFilePath(std::string_view bmfontFilePath,
                                                            const Vec2& imageOffset,
                                                            float fontSize = 0);
 
@@ -775,7 +775,7 @@ protected:
     void computeAlignmentOffset();
     bool computeHorizontalKernings(const std::u32string& stringToRender);
 
-    void recordLetterInfo(const cocos2d::Vec2& point, char32_t utf32Char, int letterIndex, int lineIndex);
+    void recordLetterInfo(const axis::Vec2& point, char32_t utf32Char, int letterIndex, int lineIndex);
     void recordPlaceholderInfo(int letterIndex, char32_t utf16Char);
 
     bool updateQuads();
@@ -899,7 +899,7 @@ protected:
     EventListenerCustom* _purgeTextureListener;
     EventListenerCustom* _resetTextureListener;
 
-#if CC_LABEL_DEBUG_DRAW
+#if AX_LABEL_DEBUG_DRAW
     DrawNode* _debugDrawNode;
 #endif
 
@@ -920,12 +920,12 @@ protected:
     backend::UniformLocation _effectTypeLocation;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(Label);
+    AX_DISALLOW_COPY_AND_ASSIGN(Label);
 };
 
 // end group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif /*__COCOS2D_CCLABEL_H */

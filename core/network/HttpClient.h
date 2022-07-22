@@ -45,7 +45,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace network
 {
@@ -56,7 +56,7 @@ namespace network
  *
  * @lua NA
  */
-class CC_DLL HttpClient
+class AX_DLL HttpClient
 {
 public:
     /**
@@ -253,7 +253,7 @@ private:
 
 }  // namespace network
 
-NS_CC_END
+NS_AX_END
 
 // end group
 /// @}

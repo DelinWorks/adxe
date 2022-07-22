@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_SYSTEM_3D_H__
-#define __CC_PU_PARTICLE_SYSTEM_3D_H__
+#ifndef __AX_PU_PARTICLE_SYSTEM_3D_H__
+#define __AX_PU_PARTICLE_SYSTEM_3D_H__
 
 #include "2d/CCNode.h"
 #include "base/CCProtocols.h"
@@ -34,7 +34,7 @@
 #include <vector>
 #include <map>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * 3d particle system
@@ -56,7 +56,7 @@ enum PUComponentType
     CT_OBSERVER
 };
 
-struct CC_EX_DLL PUParticle3D : public Particle3D
+struct AX_EX_DLL PUParticle3D : public Particle3D
 {
     static float DEFAULT_TTL;
     static float DEFAULT_MASS;
@@ -204,7 +204,7 @@ struct CC_EX_DLL PUParticle3D : public Particle3D
     // float depthInWorld;
 };
 
-class CC_EX_DLL PUParticleSystem3D : public ParticleSystem3D
+class AX_EX_DLL PUParticleSystem3D : public ParticleSystem3D
 {
 public:
     typedef hlookup::string_map<ParticlePool> ParticlePoolMap;
@@ -419,6 +419,6 @@ protected:
     PUParticleSystem3D* _parentParticleSystem;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

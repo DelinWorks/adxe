@@ -5,7 +5,7 @@
 #include "utils/ToolSet.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 GMovieClip::GMovieClip()
     : _playAction(nullptr),
@@ -18,7 +18,7 @@ GMovieClip::GMovieClip()
 
 GMovieClip::~GMovieClip()
 {
-    CC_SAFE_RELEASE(_playAction);
+    AX_SAFE_RELEASE(_playAction);
 }
 
 void GMovieClip::handleInit()
@@ -90,7 +90,7 @@ void GMovieClip::setFlip(FlipType value)
     _content->setFlippedY(value == FlipType::VERTICAL || value == FlipType::BOTH);
 }
 
-void GMovieClip::setColor(const cocos2d::Color3B& value)
+void GMovieClip::setColor(const axis::Color3B& value)
 {
     _content->setColor(value);
 }
@@ -102,7 +102,7 @@ void GMovieClip::handleGrayedChanged()
     ((FUISprite*)_content)->setGrayed(_finalGrayed);
 }
 
-cocos2d::Value GMovieClip::getProp(ObjectPropID propId)
+axis::Value GMovieClip::getProp(ObjectPropID propId)
 {
     switch (propId)
     {
@@ -119,7 +119,7 @@ cocos2d::Value GMovieClip::getProp(ObjectPropID propId)
     }
 }
 
-void GMovieClip::setProp(ObjectPropID propId, const cocos2d::Value& value)
+void GMovieClip::setProp(ObjectPropID propId, const axis::Value& value)
 {
     switch (propId)
     {
@@ -192,10 +192,10 @@ _timeScale(1)
 
 ActionMovieClip::~ActionMovieClip()
 {
-    CC_SAFE_RELEASE(_animation);
+    AX_SAFE_RELEASE(_animation);
 }
 
-ActionMovieClip* ActionMovieClip::create(cocos2d::Animation* animation, float repeatDelay, bool swing)
+ActionMovieClip* ActionMovieClip::create(axis::Animation* animation, float repeatDelay, bool swing)
 {
     ActionMovieClip* action = new ActionMovieClip();
     action->setAnimation(animation, repeatDelay, swing);
@@ -307,7 +307,7 @@ void ActionMovieClip::startWithTarget(Node* target)
 
 ActionMovieClip* ActionMovieClip::reverse() const
 {
-    CC_ASSERT(0);
+    AX_ASSERT(0);
     return nullptr;
 }
 
@@ -417,12 +417,12 @@ void ActionMovieClip::setPlaySettings(int start, int end, int times, int endAt, 
     setFrame(start);
 }
 
-void ActionMovieClip::setAnimation(cocos2d::Animation* animation, float repeatDelay, bool swing)
+void ActionMovieClip::setAnimation(axis::Animation* animation, float repeatDelay, bool swing)
 {
     if (_animation != animation)
     {
-        CC_SAFE_RETAIN(animation);
-        CC_SAFE_RELEASE(_animation);
+        AX_SAFE_RETAIN(animation);
+        AX_SAFE_RELEASE(_animation);
         _animation = animation;
     }
 

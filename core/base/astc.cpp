@@ -90,7 +90,7 @@ public:
         _task_queue_cv.notify_all();
         _task_queue_mtx.unlock();
 
-        for (auto& t : _threads)
+        for (auto&& t : _threads)
         {
             if (t.joinable())
                 t.join();
@@ -274,7 +274,7 @@ int astc_decompress_image(const uint8_t* in,
         benchmark_printer(const char* fmt, int w, int h, float den)
             : _fmt(fmt), _w(w), _h(h), _den(den), _start(yasio::highp_clock())
         {}
-        ~benchmark_printer() { cocos2d::log(_fmt, _w, _h, (yasio::highp_clock() - _start) / _den); }
+        ~benchmark_printer() { axis::log(_fmt, _w, _h, (yasio::highp_clock() - _start) / _den); }
         const char* _fmt;
         int _w, _h;
         float _den;

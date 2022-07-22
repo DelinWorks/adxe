@@ -5,7 +5,7 @@
 #include "utils/ByteBuffer.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 GearLook::GearLookValue::GearLookValue() : alpha(0), rotation(0), grayed(false), touchable(false)
 {
@@ -87,8 +87,8 @@ void GearLook::apply()
                                          ->setEase(_tweenConfig->easeType)
                                          ->setTargetAny(this)
                                          ->setUserData(Value((a ? 1 : 0) + (b ? 2 : 0)))
-                                         ->onUpdate(CC_CALLBACK_1(GearLook::onTweenUpdate, this))
-                                         ->onComplete(CC_CALLBACK_0(GearLook::onTweenComplete, this));
+                                         ->onUpdate(AX_CALLBACK_1(GearLook::onTweenUpdate, this))
+                                         ->onComplete(AX_CALLBACK_0(GearLook::onTweenComplete, this));
         }
     }
     else

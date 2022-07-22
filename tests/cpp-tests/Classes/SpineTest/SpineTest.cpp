@@ -30,7 +30,7 @@
 #include "spine/spine.h"
 #include "renderer/CCColorizer.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 using namespace std;
 using namespace spine;
 
@@ -72,7 +72,7 @@ SpineTests::SpineTests()
     ADD_TEST_CASE(SpineboyExample);
     ADD_TEST_CASE(TankExample);
 
-#ifdef COCOS2D_DEBUG
+#ifdef AXIS_DEBUG
     debugExtension = new DebugExtension(SpineExtension::getInstance());
 #endif
 }
@@ -82,7 +82,7 @@ SpineTests::~SpineTests()
     FileUtils::getInstance()->setSearchPaths(_searchPaths);
     SkeletonBatch::destroyInstance();
     SkeletonTwoColorBatch::destroyInstance();
-#ifdef COCOS2D_DEBUG
+#ifdef AXIS_DEBUG
     debugExtension->reportLeaks();
     delete debugExtension;
 #endif
@@ -103,7 +103,7 @@ bool SpineTestLayer::init()
         return false;
 
     EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
-    listener->onTouchBegan               = [this](Touch* touch, cocos2d::Event* event) -> bool {
+    listener->onTouchBegan               = [this](Touch* touch, axis::Event* event) -> bool {
         if (!skeletonNode)
             return true;
         _touchIndex = (_touchIndex + 1) % 3;
@@ -140,7 +140,7 @@ bool BatchingExample::init()
     _title = "Batching";
 
     _atlas = new (__FILE__, __LINE__) Atlas("spineboy.atlas", &textureLoader, true);
-    CCASSERT(_atlas, "Error reading atlas file.");
+    AXASSERT(_atlas, "Error reading atlas file.");
 
     // This attachment loader configures attachments with data needed for cocos2d-x rendering.
     // Do not dispose the attachment loader until the skeleton data is disposed!
@@ -150,7 +150,7 @@ bool BatchingExample::init()
     SkeletonJson* json = new (__FILE__, __LINE__) SkeletonJson(_attachmentLoader);
     json->setScale(0.6f);  // Resizes skeleton data to 60% of the size it was in Spine.
     _skeletonData = json->readSkeletonDataFile("spineboy-pro.json");
-    CCASSERT(_skeletonData,
+    AXASSERT(_skeletonData,
              (json->getError().isEmpty() ? json->getError().buffer() : "Error reading skeleton data file."));
     delete json;
 
@@ -262,7 +262,7 @@ bool IKExample::init()
     // the current mouse location. The location is converted
     // to the skeleton's coordinate system.
     EventListenerMouse* mouseListener = EventListenerMouse::create();
-    mouseListener->onMouseMove        = [this](cocos2d::Event* event) -> void {
+    mouseListener->onMouseMove        = [this](axis::Event* event) -> void {
         // convert the mosue location to the skeleton's coordinate space
         // and store it.
         EventMouse* mouseEvent = dynamic_cast<EventMouse*>(event);

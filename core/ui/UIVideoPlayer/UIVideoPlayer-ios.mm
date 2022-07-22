@@ -27,9 +27,9 @@
 #include "ui/UIVideoPlayer/UIVideoPlayer.h"
 
 // No Available on tvOS
-#if CC_TARGET_PLATFORM == CC_PLATFORM_IOS && !defined(CC_TARGET_OS_TVOS)
+#if AX_TARGET_PLATFORM == AX_PLATFORM_IOS && !defined(AX_TARGET_OS_TVOS)
 
-using namespace cocos2d::ui;
+using namespace axis::ui;
 //-------------------------------------------------------------------------------------
 
 #    include "platform/ios/CCEAGLView-ios.h"
@@ -176,7 +176,7 @@ typedef NS_ENUM(NSInteger, PlayerbackState) {
     [self setUserInteractionEnabled:_userInteractionEnabled];
     [self showPlaybackControls:_showPlaybackControls];
 
-    auto view     = cocos2d::Director::getInstance()->getOpenGLView();
+    auto view     = axis::Director::getInstance()->getOpenGLView();
     auto eaglview = (CCEAGLView*)view->getEAGLView();
     [eaglview addSubview:self.playerController.view];
     [self registerPlayerEventListener];
@@ -283,7 +283,7 @@ VideoPlayer::VideoPlayer()
 {
     _videoContext = [[UIVideoViewWrapperIos alloc] init:this];
 
-#    if CC_VIDEOPLAYER_DEBUG_DRAW
+#    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
     addChild(_debugDrawNode);
 #    endif
@@ -343,7 +343,7 @@ void VideoPlayer::setPlayRate(float fRate) {}
 
 void VideoPlayer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 {
-    cocos2d::ui::Widget::draw(renderer, transform, flags);
+    axis::ui::Widget::draw(renderer, transform, flags);
 
     if (flags & FLAGS_TRANSFORM_DIRTY)
     {
@@ -366,7 +366,7 @@ void VideoPlayer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags
                                                            scaleFactor)];
     }
 
-#    if CC_VIDEOPLAYER_DEBUG_DRAW
+#    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode->clear();
     auto size         = getContentSize();
     Point vertices[4] = {Point::ZERO, Point(size.width, 0), Point(size.width, size.height), Point(0, size.height)};
@@ -450,7 +450,7 @@ bool VideoPlayer::isUserInputEnabled() const
 
 void VideoPlayer::setVisible(bool visible)
 {
-    cocos2d::ui::Widget::setVisible(visible);
+    axis::ui::Widget::setVisible(visible);
 
     if (!visible)
     {
@@ -499,7 +499,7 @@ void VideoPlayer::onPlayEvent(int event)
     }
 }
 
-cocos2d::ui::Widget* VideoPlayer::createCloneInstance()
+axis::ui::Widget* VideoPlayer::createCloneInstance()
 {
     return VideoPlayer::create();
 }

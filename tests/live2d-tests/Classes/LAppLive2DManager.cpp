@@ -27,7 +27,7 @@ using namespace LAppDefine;
 //#define USE_RENDER_TARGET
 //#define USE_MODEL_RENDER_TARGET
 
-USING_NS_CC;
+USING_NS_AX;
 
 namespace {
     LAppLive2DManager* s_instance = NULL;
@@ -74,8 +74,8 @@ LAppLive2DManager::LAppLive2DManager()
 
     CreateShader();
 
-    int width = static_cast<int>(cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize().width);
-    int height = static_cast<int>(cocos2d::Director::getInstance()->getOpenGLView()->getFrameSize().height);
+    int width = static_cast<int>(axis::Director::getInstance()->getOpenGLView()->getFrameSize().width);
+    int height = static_cast<int>(axis::Director::getInstance()->getOpenGLView()->getFrameSize().height);
 
     // 画面全体を覆うサイズ
     _sprite = new LAppSprite(_program);
@@ -87,7 +87,7 @@ LAppLive2DManager::LAppLive2DManager()
     if (_renderBuffer)
     {// 描画ターゲット作成
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
         // Retina対策でこっちからとる
         GLViewImpl *glimpl = (GLViewImpl *)Director::getInstance()->getOpenGLView();
         glfwGetFramebufferSize(glimpl->getWindow(), &width, &height);
@@ -323,7 +323,7 @@ void LAppLive2DManager::CreateShader()
         "attribute vec2 uv;"
         "varying vec2 vuv;"
         "void main(void){"
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
         "    gl_Position = vec4(position.x, -position.y, position.z, 1.0);"
 #else
         "    gl_Position = vec4(position, 1.0);"
@@ -332,7 +332,7 @@ void LAppLive2DManager::CreateShader()
         "}";
 
     const char* fragmentShader =
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
         "precision mediump float;"
 #endif
         "varying vec2 vuv;"
@@ -343,7 +343,7 @@ void LAppLive2DManager::CreateShader()
         "    gl_FragColor = vec4(gl_FragColor.rgb * gl_FragColor.a,  gl_FragColor.a);"
         "}";
 
-    auto program = cocos2d::backend::Device::getInstance()->newProgram(vertexShader, fragmentShader);
+    auto program = axis::backend::Device::getInstance()->newProgram(vertexShader, fragmentShader);
     _program = program;
 
 }

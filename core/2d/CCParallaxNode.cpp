@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include "2d/CCParallaxNode.h"
 #include "base/ccCArray.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class PointObject : public Ref
 {
@@ -88,17 +88,17 @@ ParallaxNode* ParallaxNode::create()
 
 void ParallaxNode::addChild(Node* /*child*/, int /*zOrder*/, int /*tag*/)
 {
-    CCASSERT(0, "ParallaxNode: use addChild:z:parallaxRatio:positionOffset instead");
+    AXASSERT(0, "ParallaxNode: use addChild:z:parallaxRatio:positionOffset instead");
 }
 
 void ParallaxNode::addChild(Node* /*child*/, int /*zOrder*/, std::string_view /*name*/)
 {
-    CCASSERT(0, "ParallaxNode: use addChild:z:parallaxRatio:positionOffset instead");
+    AXASSERT(0, "ParallaxNode: use addChild:z:parallaxRatio:positionOffset instead");
 }
 
 void ParallaxNode::addChild(Node* child, int z, const Vec2& ratio, const Vec2& offset)
 {
-    CCASSERT(child != nullptr, "Argument must be non-nil");
+    AXASSERT(child != nullptr, "Argument must be non-nil");
     PointObject* obj = PointObject::create(ratio, offset);
     obj->setChild(child);
     ccArrayAppendObjectWithResize(_parallaxArray, (Ref*)obj);
@@ -167,4 +167,4 @@ void ParallaxNode::visit(Renderer* renderer, const Mat4& parentTransform, uint32
     Node::visit(renderer, parentTransform, parentFlags);
 }
 
-NS_CC_END
+NS_AX_END

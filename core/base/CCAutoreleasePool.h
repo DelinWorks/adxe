@@ -34,13 +34,13 @@ THE SOFTWARE.
  * @addtogroup base
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * A pool for managing autorelease objects.
  * @js NA
  */
-class CC_DLL AutoreleasePool
+class AX_DLL AutoreleasePool
 {
 public:
     /**
@@ -89,7 +89,7 @@ public:
      */
     void clear();
 
-#if defined(COCOS2D_DEBUG) && (COCOS2D_DEBUG > 0)
+#if defined(AXIS_DEBUG) && (AXIS_DEBUG > 0)
     /**
      * Whether the autorelease pool is doing `clear` operation.
      *
@@ -135,7 +135,7 @@ private:
     std::vector<Ref*> _managedObjectArray;
     std::string _name;
 
-#if defined(COCOS2D_DEBUG) && (COCOS2D_DEBUG > 0)
+#if defined(AXIS_DEBUG) && (AXIS_DEBUG > 0)
     /**
      *  The flag for checking whether the pool is doing `clear` operation.
      */
@@ -149,7 +149,7 @@ private:
 /**
  * @cond
  */
-class CC_DLL PoolManager
+class AX_DLL PoolManager
 {
 public:
     static PoolManager* getInstance();
@@ -180,6 +180,6 @@ private:
  * @endcond
  */
 
-NS_CC_END
+NS_AX_END
 
 #endif  //__AUTORELEASEPOOL_H__

@@ -35,10 +35,10 @@ THE SOFTWARE.
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**Rectangle area.*/
-class CC_DLL Rect
+class AX_DLL Rect
 {
 public:
     /**Low left point of rect.*/
@@ -141,7 +141,7 @@ public:
     static const Rect ZERO;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

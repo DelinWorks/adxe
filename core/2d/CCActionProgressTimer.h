@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "2d/CCActionInterval.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup actions
@@ -42,7 +42,7 @@ NS_CC_BEGIN
         You should specify the destination percentage when creating the action.
 @since v0.99.1
 */
-class CC_DLL ProgressTo : public ActionInterval
+class AX_DLL ProgressTo : public ActionInterval
 {
 public:
     /**
@@ -77,14 +77,14 @@ protected:
     float _from;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(ProgressTo);
+    AX_DISALLOW_COPY_AND_ASSIGN(ProgressTo);
 };
 
 /**
 @brief Progress from a percentage to another percentage.
 @since v0.99.1
 */
-class CC_DLL ProgressFromTo : public ActionInterval
+class AX_DLL ProgressFromTo : public ActionInterval
 {
 public:
     /**
@@ -121,12 +121,12 @@ protected:
     float _from;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(ProgressFromTo);
+    AX_DISALLOW_COPY_AND_ASSIGN(ProgressFromTo);
 };
 
 // end of actions group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  // __ACTION_CCPROGRESS_TIMER_H__

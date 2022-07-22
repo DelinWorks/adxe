@@ -32,7 +32,7 @@
 #include "renderer/CCCustomCommand.h"
 #include "renderer/CCCallbackCommand.h"
 #include <unordered_map>
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class StencilStateManager;
 /**
@@ -44,7 +44,7 @@ class StencilStateManager;
  * The stencil is an other Node that will not be drawn.
  * The clipping is done using the alpha part of the stencil (adjusted with an alphaThreshold).
  */
-class CC_DLL ClippingNode : public Node
+class AX_DLL ClippingNode : public Node
 {
 public:
     /** Creates and initializes a clipping node without a stencil.
@@ -166,7 +166,7 @@ protected:
     std::unordered_map<Node*, backend::ProgramState*> _originalStencilProgramState;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(ClippingNode);
+    AX_DISALLOW_COPY_AND_ASSIGN(ClippingNode);
 };
 /** @} */
-NS_CC_END
+NS_AX_END

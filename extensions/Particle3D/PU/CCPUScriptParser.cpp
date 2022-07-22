@@ -26,7 +26,7 @@
 
 #include "CCPUScriptParser.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 PUScriptParser::PUScriptParser() {}
 
@@ -523,10 +523,10 @@ PUScriptTokenList::const_iterator PUScriptParser::skipNewlines(PUScriptTokenList
 
 PUConcreteNode::~PUConcreteNode()
 {
-    for (auto iter : children)
+    for (auto&& iter : children)
     {
         delete iter;
     }
 }
 
-NS_CC_END
+NS_AX_END

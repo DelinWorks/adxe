@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_AFFECTOR_H__
-#define __CC_PU_PARTICLE_3D_AFFECTOR_H__
+#ifndef __AX_PU_PARTICLE_3D_AFFECTOR_H__
+#define __AX_PU_PARTICLE_3D_AFFECTOR_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
@@ -33,12 +33,12 @@
 #include <vector>
 #include <string>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct PUParticle3D;
 class PUParticleSystem3D;
 
-class CC_EX_DLL PUAffector : public Particle3DAffector
+class AX_EX_DLL PUAffector : public Particle3DAffector
 {
     friend class PUParticleSystem3D;
 
@@ -143,6 +143,6 @@ protected:
     float _mass;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

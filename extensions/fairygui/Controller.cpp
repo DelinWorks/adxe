@@ -5,7 +5,7 @@
 #include "utils/ToolSet.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 GController::GController() : changing(false),
                              autoRadioGroupDepth(false),
@@ -25,7 +25,7 @@ void GController::setSelectedIndex(int value, bool triggerEvent)
 {
     if (_selectedIndex != value)
     {
-        CCASSERT(value < (int)_pageIds.size(), "Invalid selected index");
+        AXASSERT(value < (int)_pageIds.size(), "Invalid selected index");
 
         changing = true;
 

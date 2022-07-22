@@ -27,7 +27,7 @@
 #include "CCPUBaseCollider.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const float PUBaseCollider::DEFAULT_BOUNCYNESS                                   = 1.0f;
@@ -104,7 +104,7 @@ void PUBaseCollider::calculateRotationSpeedAfterCollision(PUParticle3D* particle
     if (particle->particleType != PUParticle3D::PT_VISUAL)
         return;
 
-    float signedFriction = CCRANDOM_0_1() > 0.5f ? -(_friction - 1) : (_friction - 1);
+    float signedFriction = AXRANDOM_0_1() > 0.5f ? -(_friction - 1) : (_friction - 1);
 
     particle->rotationSpeed *= signedFriction;
     particle->zRotationSpeed *= signedFriction;
@@ -127,4 +127,4 @@ void PUBaseCollider::copyAttributesTo(PUAffector* affector)
     baseCollider->_collisionType    = _collisionType;
 }
 
-NS_CC_END
+NS_AX_END

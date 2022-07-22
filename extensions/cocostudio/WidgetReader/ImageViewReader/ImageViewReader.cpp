@@ -12,7 +12,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -46,10 +46,10 @@ ImageViewReader* ImageViewReader::getInstance()
 
 void ImageViewReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceImageViewReader);
+    AX_SAFE_DELETE(instanceImageViewReader);
 }
 
-void ImageViewReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void ImageViewReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     WidgetReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 
@@ -65,9 +65,9 @@ void ImageViewReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader
         std::string value = stChildArray[i].GetValue(cocoLoader);
 
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_Scale9Enable) { imageView->setScale9Enabled(valueToBool(value)); }
         else if (key == P_FileNameData)
@@ -154,7 +154,7 @@ Offset<Table> ImageViewReader::createOptionsWithFlatBuffers(pugi::xml_node objec
 
     bool scale9Enabled = false;
     Rect capInsets;
-    cocos2d::Size scale9Size;
+    axis::Size scale9Size;
 
     std::string path;
     std::string plistFile;
@@ -271,7 +271,7 @@ Offset<Table> ImageViewReader::createOptionsWithFlatBuffers(pugi::xml_node objec
     return *(Offset<Table>*)(&options);
 }
 
-void ImageViewReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* imageViewOptions)
+void ImageViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* imageViewOptions)
 {
     ImageView* imageView = static_cast<ImageView*>(node);
     auto options         = (ImageViewOptions*)imageViewOptions;

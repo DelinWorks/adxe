@@ -30,7 +30,7 @@
 #include "ui/GUIExport.h"
 #include "base/CCValue.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup ui
  * @{
@@ -45,7 +45,7 @@ namespace ui
  *@brief Rich text element base class.
  * It defines the basic common properties for all rich text element.
  */
-class CC_GUI_DLL RichElement : public Ref
+class AX_GUI_DLL RichElement : public Ref
 {
 public:
     /**
@@ -97,7 +97,7 @@ protected:
 /**
  *@brief Rich element for displaying text.
  */
-class CC_GUI_DLL RichElementText : public RichElement
+class AX_GUI_DLL RichElementText : public RichElement
 {
 public:
     /**
@@ -212,7 +212,7 @@ protected:
 /**
  *@brief Rich element for displaying images.
  */
-class CC_GUI_DLL RichElementImage : public RichElement
+class AX_GUI_DLL RichElementImage : public RichElement
 {
 public:
     /**
@@ -283,7 +283,7 @@ protected:
 /**
  *@brief Rich element for displaying custom node type.
  */
-class CC_GUI_DLL RichElementCustomNode : public RichElement
+class AX_GUI_DLL RichElementCustomNode : public RichElement
 {
 public:
     /**
@@ -298,7 +298,7 @@ public:
      * @js NA
      * @lua NA
      */
-    virtual ~RichElementCustomNode() { CC_SAFE_RELEASE(_customNode); };
+    virtual ~RichElementCustomNode() { AX_SAFE_RELEASE(_customNode); };
 
     /**
      * @brief Initialize a RichElementCustomNode with various arguments.
@@ -330,7 +330,7 @@ protected:
 /**
  *@brief Rich element for new line.
  */
-class CC_GUI_DLL RichElementNewLine : public RichElement
+class AX_GUI_DLL RichElementNewLine : public RichElement
 {
 public:
     /**
@@ -366,7 +366,7 @@ protected:
  *@brief A container for displaying various RichElements.
  * We could use it to display texts with images easily.
  */
-class CC_GUI_DLL RichText : public Widget
+class AX_GUI_DLL RichText : public Widget
 {
 public:
     enum WrapMode
@@ -527,7 +527,7 @@ public:
     std::string getFontFace();               /*!< return the current font face */
     void setAnchorFontColor(std::string_view color); /*!< Set the font color of a-tag. @param face the font color. */
     std::string getAnchorFontColor();                /*!< return the current font color of a-tag */
-    cocos2d::Color3B getAnchorFontColor3B();         /*!< return the current font color of a-tag */
+    axis::Color3B getAnchorFontColor3B();         /*!< return the current font color of a-tag */
     void setAnchorTextBold(bool enable);             /*!< enable bold text of a-tag */
     bool isAnchorTextBoldEnabled();                  /*!< valid style is bold text of a-tag? */
     void setAnchorTextItalic(bool enable);           /*!< enable italic text of a-tag */
@@ -556,9 +556,9 @@ public:
     void setDefaults(const ValueMap& defaults); /*!< set the default values */
     ValueMap getDefaults() const;               /*!< returns the default values */
 
-    cocos2d::Color3B color3BWithString(std::string_view color);     /*!< convert a color string into a Color3B. */
-    std::string stringWithColor3B(const cocos2d::Color3B& color3b); /*!< convert a Color3B into a color string. */
-    std::string stringWithColor4B(const cocos2d::Color4B& color4b); /*!< convert a Color4B into a color string. */
+    axis::Color3B color3BWithString(std::string_view color);     /*!< convert a color string into a Color3B. */
+    std::string stringWithColor3B(const axis::Color3B& color3b); /*!< convert a Color3B into a color string. */
+    std::string stringWithColor4B(const axis::Color4B& color4b); /*!< convert a Color4B into a color string. */
 
     /**
      * @brief add a callback to own tag.
@@ -634,6 +634,6 @@ protected:
 
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__UIRichText__) */

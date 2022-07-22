@@ -33,8 +33,8 @@
 
 #include "ChipmunkTest.h"
 
-USING_NS_CC;
-USING_NS_CC_EXT;
+USING_NS_AX;
+USING_NS_AX_EXT;
 
 enum
 {
@@ -53,11 +53,11 @@ ChipmunkTest::ChipmunkTest()
     // enable events
 
     auto touchListener            = EventListenerTouchAllAtOnce::create();
-    touchListener->onTouchesEnded = CC_CALLBACK_2(ChipmunkTest::onTouchesEnded, this);
+    touchListener->onTouchesEnded = AX_CALLBACK_2(ChipmunkTest::onTouchesEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
     Device::setAccelerometerEnabled(true);
-    auto accListener = EventListenerAcceleration::create(CC_CALLBACK_2(ChipmunkTest::onAcceleration, this));
+    auto accListener = EventListenerAcceleration::create(AX_CALLBACK_2(ChipmunkTest::onAcceleration, this));
     _eventDispatcher->addEventListenerWithSceneGraphPriority(accListener, this);
 
     // title
@@ -84,11 +84,11 @@ ChipmunkTest::ChipmunkTest()
 #endif
     addChild(parent, 0, kTagParentNode);
 
-    addNewSpriteAtPosition(cocos2d::Vec2(200.0f, 200.0f));
+    addNewSpriteAtPosition(axis::Vec2(200.0f, 200.0f));
 
     // menu for debug layer
     MenuItemFont::setFontSize(18);
-    auto item = MenuItemFont::create("Toggle debug", CC_CALLBACK_1(ChipmunkTest::toggleDebugCallback, this));
+    auto item = MenuItemFont::create("Toggle debug", AX_CALLBACK_1(ChipmunkTest::toggleDebugCallback, this));
 
     auto menu = Menu::create(item, nullptr);
     this->addChild(menu);
@@ -110,7 +110,7 @@ ChipmunkTest::~ChipmunkTest()
         cpShapeFree(_walls[i]);
     }
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if AX_TARGET_PLATFORM == AX_PLATFORM_WIN32
     cpSpaceFree(_space);
 #else
     cpHastySpaceFree(_space);
@@ -125,7 +125,7 @@ void ChipmunkTest::initPhysics()
     // init chipmunk
     // cpInitChipmunk();
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if AX_TARGET_PLATFORM == AX_PLATFORM_WIN32
     _space = cpSpaceNew();
 #else
     _space = cpHastySpaceNew();
@@ -179,7 +179,7 @@ void ChipmunkTest::update(float delta)
     for (int i = 0; i < steps; i++)
     {
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if AX_TARGET_PLATFORM == AX_PLATFORM_WIN32
         cpSpaceStep(_space, dt);
 #else
         cpHastySpaceStep(_space, dt);
@@ -189,7 +189,7 @@ void ChipmunkTest::update(float delta)
 
 void ChipmunkTest::createResetButton()
 {
-    auto reset = MenuItemImage::create("Images/r1.png", "Images/r2.png", CC_CALLBACK_1(ChipmunkTest::reset, this));
+    auto reset = MenuItemImage::create("Images/r1.png", "Images/r2.png", AX_CALLBACK_1(ChipmunkTest::reset, this));
 
     auto menu = Menu::create(reset, nullptr);
 
@@ -202,14 +202,14 @@ void ChipmunkTest::reset(Ref* sender)
     getTestSuite()->restartCurrTest();
 }
 
-void ChipmunkTest::addNewSpriteAtPosition(cocos2d::Vec2 pos)
+void ChipmunkTest::addNewSpriteAtPosition(axis::Vec2 pos)
 {
     int posx, posy;
 
     auto parent = getChildByTag(kTagParentNode);
 
-    posx = CCRANDOM_0_1() * 200.0f;
-    posy = CCRANDOM_0_1() * 200.0f;
+    posx = AXRANDOM_0_1() * 200.0f;
+    posy = AXRANDOM_0_1() * 200.0f;
 
     posx = (posx % 4) * 85;
     posy = (posy % 3) * 121;
@@ -232,7 +232,7 @@ void ChipmunkTest::addNewSpriteAtPosition(cocos2d::Vec2 pos)
     cpShapeSetFriction(shape, 0.5f);
     cpSpaceAddShape(_space, shape);
 
-    auto sprite = PhysicsSpriteChipmunk2D::createWithTexture(_spriteTexture, cocos2d::Rect(posx, posy, 85, 121));
+    auto sprite = PhysicsSpriteChipmunk2D::createWithTexture(_spriteTexture, axis::Rect(posx, posy, 85, 121));
     parent->addChild(sprite);
 
     sprite->setCPBody(body);
@@ -268,7 +268,7 @@ void ChipmunkTest::onAcceleration(Acceleration* acc, Event* event)
     prevX = accelX;
     prevY = accelY;
 
-    auto v = cocos2d::Vec2(accelX, accelY);
+    auto v = axis::Vec2(accelX, accelY);
     v      = v * 200;
     cpSpaceSetGravity(_space, cpv(v.x, v.y));
 }

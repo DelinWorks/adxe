@@ -27,7 +27,7 @@
 #include "CCPUForceFieldAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 //-----------------------------------------------------------------------
 // Constants
 const PUForceField::ForceFieldType PUForceFieldAffector::DEFAULT_FORCEFIELD_TYPE = PUForceField::FF_REALTIME_CALC;
@@ -242,7 +242,7 @@ void PUForceFieldAffector::suppressGeneration(bool suppress)
 
 void PUForceFieldAffector::updatePUAffector(PUParticle3D* particle, float deltaTime)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         _forceField.determineForce(particle->position, _force, _delta);
@@ -333,4 +333,4 @@ void PUForceFieldAffector::copyAttributesTo(PUAffector* affector)
     forceFieldAffector->_movement            = _movement;
 }
 
-NS_CC_END
+NS_AX_END

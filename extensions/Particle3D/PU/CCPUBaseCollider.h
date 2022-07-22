@@ -24,16 +24,16 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_BASE_COLLIDER_H__
-#define __CC_PU_PARTICLE_3D_BASE_COLLIDER_H__
+#ifndef __AX_PU_PARTICLE_3D_BASE_COLLIDER_H__
+#define __AX_PU_PARTICLE_3D_BASE_COLLIDER_H__
 
 #include "extensions/Particle3D/PU/CCPUAffector.h"
 #include "3d/CCAABB.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct PUParticle3D;
-class CC_EX_DLL PUBaseCollider : public PUAffector
+class AX_EX_DLL PUBaseCollider : public PUAffector
 {
 public:
     /** Determines how a particle collision should be determined. IT_POINT means that the position of
@@ -124,6 +124,6 @@ protected:
     CollisionType _collisionType;
     float _velocityScale;  // Value set in the particle system, but stored in the collider for convenience.
 };
-NS_CC_END
+NS_AX_END
 
 #endif

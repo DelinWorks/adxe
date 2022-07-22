@@ -35,12 +35,12 @@
  * @addtogroup ui
  * @{
  */
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /**
  * Abstract class for SWTableView cell node
  */
-class CC_EX_DLL TableViewCell : public Node
+class AX_EX_DLL TableViewCell : public Node
 {
 public:
     CREATE_FUNC(TableViewCell);
@@ -60,7 +60,7 @@ private:
     ssize_t _idx;
 };
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 // end of ui group
 /// @}
 

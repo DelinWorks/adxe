@@ -32,7 +32,7 @@
 #include "renderer/CCMaterial.h"
 #include "renderer/CCPass.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 Technique* Technique::createWithProgramState(Material* parent, backend::ProgramState* state)
 {
@@ -105,7 +105,7 @@ void Technique::setName(std::string_view name)
 
 Pass* Technique::getPassByIndex(ssize_t index) const
 {
-    CC_ASSERT(index >= 0 && index < _passes.size() && "Invalid index");
+    AX_ASSERT(index >= 0 && index < _passes.size() && "Invalid index");
     return _passes.at(index);
 }
 
@@ -119,4 +119,4 @@ const Vector<Pass*>& Technique::getPasses() const
     return _passes;
 }
 
-NS_CC_END
+NS_AX_END

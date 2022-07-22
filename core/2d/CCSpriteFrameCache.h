@@ -41,7 +41,7 @@ THE SOFTWARE.
 #include "base/CCMap.h"
 #include "base/CCData.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Sprite;
 class Texture2D;
@@ -88,7 +88,7 @@ class PolygonInfo;
  @since v0.9
  @js cc.spriteFrameCache
  */
-class CC_DLL SpriteFrameCache : public Ref
+class AX_DLL SpriteFrameCache : public Ref
 {
 public:
     /** Returns the shared instance of the Sprite Frame cache.
@@ -313,6 +313,6 @@ private:
 // end of _2d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  // __SPRITE_CCSPRITE_FRAME_CACHE_H__

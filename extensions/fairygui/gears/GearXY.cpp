@@ -5,7 +5,7 @@
 #include "utils/ByteBuffer.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 GearXY::GearXY(GObject* owner) 
     : GearBase(owner),
@@ -94,8 +94,8 @@ void GearXY::apply()
                                          ->setDelay(_tweenConfig->delay)
                                          ->setEase(_tweenConfig->easeType)
                                          ->setTargetAny(this)
-                                         ->onUpdate(CC_CALLBACK_1(GearXY::onTweenUpdate, this))
-                                         ->onComplete(CC_CALLBACK_0(GearXY::onTweenComplete, this));
+                                         ->onUpdate(AX_CALLBACK_1(GearXY::onTweenUpdate, this))
+                                         ->onComplete(AX_CALLBACK_0(GearXY::onTweenComplete, this));
         }
     }
     else

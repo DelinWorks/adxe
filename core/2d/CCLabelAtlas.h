@@ -29,11 +29,11 @@ THE SOFTWARE.
 #define __CCLABEL_ATLAS_H__
 
 #include "2d/CCAtlasNode.h"
-#if CC_LABELATLAS_DEBUG_DRAW
+#if AX_LABELATLAS_DEBUG_DRAW
 #    include "renderer/CCCustomCommand.h"
 #    include "2d/CCDrawNode.h"
 #endif
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _2d
@@ -53,7 +53,7 @@ NS_CC_BEGIN
  *
  * A more flexible class is LabelBMFont. It supports variable width characters and it also has a nice editor.
  */
-class CC_DLL LabelAtlas : public AtlasNode, public LabelProtocol
+class AX_DLL LabelAtlas : public AtlasNode, public LabelProtocol
 {
 public:
     /** Creates the LabelAtlas with a string, a char map file(the atlas), the width and height of each element and the
@@ -107,13 +107,13 @@ public:
      */
     virtual std::string getDescription() const override;
 
-#if CC_LABELATLAS_DEBUG_DRAW
+#if AX_LABELATLAS_DEBUG_DRAW
     virtual void draw(Renderer* renderer, const Mat4& transform, uint32_t flags) override;
 #endif
 
     LabelAtlas()
     {
-#if CC_LABELATLAS_DEBUG_DRAW
+#if AX_LABELATLAS_DEBUG_DRAW
         _debugDrawNode = DrawNode::create();
         addChild(_debugDrawNode);
 #endif
@@ -124,7 +124,7 @@ public:
 protected:
     virtual void updateColor() override;
 
-#if CC_LABELATLAS_DEBUG_DRAW
+#if AX_LABELATLAS_DEBUG_DRAW
     DrawNode* _debugDrawNode;
 #endif
 
@@ -137,6 +137,6 @@ protected:
 // end group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  //__CCLABEL_ATLAS_H__

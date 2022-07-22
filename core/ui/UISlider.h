@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "ui/UIWidget.h"
 #include "ui/GUIExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup ui
@@ -37,7 +37,7 @@ NS_CC_BEGIN
  */
 
 class Sprite;
-struct CC_DLL ResourceData;
+struct AX_DLL ResourceData;
 
 namespace ui
 {
@@ -54,7 +54,7 @@ typedef void (Ref::*SEL_SlidPercentChangedEvent)(Ref*, SliderEventType);
 /**
  * @brief UI Slider widget.
  */
-class CC_GUI_DLL Slider : public Widget
+class AX_GUI_DLL Slider : public Widget
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -360,6 +360,6 @@ protected:
 // end of ui group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__CocoGUI__Slider__) */

@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "base/CCDirector.h"
 #include "base/ccMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct Tile
 {
@@ -225,8 +225,8 @@ ShuffleTiles* ShuffleTiles::clone() const
 
 ShuffleTiles::~ShuffleTiles()
 {
-    CC_SAFE_DELETE_ARRAY(_tilesOrder);
-    CC_SAFE_DELETE_ARRAY(_tiles);
+    AX_SAFE_DELETE_ARRAY(_tilesOrder);
+    AX_SAFE_DELETE_ARRAY(_tiles);
 }
 
 void ShuffleTiles::shuffle(unsigned int* array, unsigned int len)
@@ -569,7 +569,7 @@ TurnOffTiles* TurnOffTiles::clone() const
 
 TurnOffTiles::~TurnOffTiles()
 {
-    CC_SAFE_DELETE_ARRAY(_tilesOrder);
+    AX_SAFE_DELETE_ARRAY(_tilesOrder);
 }
 
 void TurnOffTiles::shuffle(unsigned int* array, unsigned int len)
@@ -876,4 +876,4 @@ void SplitCols::update(float time)
     }
 }
 
-NS_CC_END
+NS_AX_END

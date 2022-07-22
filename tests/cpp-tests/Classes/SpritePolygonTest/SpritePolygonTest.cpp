@@ -26,7 +26,7 @@
 #include "../testResource.h"
 #include "ui/CocosGUI.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 SpritePolygonTest::SpritePolygonTest()
 {
@@ -294,7 +294,7 @@ bool SpritePolygonTestSlider::init()
 void SpritePolygonTestSlider::initSliders()
 {
     auto vsize                  = Director::getInstance()->getVisibleSize();
-    cocos2d::ui::Slider* slider = cocos2d::ui::Slider::create();
+    axis::ui::Slider* slider = axis::ui::Slider::create();
     slider->loadBarTexture("cocosui/sliderTrack.png");
     slider->loadSlidBallTextures("cocosui/sliderThumb.png", "cocosui/sliderThumb.png", "");
     slider->loadProgressBarTexture("cocosui/sliderProgress.png");
@@ -306,7 +306,7 @@ void SpritePolygonTestSlider::initSliders()
     _epsilonLabel->setPosition(Vec2(vsize.width / 2, vsize.height / 4 + 15));
     addChild(slider);
 
-    slider->addEventListener(CC_CALLBACK_2(SpritePolygonTestSlider::changeEpsilon, this));
+    slider->addEventListener(AX_CALLBACK_2(SpritePolygonTestSlider::changeEpsilon, this));
     slider->setPercent((int)(sqrtf(1.0f / 19.0f) * 100));
 }
 
@@ -321,13 +321,13 @@ void SpritePolygonTestSlider::makeSprites(const std::string* list, const int cou
     }
 }
 
-void SpritePolygonTestSlider::changeEpsilon(cocos2d::Ref* pSender, cocos2d::ui::Slider::EventType type)
+void SpritePolygonTestSlider::changeEpsilon(axis::Ref* pSender, axis::ui::Slider::EventType type)
 {
-    if (type == cocos2d::ui::Slider::EventType::ON_PERCENTAGE_CHANGED)
+    if (type == axis::ui::Slider::EventType::ON_PERCENTAGE_CHANGED)
     {
-        cocos2d::ui::Slider* slider = dynamic_cast<cocos2d::ui::Slider*>(pSender);
+        axis::ui::Slider* slider = dynamic_cast<axis::ui::Slider*>(pSender);
         float epsilon               = powf(slider->getPercent() / 100.0, 2) * 19.0f + 1.0f;
-        for (auto child : _children)
+        for (auto&&child : _children)
         {
             if (child->getName().size())
             {
@@ -343,7 +343,7 @@ void SpritePolygonTestSlider::changeEpsilon(cocos2d::Ref* pSender, cocos2d::ui::
     }
 }
 
-void SpritePolygonTestSlider::updateLabel(const cocos2d::Sprite* sp, const PolygonInfo& pinfo)
+void SpritePolygonTestSlider::updateLabel(const axis::Sprite* sp, const PolygonInfo& pinfo)
 {
     Label* label  = (Label*)(sp->getChildByName(sp->getName()));
     auto filename = sp->getName();
@@ -459,7 +459,7 @@ void SpritePolygonTest5::loadDefaultSprites()
         sprites[i] = Sprite::create(_polygonInfo);
         sprites[i]->setTag(_tagIndex);
         _tagIndex++;
-        sprites[i]->setPosition(s.width * CCRANDOM_0_1(), s.height * CCRANDOM_0_1());
+        sprites[i]->setPosition(s.width * AXRANDOM_0_1(), s.height * AXRANDOM_0_1());
         this->addChild(sprites[i]);
         auto drawNode = DrawNode::create();
         _drawNodes.pushBack(drawNode);
@@ -493,7 +493,7 @@ void SpritePolygonTest5::addSpritePolygon(const Vec2& pos)
     sprite->addChild(drawNode);
 
     ActionInterval* action;
-    float random = CCRANDOM_0_1();
+    float random = AXRANDOM_0_1();
     if (random < 0.20)
         action = ScaleBy::create(3, 2);
     else if (random < 0.40)

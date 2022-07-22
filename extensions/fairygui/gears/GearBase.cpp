@@ -14,7 +14,7 @@
 #include "utils/ToolSet.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 bool GearBase::disableAllTweenEffect = false;
 
@@ -76,7 +76,7 @@ GearBase::~GearBase()
 {
     if (_tweenConfig && _tweenConfig->_tweener)
         _tweenConfig->_tweener->kill();
-    CC_SAFE_DELETE(_tweenConfig);
+    AX_SAFE_DELETE(_tweenConfig);
 }
 
 void GearBase::setController(GController* value)

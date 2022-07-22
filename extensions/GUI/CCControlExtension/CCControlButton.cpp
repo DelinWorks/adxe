@@ -34,7 +34,7 @@
 
 using namespace std;
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 enum
 {
@@ -55,8 +55,8 @@ ControlButton::ControlButton()
 
 ControlButton::~ControlButton()
 {
-    CC_SAFE_RELEASE(_titleLabel);
-    CC_SAFE_RELEASE(_backgroundSprite);
+    AX_SAFE_RELEASE(_titleLabel);
+    AX_SAFE_RELEASE(_backgroundSprite);
 }
 
 // initialisers
@@ -64,7 +64,7 @@ ControlButton::~ControlButton()
 bool ControlButton::init()
 {
     return this->initWithLabelAndBackgroundSprite(Label::createWithSystemFont("", "Helvetica", 12),
-                                                  cocos2d::ui::Scale9Sprite::create(), true);
+                                                  axis::ui::Scale9Sprite::create(), true);
 }
 
 bool ControlButton::initWithLabelAndBackgroundSprite(Node* node,
@@ -73,10 +73,10 @@ bool ControlButton::initWithLabelAndBackgroundSprite(Node* node,
 {
     if (Control::init())
     {
-        CCASSERT(node != nullptr, "node must not be nil.");
+        AXASSERT(node != nullptr, "node must not be nil.");
         LabelProtocol* label = dynamic_cast<LabelProtocol*>(node);
-        CCASSERT(backgroundSprite != nullptr, "Background sprite must not be nil.");
-        CCASSERT(label != nullptr, "label must not be nil.");
+        AXASSERT(backgroundSprite != nullptr, "Background sprite must not be nil.");
+        AXASSERT(label != nullptr, "label must not be nil.");
 
         _parentInited = true;
 
@@ -123,7 +123,7 @@ bool ControlButton::initWithLabelAndBackgroundSprite(Node* node,
     }
 }
 
-ControlButton* ControlButton::create(Node* label, cocos2d::ui::Scale9Sprite* backgroundSprite)
+ControlButton* ControlButton::create(Node* label, axis::ui::Scale9Sprite* backgroundSprite)
 {
     ControlButton* pRet = new ControlButton();
     pRet->initWithLabelAndBackgroundSprite(label, backgroundSprite, true);
@@ -132,7 +132,7 @@ ControlButton* ControlButton::create(Node* label, cocos2d::ui::Scale9Sprite* bac
 }
 
 ControlButton* ControlButton::create(Node* label,
-                                     cocos2d::ui::Scale9Sprite* backgroundSprite,
+                                     axis::ui::Scale9Sprite* backgroundSprite,
                                      bool adjustBackGroundSize)
 {
     ControlButton* pRet = new ControlButton();
@@ -146,7 +146,7 @@ bool ControlButton::initWithTitleAndFontNameAndFontSize(std::string_view title,
                                                         float fontSize)
 {
     return initWithLabelAndBackgroundSprite(Label::createWithSystemFont(title, fontName, fontSize),
-                                            cocos2d::ui::Scale9Sprite::create(), true);
+                                            axis::ui::Scale9Sprite::create(), true);
 }
 
 ControlButton* ControlButton::create(std::string_view title, std::string_view fontName, float fontSize)
@@ -157,13 +157,13 @@ ControlButton* ControlButton::create(std::string_view title, std::string_view fo
     return pRet;
 }
 
-bool ControlButton::initWithBackgroundSprite(cocos2d::ui::Scale9Sprite* sprite)
+bool ControlButton::initWithBackgroundSprite(axis::ui::Scale9Sprite* sprite)
 {
     Label* label = Label::createWithSystemFont("", "Arial", 30);  //
     return initWithLabelAndBackgroundSprite(label, sprite, false);
 }
 
-ControlButton* ControlButton::create(cocos2d::ui::Scale9Sprite* sprite)
+ControlButton* ControlButton::create(axis::ui::Scale9Sprite* sprite)
 {
     ControlButton* pRet = new ControlButton();
     pRet->initWithBackgroundSprite(sprite);
@@ -740,8 +740,8 @@ ControlButton* ControlButton::create()
         pControlButton->autorelease();
         return pControlButton;
     }
-    CC_SAFE_DELETE(pControlButton);
+    AX_SAFE_DELETE(pControlButton);
     return nullptr;
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

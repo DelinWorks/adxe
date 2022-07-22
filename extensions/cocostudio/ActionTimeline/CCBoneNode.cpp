@@ -41,7 +41,7 @@ BoneNode* BoneNode::create()
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    AX_SAFE_DELETE(ret);
     return nullptr;
 }
 
@@ -55,7 +55,7 @@ BoneNode* BoneNode::create(int length)
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -71,8 +71,8 @@ bool BoneNode::init()
 
     auto& pipelineDescriptor = _customCommand.getPipelineDescriptor();
     auto* program =
-        cocos2d::backend::Program::getBuiltinProgram(cocos2d::backend::ProgramType::POSITION_COLOR);  // TODO: noMVP?
-    setProgramState(new cocos2d::backend::ProgramState(program), false);
+        axis::backend::Program::getBuiltinProgram(axis::backend::ProgramType::POSITION_COLOR);  // TODO: noMVP?
+    setProgramState(new axis::backend::ProgramState(program), false);
     pipelineDescriptor.programState = _programState;
 
     _mvpLocation = _programState->getUniformLocation("u_MVPMatrix"sv);
@@ -82,27 +82,27 @@ bool BoneNode::init()
     auto iter                 = attributeInfo.find("a_position"sv);
     if (iter != attributeInfo.end())
     {
-        vertexLayout->setAttribute("a_position"sv, iter->second.location, cocos2d::backend::VertexFormat::FLOAT3, 0,
+        vertexLayout->setAttribute("a_position"sv, iter->second.location, axis::backend::VertexFormat::FLOAT3, 0,
                                    false);
     }
     iter = attributeInfo.find("a_color"sv);
     if (iter != attributeInfo.end())
     {
-        vertexLayout->setAttribute("a_color"sv, iter->second.location, cocos2d::backend::VertexFormat::FLOAT4,
+        vertexLayout->setAttribute("a_color"sv, iter->second.location, axis::backend::VertexFormat::FLOAT4,
                                    3 * sizeof(float), false);
     }
     vertexLayout->setLayout(7 * sizeof(float));
 
-    _customCommand.createVertexBuffer(sizeof(_vertexData[0]), 4, cocos2d::CustomCommand::BufferUsage::DYNAMIC);
-    _customCommand.createIndexBuffer(cocos2d::CustomCommand::IndexFormat::U_SHORT, 6,
-                                     cocos2d::CustomCommand::BufferUsage::STATIC);
+    _customCommand.createVertexBuffer(sizeof(_vertexData[0]), 4, axis::CustomCommand::BufferUsage::DYNAMIC);
+    _customCommand.createIndexBuffer(axis::CustomCommand::IndexFormat::U_SHORT, 6,
+                                     axis::CustomCommand::BufferUsage::STATIC);
     unsigned short indices[6] = {0, 1, 2, 0, 2, 3};
     _customCommand.updateIndexBuffer(indices, sizeof(indices));
 
     return true;
 }
 
-void BoneNode::addChild(cocos2d::Node* child, int localZOrder, int tag)
+void BoneNode::addChild(axis::Node* child, int localZOrder, int tag)
 {
     addToChildrenListHelper(child);
     Node::addChild(child, localZOrder, tag);
@@ -116,10 +116,10 @@ void BoneNode::addChild(Node* child, int localZOrder, std::string_view name)
 
 void BoneNode::addSkin(SkinNode* skin, bool isDisplay, bool hideOthers)
 {
-    CCASSERT(skin != nullptr, "Argument must be non-nil");
+    AXASSERT(skin != nullptr, "Argument must be non-nil");
     if (hideOthers)
     {
-        for (auto& bonskin : _boneSkins)
+        for (auto&& bonskin : _boneSkins)
         {
             bonskin->setVisible(false);
         }
@@ -136,7 +136,7 @@ void BoneNode::addSkin(SkinNode* skin, bool display)
 void BoneNode::removeChild(Node* child, bool cleanup /* = true */)
 {
     ssize_t index = _children.getIndex(child);
-    if (index != cocos2d::CC_INVALID_INDEX)
+    if (index != axis::AX_INVALID_INDEX)
     {
         removeFromChildrenListHelper(child);
         Node::removeChild(child, cleanup);
@@ -152,7 +152,7 @@ void BoneNode::removeFromBoneList(BoneNode* bone)
         {
             auto subBones = bone->getAllSubBones();
             subBones.pushBack(bone);
-            for (auto subBone : subBones)
+            for (auto&& subBone : subBones)
             {
                 if (subBone->_rootSkeleton == nullptr)
                     continue;
@@ -186,7 +186,7 @@ void BoneNode::addToBoneList(BoneNode* bone)
         {
             auto subBones = bone->getAllSubBones();
             subBones.pushBack(bone);
-            for (auto subBone : subBones)
+            for (auto&& subBone : subBones)
             {
                 subBone->_rootSkeleton = _rootSkeleton;
                 auto bonename          = subBone->getName();
@@ -198,7 +198,7 @@ void BoneNode::addToBoneList(BoneNode* bone)
                     _rootSkeleton->_subBonesOrderDirty = true;
                 }
                 else
-                    CCLOG("already has a bone named %s in skeleton %s", bonename.data(),
+                    AXLOG("already has a bone named %s in skeleton %s", bonename.data(),
                           _rootSkeleton->getName().data());
             }
         }
@@ -227,7 +227,7 @@ void BoneNode::removeFromSkinList(SkinNode* skin)
 
 void BoneNode::displaySkin(SkinNode* skin, bool hideOthers)
 {
-    for (auto boneskin : _boneSkins)
+    for (auto&& boneskin : _boneSkins)
     {
         if (boneskin == skin)
         {
@@ -242,7 +242,7 @@ void BoneNode::displaySkin(SkinNode* skin, bool hideOthers)
 
 void BoneNode::displaySkin(std::string_view skinName, bool hideOthers)
 {
-    for (auto& skin : _boneSkins)
+    for (auto&& skin : _boneSkins)
     {
         if (skinName == skin->getName())
         {
@@ -255,9 +255,9 @@ void BoneNode::displaySkin(std::string_view skinName, bool hideOthers)
     }
 }
 
-cocos2d::Vector<SkinNode*> BoneNode::getVisibleSkins() const
+axis::Vector<SkinNode*> BoneNode::getVisibleSkins() const
 {
-    cocos2d::Vector<SkinNode*> displayingSkins;
+    axis::Vector<SkinNode*> displayingSkins;
     for (const auto& boneskin : _boneSkins)
     {
         if (boneskin->isVisible())
@@ -268,19 +268,19 @@ cocos2d::Vector<SkinNode*> BoneNode::getVisibleSkins() const
     return displayingSkins;
 }
 
-cocos2d::Rect BoneNode::getBoundingBox() const
+axis::Rect BoneNode::getBoundingBox() const
 {
-    cocos2d::Rect boundingBox = getVisibleSkinsRect();
+    axis::Rect boundingBox = getVisibleSkinsRect();
     return RectApplyAffineTransform(boundingBox, this->getNodeToParentAffineTransform());
 }
 
-cocos2d::Rect BoneNode::getVisibleSkinsRect() const
+axis::Rect BoneNode::getVisibleSkinsRect() const
 {
     float minx, miny, maxx, maxy = 0;
     minx = miny = maxx = maxy;
     bool first         = true;
 
-    cocos2d::Rect displayRect = cocos2d::Rect(0, 0, 0, 0);
+    axis::Rect displayRect = axis::Rect(0, 0, 0, 0);
     if (_isRackShow && _rootSkeleton != nullptr && _rootSkeleton->_isRackShow)
     {
         maxx  = _rackLength;
@@ -290,8 +290,8 @@ cocos2d::Rect BoneNode::getVisibleSkinsRect() const
 
     for (const auto& skin : _boneSkins)
     {
-        cocos2d::Rect r = skin->getBoundingBox();
-        if (!skin->isVisible() || r.equals(cocos2d::Rect::ZERO))
+        axis::Rect r = skin->getBoundingBox();
+        if (!skin->isVisible() || r.equals(axis::Rect::ZERO))
             continue;
 
         if (first)
@@ -315,12 +315,12 @@ cocos2d::Rect BoneNode::getVisibleSkinsRect() const
     return displayRect;
 }
 
-void BoneNode::setBlendFunc(const cocos2d::BlendFunc& blendFunc)
+void BoneNode::setBlendFunc(const axis::BlendFunc& blendFunc)
 {
     if (_blendFunc != blendFunc)
     {
         _blendFunc = blendFunc;
-        for (auto& skin : _boneSkins)
+        for (auto&& skin : _boneSkins)
         {
             auto blendSkin = dynamic_cast<BlendProtocol*>(skin);
             if (nullptr != blendSkin)
@@ -350,13 +350,13 @@ void BoneNode::setDebugDrawEnabled(bool isDebugDraw)
     _isRackShow = isDebugDraw;
 }
 
-void BoneNode::setDebugDrawColor(const cocos2d::Color4F& color)
+void BoneNode::setDebugDrawColor(const axis::Color4F& color)
 {
     _rackColor = color;
     updateColor();
 }
 
-void BoneNode::visit(cocos2d::Renderer* renderer, const cocos2d::Mat4& parentTransform, uint32_t parentFlags)
+void BoneNode::visit(axis::Renderer* renderer, const axis::Mat4& parentTransform, uint32_t parentFlags)
 {
     // quick return if not visible. children won't be drawn.
     if (!_visible)
@@ -369,8 +369,8 @@ void BoneNode::visit(cocos2d::Renderer* renderer, const cocos2d::Mat4& parentTra
     // IMPORTANT:
     // To ease the migration to v3.0, we still support the Mat4 stack,
     // but it is deprecated and your code should not rely on it
-    _director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-    _director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
+    _director->pushMatrix(axis::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    _director->loadMatrix(axis::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
 
     bool visibleByCamera = isVisitableByVisitingCamera();
     bool isdebugdraw     = visibleByCamera && _isRackShow && nullptr == _rootSkeleton;
@@ -407,7 +407,7 @@ void BoneNode::visit(cocos2d::Renderer* renderer, const cocos2d::Mat4& parentTra
         this->draw(renderer, _modelViewTransform, flags);
     }
 
-    _director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    _director->popMatrix(axis::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 
     // FIX ME: Why need to set _orderOfArrival to 0??
     // Please refer to https://github.com/cocos2d/cocos2d-x/pull/6920
@@ -415,31 +415,31 @@ void BoneNode::visit(cocos2d::Renderer* renderer, const cocos2d::Mat4& parentTra
     // _orderOfArrival = 0;
 }
 
-void BoneNode::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)
+void BoneNode::draw(axis::Renderer* renderer, const axis::Mat4& transform, uint32_t flags)
 {
     _customCommand.init(_globalZOrder, _blendFunc);
     renderer->addCommand(&_customCommand);
 
-#ifdef CC_STUDIO_ENABLED_VIEW
+#ifdef AX_STUDIO_ENABLED_VIEW
 // TODO
-//     glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
-//     glVertexAttribPointer(cocos2d::GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
+//     glVertexAttribPointer(axis::GLProgram::VERTEX_ATTRIB_POSITION, 3, GL_FLOAT, GL_FALSE, 0, _noMVPVertices);
+//     glVertexAttribPointer(axis::GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, _squareColors);
 //
 //     glEnable(GL_LINE_SMOOTH);
 //     glHint(GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
 //     glDrawArrays(GL_LINE_LOOP, 0, 4);
-//     CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 8);
-#endif  // CC_STUDIO_ENABLED_VIEW
+//     AX_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 8);
+#endif  // AX_STUDIO_ENABLED_VIEW
 
     for (int i = 0; i < 4; ++i)
     {
-        cocos2d::Vec4 pos;
+        axis::Vec4 pos;
         pos.x = _squareVertices[i].x;
         pos.y = _squareVertices[i].y;
         pos.z = _positionZ;
         pos.w = 1;
         _modelViewTransform.transformVector(&pos);
-        _vertexData[i].noMVPVertices = cocos2d::Vec3(pos.x, pos.y, pos.z) / pos.w;
+        _vertexData[i].noMVPVertices = axis::Vec3(pos.x, pos.y, pos.z) / pos.w;
     }
     _customCommand.updateVertexBuffer(_vertexData, sizeof(_vertexData));
 
@@ -474,7 +474,7 @@ void BoneNode::updateColor()
     _transformUpdated = _transformDirty = _inverseDirty = _contentSizeDirty = true;
 }
 
-void BoneNode::updateDisplayedColor(const cocos2d::Color3B& /*parentColor*/)
+void BoneNode::updateDisplayedColor(const axis::Color3B& /*parentColor*/)
 {
     if (_cascadeColorEnabled)
     {
@@ -508,13 +508,13 @@ void BoneNode::disableCascadeColor()
 {
     for (const auto& child : _boneSkins)
     {
-        child->updateDisplayedColor(cocos2d::Color3B::WHITE);
+        child->updateDisplayedColor(axis::Color3B::WHITE);
     }
 }
 
-cocos2d::Vector<BoneNode*> BoneNode::getAllSubBones() const
+axis::Vector<BoneNode*> BoneNode::getAllSubBones() const
 {
-    cocos2d::Vector<BoneNode*> allBones;
+    axis::Vector<BoneNode*> allBones;
     std::stack<BoneNode*> boneStack;  // for avoid recursive
     for (const auto& bone : _childBones)
     {
@@ -535,10 +535,10 @@ cocos2d::Vector<BoneNode*> BoneNode::getAllSubBones() const
     return allBones;
 }
 
-cocos2d::Vector<SkinNode*> BoneNode::getAllSubSkins() const
+axis::Vector<SkinNode*> BoneNode::getAllSubSkins() const
 {
     auto allbones = getAllSubBones();
-    cocos2d::Vector<SkinNode*> allskins;
+    axis::Vector<SkinNode*> allskins;
     for (const auto& bone : allbones)
     {
         for (const auto& skin : bone->getSkins())
@@ -564,8 +564,8 @@ SkeletonNode* BoneNode::getRootSkeletonNode() const
     return _rootSkeleton;
 }
 
-#ifdef CC_STUDIO_ENABLED_VIEW
-bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
+#ifdef AX_STUDIO_ENABLED_VIEW
+bool BoneNode::isPointOnRack(const axis::Vec2& bonePoint)
 {
 
     if (bonePoint.x >= 0.0f && bonePoint.y >= _squareVertices[0].y && bonePoint.x <= _rackLength &&
@@ -584,7 +584,7 @@ bool BoneNode::isPointOnRack(const cocos2d::Vec2& bonePoint)
     }
     return false;
 }
-#endif  // CC_STUDIO_ENABLED_VIEW
+#endif  // AX_STUDIO_ENABLED_VIEW
 
 void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
 {
@@ -594,16 +594,16 @@ void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
         return;
     }
 
-    cocos2d::Vec3 vpos[4];
+    axis::Vec3 vpos[4];
     for (int i = 0; i < 4; i++)
     {
-        cocos2d::Vec4 pos;
+        axis::Vec4 pos;
         pos.x = bone->_squareVertices[i].x;
         pos.y = bone->_squareVertices[i].y;
         pos.z = bone->_positionZ;
         pos.w = 1;
         bone->_modelViewTransform.transformVector(&pos);  // call after visit
-        vpos[i] = cocos2d::Vec3(pos.x, pos.y, pos.z) / pos.w;
+        vpos[i] = axis::Vec3(pos.x, pos.y, pos.z) / pos.w;
     }
 
     int count = bone->_rootSkeleton->_batchedVeticesCount;
@@ -620,7 +620,7 @@ void BoneNode::batchBoneDrawToSkeleton(BoneNode* bone) const
 }
 
 // call after self visit
-void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone) const
+void BoneNode::visitSkins(axis::Renderer* renderer, BoneNode* bone) const
 {
     // quick return if not visible. children won't be drawn.
     if (!bone->_visible)
@@ -631,8 +631,8 @@ void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone) const
     // IMPORTANT:
     // To ease the migration to v3.0, we still support the Mat4 stack,
     // but it is deprecated and your code should not rely on it
-    _director->pushMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
-    _director->loadMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, bone->_modelViewTransform);
+    _director->pushMatrix(axis::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    _director->loadMatrix(axis::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, bone->_modelViewTransform);
 
     if (!bone->_boneSkins.empty())
     {
@@ -641,7 +641,7 @@ void BoneNode::visitSkins(cocos2d::Renderer* renderer, BoneNode* bone) const
             (*it)->visit(renderer, bone->_modelViewTransform, true);
     }
 
-    _director->popMatrix(cocos2d::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    _director->popMatrix(axis::MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 
     // FIX ME: Why need to set _orderOfArrival to 0??
     // Please refer to https://github.com/cocos2d/cocos2d-x/pull/6920
@@ -725,13 +725,13 @@ void BoneNode::setVisible(bool visible)
     }
 }
 
-void BoneNode::setContentSize(const cocos2d::Size& contentSize)
+void BoneNode::setContentSize(const axis::Size& contentSize)
 {
     Node::setContentSize(contentSize);
     updateVertices();
 }
 
-void BoneNode::setAnchorPoint(const cocos2d::Vec2& anchorPoint)
+void BoneNode::setAnchorPoint(const axis::Vec2& anchorPoint)
 {
     Node::setAnchorPoint(anchorPoint);
     updateVertices();

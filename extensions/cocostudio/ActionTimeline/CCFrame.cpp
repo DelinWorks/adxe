@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include <exception>
 #include <iostream>
 
-USING_NS_CC;
+USING_NS_AX;
 
 NS_TIMELINE_BEGIN
 
@@ -505,7 +505,7 @@ void InnerActionFrame::onEnter(Frame* /*nextFrame*/, int /*currentFrameIndex*/)
         }
         else
         {
-            CCLOG("Animation %s not exists!", _animationName.c_str());
+            AXLOG("Animation %s not exists!", _animationName.c_str());
         }
     }
 
@@ -530,7 +530,7 @@ void InnerActionFrame::setStartFrameIndex(int frameIndex)
 {
     if (_enterWithName)
     {
-        CCLOG(" cannot set start when enter frame with name. setEnterWithName false firstly!");
+        AXLOG(" cannot set start when enter frame with name. setEnterWithName false firstly!");
         return;
     }
 
@@ -541,7 +541,7 @@ void InnerActionFrame::setEndFrameIndex(int frameIndex)
 {
     if (_enterWithName)
     {
-        CCLOG(" cannot set end when enter frame with name. setEnterWithName false firstly!");
+        AXLOG(" cannot set end when enter frame with name. setEnterWithName false firstly!");
         return;
     }
 
@@ -552,7 +552,7 @@ void InnerActionFrame::setAnimationName(std::string_view animationName)
 {
     if (!_enterWithName)
     {
-        CCLOG(" cannot set aniamtioname when enter frame with index. setEnterWithName true firstly!");
+        AXLOG(" cannot set aniamtioname when enter frame with index. setEnterWithName true firstly!");
         return;
     }
 
@@ -688,7 +688,7 @@ void EventFrame::init()
 
 EventFrame::EventFrame() : _event(""), _action(nullptr) {}
 
-void EventFrame::setNode(cocos2d::Node* node)
+void EventFrame::setNode(axis::Node* node)
 {
     Frame::setNode(node);
     _action = _timeline->getActionTimeline();

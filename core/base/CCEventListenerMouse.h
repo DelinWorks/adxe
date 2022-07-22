@@ -35,7 +35,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Event;
 
@@ -43,7 +43,7 @@ class Event;
  * @brief Mouse event listener.
  * @js cc._EventListenerMouse
  */
-class CC_DLL EventListenerMouse : public EventListener
+class AX_DLL EventListenerMouse : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -67,7 +67,7 @@ public:
     bool init();
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

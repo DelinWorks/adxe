@@ -50,7 +50,7 @@
 //   https://curl.se/libcurl/c/curl_easy_getinfo.html
 //   https://curl.se/libcurl/c/curl_easy_setopt.html
 
-#define CC_CURL_POLL_TIMEOUT_MS 50  // wait until DNS query done
+#define AX_CURL_POLL_TIMEOUT_MS 50  // wait until DNS query done
 
 enum
 {
@@ -58,8 +58,8 @@ enum
     kCheckSumStateFailed  = 1 << 1,
 };
 
-namespace cocos2d
-{
+NS_AX_BEGIN
+
 namespace network
 {
 
@@ -414,7 +414,7 @@ public:
         if (!_processSet.empty())
         {
             std::lock_guard<std::mutex> lock(_processMutex);
-            for (auto& task : _processSet)
+            for (auto&& task : _processSet)
                 task->cancel();
             _processSet.clear();
         }
@@ -434,7 +434,7 @@ public:
     {
         std::lock_guard<std::mutex> lock(_processMutex);
         outList.reserve(_processSet.size());
-        for (auto& task : _processSet)
+        for (auto&& task : _processSet)
         {
             if (!task->background)
                 outList.push_back(task);
@@ -700,7 +700,7 @@ private:
                 // do wait action
                 if (maxfd == -1)
                 {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(CC_CURL_POLL_TIMEOUT_MS));
+                    std::this_thread::sleep_for(std::chrono::milliseconds(AX_CURL_POLL_TIMEOUT_MS));
                     rc = 0;
                 }
                 else
@@ -956,7 +956,7 @@ void DownloaderCURL::startTask(std::shared_ptr<DownloadTask>& task)
     }
     else
     {
-        cocos2d::log("DownloaderCURL createTask fail, error: %d, detail: %s", coTask->_errCode,
+        axis::log("DownloaderCURL createTask fail, error: %d, detail: %s", coTask->_errCode,
                      coTask->_errDescription.c_str());
         task.reset();
     }
@@ -984,7 +984,7 @@ void DownloaderCURL::_onUpdate(float)
 
     // update processing tasks
     _impl->getProcessTasks(tasks);
-    for (auto& task : tasks)
+    for (auto&& task : tasks)
     {
         DownloadTaskCURL& coTask = static_cast<DownloadTaskCURL&>(*task->_coTask);
         std::lock_guard<std::recursive_mutex> lock(coTask._mutex);
@@ -1007,7 +1007,7 @@ void DownloaderCURL::_onUpdate(float)
             _scheduler->pauseTarget(this);
     }
 
-    for (auto& task : tasks)
+    for (auto&& task : tasks)
     {
         _onDownloadFinished(*task);
     }
@@ -1137,4 +1137,4 @@ void DownloaderCURL::_onDownloadFinished(DownloadTask& task, int checkState)
 }
 
 }  // namespace network
-}  // namespace cocos2d
+NS_AX_END  // namespace axis

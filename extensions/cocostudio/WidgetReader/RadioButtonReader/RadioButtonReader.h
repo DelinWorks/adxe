@@ -40,13 +40,13 @@ public:
 
     static RadioButtonReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
                                                                          flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* checkBoxOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* checkBoxOptions);
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* checkBoxOptions);
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* checkBoxOptions);
     virtual int getResourceType(std::string_view key);
 };
 }  // namespace cocostudio

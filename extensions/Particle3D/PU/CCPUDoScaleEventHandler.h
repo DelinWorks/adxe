@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_DO_SCALE_EVENT_HANDLER_H__
-#define __CC_PU_PARTICLE_3D_DO_SCALE_EVENT_HANDLER_H__
+#ifndef __AX_PU_PARTICLE_3D_DO_SCALE_EVENT_HANDLER_H__
+#define __AX_PU_PARTICLE_3D_DO_SCALE_EVENT_HANDLER_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
@@ -33,12 +33,12 @@
 #include <vector>
 #include <string>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct PUParticle3D;
 class PUParticleSystem3D;
 
-class CC_EX_DLL PUDoScaleEventHandler : public PUEventHandler
+class AX_EX_DLL PUDoScaleEventHandler : public PUEventHandler
 {
 public:
     enum ScaleType
@@ -84,6 +84,6 @@ protected:
     ScaleType _scaleType;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

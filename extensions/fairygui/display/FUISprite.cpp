@@ -1,7 +1,7 @@
 #include "FUISprite.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 #define kProgressTextureCoordsCount 4
 //  kProgressTextureCoords holds points {0,1} {0,0} {1,0} {1,1} we can represent it as bits
@@ -23,14 +23,14 @@ FUISprite::FUISprite()
 
 FUISprite::~FUISprite()
 {
-    CC_SAFE_FREE(_vertexData);
-    CC_SAFE_FREE(_vertexIndex);
+    AX_SAFE_FREE(_vertexData);
+    AX_SAFE_FREE(_vertexIndex);
 }
 
 void FUISprite::clearContent()
 {
     setTexture(nullptr);
-    CC_SAFE_RELEASE_NULL(_spriteFrame);
+    AX_SAFE_RELEASE_NULL(_spriteFrame);
     setCenterRectNormalized(Rect(0, 0, 1, 1));
 
     _empty = _texture;
@@ -130,8 +130,8 @@ void FUISprite::setFillMethod(FillMethod value)
             setupFill();
         else
         {
-            CC_SAFE_FREE(_vertexData);
-            CC_SAFE_FREE(_vertexIndex);
+            AX_SAFE_FREE(_vertexData);
+            AX_SAFE_FREE(_vertexIndex);
         }
     }
 }
@@ -335,8 +335,8 @@ void FUISprite::updateRadial(void)
     if (_vertexDataCount != index + 3)
     {
         sameIndexCount = false;
-        CC_SAFE_FREE(_vertexData);
-        CC_SAFE_FREE(_vertexIndex);
+        AX_SAFE_FREE(_vertexData);
+        AX_SAFE_FREE(_vertexIndex);
         _vertexDataCount = 0;
     }
 
@@ -346,7 +346,7 @@ void FUISprite::updateRadial(void)
         triangleCount = _vertexDataCount - 2;
         _vertexData = (V3F_C4B_T2F*)malloc(_vertexDataCount * sizeof(*_vertexData));
         _vertexIndex = (unsigned short *)malloc(triangleCount * 3 * sizeof(*_vertexIndex));
-        CCASSERT(_vertexData, "FUISprite. Not enough memory");
+        AXASSERT(_vertexData, "FUISprite. Not enough memory");
     }
     else
     {
@@ -435,7 +435,7 @@ void FUISprite::updateBar(void)
         _vertexDataCount = 4;
         _vertexData = (V3F_C4B_T2F*)malloc(_vertexDataCount * sizeof(*_vertexData));
         _vertexIndex = (unsigned short*)malloc(6 * sizeof(*_vertexIndex));
-        CCASSERT(_vertexData, "FUISprite. Not enough memory");
+        AXASSERT(_vertexData, "FUISprite. Not enough memory");
     }
     //    TOPLEFT
     _vertexData[0].texCoords = textureCoordFromAlphaPoint(Vec2(min.x, max.y));
@@ -484,7 +484,7 @@ Vec2 FUISprite::boundaryTexCoord(char index)
     return Vec2::ZERO;
 }
 
-void FUISprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)
+void FUISprite::draw(axis::Renderer* renderer, const axis::Mat4& transform, uint32_t flags)
 {
     if (_texture == _empty)
         return;
@@ -497,7 +497,7 @@ void FUISprite::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform
         setMVPMatrixUniform();
 #endif
 
-#if CC_USE_CULLING
+#if AX_USE_CULLING
         // Don't calculate the culling if the transform was not updated
         auto visitingCamera = Camera::getVisitingCamera();
         auto defaultCamera = Camera::getDefaultCamera();

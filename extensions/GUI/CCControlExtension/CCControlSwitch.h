@@ -33,16 +33,12 @@
 #include "CCControl.h"
 #include "extensions/ExtensionExport.h"
 
-namespace cocos2d
-{
+NS_AX_BEGIN
 class Sprite;
-}
-namespace cocos2d
-{
 class Label;
-}
+NS_AX_END
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 class ControlSwitchSprite;
 
@@ -54,7 +50,7 @@ class ControlSwitchSprite;
  */
 
 /** @class ControlSwitch Switch control for Cocos2D. */
-class CC_EX_DLL ControlSwitch : public Control
+class AX_EX_DLL ControlSwitch : public Control
 {
 public:
     /** Creates a switch with a mask sprite, on/off sprites for on/off states, a thumb sprite and an on/off labels. */
@@ -124,6 +120,6 @@ protected:
 /// @}
 /// @}
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif /* __CCCONTROLSWITCH_H__ */

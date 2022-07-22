@@ -27,7 +27,7 @@
 
 #include "2d/CCSprite.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup _3d
  * @{
@@ -36,7 +36,7 @@ NS_CC_BEGIN
 /**
  * @brief Inherit from Sprite, achieve BillBoard.
  */
-class CC_DLL BillBoard : public Sprite
+class AX_DLL BillBoard : public Sprite
 {
 public:
     enum class Mode
@@ -118,10 +118,10 @@ protected:
     bool _modeDirty;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(BillBoard);
+    AX_DISALLOW_COPY_AND_ASSIGN(BillBoard);
 };
 
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END

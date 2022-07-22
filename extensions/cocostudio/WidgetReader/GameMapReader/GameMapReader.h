@@ -31,7 +31,7 @@
 
 namespace cocostudio
 {
-class CCS_DLL GameMapReader : public cocos2d::Ref, public NodeReaderProtocol
+class CCS_DLL GameMapReader : public axis::Ref, public NodeReaderProtocol
 {
     DECLARE_CLASS_NODE_READER_INFO
 
@@ -41,13 +41,13 @@ public:
 
     static GameMapReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
                                                                          flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* gameMapOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* gameMapOptions);
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* gameMapOptions);
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* gameMapOptions);
 };
 }  // namespace cocostudio
 

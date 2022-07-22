@@ -27,7 +27,7 @@
 #include "CCPUScriptTranslator.h"
 #include "extensions/Particle3D/PU/CCPUTranslateManager.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 const std::string token[1000] = {
     // Generic
@@ -739,7 +739,7 @@ bool PUScriptTranslator::passValidatePropertyValidQuaternion(PUScriptCompiler* /
 //-------------------------------------------------------------------------
 void PUScriptTranslator::errorUnexpectedToken(PUScriptCompiler* /*compiler*/, PUAbstractNode* /*token2*/)
 {
-    //    CCLOGERROR("PU Compiler: token2 is not recognized tokenFile:%s tokenLine:%s",)
+    //    AXLOGERROR("PU Compiler: token2 is not recognized tokenFile:%s tokenLine:%s",)
     //    printf()
     //    compiler->addError(ScriptCompiler::CE_UNEXPECTEDTOKEN, token.getPointer()->file, token.getPointer()->line,
     //                       );
@@ -770,4 +770,4 @@ void PUScriptTranslator::processNode(PUScriptCompiler* compiler, PUAbstractNode*
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 
-NS_CC_END
+NS_AX_END

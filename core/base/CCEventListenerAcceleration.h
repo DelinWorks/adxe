@@ -34,13 +34,13 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /** @class EventListenerAcceleration
  * @brief Acceleration event listener.
  * @js NA
  */
-class CC_DLL EventListenerAcceleration : public EventListener
+class AX_DLL EventListenerAcceleration : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -70,7 +70,7 @@ private:
     friend class LuaEventListenerAcceleration;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

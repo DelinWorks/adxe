@@ -32,7 +32,7 @@ THE SOFTWARE.
 #include "base/ccTypes.h"
 #include "renderer/CCQuadCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _2d
@@ -47,7 +47,7 @@ class TextureAtlas;
  * All features from Node are valid, plus the following features:
  * - opacity and RGB colors.
  */
-class CC_DLL AtlasNode : public Node, public TextureProtocol
+class AX_DLL AtlasNode : public Node, public TextureProtocol
 {
 public:
     /** creates a AtlasNode  with an Atlas file the width and height of each item and the quantity of items to render.
@@ -147,10 +147,10 @@ protected:
     backend::UniformLocation _mvpMatrixLocation;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(AtlasNode);
+    AX_DISALLOW_COPY_AND_ASSIGN(AtlasNode);
 };
 
 // end of base_node group
 /// @}
 
-NS_CC_END
+NS_AX_END

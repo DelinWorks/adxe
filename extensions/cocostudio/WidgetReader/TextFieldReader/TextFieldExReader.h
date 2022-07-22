@@ -30,7 +30,7 @@
 
 namespace cocostudio
 {
-class CCS_DLL TextFieldExReader : public cocos2d::Ref, public NodeReaderProtocol
+class CCS_DLL TextFieldExReader : public axis::Ref, public NodeReaderProtocol
 {
     DECLARE_CLASS_NODE_READER_INFO
 
@@ -40,13 +40,13 @@ public:
 
     static TextFieldExReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
                                                                          flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* textFieldOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* textFieldOptions);
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* textFieldOptions);
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* textFieldOptions);
 };
 }  // namespace cocostudio
 

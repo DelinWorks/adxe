@@ -17,14 +17,14 @@
 #include "platform/CCCommon.h"
 #include "platform/CCApplicationProtocol.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * The purpose of Enhance API is to optimize Cocos2D-X game engine special for Samsung products.
  * Note: The minimum required Android version is 5.0.
  *
  */
-class CC_DLL EnhanceAPI
+class AX_DLL EnhanceAPI
 {
 public:
     /**
@@ -92,4 +92,4 @@ public:
     static int setLowPowerMode(bool enable);
 };
 
-NS_CC_END
+NS_AX_END

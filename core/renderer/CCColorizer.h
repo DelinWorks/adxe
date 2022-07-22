@@ -10,14 +10,14 @@
 #    include "base/ccTypes.h"
 #    include <string>
 
-NS_CC_BEGIN
-class CC_DLL Colorizer
+NS_AX_BEGIN
+class AX_DLL Colorizer
 {
 public:
     static bool enableNodeIntelliShading(Node* node, const Vec3& hsv, const Vec3& filter = Vec3(1.0f, 0.45f, 0.3109f));
 
     static void updateNodeHsv(Node* node, const Vec3& hsv, const Vec3& filter = Vec3(1.0f, 0.45f, 0.3109f));
 };
-NS_CC_END
+NS_AX_END
 
 #endif

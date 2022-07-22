@@ -36,9 +36,9 @@
  * @addtogroup renderer
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-struct CC_DLL PipelineDescriptor
+struct AX_DLL PipelineDescriptor
 {
     backend::ProgramState* programState = nullptr;
     backend::BlendDescriptor blendDescriptor;
@@ -46,4 +46,4 @@ struct CC_DLL PipelineDescriptor
 
 // end of renderer group
 /// @}
-NS_CC_END
+NS_AX_END

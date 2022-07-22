@@ -23,8 +23,8 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#ifndef __CC_PU_PARTICLE_3D_EVENT_HANDLER_MANAGER_H__
-#define __CC_PU_PARTICLE_3D_EVENT_HANDLER_MANAGER_H__
+#ifndef __AX_PU_PARTICLE_3D_EVENT_HANDLER_MANAGER_H__
+#define __AX_PU_PARTICLE_3D_EVENT_HANDLER_MANAGER_H__
 
 #include "base/CCRef.h"
 #include "extensions/Particle3D/PU/CCPUScriptTranslator.h"
@@ -37,7 +37,7 @@
 #include "extensions/Particle3D/PU/CCPUDoScaleEventHandlerTranslator.h"
 #include "extensions/Particle3D/PU/CCPUDoStopSystemEventHandlerTranslator.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 class PUEventHandlerManager
 {
 public:
@@ -61,6 +61,6 @@ protected:
     PUDoStopSystemEventHandlerTranslator _doStopSystemEventHandlerTranslator;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

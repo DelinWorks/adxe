@@ -29,11 +29,11 @@
 #include "WidgetReader/NodeReaderProtocol.h"
 #include "WidgetReader/NodeReaderDefine.h"
 
-#if defined(CC_BUILD_WITH_SPINE)
+#if defined(AX_BUILD_WITH_SPINE)
 
 namespace cocostudio
 {
-class CCS_DLL SpineSkeletonReader : public cocos2d::Ref, public NodeReaderProtocol
+class CCS_DLL SpineSkeletonReader : public axis::Ref, public NodeReaderProtocol
 {
     DECLARE_CLASS_NODE_READER_INFO
 
@@ -43,13 +43,13 @@ public:
 
     static SpineSkeletonReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
                                                                          flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* spriteOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* spriteOptions);
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* spriteOptions);
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* spriteOptions);
 
     int getResourceType(std::string_view key);
 };

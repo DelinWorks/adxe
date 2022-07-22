@@ -32,13 +32,13 @@
 // #include "extensions/cocostudio/CocoStudio.h"
 #include "extensions/cocos-ext.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 // Enable log on Debug version
 #ifndef NDEBUG
-#    define COCOS2D_DEBUG 1
+#    define AXIS_DEBUG 1
 #else
-#    define COCOS2D_DEBUG 0
+#    define AXIS_DEBUG 0
 #endif
 
 AppDelegate::AppDelegate() : _testController(nullptr) {}
@@ -86,7 +86,7 @@ bool AppDelegate::applicationDidFinishLaunching()
 
     director->setStatsDisplay(true);
 
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
     director->setAnimationInterval(1.0f / glfwGetVideoMode(glfwGetPrimaryMonitor())->refreshRate);
 #else
     director->setAnimationInterval(1.0f / 60);

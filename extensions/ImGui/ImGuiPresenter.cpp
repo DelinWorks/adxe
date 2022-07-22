@@ -4,13 +4,13 @@
 #include "imgui_internal.h"
 
 // TODO: mac metal
-#if (defined(CC_USE_GL) || defined(CC_USE_GLES))
-#    define CC_IMGUI_ENABLE_MULTI_VIEWPORT 1
+#if (defined(AX_USE_GL) || defined(AX_USE_GLES))
+#    define AX_IMGUI_ENABLE_MULTI_VIEWPORT 1
 #else
-#    define CC_IMGUI_ENABLE_MULTI_VIEWPORT 0
+#    define AX_IMGUI_ENABLE_MULTI_VIEWPORT 0
 #endif
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 static uint32_t fourccValue(std::string_view str)
 {
@@ -33,7 +33,7 @@ class ImGuiSceneEventTracker : public ImGuiEventTracker
 public:
     bool initWithScene(Scene* scene)
     {
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
         _trackLayer = utils::newInstance<Node>(&Node::initLayer);
 
         // note: when at the first click to focus the window, this will not take effect
@@ -75,7 +75,7 @@ public:
 
     ~ImGuiSceneEventTracker()
     {
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
         if (_trackLayer)
         {
             if (_trackLayer->getParent())
@@ -96,7 +96,7 @@ class ImGuiGlobalEventTracker : public ImGuiEventTracker
 public:
     bool init()
     {
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
         // note: when at the first click to focus the window, this will not take effect
 
         auto eventDispatcher = Director::getInstance()->getEventDispatcher();
@@ -122,7 +122,7 @@ public:
 
     ~ImGuiGlobalEventTracker()
     {
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
         auto eventDispatcher = Director::getInstance()->getEventDispatcher();
         eventDispatcher->removeEventListener(_mouseListener);
         eventDispatcher->removeEventListener(_touchListener);
@@ -172,7 +172,7 @@ void ImGuiPresenter::init()
     // io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;  // Enable Docking
 
-#if CC_IMGUI_ENABLE_MULTI_VIEWPORT
+#if AX_IMGUI_ENABLE_MULTI_VIEWPORT
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;  // Enable Multi-Viewport / Platform Windows
 #endif
     // io.ConfigViewportsNoAutoMerge = true;
@@ -220,7 +220,7 @@ void ImGuiPresenter::cleanup()
     ImGui_ImplAxis_Shutdown();
     ImGui_ImplGlfw_Shutdown();
 
-    CC_SAFE_RELEASE_NULL(_fontsTexture);
+    AX_SAFE_RELEASE_NULL(_fontsTexture);
 
     ImGui::DestroyContext();
 }
@@ -253,7 +253,7 @@ void ImGuiPresenter::loadCustomFonts(void* ud)
         }
 
         auto fontData = FileUtils::getInstance()->getDataFromFile(fontInfo.first);
-        CCASSERT(!fontData.isNull(), "Cannot load font for IMGUI");
+        AXASSERT(!fontData.isNull(), "Cannot load font for IMGUI");
 
         ssize_t bufferSize = 0;
         auto* buffer       = fontData.takeBuffer(&bufferSize);  // Buffer automatically freed by IMGUI
@@ -372,7 +372,7 @@ void ImGuiPresenter::endFrame()
         ImGui_ImplAxis_RenderPlatform();
         --_beginFrames;
 
-        CC_SAFE_RELEASE_NULL(_fontsTexture);
+        AX_SAFE_RELEASE_NULL(_fontsTexture);
     }
 }
 
@@ -700,4 +700,4 @@ int ImGuiPresenter::getCCRefId(Ref* p)
     return (int)hash;
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

@@ -31,7 +31,7 @@
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
 #include "base/ccUTF8.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 const std::string ComponentLua::ON_ENTER = "onEnter";
 const std::string ComponentLua::ON_EXIT  = "onExit";
@@ -68,7 +68,7 @@ int ComponentLua::_index = 0;
 
 ComponentLua* ComponentLua::create(std::string_view scriptFileName)
 {
-    CC_ASSERT(!scriptFileName.empty());
+    AX_ASSERT(!scriptFileName.empty());
 
     initClass();
 
@@ -154,7 +154,7 @@ bool ComponentLua::getLuaFunction(std::string_view functionName)
     int type = lua_type(l, -1);
     //    if (type != LUA_TFUNCTION)
     //    {
-    //        CCLOG("can not get %s function from %s", functionName.c_str(), _scriptFileName.c_str());
+    //        AXLOG("can not get %s function from %s", functionName.c_str(), _scriptFileName.c_str());
     //    }
 
     return type == LUA_TFUNCTION;
@@ -176,7 +176,7 @@ bool ComponentLua::loadAndExecuteScript()
                                                      fullPathOfScript.c_str());
     if (error)
     {
-        CCLOG("ComponentLua::loadAndExecuteScript: %s", lua_tostring(l, -1));
+        AXLOG("ComponentLua::loadAndExecuteScript: %s", lua_tostring(l, -1));
         lua_pop(l, 1);
         return false;
     }
@@ -185,7 +185,7 @@ bool ComponentLua::loadAndExecuteScript()
     error = lua_pcall(l, 0, 1, 0);
     if (error)
     {
-        CCLOG("ComponentLua::loadAndExecuteScript: %s", lua_tostring(l, -1));
+        AXLOG("ComponentLua::loadAndExecuteScript: %s", lua_tostring(l, -1));
         lua_pop(l, 1);
         return false;
     }
@@ -194,7 +194,7 @@ bool ComponentLua::loadAndExecuteScript()
     int type = lua_type(l, -1);
     if (type != LUA_TTABLE)
     {
-        CCLOG("%s should return a table, or the script component can not work currectly", _scriptFileName.c_str());
+        AXLOG("%s should return a table, or the script component can not work currectly", _scriptFileName.c_str());
         return false;
     }
 
@@ -236,7 +236,7 @@ void ComponentLua::storeLuaTable()
     lua_pop(l, 1);         // stack: table_return_from_lua
 
     // add table's elements to userdata's metatable
-    object_to_luaval<cocos2d::ComponentLua>(l, "cc.ComponentLua", this);  // stack: table_return_from_lua userdata
+    object_to_luaval<axis::ComponentLua>(l, "ax.ComponentLua", this);  // stack: table_return_from_lua userdata
     lua_getmetatable(l, -1);                                              // stack: table_return_from_lua userdata mt
     lua_remove(l, -2);                                                    // stack: table_return_from_lua mt
     lua_pushnil(l);                                                       // stack: table_return_from_lua mt nil
@@ -268,7 +268,7 @@ void ComponentLua::removeLuaTable()
 void ComponentLua::getUserData()
 {
     lua_State* l = LuaEngine::getInstance()->getLuaStack()->getLuaState();
-    object_to_luaval<cocos2d::ComponentLua>(l, "cc.ComponentLua", this);
+    object_to_luaval<axis::ComponentLua>(l, "ax.ComponentLua", this);
 }
 
-NS_CC_END
+NS_AX_END

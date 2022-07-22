@@ -32,13 +32,13 @@
 #include "base/CCDirector.h"
 #include "2d/CCScene.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 ProtectedNode::ProtectedNode() : _reorderProtectedChildDirty(false) {}
 
 ProtectedNode::~ProtectedNode()
 {
-    CCLOGINFO("deallocing ProtectedNode: %p - tag: %i", this, _tag);
+    AXLOGINFO("deallocing ProtectedNode: %p - tag: %i", this, _tag);
     removeAllProtectedChildren();
 }
 
@@ -51,7 +51,7 @@ ProtectedNode* ProtectedNode::create()
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -64,12 +64,12 @@ void ProtectedNode::cleanup()
         child->cleanup();
 }
 
-void ProtectedNode::addProtectedChild(cocos2d::Node* child)
+void ProtectedNode::addProtectedChild(axis::Node* child)
 {
     addProtectedChild(child, child->getLocalZOrder(), child->getTag());
 }
 
-void ProtectedNode::addProtectedChild(cocos2d::Node* child, int localZOrder)
+void ProtectedNode::addProtectedChild(axis::Node* child, int localZOrder)
 {
     addProtectedChild(child, localZOrder, child->getTag());
 }
@@ -80,8 +80,8 @@ void ProtectedNode::addProtectedChild(cocos2d::Node* child, int localZOrder)
  */
 void ProtectedNode::addProtectedChild(Node* child, int zOrder, int tag)
 {
-    CCASSERT(child != nullptr, "Argument must be non-nil");
-    CCASSERT(child->getParent() == nullptr, "child already added. It can't be added again");
+    AXASSERT(child != nullptr, "Argument must be non-nil");
+    AXASSERT(child->getParent() == nullptr, "child already added. It can't be added again");
 
     if (_protectedChildren.empty())
     {
@@ -118,9 +118,9 @@ void ProtectedNode::addProtectedChild(Node* child, int zOrder, int tag)
 
 Node* ProtectedNode::getProtectedChildByTag(int tag)
 {
-    CCASSERT(tag != Node::INVALID_TAG, "Invalid tag");
+    AXASSERT(tag != Node::INVALID_TAG, "Invalid tag");
 
-    for (auto& child : _protectedChildren)
+    for (auto&& child : _protectedChildren)
     {
         if (child && child->getTag() == tag)
             return child;
@@ -132,7 +132,7 @@ Node* ProtectedNode::getProtectedChildByTag(int tag)
  * If a class want's to extend the 'removeChild' behavior it only needs
  * to override this method
  */
-void ProtectedNode::removeProtectedChild(cocos2d::Node* child, bool cleanup)
+void ProtectedNode::removeProtectedChild(axis::Node* child, bool cleanup)
 {
     // explicit nil handling
     if (_protectedChildren.empty())
@@ -141,7 +141,7 @@ void ProtectedNode::removeProtectedChild(cocos2d::Node* child, bool cleanup)
     }
 
     ssize_t index = _protectedChildren.getIndex(child);
-    if (index != CC_INVALID_INDEX)
+    if (index != AX_INVALID_INDEX)
     {
 
         // IMPORTANT:
@@ -163,13 +163,13 @@ void ProtectedNode::removeProtectedChild(cocos2d::Node* child, bool cleanup)
         // set parent nil at the end
         child->setParent(nullptr);
 
-#if CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#if AX_ENABLE_GC_FOR_NATIVE_OBJECTS
         auto sEngine = ScriptEngineManager::getInstance()->getScriptEngine();
         if (sEngine)
         {
             sEngine->releaseScriptObject(this, child);
         }
-#endif  // CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#endif  // AX_ENABLE_GC_FOR_NATIVE_OBJECTS
         _protectedChildren.erase(index);
     }
 }
@@ -182,7 +182,7 @@ void ProtectedNode::removeAllProtectedChildren()
 void ProtectedNode::removeAllProtectedChildrenWithCleanup(bool cleanup)
 {
     // not using detachChild improves speed here
-    for (auto& child : _protectedChildren)
+    for (auto&& child : _protectedChildren)
     {
         // IMPORTANT:
         //  -1st do onExit
@@ -197,13 +197,13 @@ void ProtectedNode::removeAllProtectedChildrenWithCleanup(bool cleanup)
         {
             child->cleanup();
         }
-#if CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#if AX_ENABLE_GC_FOR_NATIVE_OBJECTS
         auto sEngine = ScriptEngineManager::getInstance()->getScriptEngine();
         if (sEngine)
         {
             sEngine->releaseScriptObject(this, child);
         }
-#endif  // CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#endif  // AX_ENABLE_GC_FOR_NATIVE_OBJECTS
         // set parent nil at the end
         child->setParent(nullptr);
     }
@@ -213,13 +213,13 @@ void ProtectedNode::removeAllProtectedChildrenWithCleanup(bool cleanup)
 
 void ProtectedNode::removeProtectedChildByTag(int tag, bool cleanup)
 {
-    CCASSERT(tag != Node::INVALID_TAG, "Invalid tag");
+    AXASSERT(tag != Node::INVALID_TAG, "Invalid tag");
 
     Node* child = this->getProtectedChildByTag(tag);
 
     if (child == nullptr)
     {
-        CCLOG("cocos2d: removeChildByTag(tag = %d): child not found!", tag);
+        AXLOG("cocos2d: removeChildByTag(tag = %d): child not found!", tag);
     }
     else
     {
@@ -228,15 +228,15 @@ void ProtectedNode::removeProtectedChildByTag(int tag, bool cleanup)
 }
 
 // helper used by reorderChild & add
-void ProtectedNode::insertProtectedChild(cocos2d::Node* child, int z)
+void ProtectedNode::insertProtectedChild(axis::Node* child, int z)
 {
-#if CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#if AX_ENABLE_GC_FOR_NATIVE_OBJECTS
     auto sEngine = ScriptEngineManager::getInstance()->getScriptEngine();
     if (sEngine)
     {
         sEngine->retainScriptObject(this, child);
     }
-#endif  // CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#endif  // AX_ENABLE_GC_FOR_NATIVE_OBJECTS
     _reorderProtectedChildDirty = true;
     _protectedChildren.pushBack(child);
     child->setLocalZOrder(z);
@@ -251,9 +251,9 @@ void ProtectedNode::sortAllProtectedChildren()
     }
 }
 
-void ProtectedNode::reorderProtectedChild(cocos2d::Node* child, int localZOrder)
+void ProtectedNode::reorderProtectedChild(axis::Node* child, int localZOrder)
 {
-    CCASSERT(child != nullptr, "Child must be non-nil");
+    AXASSERT(child != nullptr, "Child must be non-nil");
     _reorderProtectedChildDirty = true;
     child->updateOrderOfArrival();
     child->setLocalZOrder(localZOrder);
@@ -361,13 +361,13 @@ void ProtectedNode::updateDisplayedOpacity(uint8_t parentOpacity)
 
     if (_cascadeOpacityEnabled)
     {
-        for (auto child : _children)
+        for (auto&& child : _children)
         {
             child->updateDisplayedOpacity(_displayedOpacity);
         }
     }
 
-    for (auto child : _protectedChildren)
+    for (auto&& child : _protectedChildren)
     {
         child->updateDisplayedOpacity(_displayedOpacity);
     }
@@ -395,11 +395,11 @@ void ProtectedNode::updateDisplayedColor(const Color3B& parentColor)
 
 void ProtectedNode::disableCascadeColor()
 {
-    for (auto child : _children)
+    for (auto&& child : _children)
     {
         child->updateDisplayedColor(Color3B::WHITE);
     }
-    for (auto child : _protectedChildren)
+    for (auto&& child : _protectedChildren)
     {
         child->updateDisplayedColor(Color3B::WHITE);
     }
@@ -409,12 +409,12 @@ void ProtectedNode::disableCascadeOpacity()
 {
     _displayedOpacity = _realOpacity;
 
-    for (auto child : _children)
+    for (auto&& child : _children)
     {
         child->updateDisplayedOpacity(255);
     }
 
-    for (auto child : _protectedChildren)
+    for (auto&& child : _protectedChildren)
     {
         child->updateDisplayedOpacity(255);
     }
@@ -425,7 +425,7 @@ void ProtectedNode::setCameraMask(unsigned short mask, bool applyChildren)
     Node::setCameraMask(mask, applyChildren);
     if (applyChildren)
     {
-        for (auto& iter : _protectedChildren)
+        for (auto&& iter : _protectedChildren)
         {
             iter->setCameraMask(mask);
         }
@@ -435,8 +435,8 @@ void ProtectedNode::setCameraMask(unsigned short mask, bool applyChildren)
 void ProtectedNode::setGlobalZOrder(float globalZOrder)
 {
     Node::setGlobalZOrder(globalZOrder);
-    for (auto& child : _protectedChildren)
+    for (auto&& child : _protectedChildren)
         child->setGlobalZOrder(globalZOrder);
 }
 
-NS_CC_END
+NS_AX_END

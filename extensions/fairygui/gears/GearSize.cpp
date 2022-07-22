@@ -5,7 +5,7 @@
 #include "utils/ByteBuffer.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 GearSize::GearSize(GObject* owner) : GearBase(owner)
 {
@@ -70,8 +70,8 @@ void GearSize::apply()
                                          ->setEase(_tweenConfig->easeType)
                                          ->setTargetAny(this)
                                          ->setUserData(Value((a ? 1 : 0) + (b ? 2 : 0)))
-                                         ->onUpdate(CC_CALLBACK_1(GearSize::onTweenUpdate, this))
-                                         ->onComplete(CC_CALLBACK_0(GearSize::onTweenComplete, this));
+                                         ->onUpdate(AX_CALLBACK_1(GearSize::onTweenUpdate, this))
+                                         ->onComplete(AX_CALLBACK_0(GearSize::onTweenComplete, this));
         }
     }
     else

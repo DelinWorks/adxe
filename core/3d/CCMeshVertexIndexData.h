@@ -36,7 +36,7 @@
 #include "math/CCMath.h"
 #include "renderer/CCMeshCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -51,7 +51,7 @@ class MeshVertexData;
  * @js NA
  * @lua NA
  */
-class CC_DLL MeshIndexData : public Ref
+class AX_DLL MeshIndexData : public Ref
 {
 public:
     /** create  */
@@ -96,7 +96,7 @@ protected:
 
     friend class MeshVertexData;
     friend class MeshRenderer;
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     EventListenerCustom* _backToForegroundListener = nullptr;
 #endif
 };
@@ -105,7 +105,7 @@ protected:
  * the MeshVertexData class.
  * @brief the MeshVertexData contain all of the vertices data which mesh need.
  */
-class CC_DLL MeshVertexData : public Ref
+class AX_DLL MeshVertexData : public Ref
 {
     friend class MeshRenderer;
     friend class Mesh;
@@ -149,7 +149,7 @@ protected:
 
     int _vertexCount = 0;  // vertex count
     std::vector<float> _vertexData;
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     EventListenerCustom* _backToForegroundListener = nullptr;
 #endif
 };
@@ -157,4 +157,4 @@ protected:
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END

@@ -29,7 +29,7 @@
 #include "base/ccMacros.h"
 #include "base/CCConfiguration.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 namespace
 {
@@ -58,7 +58,7 @@ ProgramCache* ProgramCache::getInstance()
         _sharedProgramCache = new ProgramCache();
         if (!_sharedProgramCache->init())
         {
-            CC_SAFE_DELETE(_sharedProgramCache);
+            AX_SAFE_DELETE(_sharedProgramCache);
         }
     }
     return _sharedProgramCache;
@@ -66,16 +66,16 @@ ProgramCache* ProgramCache::getInstance()
 
 void ProgramCache::destroyInstance()
 {
-    CC_SAFE_RELEASE_NULL(_sharedProgramCache);
+    AX_SAFE_RELEASE_NULL(_sharedProgramCache);
 }
 
 ProgramCache::~ProgramCache()
 {
-    for (auto& program : _cachedPrograms)
+    for (auto&& program : _cachedPrograms)
     {
-        CC_SAFE_RELEASE(program.second);
+        AX_SAFE_RELEASE(program.second);
     }
-    CCLOGINFO("deallocing ProgramCache: %p", this);
+    AXLOGINFO("deallocing ProgramCache: %p", this);
     ShaderCache::destroyInstance();
 }
 
@@ -123,8 +123,8 @@ bool ProgramCache::init()
     registerProgramFactory(ProgramType::TERRAIN_3D, CC3D_terrain_vert, CC3D_terrain_frag);
     registerProgramFactory(ProgramType::PARTICLE_TEXTURE_3D, CC3D_particle_vert, CC3D_particleTexture_frag);
     registerProgramFactory(ProgramType::PARTICLE_COLOR_3D, CC3D_particle_vert, CC3D_particleColor_frag);
-    registerProgramFactory(ProgramType::QUAD_COLOR_2D, CC2D_quad_vert, CC2D_quadColor_frag);
-    registerProgramFactory(ProgramType::QUAD_TEXTURE_2D, CC2D_quad_vert, CC2D_quadTexture_frag);
+    registerProgramFactory(ProgramType::QUAD_COLOR_2D, CC2D_quadColor_vert, CC2D_quadColor_frag);
+    registerProgramFactory(ProgramType::QUAD_TEXTURE_2D, CC2D_quadTexture_vert, CC2D_quadTexture_frag);
     registerProgramFactory(ProgramType::HSV, positionTextureColor_vert, hsv_frag);
     registerProgramFactory(ProgramType::HSV_DUAL_SAMPLER, positionTextureColor_vert, dualSampler_hsv_frag);
 
@@ -241,7 +241,7 @@ void ProgramCache::removeUnusedProgram()
         auto program = iter->second;
         if (program->getReferenceCount() == 1)
         {
-            //            CCLOG("cocos2d: TextureCache: removing unused program");
+            //            AXLOG("cocos2d: TextureCache: removing unused program");
             program->release();
             iter = _cachedPrograms.erase(iter);
         }
@@ -255,11 +255,11 @@ void ProgramCache::removeUnusedProgram()
 void ProgramCache::removeAllPrograms()
 {
     ProgramStateRegistry::getInstance()->clearPrograms();
-    for (auto& program : _cachedPrograms)
+    for (auto&& program : _cachedPrograms)
     {
         program.second->release();
     }
     _cachedPrograms.clear();
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

@@ -30,9 +30,9 @@
 #include "base/CCRef.h"
 #include "base/ccConfig.h"
 
-#if CC_USE_3D_PHYSICS
+#if AX_USE_3D_PHYSICS
 
-#    if (CC_ENABLE_BULLET_INTEGRATION)
+#    if (AX_ENABLE_BULLET_INTEGRATION)
 
 class btDynamicsWorld;
 class btDefaultCollisionConfiguration;
@@ -43,7 +43,7 @@ class btGhostPairCallback;
 class btRigidBody;
 class btCollisionObject;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup _3d
  * @{
@@ -59,14 +59,14 @@ class Renderer;
 /**
  * @brief The description of Physics3DWorld.
  */
-struct CC_DLL Physics3DWorldDes
+struct AX_DLL Physics3DWorldDes
 {
     bool isDebugDrawEnabled;  // using physics debug draw?, false by default
-    cocos2d::Vec3 gravity;    // gravity, (0, -9.8, 0)
+    axis::Vec3 gravity;    // gravity, (0, -9.8, 0)
     Physics3DWorldDes()
     {
         isDebugDrawEnabled = false;
-        gravity            = cocos2d::Vec3(0.f, -9.8f, 0.f);
+        gravity            = axis::Vec3(0.f, -9.8f, 0.f);
     }
 };
 
@@ -74,15 +74,15 @@ struct CC_DLL Physics3DWorldDes
  * @brief The physics information container, include Physics3DObjects, Physics3DConstraints, collision information and
  * so on.
  */
-class CC_DLL Physics3DWorld : public Ref
+class AX_DLL Physics3DWorld : public Ref
 {
     friend class Physics3DComponent;
 
 public:
     struct HitResult
     {
-        cocos2d::Vec3 hitPosition;
-        cocos2d::Vec3 hitNormal;
+        axis::Vec3 hitPosition;
+        axis::Vec3 hitNormal;
         Physics3DObject* hitObj;
     };
 
@@ -127,7 +127,7 @@ public:
     bool isDebugDrawEnabled() const;
 
     /** Internal method, the updater of debug drawing, need called each frame. */
-    void debugDraw(cocos2d::Renderer* renderer);
+    void debugDraw(axis::Renderer* renderer);
 
     /** Get the list of Physics3DObjects. */
     const std::vector<Physics3DObject*>& getPhysicsObjects() const { return _objects; }
@@ -138,12 +138,12 @@ public:
      * @param endPos The end position of ray.
      * @param result the result of ray cast.
      */
-    bool rayCast(const cocos2d::Vec3& startPos, const cocos2d::Vec3& endPos, HitResult* result);
+    bool rayCast(const axis::Vec3& startPos, const axis::Vec3& endPos, HitResult* result);
 
     /** Performs a swept shape cast on all objects in the Physics3DWorld. */
     bool sweepShape(Physics3DShape* shape,
-                    const cocos2d::Mat4& startTransform,
-                    const cocos2d::Mat4& endTransform,
+                    const axis::Mat4& startTransform,
+                    const axis::Mat4& endTransform,
                     HitResult* result);
 
     Physics3DWorld();
@@ -167,7 +167,7 @@ protected:
     bool _collisionCheckingFlag;
     bool _needGhostPairCallbackChecking;
 
-#        if (CC_ENABLE_BULLET_INTEGRATION)
+#        if (AX_ENABLE_BULLET_INTEGRATION)
     btDynamicsWorld* _btPhyiscsWorld;
     btDefaultCollisionConfiguration* _collisionConfiguration;
     btCollisionDispatcher* _dispatcher;
@@ -175,15 +175,15 @@ protected:
     btSequentialImpulseConstraintSolver* _solver;
     btGhostPairCallback* _ghostCallback;
     Physics3DDebugDrawer* _debugDrawer;
-#        endif  // CC_ENABLE_BULLET_INTEGRATION
+#        endif  // AX_ENABLE_BULLET_INTEGRATION
 };
 
 // end of 3d group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #    endif
 
-#endif  // CC_USE_3D_PHYSICS
+#endif  // AX_USE_3D_PHYSICS
 
 #endif  // __PHYSICS_3D_WORLD_H__

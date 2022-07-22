@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_EXTENTIONS_CCCOMBASE_H__
-#define __CC_EXTENTIONS_CCCOMBASE_H__
+#ifndef __AX_EXTENTIONS_CCCOMBASE_H__
+#define __AX_EXTENTIONS_CCCOMBASE_H__
 
 #include <string>
 #include "DictionaryHelper.h"
@@ -33,14 +33,14 @@ THE SOFTWARE.
 
 #define DECLARE_CLASS_COMPONENT_INFO           \
 public:                                        \
-    static cocos2d::ObjectFactory::TInfo Type; \
-    static cocos2d::Ref* createInstance(void);
+    static axis::ObjectFactory::TInfo Type; \
+    static axis::Ref* createInstance(void);
 
 #define IMPLEMENT_CLASS_COMPONENT_INFO(className)                                 \
-    cocos2d::Ref* className::createInstance(void) { return className::create(); } \
-    cocos2d::ObjectFactory::TInfo className::Type(#className, &className::createInstance);
+    axis::Ref* className::createInstance(void) { return className::create(); } \
+    axis::ObjectFactory::TInfo className::Type(#className, &className::createInstance);
 
-#define CREATE_CLASS_COMPONENT_INFO(className) cocos2d::ObjectFactory::TInfo(#className, &className::createInstance)
+#define CREATE_CLASS_COMPONENT_INFO(className) axis::ObjectFactory::TInfo(#className, &className::createInstance)
 
 struct CCS_DLL SerData
 {

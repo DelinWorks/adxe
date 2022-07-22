@@ -41,7 +41,7 @@
 #    undef ERROR
 #endif  // ERROR
 
-using namespace cocos2d;
+USING_NS_AX;
 
 const int AudioEngine::INVALID_AUDIO_ID = -1;
 const float AudioEngine::TIME_UNKNOWN   = -1.0f;
@@ -196,7 +196,7 @@ AUDIO_ID AudioEngine::play2d(std::string_view filePath, bool loop, float volume,
         auto profileHelper = _defaultProfileHelper;
         if (profile && profile != &profileHelper->profile)
         {
-            CC_ASSERT(!profile->name.empty());
+            AX_ASSERT(!profile->name.empty());
             profileHelper          = &_audioPathProfileHelperMap[profile->name];
             profileHelper->profile = *profile;
         }

@@ -35,7 +35,7 @@ THE SOFTWARE.
 #include "renderer/CCTextureAtlas.h"
 #include "renderer/CCQuadCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _2d
@@ -62,7 +62,7 @@ class Sprite;
  *
  * @since v0.7.1
  */
-class CC_DLL SpriteBatchNode : public Node, public TextureProtocol
+class AX_DLL SpriteBatchNode : public Node, public TextureProtocol
 {
     static const int DEFAULT_CAPACITY = 29;
 
@@ -100,8 +100,8 @@ public:
     {
         if (textureAtlas != _textureAtlas)
         {
-            CC_SAFE_RETAIN(textureAtlas);
-            CC_SAFE_RELEASE(_textureAtlas);
+            AX_SAFE_RETAIN(textureAtlas);
+            AX_SAFE_RELEASE(_textureAtlas);
             _textureAtlas = textureAtlas;
         }
     }
@@ -275,11 +275,11 @@ protected:
 
     // all descendants: children, grand children, etc...
     // There is not need to retain/release these objects, since they are already retained by _children
-    // So, using std::vector<Sprite*> is slightly faster than using cocos2d::Array for this particular case
+    // So, using std::vector<Sprite*> is slightly faster than using axis::Array for this particular case
     std::vector<Sprite*> _descendants;
 };
 
 // end of sprite_nodes group
 /** @} */
 
-NS_CC_END
+NS_AX_END

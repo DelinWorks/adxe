@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_LUA_ENGINE_H__
-#define __CC_LUA_ENGINE_H__
+#ifndef __AX_LUA_ENGINE_H__
+#define __AX_LUA_ENGINE_H__
 
 extern "C" {
 #include "lua.h"
@@ -34,7 +34,7 @@ extern "C" {
 #include "base/CCScriptSupport.h"
 #include "scripting/lua-bindings/manual/CCLuaStack.h"
 #include "scripting/lua-bindings/manual/CCLuaValue.h"
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
+#include "scripting/lua-bindings/manual/base/LuaScriptHandlerMgr.h"
 #include "scripting/lua-bindings/manual/Lua-BindingsExport.h"
 
 /**
@@ -42,7 +42,7 @@ extern "C" {
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * The Lua engine integrated into the cocos2d-x to process the interactive operation between lua and c++.
@@ -50,7 +50,7 @@ NS_CC_BEGIN
  * @lua NA
  * @js NA
  */
-class CC_LUA_DLL LuaEngine : public ScriptEngineProtocol
+class AX_LUA_DLL LuaEngine : public ScriptEngineProtocol
 {
 public:
     /**
@@ -64,7 +64,7 @@ public:
      *
      * @return the instance of LuaEngine.
      */
-    CC_DEPRECATED_ATTRIBUTE static LuaEngine* defaultEngine(void) { return LuaEngine::getInstance(); }
+    AX_DEPRECATED_ATTRIBUTE static LuaEngine* defaultEngine(void) { return LuaEngine::getInstance(); }
 
     /**
      * Destructor of LuaEngine.
@@ -259,9 +259,9 @@ private:
     LuaStack* _stack;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end group
 /// @}
 
-#endif  // __CC_LUA_ENGINE_H__
+#endif  // __AX_LUA_ENGINE_H__

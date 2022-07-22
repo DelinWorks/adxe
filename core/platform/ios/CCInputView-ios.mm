@@ -83,7 +83,7 @@ THE SOFTWARE.
 
 - (void)setSelectedTextRange:(UITextRange*)aSelectedTextRange
 {
-    CCLOG("UITextRange:setSelectedTextRange");
+    AXLOG("UITextRange:setSelectedTextRange");
 }
 
 - (UITextRange*)selectedTextRange
@@ -98,7 +98,7 @@ THE SOFTWARE.
         [self.myMarkedText release];
         self.myMarkedText = nil;
     }
-    cocos2d::IMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
+    axis::IMEDispatcher::sharedDispatcher()->dispatchDeleteBackward();
 }
 
 - (void)insertText:(nonnull NSString*)text
@@ -109,62 +109,62 @@ THE SOFTWARE.
         self.myMarkedText = nil;
     }
     const char* pszText = [text cStringUsingEncoding:NSUTF8StringEncoding];
-    cocos2d::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
+    axis::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
 }
 
 - (NSWritingDirection)baseWritingDirectionForPosition:(nonnull UITextPosition*)position
                                           inDirection:(UITextStorageDirection)direction
 {
-    CCLOG("baseWritingDirectionForPosition");
+    AXLOG("baseWritingDirectionForPosition");
     return NSWritingDirectionLeftToRight;
 }
 
 - (CGRect)caretRectForPosition:(nonnull UITextPosition*)position
 {
-    CCLOG("caretRectForPosition");
+    AXLOG("caretRectForPosition");
     return CGRectZero;
 }
 
 - (nullable UITextRange*)characterRangeAtPoint:(CGPoint)point
 {
-    CCLOG("characterRangeAtPoint");
+    AXLOG("characterRangeAtPoint");
     return nil;
 }
 
 - (nullable UITextRange*)characterRangeByExtendingPosition:(nonnull UITextPosition*)position
                                                inDirection:(UITextLayoutDirection)direction
 {
-    CCLOG("characterRangeByExtendingPosition");
+    AXLOG("characterRangeByExtendingPosition");
     return nil;
 }
 
 - (nullable UITextPosition*)closestPositionToPoint:(CGPoint)point
 {
-    CCLOG("closestPositionToPoint");
+    AXLOG("closestPositionToPoint");
     return nil;
 }
 
 - (nullable UITextPosition*)closestPositionToPoint:(CGPoint)point withinRange:(nonnull UITextRange*)range
 {
-    CCLOG("closestPositionToPoint");
+    AXLOG("closestPositionToPoint");
     return nil;
 }
 
 - (NSComparisonResult)comparePosition:(nonnull UITextPosition*)position toPosition:(nonnull UITextPosition*)other
 {
-    CCLOG("comparePosition");
+    AXLOG("comparePosition");
     return (NSComparisonResult)0;
 }
 
 - (CGRect)firstRectForRange:(nonnull UITextRange*)range
 {
-    CCLOG("firstRectForRange");
+    AXLOG("firstRectForRange");
     return CGRectNull;
 }
 
 - (NSInteger)offsetFromPosition:(nonnull UITextPosition*)from toPosition:(nonnull UITextPosition*)toPosition
 {
-    CCLOG("offsetFromPosition");
+    AXLOG("offsetFromPosition");
     return 0;
 }
 
@@ -172,20 +172,20 @@ THE SOFTWARE.
                                      inDirection:(UITextLayoutDirection)direction
                                           offset:(NSInteger)offset
 {
-    CCLOG("positionFromPosition");
+    AXLOG("positionFromPosition");
     return nil;
 }
 
 - (nullable UITextPosition*)positionFromPosition:(nonnull UITextPosition*)position offset:(NSInteger)offset
 {
-    CCLOG("positionFromPosition");
+    AXLOG("positionFromPosition");
     return nil;
 }
 
 - (nullable UITextPosition*)positionWithinRange:(nonnull UITextRange*)range
                             farthestInDirection:(UITextLayoutDirection)direction
 {
-    CCLOG("positionWithinRange");
+    AXLOG("positionWithinRange");
     return nil;
 }
 
@@ -194,7 +194,7 @@ THE SOFTWARE.
 
 - (nonnull NSArray<UITextSelectionRect*>*)selectionRectsForRange:(nonnull UITextRange*)range
 {
-    CCLOG("selectionRectsForRange");
+    AXLOG("selectionRectsForRange");
     return nil;
 }
 
@@ -203,7 +203,7 @@ THE SOFTWARE.
 
 - (void)setMarkedText:(nullable NSString*)markedText selectedRange:(NSRange)selectedRange
 {
-    CCLOG("setMarkedText");
+    AXLOG("setMarkedText");
     if (markedText == self.myMarkedText)
     {
         return;
@@ -218,7 +218,7 @@ THE SOFTWARE.
 
 - (UITextRange*)markedTextRange
 {
-    CCLOG("markedTextRange");
+    AXLOG("markedTextRange");
     if (nil != self.myMarkedText)
     {
         return [[[UITextRange alloc] init] autorelease];
@@ -228,7 +228,7 @@ THE SOFTWARE.
 
 - (nullable NSString*)textInRange:(nonnull UITextRange*)range
 {
-    CCLOG("textInRange");
+    AXLOG("textInRange");
     if (nil != self.myMarkedText)
     {
         return self.myMarkedText;
@@ -239,19 +239,19 @@ THE SOFTWARE.
 - (nullable UITextRange*)textRangeFromPosition:(nonnull UITextPosition*)fromPosition
                                     toPosition:(nonnull UITextPosition*)toPosition
 {
-    CCLOG("textRangeFromPosition");
+    AXLOG("textRangeFromPosition");
     return nil;
 }
 
 - (void)unmarkText
 {
-    CCLOG("unmarkText");
+    AXLOG("unmarkText");
     if (nil == self.myMarkedText)
     {
         return;
     }
     const char* pszText = [self.myMarkedText cStringUsingEncoding:NSUTF8StringEncoding];
-    cocos2d::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
+    axis::IMEDispatcher::sharedDispatcher()->dispatchInsertText(pszText, strlen(pszText));
     [self.myMarkedText release];
     self.myMarkedText = nil;
 }

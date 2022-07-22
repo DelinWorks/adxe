@@ -36,7 +36,7 @@
  * @{
  */
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 /** Clamp a value between from and to.
  */
@@ -55,7 +55,7 @@ class Mat4;
 /**
  * Defines a 2-element floating point vector.
  */
-class CC_DLL Vec2
+class AX_DLL Vec2
 {
 public:
     union
@@ -748,7 +748,7 @@ using Point = Vec2;
 // [DEPRECATED] compatible only
 using Size = Vec2;  // typedef Vec2 Size;
 
-NS_CC_MATH_END
+NS_AX_MATH_END
 
 /**
  end of base group

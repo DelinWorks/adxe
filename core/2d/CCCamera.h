@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include "renderer/CCCustomCommand.h"
 #include "base/CCDirector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Scene;
 class CameraBackgroundBrush;
@@ -63,7 +63,7 @@ enum class CameraFlag
 /**
  * Defines a camera .
  */
-class CC_DLL Camera : public Node
+class AX_DLL Camera : public Node
 {
     friend class Scene;
     friend class Director;
@@ -408,4 +408,4 @@ protected:
     CameraBackgroundBrush* _clearBrush = nullptr;  // brush used to clear the back ground
 };
 
-NS_CC_END
+NS_AX_END

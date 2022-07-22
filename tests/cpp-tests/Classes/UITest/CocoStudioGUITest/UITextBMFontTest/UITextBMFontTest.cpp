@@ -24,8 +24,8 @@
 
 #include "UITextBMFontTest.h"
 
-USING_NS_CC;
-using namespace cocos2d::ui;
+USING_NS_AX;
+using namespace axis::ui;
 
 UITextBMFontTests::UITextBMFontTests()
 {
@@ -55,7 +55,7 @@ bool UITextBMFontTest::init()
 
         TTFConfig ttfConfig("fonts/arial.ttf", 15);
         auto label1 = Label::createWithTTF(ttfConfig, "Print Resources");
-        auto item1  = MenuItemLabel::create(label1, CC_CALLBACK_1(UITextBMFontTest::printWidgetResources, this));
+        auto item1  = MenuItemLabel::create(label1, AX_CALLBACK_1(UITextBMFontTest::printWidgetResources, this));
         item1->setPosition(
             Vec2(VisibleRect::left().x + 60, VisibleRect::bottom().y + item1->getContentSize().height * 3));
         auto pMenu1 = Menu::create(item1, nullptr);
@@ -66,8 +66,8 @@ bool UITextBMFontTest::init()
     }
     return false;
 }
-void UITextBMFontTest::printWidgetResources(cocos2d::Ref* sender)
+void UITextBMFontTest::printWidgetResources(axis::Ref* sender)
 {
-    cocos2d::ResourceData textureFile = _textBMFont->getRenderFile();
-    CCLOG("textureFile  Name : %s, Type: %d", textureFile.file.c_str(), textureFile.type);
+    axis::ResourceData textureFile = _textBMFont->getRenderFile();
+    AXLOG("textureFile  Name : %s, Type: %d", textureFile.file.c_str(), textureFile.type);
 }

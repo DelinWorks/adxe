@@ -18,7 +18,7 @@
 
 #include "CCPhysicsDebugNodeBox2D.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 PhysicsDebugNodeBox2D::PhysicsDebugNodeBox2D()
 {
@@ -29,17 +29,17 @@ PhysicsDebugNodeBox2D::PhysicsDebugNodeBox2D()
 
 PhysicsDebugNodeBox2D::~PhysicsDebugNodeBox2D() {}
 
-cocos2d::DrawNode* PhysicsDebugNodeBox2D::GetDrawNode()
+axis::DrawNode* PhysicsDebugNodeBox2D::GetDrawNode()
 {
     return drawBP;
 }
 
-void PhysicsDebugNodeBox2D::SetDrawNode(cocos2d::DrawNode* drawNode)
+void PhysicsDebugNodeBox2D::SetDrawNode(axis::DrawNode* drawNode)
 {
     drawBP = drawNode;
 }
 
-cocos2d::Vec2& PhysicsDebugNodeBox2D::GetDebugNodeOffset()
+axis::Vec2& PhysicsDebugNodeBox2D::GetDebugNodeOffset()
 {
     return debugNodeOffset;
 }
@@ -68,7 +68,7 @@ void PhysicsDebugNodeBox2D::DrawSolidPolygon(const b2Vec2* verts, int vertexCoun
 void PhysicsDebugNodeBox2D::DrawCircle(const b2Vec2& center, float radius, const b2Color& color)
 {
     drawBP->drawCircle(Vec2(center.x * mRatio, center.y * mRatio) + debugNodeOffset, radius * mRatio,
-                       CC_DEGREES_TO_RADIANS(0), 30, true, 1.0f, 1.0f, Color4F(color.r, color.g, color.b, color.a));
+                       AX_DEGREES_TO_RADIANS(0), 30, true, 1.0f, 1.0f, Color4F(color.r, color.g, color.b, color.a));
 }
 
 void PhysicsDebugNodeBox2D::DrawSolidCircle(const b2Vec2& center,
@@ -77,7 +77,7 @@ void PhysicsDebugNodeBox2D::DrawSolidCircle(const b2Vec2& center,
                                             const b2Color& color)
 {
     Vec2 c = {Vec2(center.x * mRatio, center.y * mRatio) + debugNodeOffset};
-    drawBP->drawSolidCircle(c, radius * mRatio, CC_DEGREES_TO_RADIANS(0), 20, 1.0f, 1.0f,
+    drawBP->drawSolidCircle(c, radius * mRatio, AX_DEGREES_TO_RADIANS(0), 20, 1.0f, 1.0f,
                             Color4F(color.r / 2, color.g / 2, color.b / 2, color.a), 0.4f,
                             Color4F(color.r, color.g, color.b, color.a));
 
@@ -110,4 +110,4 @@ void PhysicsDebugNodeBox2D::DrawPoint(const b2Vec2& p, float size, const b2Color
                       Color4F(color.r, color.g, color.b, color.a));
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

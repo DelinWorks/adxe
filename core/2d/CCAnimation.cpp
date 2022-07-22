@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "renderer/CCTexture2D.h"
 #include "base/CCDirector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 AnimationFrame* AnimationFrame::create(SpriteFrame* spriteFrame, float delayUnits, const ValueMap& userInfo)
 {
@@ -41,7 +41,7 @@ AnimationFrame* AnimationFrame::create(SpriteFrame* spriteFrame, float delayUnit
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -59,9 +59,9 @@ bool AnimationFrame::initWithSpriteFrame(SpriteFrame* spriteFrame, float delayUn
 
 AnimationFrame::~AnimationFrame()
 {
-    CCLOGINFO("deallocing AnimationFrame: %p", this);
+    AXLOGINFO("deallocing AnimationFrame: %p", this);
 
-    CC_SAFE_RELEASE(_spriteFrame);
+    AX_SAFE_RELEASE(_spriteFrame);
 }
 
 AnimationFrame* AnimationFrame::clone() const
@@ -121,7 +121,7 @@ bool Animation::initWithSpriteFrames(const Vector<SpriteFrame*>& frames,
     _delayPerUnit = delay;
     _loops        = loops;
 
-    for (auto& spriteFrame : frames)
+    for (auto&& spriteFrame : frames)
     {
         auto animFrame = AnimationFrame::create(spriteFrame, 1, ValueMap());
         _frames.pushBack(animFrame);
@@ -140,7 +140,7 @@ bool Animation::initWithAnimationFrames(const Vector<AnimationFrame*>& arrayOfAn
 
     setFrames(arrayOfAnimationFrames);
 
-    for (auto& animFrame : _frames)
+    for (auto&& animFrame : _frames)
     {
         _totalDelayUnits += animFrame->getDelayUnits();
     }
@@ -153,7 +153,7 @@ Animation::Animation()
 
 Animation::~Animation()
 {
-    CCLOGINFO("deallocing Animation: %p", this);
+    AXLOGINFO("deallocing Animation: %p", this);
 }
 
 void Animation::addSpriteFrame(SpriteFrame* spriteFrame)
@@ -195,4 +195,4 @@ Animation* Animation::clone() const
     return a;
 }
 
-NS_CC_END
+NS_AX_END

@@ -26,7 +26,7 @@
 #include "ui/UILayoutManager.h"
 #include "ui/UILayout.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -43,7 +43,7 @@ void LinearHorizontalLayoutManager::doLayout(LayoutProtocol* layout)
     Vec2 layoutSize         = layout->getLayoutContentSize();
     Vector<Node*> container = layout->getLayoutElements();
     float leftBoundary      = 0.0f;
-    for (auto& subWidget : container)
+    for (auto&& subWidget : container)
     {
         Widget* child = dynamic_cast<Widget*>(subWidget);
         if (child)
@@ -94,7 +94,7 @@ void LinearVerticalLayoutManager::doLayout(LayoutProtocol* layout)
     Vector<Node*> container = layout->getLayoutElements();
     float topBoundary       = layoutSize.height;
 
-    for (auto& subWidget : container)
+    for (auto&& subWidget : container)
     {
         LayoutParameterProtocol* child = dynamic_cast<LayoutParameterProtocol*>(subWidget);
         if (child)
@@ -213,11 +213,11 @@ RelativeLayoutManager* RelativeLayoutManager::create()
     return ret;
 }
 
-Vector<Widget*> RelativeLayoutManager::getAllWidgets(cocos2d::ui::LayoutProtocol* layout)
+Vector<Widget*> RelativeLayoutManager::getAllWidgets(axis::ui::LayoutProtocol* layout)
 {
     Vector<Node*> container = layout->getLayoutElements();
     Vector<Widget*> widgetChildren;
-    for (auto& subWidget : container)
+    for (auto&& subWidget : container)
     {
         Widget* child = dynamic_cast<Widget*>(subWidget);
         if (child)
@@ -240,7 +240,7 @@ Widget* RelativeLayoutManager::getRelativeWidget(Widget* widget)
 
     if (!relativeName.empty())
     {
-        for (auto& sWidget : _widgetChildren)
+        for (auto&& sWidget : _widgetChildren)
         {
             if (sWidget)
             {
@@ -584,7 +584,7 @@ void RelativeLayoutManager::doLayout(LayoutProtocol* layout)
 
     while (_unlayoutChildCount > 0)
     {
-        for (auto& subWidget : _widgetChildren)
+        for (auto&& subWidget : _widgetChildren)
         {
             _widget = static_cast<Widget*>(subWidget);
 
@@ -618,4 +618,4 @@ void RelativeLayoutManager::doLayout(LayoutProtocol* layout)
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

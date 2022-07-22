@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include "base/ccMacros.h"
 #include "base/CCData.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct FontDefinition;
 
@@ -44,7 +44,7 @@ struct FontDefinition;
  * @class Device
  * @brief
  */
-class CC_DLL Device
+class AX_DLL Device
 {
 public:
     /** Defines the alignment of text. */
@@ -104,12 +104,12 @@ public:
                                       bool& hasPremultipliedAlpha);
 
 private:
-    CC_DISALLOW_IMPLICIT_CONSTRUCTORS(Device);
+    AX_DISALLOW_IMPLICIT_CONSTRUCTORS(Device);
 };
 
 // end group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif /* __CCDEVICE_H__ */

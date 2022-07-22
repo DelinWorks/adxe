@@ -29,7 +29,7 @@
 
 #include "CCControlPotentiometer.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 ControlPotentiometer::ControlPotentiometer()
     : _value(0.0f), _minimumValue(0.0f), _maximumValue(0.0f), _thumbSprite(nullptr), _progressTimer(nullptr)
@@ -37,8 +37,8 @@ ControlPotentiometer::ControlPotentiometer()
 
 ControlPotentiometer::~ControlPotentiometer()
 {
-    CC_SAFE_RELEASE(_thumbSprite);
-    CC_SAFE_RELEASE(_progressTimer);
+    AX_SAFE_RELEASE(_thumbSprite);
+    AX_SAFE_RELEASE(_progressTimer);
 }
 
 ControlPotentiometer* ControlPotentiometer::create(const char* backgroundFile,
@@ -61,7 +61,7 @@ ControlPotentiometer* ControlPotentiometer::create(const char* backgroundFile,
     }
     else
     {
-        CC_SAFE_DELETE(pRet);
+        AX_SAFE_DELETE(pRet);
     }
     return pRet;
 }
@@ -253,4 +253,4 @@ void ControlPotentiometer::potentiometerEnded(Vec2 /*location*/)
     setSelected(false);
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

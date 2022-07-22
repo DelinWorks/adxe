@@ -35,15 +35,15 @@
 #include "2d/CCSpriteFrameCache.h"
 #include "2d/CCSpriteBatchNode.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 ControlColourPicker::ControlColourPicker() : _colourPicker(nullptr), _huePicker(nullptr), _background(nullptr) {}
 
 ControlColourPicker::~ControlColourPicker()
 {
-    CC_SAFE_RELEASE(_background);
-    CC_SAFE_RELEASE(_huePicker);
-    CC_SAFE_RELEASE(_colourPicker);
+    AX_SAFE_RELEASE(_background);
+    AX_SAFE_RELEASE(_huePicker);
+    AX_SAFE_RELEASE(_colourPicker);
 }
 
 bool ControlColourPicker::init()
@@ -77,7 +77,7 @@ bool ControlColourPicker::init()
                                                                       Vec2::ZERO, Vec2(0.5f, 0.5f));
         if (!_background)
             return false;
-        CC_SAFE_RETAIN(_background);
+        AX_SAFE_RETAIN(_background);
 
         Vec2 backgroundPointZero = _background->getPosition() - Vec2(_background->getContentSize().width / 2,
                                                                      _background->getContentSize().height / 2);
@@ -197,4 +197,4 @@ bool ControlColourPicker::onTouchBegan(Touch* /*touch*/, Event* /*pEvent*/)
     return false;
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

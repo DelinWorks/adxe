@@ -30,7 +30,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -53,12 +53,12 @@ ComAudioReader* ComAudioReader::getInstance()
 
 void ComAudioReader::purge()
 {
-    CC_SAFE_DELETE(_instanceComAudioReader);
+    AX_SAFE_DELETE(_instanceComAudioReader);
 }
 
 void ComAudioReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceComAudioReader);
+    AX_SAFE_DELETE(_instanceComAudioReader);
 }
 
 Offset<Table> ComAudioReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -140,7 +140,7 @@ Offset<Table> ComAudioReader::createOptionsWithFlatBuffers(pugi::xml_node object
     return *(Offset<Table>*)(&options);
 }
 
-void ComAudioReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* comAudioOptions)
+void ComAudioReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* comAudioOptions)
 {
     auto options = (ComAudioOptions*)comAudioOptions;
 

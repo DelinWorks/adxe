@@ -25,7 +25,7 @@
 
 #include "ui/UIRelativeBox.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -42,7 +42,7 @@ RelativeBox* RelativeBox::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -54,7 +54,7 @@ RelativeBox* RelativeBox::create(const Vec2& size)
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -80,4 +80,4 @@ bool RelativeBox::initWithSize(const Vec2& size)
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

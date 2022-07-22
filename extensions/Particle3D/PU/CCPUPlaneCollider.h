@@ -24,16 +24,16 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_PLANE_COLLIDER_H__
-#define __CC_PU_PARTICLE_3D_PLANE_COLLIDER_H__
+#ifndef __AX_PU_PARTICLE_3D_PLANE_COLLIDER_H__
+#define __AX_PU_PARTICLE_3D_PLANE_COLLIDER_H__
 
 #include "CCPUBaseCollider.h"
 #include "extensions/Particle3D/PU/CCPUPlane.h"
 #include "base/ccTypes.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_EX_DLL PUPlaneCollider : public PUBaseCollider
+class AX_EX_DLL PUPlaneCollider : public PUBaseCollider
 {
 public:
     // Constants
@@ -66,6 +66,6 @@ protected:
     Vec3 _predictedPosition;
     PUPlane _plane;
 };
-NS_CC_END
+NS_AX_END
 
 #endif

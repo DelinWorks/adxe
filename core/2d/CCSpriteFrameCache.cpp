@@ -43,7 +43,7 @@ THE SOFTWARE.
 
 using namespace std;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 static SpriteFrameCache* _sharedSpriteFrameCache = nullptr;
 
@@ -60,7 +60,7 @@ SpriteFrameCache* SpriteFrameCache::getInstance()
 
 void SpriteFrameCache::destroyInstance()
 {
-    CC_SAFE_RELEASE_NULL(_sharedSpriteFrameCache);
+    AX_SAFE_RELEASE_NULL(_sharedSpriteFrameCache);
 }
 
 bool SpriteFrameCache::init()
@@ -124,7 +124,7 @@ bool SpriteFrameCache::isSpriteFramesWithFileLoaded(std::string_view plist) cons
 
 void SpriteFrameCache::addSpriteFrame(SpriteFrame* frame, std::string_view frameName)
 {
-    CCASSERT(frame, "frame should not be nil");
+    AXASSERT(frame, "frame should not be nil");
 
     const std::string name = "by#addSpriteFrame()";
     auto&& itr             = _spriteSheets.find(name);
@@ -150,15 +150,15 @@ void SpriteFrameCache::removeUnusedSpriteFrames()
     auto removed = false;
     std::vector<std::string> toRemoveFrames;
 
-    const auto frames = getSpriteFrames();
-    for (auto& iter : frames)
+    const auto& frames = getSpriteFrames();
+    for (auto&& iter : frames)
     {
         auto* spriteFrame = iter.second;
         if (spriteFrame->getReferenceCount() == 1)
         {
             toRemoveFrames.push_back(iter.first);
             spriteFrame->getTexture()->removeSpriteFrameCapInset(spriteFrame);
-            CCLOG("cocos2d: SpriteFrameCache: removing unused frame: %s", iter.first.c_str());
+            AXLOG("cocos2d: SpriteFrameCache: removing unused frame: %s", iter.first.c_str());
             removed = true;
         }
     }
@@ -184,7 +184,7 @@ void SpriteFrameCache::removeSpriteFramesFromFile(std::string_view atlasPath)
     // auto dict = FileUtils::getInstance()->getValueMapFromFile(fullPath);
     // if (dict.empty())
     //{
-    //     CCLOG("cocos2d:SpriteFrameCache:removeSpriteFramesFromFile: create dict by %s fail.",plist.c_str());
+    //     AXLOG("cocos2d:SpriteFrameCache:removeSpriteFramesFromFile: create dict by %s fail.",plist.c_str());
     //     return;
     // }
     // removeSpriteFramesFromDictionary(dict);
@@ -199,7 +199,7 @@ void SpriteFrameCache::removeSpriteFramesFromFileContent(std::string_view plist_
         FileUtils::getInstance()->getValueMapFromData(plist_content.data(), static_cast<int>(plist_content.size()));
     if (dict.empty())
     {
-        CCLOG("cocos2d:SpriteFrameCache:removeSpriteFramesFromFileContent: create dict by fail.");
+        AXLOG("cocos2d:SpriteFrameCache:removeSpriteFramesFromFileContent: create dict by fail.");
         return;
     }
     removeSpriteFramesFromDictionary(dict);
@@ -207,7 +207,7 @@ void SpriteFrameCache::removeSpriteFramesFromFileContent(std::string_view plist_
 
 void SpriteFrameCache::removeSpriteFramesFromDictionary(ValueMap& dictionary)
 {
-    if (dictionary["frames"].getType() != cocos2d::Value::Type::MAP)
+    if (dictionary["frames"].getType() != axis::Value::Type::MAP)
         return;
 
     const auto& framesDict = dictionary["frames"].asValueMap();
@@ -228,7 +228,7 @@ void SpriteFrameCache::removeSpriteFramesFromTexture(Texture2D* texture)
 {
     std::vector<std::string> keysToRemove;
 
-    for (auto& iter : getSpriteFrames())
+    for (auto&& iter : getSpriteFrames())
     {
         auto key    = iter.first;
         auto* frame = findFrame(key);
@@ -246,14 +246,14 @@ SpriteFrame* SpriteFrameCache::getSpriteFrameByName(std::string_view name)
     auto* frame = findFrame(name);
     if (!frame)
     {
-        CCLOG("cocos2d: SpriteFrameCache: Frame '%s' isn't found", name.data());
+        AXLOG("cocos2d: SpriteFrameCache: Frame '%s' isn't found", name.data());
     }
     return frame;
 }
 
 bool SpriteFrameCache::reloadTexture(std::string_view spriteSheetFileName)
 {
-    CCASSERT(!spriteSheetFileName.empty(), "plist filename should not be nullptr");
+    AXASSERT(!spriteSheetFileName.empty(), "plist filename should not be nullptr");
 
     const auto spriteSheetItr = _spriteSheets.find(spriteSheetFileName);
     if (spriteSheetItr == _spriteSheets.end())
@@ -416,4 +416,4 @@ ISpriteSheetLoader* SpriteFrameCache::getSpriteSheetLoader(uint32_t spriteSheetF
     return nullptr;
 }
 
-NS_CC_END
+NS_AX_END

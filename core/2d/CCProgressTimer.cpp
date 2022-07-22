@@ -37,7 +37,7 @@ THE SOFTWARE.
 #include "renderer/ccShaders.h"
 #include "renderer/backend/ProgramState.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 #define kProgressTextureCoordsCount 4
 //  kProgressTextureCoords holds points {0,1} {0,0} {1,0} {1,1} we can represent it as bits
@@ -45,7 +45,7 @@ const char kProgressTextureCoords = 0x4b;
 
 namespace
 {
-backend::ProgramState* initPipelineDescriptor(cocos2d::CustomCommand& command,
+backend::ProgramState* initPipelineDescriptor(axis::CustomCommand& command,
                                               bool ridal,
                                               backend::UniformLocation& locMVP,
                                               backend::UniformLocation& locTexture)
@@ -53,7 +53,7 @@ backend::ProgramState* initPipelineDescriptor(cocos2d::CustomCommand& command,
     auto& pipelieDescriptor = command.getPipelineDescriptor();
     auto* program           = backend::Program::getBuiltinProgram(backend::ProgramType::POSITION_TEXTURE_COLOR);
     auto programState       = new backend::ProgramState(program);
-    CC_SAFE_RELEASE(pipelieDescriptor.programState);
+    AX_SAFE_RELEASE(pipelieDescriptor.programState);
     pipelieDescriptor.programState = programState;
 
     // set vertexLayout according to V2F_C4B_T2F structure
@@ -117,7 +117,7 @@ bool ProgressTimer::initWithSprite(Sprite* sp)
     setSprite(sp);
 
     // TODO: Use ProgramState Vector to Node
-    CC_SAFE_RELEASE(_programState2);
+    AX_SAFE_RELEASE(_programState2);
     setProgramState(initPipelineDescriptor(_customCommand, true, _locMVP1, _locTex1), false);
     _programState2 = initPipelineDescriptor(_customCommand2, false, _locMVP2, _locTex2);
 
@@ -126,8 +126,8 @@ bool ProgressTimer::initWithSprite(Sprite* sp)
 
 ProgressTimer::~ProgressTimer()
 {
-    CC_SAFE_RELEASE(_sprite);
-    CC_SAFE_RELEASE(_programState2);
+    AX_SAFE_RELEASE(_sprite);
+    AX_SAFE_RELEASE(_programState2);
 }
 
 void ProgressTimer::setPercentage(float percentage)
@@ -143,7 +143,7 @@ void ProgressTimer::setSprite(Sprite* sprite)
 {
     if (_sprite != sprite)
     {
-#if CC_ENABLE_GC_FOR_NATIVE_OBJECTS
+#if AX_ENABLE_GC_FOR_NATIVE_OBJECTS
         auto sEngine = ScriptEngineManager::getInstance()->getScriptEngine();
         if (sEngine)
         {
@@ -152,9 +152,9 @@ void ProgressTimer::setSprite(Sprite* sprite)
             if (sprite)
                 sEngine->retainScriptObject(this, sprite);
         }
-#endif  // CC_ENABLE_GC_FOR_NATIVE_OBJECTS
-        CC_SAFE_RETAIN(sprite);
-        CC_SAFE_RELEASE(_sprite);
+#endif  // AX_ENABLE_GC_FOR_NATIVE_OBJECTS
+        AX_SAFE_RETAIN(sprite);
+        AX_SAFE_RELEASE(_sprite);
         _sprite = sprite;
         setContentSize(_sprite->getContentSize());
 
@@ -634,7 +634,7 @@ void ProgressTimer::draw(Renderer* renderer, const Mat4& transform, uint32_t fla
     if (_vertexData.empty() || !_sprite)
         return;
 
-    const cocos2d::Mat4& projectionMat = _director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+    const axis::Mat4& projectionMat = _director->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
     Mat4 finalMat                      = projectionMat * transform;
     _programState->setUniform(_locMVP1, finalMat.m, sizeof(finalMat.m));
     _programState->setTexture(_locTex1, 0, _sprite->getTexture()->getBackendTexture());
@@ -664,4 +664,4 @@ void ProgressTimer::draw(Renderer* renderer, const Mat4& transform, uint32_t fla
     }
 }
 
-NS_CC_END
+NS_AX_END

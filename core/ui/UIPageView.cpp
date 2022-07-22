@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "ui/UIPageView.h"
 #include "ui/UIPageViewIndicator.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -54,7 +54,7 @@ PageView* PageView::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -377,7 +377,7 @@ void PageView::setIndicatorPosition(const Vec2& position)
 
 const Vec2& PageView::getIndicatorPosition() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getPosition();
 }
 
@@ -390,7 +390,7 @@ void PageView::setIndicatorSpaceBetweenIndexNodes(float spaceBetweenIndexNodes)
 }
 float PageView::getIndicatorSpaceBetweenIndexNodes() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getSpaceBetweenIndexNodes();
 }
 
@@ -404,7 +404,7 @@ void PageView::setIndicatorSelectedIndexColor(const Color3B& color)
 
 const Color3B& PageView::getIndicatorSelectedIndexColor() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getSelectedIndexColor();
 }
 
@@ -418,7 +418,7 @@ void PageView::setIndicatorIndexNodesColor(const Color3B& color)
 
 const Color3B& PageView::getIndicatorIndexNodesColor() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getIndexNodesColor();
 }
 
@@ -432,7 +432,7 @@ void PageView::setIndicatorSelectedIndexOpacity(uint8_t opacity)
 
 uint8_t PageView::getIndicatorSelectedIndexOpacity() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getSelectedIndexOpacity();
 }
 
@@ -446,7 +446,7 @@ void PageView::setIndicatorIndexNodesOpacity(uint8_t opacity)
 
 uint8_t PageView::getIndicatorIndexNodesOpacity() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getIndexNodesOpacity();
 }
 
@@ -461,7 +461,7 @@ void PageView::setIndicatorIndexNodesScale(float indexNodesScale)
 
 float PageView::getIndicatorIndexNodesScale() const
 {
-    CCASSERT(_indicator != nullptr, "");
+    AXASSERT(_indicator != nullptr, "");
     return _indicator->getIndexNodesScale();
 }
 
@@ -482,4 +482,4 @@ void PageView::remedyLayoutParameter(Widget* item)
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

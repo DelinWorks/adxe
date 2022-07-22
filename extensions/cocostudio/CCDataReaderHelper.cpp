@@ -37,7 +37,7 @@ THE SOFTWARE.
 
 #include "CocoLoader.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 static const char* VERSION     = "version";
 static const float VERSION_2_0 = 2.0f;
@@ -240,7 +240,7 @@ float DataReaderHelper::getPositionReadScale()
 void DataReaderHelper::purge()
 {
     _configFileList.clear();
-    CC_SAFE_RELEASE_NULL(_dataReaderHelper);
+    AX_SAFE_RELEASE_NULL(_dataReaderHelper);
 }
 
 DataReaderHelper::DataReaderHelper()
@@ -260,7 +260,7 @@ DataReaderHelper::~DataReaderHelper()
     if (_loadingThread)
         _loadingThread->join();
 
-    CC_SAFE_DELETE(_loadingThread);
+    AX_SAFE_DELETE(_loadingThread);
     _dataReaderHelper = nullptr;
 }
 
@@ -287,7 +287,7 @@ void DataReaderHelper::addDataFromFile(std::string_view filePath)
         basefilePath = filePath.substr(0, pos + 1);
     }
 
-    std::string fileExtension = cocos2d::FileUtils::getInstance()->getFileExtension(filePath);
+    std::string fileExtension = axis::FileUtils::getInstance()->getFileExtension(filePath);
 
     // Read content from file
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(filePath);
@@ -367,7 +367,7 @@ void DataReaderHelper::addDataFromFileAsync(std::string_view imagePath,
 
     if (0 == _asyncRefCount)
     {
-        Director::getInstance()->getScheduler()->schedule(CC_SCHEDULE_SELECTOR(DataReaderHelper::addDataAsyncCallBack),
+        Director::getInstance()->getScheduler()->schedule(AX_SCHEDULE_SELECTOR(DataReaderHelper::addDataAsyncCallBack),
                                                           this, 0, false);
     }
 
@@ -390,7 +390,7 @@ void DataReaderHelper::addDataFromFileAsync(std::string_view imagePath,
     data->imagePath = imagePath;
     data->plistPath = plistPath;
 
-    std::string fileExtension = cocos2d::FileUtils::getInstance()->getFileExtension(filePath);
+    std::string fileExtension = axis::FileUtils::getInstance()->getFileExtension(filePath);
     std::string fullPath      = FileUtils::getInstance()->fullPathForFilename(filePath);
 
     bool isbinaryfilesrc = fileExtension == ".csb";
@@ -477,7 +477,7 @@ void DataReaderHelper::addDataAsyncCallBack(float /*dt*/)
         {
             _asyncRefTotalCount = 0;
             Director::getInstance()->getScheduler()->unschedule(
-                CC_SCHEDULE_SELECTOR(DataReaderHelper::addDataAsyncCallBack), this);
+                AX_SCHEDULE_SELECTOR(DataReaderHelper::addDataAsyncCallBack), this);
         }
     }
 }
@@ -727,11 +727,11 @@ MovementData* DataReaderHelper::decodeMovement(pugi::xml_node& movementXML,
         if (_easing != FL_NAN)
         {
             int tweenEasing           = atoi(_easing.data());
-            movementData->tweenEasing = tweenEasing == 2 ? cocos2d::tweenfunc::Sine_EaseInOut : (TweenType)tweenEasing;
+            movementData->tweenEasing = tweenEasing == 2 ? axis::tweenfunc::Sine_EaseInOut : (TweenType)tweenEasing;
         }
         else
         {
-            movementData->tweenEasing = cocos2d::tweenfunc::Linear;
+            movementData->tweenEasing = axis::tweenfunc::Linear;
         }
     }
 
@@ -928,7 +928,7 @@ FrameData* DataReaderHelper::decodeFrame(pugi::xml_node& frameXML,
         }
     }
 
-    auto degrees2radius = [](float v) { return CC_DEGREES_TO_RADIANS(v); };
+    auto degrees2radius = [](float v) { return AX_DEGREES_TO_RADIANS(v); };
 
     pugiext::query_attribute(frameXML, A_SCALE_X, &frameData->scaleX);
     pugiext::query_attribute(frameXML, A_SCALE_Y, &frameData->scaleY);
@@ -968,8 +968,8 @@ FrameData* DataReaderHelper::decodeFrame(pugi::xml_node& frameXML,
         break;
         default:
         {
-            frameData->blendFunc.src = CC_BLEND_SRC;
-            frameData->blendFunc.dst = CC_BLEND_DST;
+            frameData->blendFunc.src = AX_BLEND_SRC;
+            frameData->blendFunc.dst = AX_BLEND_DST;
         }
         break;
         }
@@ -1006,11 +1006,11 @@ FrameData* DataReaderHelper::decodeFrame(pugi::xml_node& frameXML,
         {
             tweenEasing = atoi(_easing);
             frameData->tweenEasing =
-                tweenEasing == 2 ? cocos2d::tweenfunc::Sine_EaseInOut : (cocos2d::tweenfunc::TweenType)tweenEasing;
+                tweenEasing == 2 ? axis::tweenfunc::Sine_EaseInOut : (axis::tweenfunc::TweenType)tweenEasing;
         }
         else
         {
-            frameData->tweenEasing = cocos2d::tweenfunc::Linear;
+            frameData->tweenEasing = axis::tweenfunc::Linear;
         }
     }
 
@@ -1035,8 +1035,8 @@ FrameData* DataReaderHelper::decodeFrame(pugi::xml_node& frameXML,
         pugiext::query_attribute(parentFrameXml, A_SKEW_Y, &helpNode.skewY);
 
         helpNode.y     = -helpNode.y;
-        helpNode.skewX = CC_DEGREES_TO_RADIANS(helpNode.skewX);
-        helpNode.skewY = CC_DEGREES_TO_RADIANS(-helpNode.skewY);
+        helpNode.skewX = AX_DEGREES_TO_RADIANS(helpNode.skewX);
+        helpNode.skewY = AX_DEGREES_TO_RADIANS(-helpNode.skewY);
 
         TransformHelp::transformFromParent(*frameData, helpNode);
     }
@@ -1131,7 +1131,7 @@ void DataReaderHelper::addDataFromJsonCache(std::string_view fileContent, DataIn
     json.ParseStream<0>(stream);
     if (json.HasParseError())
     {
-        CCLOG("GetParseError %d\n", json.GetParseError());
+        AXLOG("GetParseError %d\n", json.GetParseError());
     }
 
     dataInfo->contentScale = DICTOOL->getFloatValue_json(json, CONTENT_SCALE, 1.0f);
@@ -1208,7 +1208,7 @@ void DataReaderHelper::addDataFromJsonCache(std::string_view fileContent, DataIn
                 i);  // json[CONFIG_FILE_PATH][i].IsNull() ? nullptr : json[CONFIG_FILE_PATH][i].GetString();
             if (path == nullptr)
             {
-                CCLOG("load CONFIG_FILE_PATH error.");
+                AXLOG("load CONFIG_FILE_PATH error.");
                 return;
             }
 
@@ -1418,7 +1418,7 @@ MovementData* DataReaderHelper::decodeMovement(const rapidjson::Value& json, Dat
         movementData->scale = DICTOOL->getFloatValue_json(json, A_MOVEMENT_SCALE, 1.0f);
     }
     movementData->tweenEasing =
-        (TweenType)(DICTOOL->getIntValue_json(json, A_TWEEN_EASING, cocos2d::tweenfunc::Linear));
+        (TweenType)(DICTOOL->getIntValue_json(json, A_TWEEN_EASING, axis::tweenfunc::Linear));
 
     const char* name = DICTOOL->getStringValue_json(json, A_NAME);
     if (name != nullptr)
@@ -1515,7 +1515,7 @@ FrameData* DataReaderHelper::decodeFrame(const rapidjson::Value& json, DataInfo*
 
     decodeNode(frameData, json, dataInfo);
 
-    frameData->tweenEasing   = (TweenType)(DICTOOL->getIntValue_json(json, A_TWEEN_EASING, cocos2d::tweenfunc::Linear));
+    frameData->tweenEasing   = (TweenType)(DICTOOL->getIntValue_json(json, A_TWEEN_EASING, axis::tweenfunc::Linear));
     frameData->displayIndex  = DICTOOL->getIntValue_json(json, A_DISPLAY_INDEX);
     frameData->blendFunc.src = utils::toBackendBlendFactor(
         DICTOOL->getIntValue_json(json, A_BLEND_SRC, utils::toGLBlendFactor(BlendFunc::ALPHA_PREMULTIPLIED.src)));
@@ -1753,7 +1753,7 @@ void DataReaderHelper::addDataFromBinaryCache(const char* fileContent, DataInfo*
                         const char* path = pConfigFilePath[ii].GetValue(&tCocoLoader);
                         if (path == nullptr)
                         {
-                            CCLOG("load CONFIG_FILE_PATH error.");
+                            AXLOG("load CONFIG_FILE_PATH error.");
                             return;
                         }
 
@@ -2086,7 +2086,7 @@ MovementData* DataReaderHelper::decodeMovement(CocoLoader* cocoLoader, stExpCoco
         }
         else if (key.compare(A_TWEEN_EASING) == 0)
         {
-            movementData->tweenEasing = cocos2d::tweenfunc::Linear;
+            movementData->tweenEasing = axis::tweenfunc::Linear;
             if (str != nullptr)
             {
                 movementData->tweenEasing = (TweenType)(atoi(str));
@@ -2161,7 +2161,7 @@ MovementBoneData* DataReaderHelper::decodeMovementBone(CocoLoader* cocoLoader,
     if (dataInfo->cocoStudioVersion < VERSION_CHANGE_ROTATION_RANGE)
     {
         //! Change rotation range from (-180 -- 180) to (-infinity -- infinity)
-        cocos2d::Vector<FrameData*> frames = movementBoneData->frameList;
+        axis::Vector<FrameData*> frames = movementBoneData->frameList;
 
         ssize_t imusone = 0;
         ssize_t i       = 0;
@@ -2217,7 +2217,7 @@ FrameData* DataReaderHelper::decodeFrame(CocoLoader* cocoLoader, stExpCocoNode* 
         str             = pFrameDataArray[i].GetValue(cocoLoader);
         if (key.compare(A_TWEEN_EASING) == 0)
         {
-            frameData->tweenEasing = cocos2d::tweenfunc::Linear;
+            frameData->tweenEasing = axis::tweenfunc::Linear;
             if (str != nullptr)
             {
                 frameData->tweenEasing = (TweenType)(atoi(str));

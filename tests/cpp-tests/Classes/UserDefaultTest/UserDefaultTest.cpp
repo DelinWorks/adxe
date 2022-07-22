@@ -32,7 +32,7 @@
 
 using namespace std;
 
-USING_NS_CC;
+USING_NS_AX;
 
 UserDefaultTests::UserDefaultTests()
 {
@@ -69,7 +69,7 @@ UserDefaultTest::UserDefaultTest()
 //         ss << buffer[i] << " ";
 //     }
 //
-//     CCLOG("%s is %s", key, ss.str().c_str());
+//     AXLOG("%s is %s", key, ss.str().c_str());
 // }
 
 // template<typename T>

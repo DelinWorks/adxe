@@ -31,7 +31,7 @@
  * @{
  */
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 class Mat4;
 class Quaternion;
@@ -45,7 +45,7 @@ class Quaternion;
  * the magnitude of the vector intact. When used as a point,
  * the elements of the vector represent a position in 3D space.
  */
-class CC_DLL Vec3
+class AX_DLL Vec3
 {
 public:
     /**
@@ -488,7 +488,7 @@ inline Vec3 operator*(float x, const Vec3& v);
 
 // typedef Vec3 Point3;
 
-NS_CC_MATH_END
+NS_AX_MATH_END
 /**
  end of base group
  @}

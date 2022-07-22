@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "2d/CCActionInterval.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup actions
@@ -45,7 +45,7 @@ NS_CC_BEGIN
 
         Then once you running ActionTween on the node, the method updateTweenAction will be invoked.
 */
-class CC_DLL ActionTweenDelegate
+class AX_DLL ActionTweenDelegate
 {
 public:
     /**
@@ -82,7 +82,7 @@ public:
 
  @since v0.99.2
  */
-class CC_DLL ActionTween : public ActionInterval
+class AX_DLL ActionTween : public ActionInterval
 {
 public:
     /**
@@ -120,6 +120,6 @@ protected:
 // end of actions group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif /* __CCACTIONTWEEN_H__ */

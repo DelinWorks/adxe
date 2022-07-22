@@ -32,7 +32,7 @@
 
 struct cpBody;
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /** A Sprite subclass that is bound to a physics body.
  It works with:
@@ -45,7 +45,7 @@ NS_CC_EXT_BEGIN
  - You can't enble both Chipmunk support and Box2d support at the same time. Only one can be enabled at compile time
  * @lua NA
  */
-class CC_EX_DLL PhysicsSpriteChipmunk2D : public Sprite
+class AX_EX_DLL PhysicsSpriteChipmunk2D : public Sprite
 {
 public:
     static PhysicsSpriteChipmunk2D* create();
@@ -128,9 +128,9 @@ protected:
     cpBody* _CPBody;
 
     // Event for update synchronise physic transform
-    cocos2d::EventListenerCustom* _syncTransform;
+    axis::EventListenerCustom* _syncTransform;
 };
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif  // __PHYSICSNODES_CCPhysicsSpriteChipmunk2DCHIPMUNK2D_H__

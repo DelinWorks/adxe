@@ -31,19 +31,19 @@
 #include "platform/CCPlatformMacros.h"
 #include "renderer/backend/Types.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
 #    include <io.h>
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
 #    include "platform/android/CCFileUtils-android.h"
 #    include <android/asset_manager.h>
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
 #    include <ftw.h>
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
 #    include <sys/types.h>
 #    include <sys/stat.h>
 #    include <dirent.h>
 #endif
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 PUMaterial::PUMaterial()
     : isEnabledLight(true)
@@ -64,7 +64,7 @@ PUMaterialCache::PUMaterialCache() {}
 
 PUMaterialCache::~PUMaterialCache()
 {
-    for (auto iter : _materialMap)
+    for (auto&& iter : _materialMap)
     {
         iter->release();
     }
@@ -79,7 +79,7 @@ PUMaterialCache* PUMaterialCache::Instance()
 
 PUMaterial* PUMaterialCache::getMaterial(std::string_view name)
 {
-    for (auto iter : _materialMap)
+    for (auto&& iter : _materialMap)
     {
         if (iter->name == name)
             return iter;
@@ -102,11 +102,11 @@ bool PUMaterialCache::loadMaterials(std::string_view file)
 
 void PUMaterialCache::addMaterial(PUMaterial* material)
 {
-    for (auto iter : _materialMap)
+    for (auto&& iter : _materialMap)
     {
         if (iter->name == material->name)
         {
-            CCLOG("warning: Material has existed (FilePath: %s,  MaterialName: %s)", material->fileName.c_str(),
+            AXLOG("warning: Material has existed (FilePath: %s,  MaterialName: %s)", material->fileName.c_str(),
                   material->name.c_str());
             return;
         }
@@ -116,7 +116,7 @@ void PUMaterialCache::addMaterial(PUMaterial* material)
     _materialMap.push_back(material);
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
 int iterPath(const char* fpath, const struct stat* /*sb*/, int typeflag)
 {
     if (typeflag == FTW_F)
@@ -131,7 +131,7 @@ int iterPath(const char* fpath, const struct stat* /*sb*/, int typeflag)
 bool PUMaterialCache::loadMaterialsFromSearchPaths(std::string_view fileFolder)
 {
     bool state = false;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32 || AX_TARGET_PLATFORM == AX_PLATFORM_WINRT)
     std::string seg("/");
     std::string fullPath{fileFolder};
     fullPath += seg;
@@ -149,7 +149,7 @@ bool PUMaterialCache::loadMaterialsFromSearchPaths(std::string_view fileFolder)
         state = true;
     }
     _findclose(handle);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID /* || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX*/)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID /* || AX_TARGET_PLATFORM == AX_PLATFORM_LINUX*/)
     std::string::size_type pos    = fileFolder.find("assets/");
     std::string_view relativePath = fileFolder;
     if (pos != std::string::npos)
@@ -171,16 +171,16 @@ bool PUMaterialCache::loadMaterialsFromSearchPaths(std::string_view fileFolder)
     }
     AAssetDir_close(dir);
 
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
     ftw(fileFolder.data(), iterPath, 500);
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || CC_TARGET_PLATFORM == CC_PLATFORM_TIZEN)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX || AX_TARGET_PLATFORM == AX_PLATFORM_TIZEN)
     DIR* d;               // dir handle
     struct dirent* file;  // readdir
     struct stat statbuf;
 
     if (!(d = opendir(fileFolder.data())))
     {
-        CCLOG("error opendir %s!!!\n", fileFolder.data());
+        AXLOG("error opendir %s!!!\n", fileFolder.data());
         return false;
     }
     while ((file = readdir(d)) != NULL)
@@ -194,17 +194,17 @@ bool PUMaterialCache::loadMaterialsFromSearchPaths(std::string_view fileFolder)
         {
             std::string fullpath{fileFolder};
             fullpath.append("/"sv).append(file->d_name);
-            CCLOG("%s", fullpath.c_str());
+            AXLOG("%s", fullpath.c_str());
             loadMaterials(fullpath);
             state = true;
         }
     }
     closedir(d);
 #else
-    CCASSERT(0, "no implement for this platform");
+    AXASSERT(0, "no implement for this platform");
 #endif
 
     return state;
 }
 
-NS_CC_END
+NS_AX_END

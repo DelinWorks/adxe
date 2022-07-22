@@ -13,7 +13,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -56,15 +56,15 @@ ButtonReader* ButtonReader::getInstance()
 
 void ButtonReader::purge()
 {
-    CC_SAFE_DELETE(instanceButtonReader);
+    AX_SAFE_DELETE(instanceButtonReader);
 }
 
 void ButtonReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceButtonReader);
+    AX_SAFE_DELETE(instanceButtonReader);
 }
 
-void ButtonReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void ButtonReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     WidgetReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 
@@ -83,9 +83,9 @@ void ButtonReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* c
         std::string value = stChildArray[i].GetValue(cocoLoader);
 
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_Scale9Enable) { button->setScale9Enabled(valueToBool(value)); }
         else if (key == P_NormalData)
@@ -241,7 +241,7 @@ Offset<Table> ButtonReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
     bool isLocalized = false;
     int fontSize     = 14;
     std::string fontName;
-    cocos2d::Size scale9Size;
+    axis::Size scale9Size;
     Color4B textColor(255, 255, 255, 255);
 
     std::string normalPath;
@@ -668,7 +668,7 @@ Offset<Table> ButtonReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
     return *(Offset<Table>*)(&options);
 }
 
-void ButtonReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* buttonOptions)
+void ButtonReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* buttonOptions)
 {
     Button* button = static_cast<Button*>(node);
 
@@ -950,7 +950,7 @@ void ButtonReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffer
 
     button->setBright(displaystate);
 
-    auto labelRenderer = dynamic_cast<cocos2d::Label*>(button->getTitleRenderer());
+    auto labelRenderer = dynamic_cast<axis::Label*>(button->getTitleRenderer());
     if (labelRenderer != nullptr)
     {
         if (options->boldEnabled())

@@ -32,14 +32,14 @@ THE SOFTWARE.
 #include "base/CCRef.h"
 #include "platform/CCPlatformMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_DLL ObjectFactory
+class AX_DLL ObjectFactory
 {
 public:
-    typedef cocos2d::Ref* (*Instance)(void);
-    typedef std::function<cocos2d::Ref*(void)> InstanceFunc;
-    struct CC_DLL TInfo
+    typedef axis::Ref* (*Instance)(void);
+    typedef std::function<axis::Ref*(void)> InstanceFunc;
+    struct AX_DLL TInfo
     {
         TInfo();
         TInfo(std::string_view type, Instance ins = nullptr);
@@ -55,7 +55,7 @@ public:
 
     static ObjectFactory* getInstance();
     static void destroyInstance();
-    cocos2d::Ref* createObject(std::string_view name);
+    axis::Ref* createObject(std::string_view name);
 
     void registerType(const TInfo& t);
     void removeAll();
@@ -68,6 +68,6 @@ protected:
     FactoryMap _typeMap;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

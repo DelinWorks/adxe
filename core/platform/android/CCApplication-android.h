@@ -28,9 +28,9 @@ THE SOFTWARE.
 #include "platform/CCCommon.h"
 #include "platform/CCApplicationProtocol.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_DLL Application : public ApplicationProtocol
+class AX_DLL Application : public ApplicationProtocol
 {
 public:
     /**
@@ -61,7 +61,7 @@ public:
     static Application* getInstance();
 
     /** @deprecated Use getInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static Application* sharedApplication();
+    AX_DEPRECATED_ATTRIBUTE static Application* sharedApplication();
 
     /**
     @brief Get current language config
@@ -103,4 +103,4 @@ protected:
     static Application* sm_pSharedApplication;
 };
 
-NS_CC_END
+NS_AX_END

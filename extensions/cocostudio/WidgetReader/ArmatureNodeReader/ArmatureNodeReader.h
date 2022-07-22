@@ -37,7 +37,7 @@ instance->registReaderObject("ArmatureNodeReader", (ObjectFactory::Instance)Cust
 *
 *
 *****************************************/
-class ArmatureNodeReader : public cocos2d::Ref, public cocostudio::NodeReaderProtocol
+class ArmatureNodeReader : public axis::Ref, public cocostudio::NodeReaderProtocol
 {
     DECLARE_CLASS_NODE_READER_INFO
 
@@ -47,16 +47,16 @@ public:
 
     static ArmatureNodeReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(
         pugi::xml_node objectData,
         flatbuffers::FlatBufferBuilder* builder) override;
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* textBMFontOptions) override;
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* textBMFontOptions) override;
 
     // CSArmatureNode
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions) override;
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions) override;
 
 private:
     std::string getArmatureName(std::string_view exporJsonPath);

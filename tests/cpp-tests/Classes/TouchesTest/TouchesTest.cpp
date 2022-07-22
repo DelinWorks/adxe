@@ -27,7 +27,7 @@
 #include "Paddle.h"
 #include "../testResource.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 enum tagPlayer
 {
@@ -105,12 +105,12 @@ PongLayer::PongLayer()
 
     _paddles = paddlesM;
 
-    for (auto& paddle : _paddles)
+    for (auto&& paddle : _paddles)
     {
         addChild(paddle);
     }
 
-    schedule(CC_SCHEDULE_SELECTOR(PongLayer::doStep));
+    schedule(AX_SCHEDULE_SELECTOR(PongLayer::doStep));
 }
 
 PongLayer::~PongLayer() {}
@@ -128,7 +128,7 @@ void PongLayer::doStep(float delta)
 {
     _ball->move(delta);
 
-    for (auto& paddle : _paddles)
+    for (auto&& paddle : _paddles)
     {
         _ball->collideWithPaddle(paddle);
     }
@@ -154,9 +154,9 @@ ForceTouchTest::ForceTouchTest()
     addChild(_infoLabel);
 
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesBegan = CC_CALLBACK_2(ForceTouchTest::onTouchesBegan, this);
-    listener->onTouchesMoved = CC_CALLBACK_2(ForceTouchTest::onTouchesMoved, this);
-    listener->onTouchesEnded = CC_CALLBACK_2(ForceTouchTest::onTouchesEnded, this);
+    listener->onTouchesBegan = AX_CALLBACK_2(ForceTouchTest::onTouchesBegan, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(ForceTouchTest::onTouchesMoved, this);
+    listener->onTouchesEnded = AX_CALLBACK_2(ForceTouchTest::onTouchesEnded, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 }
 
@@ -172,11 +172,11 @@ std::string ForceTouchTest::subtitle() const
     return std::string("Touch with force to see info label changes\nOnly work on iPhone6s / iPhone6s Plus");
 }
 
-void ForceTouchTest::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event) {}
+void ForceTouchTest::onTouchesBegan(const std::vector<axis::Touch*>& touches, axis::Event* event) {}
 
-void ForceTouchTest::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void ForceTouchTest::onTouchesMoved(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
-    for (auto& t : touches)
+    for (auto&& t : touches)
     {
         float currentForce = t->getCurrentForce();
         float maxForce     = t->getMaxForce();
@@ -185,7 +185,7 @@ void ForceTouchTest::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches,
     }
 }
 
-void ForceTouchTest::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void ForceTouchTest::onTouchesEnded(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     sprintf(formatBuffer, _Info_Formatter, 0.0f, 0.0f);
     _infoLabel->setString(std::string(formatBuffer));

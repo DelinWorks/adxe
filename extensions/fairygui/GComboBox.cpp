@@ -6,7 +6,7 @@
 #include "utils/ToolSet.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 // clang-format off
 GComboBox::GComboBox()
@@ -28,7 +28,7 @@ GComboBox::GComboBox()
 
 GComboBox::~GComboBox()
 {
-    CC_SAFE_RELEASE(_dropdown);
+    AX_SAFE_RELEASE(_dropdown);
 }
 
 const std::string& GComboBox::getTitle() const
@@ -46,7 +46,7 @@ void GComboBox::setTitle(const std::string& value)
     updateGear(6);
 }
 
-const cocos2d::Color3B GComboBox::getTitleColor() const
+const axis::Color3B GComboBox::getTitleColor() const
 {
     GTextField* tf = getTextField();
     if (tf)
@@ -55,7 +55,7 @@ const cocos2d::Color3B GComboBox::getTitleColor() const
         return Color3B::BLACK;
 }
 
-void GComboBox::setTitleColor(const cocos2d::Color3B& value)
+void GComboBox::setTitleColor(const axis::Color3B& value)
 {
     GTextField* tf = getTextField();
     if (tf)
@@ -251,7 +251,7 @@ GTextField* GComboBox::getTextField() const
         return nullptr;
 }
 
-cocos2d::Value GComboBox::getProp(ObjectPropID propId)
+axis::Value GComboBox::getProp(ObjectPropID propId)
 {
     switch (propId)
     {
@@ -272,7 +272,7 @@ cocos2d::Value GComboBox::getProp(ObjectPropID propId)
     }
 }
 
-void GComboBox::setProp(ObjectPropID propId, const cocos2d::Value& value)
+void GComboBox::setProp(ObjectPropID propId, const axis::Value& value)
 {
     switch (propId)
     {
@@ -307,14 +307,14 @@ void GComboBox::constructExtension(ByteBuffer* buffer)
     if (!dropdown.empty())
     {
         _dropdown = dynamic_cast<GComponent*>(UIPackage::createObjectFromURL(dropdown));
-        CCASSERT(_dropdown != nullptr, "FairyGUI: should be a component.");
+        AXASSERT(_dropdown != nullptr, "FairyGUI: should be a component.");
 
         _dropdown->retain();
 
         _list = dynamic_cast<GList*>(_dropdown->getChild("list"));
-        CCASSERT(_list != nullptr, "FairyGUI: should container a list component named list.");
+        AXASSERT(_list != nullptr, "FairyGUI: should container a list component named list.");
 
-        _list->addEventListener(UIEventType::ClickItem, CC_CALLBACK_1(GComboBox::onClickItem, this));
+        _list->addEventListener(UIEventType::ClickItem, AX_CALLBACK_1(GComboBox::onClickItem, this));
 
         _list->addRelation(_dropdown, RelationType::Width);
         _list->removeRelation(_dropdown, RelationType::Height);
@@ -322,13 +322,13 @@ void GComboBox::constructExtension(ByteBuffer* buffer)
         _dropdown->addRelation(_list, RelationType::Height);
         _dropdown->removeRelation(_list, RelationType::Width);
 
-        _dropdown->addEventListener(UIEventType::Exit, CC_CALLBACK_1(GComboBox::onPopupWinClosed, this));
+        _dropdown->addEventListener(UIEventType::Exit, AX_CALLBACK_1(GComboBox::onPopupWinClosed, this));
     }
 
-    addEventListener(UIEventType::RollOver, CC_CALLBACK_1(GComboBox::onRollover, this));
-    addEventListener(UIEventType::RollOut, CC_CALLBACK_1(GComboBox::onRollout, this));
-    addEventListener(UIEventType::TouchBegin, CC_CALLBACK_1(GComboBox::onTouchBegin, this));
-    addEventListener(UIEventType::TouchEnd, CC_CALLBACK_1(GComboBox::onTouchEnd, this));
+    addEventListener(UIEventType::RollOver, AX_CALLBACK_1(GComboBox::onRollover, this));
+    addEventListener(UIEventType::RollOut, AX_CALLBACK_1(GComboBox::onRollout, this));
+    addEventListener(UIEventType::TouchBegin, AX_CALLBACK_1(GComboBox::onTouchBegin, this));
+    addEventListener(UIEventType::TouchEnd, AX_CALLBACK_1(GComboBox::onTouchEnd, this));
 }
 
 void GComboBox::setup_afterAdd(ByteBuffer* buffer, int beginPos)

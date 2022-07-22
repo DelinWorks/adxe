@@ -34,7 +34,7 @@
 #include "base/CCRef.h"
 #include "2d/CCActionInterval.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Bone3D;
 class MeshRenderer;
@@ -56,7 +56,7 @@ enum class Animate3DQuality
 /**
  * @brief Animate3D, Animates a MeshRenderer given with an Animation3D
  */
-class CC_DLL Animate3D : public ActionInterval
+class AX_DLL Animate3D : public ActionInterval
 {
 public:
     /**create Animate3D using Animation.*/
@@ -183,6 +183,6 @@ protected:
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  // __CCANIMATE3D_H__

@@ -24,14 +24,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_VERTEX_EMITTER_H__
-#define __CC_PU_PARTICLE_3D_VERTEX_EMITTER_H__
+#ifndef __AX_PU_PARTICLE_3D_VERTEX_EMITTER_H__
+#define __AX_PU_PARTICLE_3D_VERTEX_EMITTER_H__
 
 #include "extensions/Particle3D/PU/CCPUEmitter.h"
 #include <list>
 
 // Particle3DVertexEmitter NOT SUPPORT YET
-NS_CC_BEGIN
+NS_AX_BEGIN
 //
 // class  Particle3DVertexEmitter : public PUEmitter
 //{
@@ -166,6 +166,6 @@ NS_CC_BEGIN
 //	*/
 //	unsigned short _calculateRequestedParticles(float timeElapsed);
 //};
-NS_CC_END
+NS_AX_END
 
 #endif

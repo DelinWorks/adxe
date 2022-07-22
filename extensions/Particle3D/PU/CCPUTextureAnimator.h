@@ -24,15 +24,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_TEXTURE_ANIMATOR_H__
-#define __CC_PU_PARTICLE_3D_TEXTURE_ANIMATOR_H__
+#ifndef __AX_PU_PARTICLE_3D_TEXTURE_ANIMATOR_H__
+#define __AX_PU_PARTICLE_3D_TEXTURE_ANIMATOR_H__
 
 #include "extensions/Particle3D/PU/CCPUAffector.h"
 #include "base/ccTypes.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_EX_DLL PUTextureAnimator : public PUAffector
+class AX_EX_DLL PUTextureAnimator : public PUAffector
 {
 public:
     enum TextureAnimationType
@@ -105,6 +105,6 @@ protected:
     unsigned short _textureCoordsStart;
     unsigned short _textureCoordsEnd;
 };
-NS_CC_END
+NS_AX_END
 
 #endif

@@ -33,7 +33,7 @@
 #include "platform/apple/CCDevice-apple.h"
 
 // Accelerometer
-#if !defined(CC_TARGET_OS_TVOS)
+#if !defined(AX_TARGET_OS_TVOS)
 #    import <CoreMotion/CoreMotion.h>
 #endif
 #import <CoreFoundation/CoreFoundation.h>
@@ -65,7 +65,7 @@ static NSAttributedString* __attributedStringWithFontSize(NSMutableAttributedStr
     return [[attributedString copy] autorelease];
 }
 
-static CGFloat _calculateTextDrawStartHeight(cocos2d::Device::TextAlign align, CGSize realDimensions, CGSize dimensions)
+static CGFloat _calculateTextDrawStartHeight(axis::Device::TextAlign align, CGSize realDimensions, CGSize dimensions)
 {
     float startH = 0;
     // vertical alignment
@@ -189,9 +189,9 @@ static CGSize _calculateShrinkedSizeForString(NSAttributedString** str,
 
 #define SENSOR_DELAY_GAME 0.02
 
-#if !defined(CC_TARGET_OS_TVOS)
+#if !defined(AX_TARGET_OS_TVOS)
 @interface CCAccelerometerDispatcher : NSObject {
-    cocos2d::Acceleration* _acceleration;
+    axis::Acceleration* _acceleration;
     CMMotionManager* _motionManager;
 }
 
@@ -220,7 +220,7 @@ static CCAccelerometerDispatcher* s_pAccelerometerDispatcher;
 {
     if ((self = [super init]))
     {
-        _acceleration                              = new cocos2d::Acceleration();
+        _acceleration                              = new axis::Acceleration();
         _motionManager                             = [[CMMotionManager alloc] init];
         _motionManager.accelerometerUpdateInterval = SENSOR_DELAY_GAME;
     }
@@ -297,16 +297,16 @@ static CCAccelerometerDispatcher* s_pAccelerometerDispatcher;
         NSAssert(false, @"unknown orientation");
     }
 
-    cocos2d::EventAcceleration event(*_acceleration);
-    auto dispatcher = cocos2d::Director::getInstance()->getEventDispatcher();
+    axis::EventAcceleration event(*_acceleration);
+    auto dispatcher = axis::Director::getInstance()->getEventDispatcher();
     dispatcher->dispatchEvent(&event);
 }
 @end
-#endif  // !defined(CC_TARGET_OS_TVOS)
+#endif  // !defined(AX_TARGET_OS_TVOS)
 
 //
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 int Device::getDPI()
 {
@@ -340,14 +340,14 @@ int Device::getDPI()
 
 void Device::setAccelerometerEnabled(bool isEnabled)
 {
-#if !defined(CC_TARGET_OS_TVOS)
+#if !defined(AX_TARGET_OS_TVOS)
     [[CCAccelerometerDispatcher sharedAccelerometerDispatcher] setAccelerometerEnabled:isEnabled];
 #endif
 }
 
 void Device::setAccelerometerInterval(float interval)
 {
-#if !defined(CC_TARGET_OS_TVOS)
+#if !defined(AX_TARGET_OS_TVOS)
     [[CCAccelerometerDispatcher sharedAccelerometerDispatcher] setAccelerometerInterval:interval];
 #endif
 }
@@ -432,7 +432,7 @@ static id _createSystemFont(const char* fontName, int size)
 }
 
 static bool _initWithString(const char* text,
-                            cocos2d::Device::TextAlign align,
+                            axis::Device::TextAlign align,
                             const char* fontName,
                             int size,
                             tImageInfo* info,
@@ -443,14 +443,14 @@ static bool _initWithString(const char* text,
     bool bRet = false;
     do
     {
-        CC_BREAK_IF(!text || !info);
+        AX_BREAK_IF(!text || !info);
 
         id font = _createSystemFont(fontName, size);
 
-        CC_BREAK_IF(!font);
+        AX_BREAK_IF(!font);
 
         NSString* str = [NSString stringWithUTF8String:text];
-        CC_BREAK_IF(!str);
+        AX_BREAK_IF(!str);
 
         CGSize dimensions;
         dimensions.width  = info->width;
@@ -487,7 +487,7 @@ static bool _initWithString(const char* text,
             realDimensions = _calculateStringSize(stringWithAttributes, font, &dimensions, enableWrap, overflow);
         }
 
-        CC_BREAK_IF(realDimensions.width <= 0 || realDimensions.height <= 0);
+        AX_BREAK_IF(realDimensions.width <= 0 || realDimensions.height <= 0);
         if (dimensions.width <= 0)
         {
             dimensions.width = realDimensions.width;
@@ -517,7 +517,7 @@ static bool _initWithString(const char* text,
         if (!context)
         {
             CGColorSpaceRelease(colorSpace);
-            CC_SAFE_FREE(data);
+            AX_SAFE_FREE(data);
             break;
         }
 
@@ -659,4 +659,4 @@ void Device::vibrate(float duration)
     }
 }
 
-NS_CC_END
+NS_AX_END

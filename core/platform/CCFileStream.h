@@ -7,9 +7,9 @@
 #include "platform/CCPlatformConfig.h"
 #include "platform/CCPlatformMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_DLL FileStream
+class AX_DLL FileStream
 {
 public:
     virtual ~FileStream() = default;
@@ -84,4 +84,4 @@ protected:
     FileStream(){};
 };
 
-NS_CC_END
+NS_AX_END

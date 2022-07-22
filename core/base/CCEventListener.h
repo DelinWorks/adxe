@@ -38,7 +38,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Event;
 class Node;
@@ -49,7 +49,7 @@ class Node;
  *  For instance, you could refer to EventListenerAcceleration, EventListenerKeyboard, EventListenerTouchOneByOne,
  * EventListenerCustom.
  */
-class CC_DLL EventListener : public Ref
+class AX_DLL EventListener : public Ref
 {
 public:
     /** Type Event type.*/
@@ -179,7 +179,7 @@ protected:
     friend class EventDispatcher;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

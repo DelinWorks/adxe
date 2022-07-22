@@ -27,15 +27,15 @@ THE SOFTWARE.
 #include "2d/CCNode.h"
 #include "2d/CCScene.h"
 
-#if CC_USE_3D_PHYSICS
+#if AX_USE_3D_PHYSICS
 
-#    if (CC_ENABLE_BULLET_INTEGRATION)
+#    if (AX_ENABLE_BULLET_INTEGRATION)
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 Physics3DComponent::~Physics3DComponent()
 {
-    CC_SAFE_RELEASE(_physics3DObj);
+    AX_SAFE_RELEASE(_physics3DObj);
 }
 
 std::string& Physics3DComponent::getPhysics3DComponentName()
@@ -51,8 +51,8 @@ bool Physics3DComponent::init()
 }
 
 Physics3DComponent* Physics3DComponent::create(Physics3DObject* physicsObj,
-                                               const cocos2d::Vec3& translateInPhysics,
-                                               const cocos2d::Quaternion& rotInPhsyics)
+                                               const axis::Vec3& translateInPhysics,
+                                               const axis::Quaternion& rotInPhsyics)
 {
     auto ret = new Physics3DComponent();
     if (ret->init())
@@ -62,14 +62,14 @@ Physics3DComponent* Physics3DComponent::create(Physics3DObject* physicsObj,
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    AX_SAFE_DELETE(ret);
     return nullptr;
 }
 
 void Physics3DComponent::setPhysics3DObject(Physics3DObject* physicsObj)
 {
-    CC_SAFE_RETAIN(physicsObj);
-    CC_SAFE_RELEASE(_physics3DObj);
+    AX_SAFE_RETAIN(physicsObj);
+    AX_SAFE_RELEASE(_physics3DObj);
     _physics3DObj = physicsObj;
 }
 
@@ -162,8 +162,8 @@ void Physics3DComponent::postSimulate()
     }
 }
 
-void Physics3DComponent::setTransformInPhysics(const cocos2d::Vec3& translateInPhysics,
-                                               const cocos2d::Quaternion& rotInPhsyics)
+void Physics3DComponent::setTransformInPhysics(const axis::Vec3& translateInPhysics,
+                                               const axis::Quaternion& rotInPhsyics)
 {
     Mat4::createRotation(rotInPhsyics, &_transformInPhysics);
     _transformInPhysics.m[12] = translateInPhysics.x;
@@ -248,8 +248,8 @@ void Physics3DComponent::syncNodeToPhysics()
     }
 }
 
-NS_CC_END
+NS_AX_END
 
-#    endif  // CC_ENABLE_BULLET_INTEGRATION
+#    endif  // AX_ENABLE_BULLET_INTEGRATION
 
-#endif  // CC_USE_3D_PHYSICS
+#endif  // AX_USE_3D_PHYSICS

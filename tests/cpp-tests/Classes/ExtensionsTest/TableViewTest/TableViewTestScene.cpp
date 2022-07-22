@@ -26,8 +26,8 @@
 #include "CustomTableViewCell.h"
 #include "../ExtensionsTest.h"
 
-USING_NS_CC;
-USING_NS_CC_EXT;
+USING_NS_AX;
+USING_NS_AX_EXT;
 
 TableViewTests::TableViewTests()
 {
@@ -70,7 +70,7 @@ bool TableViewTest::init()
 
 void TableViewTest::tableCellTouched(TableView* table, TableViewCell* cell)
 {
-    CCLOG("cell touched at index: %d", static_cast<int32_t>(cell->getIdx()));
+    AXLOG("cell touched at index: %d", static_cast<int32_t>(cell->getIdx()));
 }
 
 Size TableViewTest::tableCellSizeForIndex(TableView* table, ssize_t idx)

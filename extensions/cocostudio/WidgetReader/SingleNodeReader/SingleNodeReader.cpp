@@ -30,7 +30,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -55,12 +55,12 @@ SingleNodeReader* SingleNodeReader::getInstance()
 
 void SingleNodeReader::purge()
 {
-    CC_SAFE_DELETE(_instanceSingleNodeReader);
+    AX_SAFE_DELETE(_instanceSingleNodeReader);
 }
 
 void SingleNodeReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceSingleNodeReader);
+    AX_SAFE_DELETE(_instanceSingleNodeReader);
 }
 
 Offset<Table> SingleNodeReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -74,7 +74,7 @@ Offset<Table> SingleNodeReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void SingleNodeReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* singleNodeOptions)
+void SingleNodeReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* singleNodeOptions)
 {
     auto options = (SingleNodeOptions*)(singleNodeOptions);
 

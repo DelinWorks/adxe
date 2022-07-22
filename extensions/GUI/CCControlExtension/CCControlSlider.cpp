@@ -33,7 +33,7 @@
 #include "base/CCTouch.h"
 #include "base/CCDirector.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 ControlSlider::ControlSlider()
     : _value(0.0f)
@@ -49,10 +49,10 @@ ControlSlider::ControlSlider()
 
 ControlSlider::~ControlSlider()
 {
-    CC_SAFE_RELEASE(_thumbSprite);
-    CC_SAFE_RELEASE(_selectedThumbSprite);
-    CC_SAFE_RELEASE(_progressSprite);
-    CC_SAFE_RELEASE(_backgroundSprite);
+    AX_SAFE_RELEASE(_thumbSprite);
+    AX_SAFE_RELEASE(_selectedThumbSprite);
+    AX_SAFE_RELEASE(_progressSprite);
+    AX_SAFE_RELEASE(_backgroundSprite);
 }
 
 ControlSlider* ControlSlider::create(const char* bgFile, const char* progressFile, const char* thumbFile)
@@ -122,10 +122,10 @@ bool ControlSlider::initWithSprites(Sprite* backgroundSprite,
 {
     if (Control::init())
     {
-        CCASSERT(backgroundSprite, "Background sprite must be not nil");
-        CCASSERT(progressSprite, "Progress sprite must be not nil");
-        CCASSERT(thumbSprite, "Thumb sprite must be not nil");
-        CCASSERT(selectedThumbSprite, "Thumb sprite must be not nil");
+        AXASSERT(backgroundSprite, "Background sprite must be not nil");
+        AXASSERT(progressSprite, "Progress sprite must be not nil");
+        AXASSERT(thumbSprite, "Thumb sprite must be not nil");
+        AXASSERT(selectedThumbSprite, "Thumb sprite must be not nil");
 
         setIgnoreAnchorPointForPosition(false);
 
@@ -325,4 +325,4 @@ float ControlSlider::valueForLocation(Vec2 location)
                _minimumAllowedValue);
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

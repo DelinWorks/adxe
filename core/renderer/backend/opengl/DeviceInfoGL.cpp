@@ -36,7 +36,7 @@
 // #define GL_COMPRESSED_RGBA_ASTC_8x8 0x93B7
 #endif
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 /// <summary>
 ///  1px method to detect whether GPU support astc compressed texture really
@@ -68,7 +68,7 @@ static bool checkReallySupportsASTC()
                            astctexels);
 
     auto error = glGetError();
-#if defined(CC_USE_GL)
+#if defined(AX_USE_GL)
     if (!error && glGetTexImage)
     {
         // read pixel RGB: should be: 255, 128, 0
@@ -148,7 +148,7 @@ bool DeviceInfoGL::checkForFeatureSupported(FeatureType feature)
         featureSupported = checkForGLExtension("GL_OES_packed_depth_stencil");
         break;
     case FeatureType::VAO:
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
         featureSupported = checkForGLExtension("vertex_array_object");
 #else
         featureSupported = checkForGLExtension("GL_OES_vertex_array_object");
@@ -204,4 +204,4 @@ bool DeviceInfoGL::checkSupportsCompressedFormat(int compressedFormat)
     return supported;
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

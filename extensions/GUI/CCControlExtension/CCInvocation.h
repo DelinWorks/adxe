@@ -38,7 +38,7 @@
 #include "extensions/ExtensionExport.h"
 #include "CCControl.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /**
  * @addtogroup GUI
@@ -47,9 +47,9 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-#define cccontrol_selector(_SELECTOR) static_cast<cocos2d::extension::Control::Handler>(&_SELECTOR)
+#define cccontrol_selector(_SELECTOR) static_cast<axis::extension::Control::Handler>(&_SELECTOR)
 
-class CC_EX_DLL Invocation : public Ref
+class AX_EX_DLL Invocation : public Ref
 {
 public:
     /**
@@ -69,15 +69,15 @@ public:
     void invoke(Ref* sender);
 
 protected:
-    CC_SYNTHESIZE_READONLY(Control::Handler, _action, Action);
-    CC_SYNTHESIZE_READONLY(Ref*, _target, Target);
-    CC_SYNTHESIZE_READONLY(Control::EventType, _controlEvent, ControlEvent);
+    AX_SYNTHESIZE_READONLY(Control::Handler, _action, Action);
+    AX_SYNTHESIZE_READONLY(Ref*, _target, Target);
+    AX_SYNTHESIZE_READONLY(Control::EventType, _controlEvent, ControlEvent);
 };
 
 // end of GUI group
 /// @}
 /// @}
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif

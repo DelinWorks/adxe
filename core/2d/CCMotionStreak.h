@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "2d/CCNode.h"
 #include "renderer/CCCustomCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Texture2D;
 
@@ -42,7 +42,7 @@ class Texture2D;
 /** @class MotionStreak.
  * @brief Creates a trailing path.
  */
-class CC_DLL MotionStreak : public Node, public TextureProtocol
+class AX_DLL MotionStreak : public Node, public TextureProtocol
 {
 public:
     /** Creates and initializes a motion streak with fade in seconds, minimum segments, stroke's width, color, texture
@@ -200,10 +200,10 @@ protected:
     backend::UniformLocation _textureLocation;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(MotionStreak);
+    AX_DISALLOW_COPY_AND_ASSIGN(MotionStreak);
 };
 
 // end of _2d group
 /// @}
 
-NS_CC_END
+NS_AX_END

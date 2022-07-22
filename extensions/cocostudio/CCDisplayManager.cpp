@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "2d/CCParticleSystemQuad.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -42,7 +42,7 @@ DisplayManager* DisplayManager::create(Bone* bone)
         pDisplayManager->autorelease();
         return pDisplayManager;
     }
-    CC_SAFE_DELETE(pDisplayManager);
+    AX_SAFE_DELETE(pDisplayManager);
     return nullptr;
 }
 
@@ -64,7 +64,7 @@ DisplayManager::~DisplayManager()
     {
         _displayRenderNode->removeFromParentAndCleanup(true);
         if (_displayRenderNode->getReferenceCount() > 0)
-            CC_SAFE_RELEASE_NULL(_displayRenderNode);
+            AX_SAFE_RELEASE_NULL(_displayRenderNode);
     }
 }
 
@@ -206,14 +206,14 @@ void DisplayManager::removeDisplay(int index)
     _decoDisplayList.erase(index);
 }
 
-const cocos2d::Vector<DecorativeDisplay*>& DisplayManager::getDecorativeDisplayList() const
+const axis::Vector<DecorativeDisplay*>& DisplayManager::getDecorativeDisplayList() const
 {
     return _decoDisplayList;
 }
 
 void DisplayManager::changeDisplayWithIndex(int index, bool force)
 {
-    CCASSERT(index < (int)_decoDisplayList.size(), "the _index value is out of range");
+    AXASSERT(index < (int)_decoDisplayList.size(), "the _index value is out of range");
 
     _forceChangeDisplay = force;
 
@@ -339,7 +339,7 @@ void DisplayManager::initDisplayList(BoneData* boneData)
 
     CS_RETURN_IF(!boneData);
 
-    for (auto& object : boneData->displayDataList)
+    for (auto&& object : boneData->displayDataList)
     {
         DisplayData* displayData = static_cast<DisplayData*>(object);
 

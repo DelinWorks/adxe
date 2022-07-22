@@ -27,7 +27,7 @@
 #define __CCPHYSICS_WORLD_H__
 
 #include "base/ccConfig.h"
-#if CC_USE_PHYSICS
+#if AX_USE_PHYSICS
 
 #    include <list>
 #    include "base/CCVector.h"
@@ -36,7 +36,7 @@
 
 struct cpSpace;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class PhysicsBody;
 class PhysicsJoint;
@@ -65,7 +65,7 @@ typedef struct PhysicsRayCastInfo
     // but in order to do so, we should include "chipmunk_types.h"
     // in Chipmunk v7.0, chipmunk_types includes all the mac types that
     // conflicts with cocos2d Vec2, Point,... etc types. And all the CocosStudio
-    // lib will need to use the `cocos2d::` namespace prefix. And it is easier to do this
+    // lib will need to use the `axis::` namespace prefix. And it is easier to do this
     // than change all the cocosstudio library (and also users code)
     float fraction;
     void* data;
@@ -97,7 +97,7 @@ typedef PhysicsQueryRectCallbackFunc PhysicsQueryPointCallbackFunc;
  * @brief An PhysicsWorld object simulates collisions and other physical properties. You do not create PhysicsWorld
  * objects directly; instead, you can get it from an Scene object.
  */
-class CC_DLL PhysicsWorld
+class AX_DLL PhysicsWorld
 {
 public:
     static const int DEBUGDRAW_NONE;     ///< draw nothing
@@ -449,12 +449,12 @@ protected:
     friend class PhysicsDebugDraw;
 };
 
-extern const float CC_DLL PHYSICS_INFINITY;
+extern const float AX_DLL PHYSICS_INFINITY;
 
 /** @} */
 /** @} */
 
-NS_CC_END
+NS_AX_END
 
-#endif  // CC_USE_PHYSICS
+#endif  // AX_USE_PHYSICS
 #endif  // __CCPHYSICS_WORLD_H__

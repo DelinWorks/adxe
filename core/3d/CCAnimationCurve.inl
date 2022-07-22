@@ -1,5 +1,5 @@
 #include "3d/CCAnimationCurve.h"
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 template <int componentSize>
 void AnimationCurve<componentSize>::evaluate(float time, float* dst, EvaluateType type) const
@@ -117,8 +117,8 @@ AnimationCurve<componentSize>::AnimationCurve()
 template <int componentSize>
 AnimationCurve<componentSize>::~AnimationCurve()
 {
-    CC_SAFE_DELETE_ARRAY(_keytime);
-    CC_SAFE_DELETE_ARRAY(_value);
+    AX_SAFE_DELETE_ARRAY(_keytime);
+    AX_SAFE_DELETE_ARRAY(_value);
 }
 
 template <int componentSize>
@@ -144,4 +144,4 @@ int AnimationCurve<componentSize>::determineIndex(float time) const
     return -1;
 }
 
-NS_CC_END
+NS_AX_END

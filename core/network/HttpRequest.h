@@ -42,7 +42,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace network
 {
@@ -60,7 +60,7 @@ typedef std::function<void(HttpClient* client, HttpResponse* response)> ccHttpRe
  * @lua NA
  */
 
-class CC_DLL HttpRequest : public Ref
+class AX_DLL HttpRequest : public Ref
 {
     friend class HttpClient;
 
@@ -97,7 +97,7 @@ public:
      */
     Ref* autorelease()
     {
-        CCASSERT(false,
+        AXASSERT(false,
                  "HttpResponse is used between network thread and ui thread \
                  therefore, autorelease is forbidden here");
         return nullptr;
@@ -261,7 +261,7 @@ protected:
 
 }  // namespace network
 
-NS_CC_END
+NS_AX_END
 
 // end group
 /// @}

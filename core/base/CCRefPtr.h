@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_REF_PTR_H__
-#define __CC_REF_PTR_H__
+#ifndef __AX_REF_PTR_H__
+#define __AX_REF_PTR_H__
 /// @cond DO_NOT_SHOW
 
 #include "base/CCRef.h"
@@ -33,13 +33,13 @@
 #include <functional>
 #include <type_traits>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * Utility/support macros. Defined to enable RefPtr<T> to contain types like 'const T' because we do not
  * regard retain()/release() as affecting mutability of state.
  */
-#define CC_REF_PTR_SAFE_RETAIN(ptr)                                   \
+#define AX_REF_PTR_SAFE_RETAIN(ptr)                                   \
                                                                       \
     do                                                                \
     {                                                                 \
@@ -50,7 +50,7 @@ NS_CC_BEGIN
                                                                       \
     } while (0);
 
-#define CC_REF_PTR_SAFE_RELEASE(ptr)                                   \
+#define AX_REF_PTR_SAFE_RELEASE(ptr)                                   \
                                                                        \
     do                                                                 \
     {                                                                  \
@@ -61,7 +61,7 @@ NS_CC_BEGIN
                                                                        \
     } while (0);
 
-#define CC_REF_PTR_SAFE_RELEASE_NULL(ptr)                              \
+#define AX_REF_PTR_SAFE_RELEASE_NULL(ptr)                              \
                                                                        \
     do                                                                 \
     {                                                                  \
@@ -81,7 +81,7 @@ struct ReferencedObject
 };
 
 /**
- * Wrapper class which maintains a strong reference to a cocos2dx cocos2d::Ref* type object.
+ * Wrapper class which maintains a strong reference to a cocos2dx axis::Ref* type object.
  * Similar in concept to a boost smart pointer.
  *
  * Enables the use of the RAII idiom with Cocos2dx objects and helps automate some of the more
@@ -102,7 +102,7 @@ public:
         other._ptr = nullptr;
     }
 
-    RefPtr(T* ptr) : _ptr(ptr) { CC_REF_PTR_SAFE_RETAIN(_ptr); }
+    RefPtr(T* ptr) : _ptr(ptr) { AX_REF_PTR_SAFE_RETAIN(_ptr); }
 
     template <typename _Other>
     RefPtr(ReferencedObject<_Other>&& ptr) : _ptr(ptr._ptr)
@@ -110,16 +110,16 @@ public:
 
     RefPtr(std::nullptr_t ptr) : _ptr(nullptr) {}
 
-    RefPtr(const RefPtr<T>& other) : _ptr(other._ptr) { CC_REF_PTR_SAFE_RETAIN(_ptr); }
+    RefPtr(const RefPtr<T>& other) : _ptr(other._ptr) { AX_REF_PTR_SAFE_RETAIN(_ptr); }
 
-    ~RefPtr() { CC_REF_PTR_SAFE_RELEASE_NULL(_ptr); }
+    ~RefPtr() { AX_REF_PTR_SAFE_RELEASE_NULL(_ptr); }
 
     RefPtr<T>& operator=(const RefPtr<T>& other)
     {
         if (other._ptr != _ptr)
         {
-            CC_REF_PTR_SAFE_RETAIN(other._ptr);
-            CC_REF_PTR_SAFE_RELEASE(_ptr);
+            AX_REF_PTR_SAFE_RETAIN(other._ptr);
+            AX_REF_PTR_SAFE_RELEASE(_ptr);
             _ptr = other._ptr;
         }
 
@@ -130,7 +130,7 @@ public:
     {
         if (&other != this)
         {
-            CC_REF_PTR_SAFE_RELEASE(_ptr);
+            AX_REF_PTR_SAFE_RELEASE(_ptr);
             _ptr       = other._ptr;
             other._ptr = nullptr;
         }
@@ -142,8 +142,8 @@ public:
     {
         if (other != _ptr)
         {
-            CC_REF_PTR_SAFE_RETAIN(other);
-            CC_REF_PTR_SAFE_RELEASE(_ptr);
+            AX_REF_PTR_SAFE_RETAIN(other);
+            AX_REF_PTR_SAFE_RELEASE(_ptr);
             _ptr = other;
         }
 
@@ -152,7 +152,7 @@ public:
 
     RefPtr<T>& operator=(std::nullptr_t other)
     {
-        CC_REF_PTR_SAFE_RELEASE_NULL(_ptr);
+        AX_REF_PTR_SAFE_RELEASE_NULL(_ptr);
         return *this;
     }
 
@@ -160,13 +160,13 @@ public:
 
     T& operator*() const
     {
-        CCASSERT(_ptr, "Attempt to dereference a null pointer!");
+        AXASSERT(_ptr, "Attempt to dereference a null pointer!");
         return *_ptr;
     }
 
     T* operator->() const
     {
-        CCASSERT(_ptr, "Attempt to dereference a null pointer!");
+        AXASSERT(_ptr, "Attempt to dereference a null pointer!");
         return _ptr;
     }
 
@@ -214,7 +214,7 @@ public:
 
     explicit operator bool() const { return _ptr != nullptr; }
 
-    void reset() { CC_REF_PTR_SAFE_RELEASE_NULL(_ptr); }
+    void reset() { AX_REF_PTR_SAFE_RELEASE_NULL(_ptr); }
 
     void swap(RefPtr<T>& other)
     {
@@ -232,24 +232,24 @@ public:
      * where the RefPtr<T> has the initial ownership of the object.
      *
      * E.G:
-     *      RefPtr<cocos2d::Image> image;
-     *      image.weakAssign(new cocos2d::Image());
+     *      RefPtr<axis::Image> image;
+     *      image.weakAssign(new axis::Image());
      *
      * Instead of:
-     *      RefPtr<cocos2d::Image> image;
-     *      image = new cocos2d::Image();
+     *      RefPtr<axis::Image> image;
+     *      image = new axis::Image();
      *      image->release();               // Required because new'd object already has a reference count of '1'.
      */
     void weakAssign(const RefPtr<T>& other)
     {
-        CC_REF_PTR_SAFE_RELEASE(_ptr);
+        AX_REF_PTR_SAFE_RELEASE(_ptr);
         _ptr = other._ptr;
     }
 
 private:
     T* _ptr;
 
-    // NOTE: We can ensure T is derived from cocos2d::Ref at compile time here.
+    // NOTE: We can ensure T is derived from axis::Ref at compile time here.
     static_assert(std::is_base_of<Ref, typename std::remove_const<T>::type>::value, "T must be derived from Ref");
 };
 
@@ -328,11 +328,11 @@ RefPtr<T> dynamic_pointer_cast(const RefPtr<U>& r)
 /**
  * Done with these macros.
  */
-#undef CC_REF_PTR_SAFE_RETAIN
-#undef CC_REF_PTR_SAFE_RELEASE
-#undef CC_REF_PTR_SAFE_RELEASE_NULL
+#undef AX_REF_PTR_SAFE_RETAIN
+#undef AX_REF_PTR_SAFE_RELEASE
+#undef AX_REF_PTR_SAFE_RELEASE_NULL
 
-NS_CC_END
+NS_AX_END
 
 /// @endcond
-#endif  // __CC_REF_PTR_H__
+#endif  // __AX_REF_PTR_H__

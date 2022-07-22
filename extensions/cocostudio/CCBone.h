@@ -39,7 +39,7 @@ namespace cocostudio
 
 class Armature;
 
-class CCS_DLL Bone : public cocos2d::Node
+class CCS_DLL Bone : public axis::Node
 {
 public:
     /**
@@ -90,12 +90,12 @@ public:
      */
     void addDisplay(DisplayData* displayData, int index);
 
-    void addDisplay(cocos2d::Node* display, int index);
+    void addDisplay(axis::Node* display, int index);
 
     void removeDisplay(int index);
 
-    CC_DEPRECATED_ATTRIBUTE void changeDisplayByIndex(int index, bool force);
-    CC_DEPRECATED_ATTRIBUTE void changeDisplayByName(std::string_view name, bool force);
+    AX_DEPRECATED_ATTRIBUTE void changeDisplayByIndex(int index, bool force);
+    AX_DEPRECATED_ATTRIBUTE void changeDisplayByName(std::string_view name, bool force);
 
     void changeDisplayWithIndex(int index, bool force);
     void changeDisplayWithName(std::string_view name, bool force);
@@ -139,7 +139,7 @@ public:
 
     void update(float delta) override;
 
-    void updateDisplayedColor(const cocos2d::Color3B& parentColor) override;
+    void updateDisplayedColor(const axis::Color3B& parentColor) override;
     void updateDisplayedOpacity(uint8_t parentOpacity) override;
 
     //! Update color to render display
@@ -158,10 +158,10 @@ public:
     virtual void setTransformDirty(bool dirty) { _boneTransformDirty = dirty; }
     virtual bool isTransformDirty() { return _boneTransformDirty; }
 
-    virtual cocos2d::Mat4 getNodeToArmatureTransform() const;
-    virtual cocos2d::Mat4 getNodeToWorldTransform() const override;
+    virtual axis::Mat4 getNodeToArmatureTransform() const;
+    virtual axis::Mat4 getNodeToWorldTransform() const override;
 
-    cocos2d::Node* getDisplayRenderNode();
+    axis::Node* getDisplayRenderNode();
     DisplayType getDisplayRenderNodeType();
 
     /*
@@ -194,13 +194,13 @@ public:
      * This function is deprecated, please use isIgnoreMovementBoneData()
      * @lua NA
      */
-    CC_DEPRECATED_ATTRIBUTE virtual bool getIgnoreMovementBoneData() const { return isIgnoreMovementBoneData(); }
+    AX_DEPRECATED_ATTRIBUTE virtual bool getIgnoreMovementBoneData() const { return isIgnoreMovementBoneData(); }
 
     /*
      * Set blend function
      */
-    virtual void setBlendFunc(const cocos2d::BlendFunc& blendFunc);
-    virtual cocos2d::BlendFunc getBlendFunc(void) { return _blendFunc; }
+    virtual void setBlendFunc(const axis::BlendFunc& blendFunc);
+    virtual axis::BlendFunc getBlendFunc(void) { return _blendFunc; }
 
     /*
      * Set if blend function is dirty
@@ -235,7 +235,7 @@ protected:
      */
     bool _ignoreMovementBoneData;
 
-    cocos2d::BlendFunc _blendFunc;
+    axis::BlendFunc _blendFunc;
     bool _blendDirty;
 
     Tween* _tween;  //! Calculate tween effect
@@ -247,7 +247,7 @@ protected:
     bool _boneTransformDirty;  //! Whether or not transform dirty
 
     //! self Transform, use this to change display's state
-    cocos2d::Mat4 _worldTransform;
+    axis::Mat4 _worldTransform;
 
     BaseData* _worldInfo;
 

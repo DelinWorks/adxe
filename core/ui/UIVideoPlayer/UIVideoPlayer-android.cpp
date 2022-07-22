@@ -26,7 +26,7 @@
 
 #include "ui/UIVideoPlayer/UIVideoPlayer.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
 #    include <unordered_map>
 #    include <stdlib.h>
 #    include <jni.h>
@@ -41,7 +41,7 @@
 
 static const char* videoHelperClassName = "org.cocos2dx.lib.Cocos2dxVideoHelper";
 
-USING_NS_CC;
+USING_NS_AX;
 
 static void executeVideoCallback(int index, int event);
 
@@ -95,7 +95,7 @@ void setUserInputEnabledJNI(int index, bool enableInput)
 
 //-----------------------------------------------------------------------------------------------------------
 
-using namespace cocos2d::ui;
+using namespace axis::ui;
 
 static std::unordered_map<int, VideoPlayer*> s_allVideoPlayers;
 
@@ -113,7 +113,7 @@ VideoPlayer::VideoPlayer()
     _videoPlayerIndex                    = createVideoWidgetJNI();
     s_allVideoPlayers[_videoPlayerIndex] = this;
 
-#    if CC_VIDEOPLAYER_DEBUG_DRAW
+#    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
     addChild(_debugDrawNode);
 #    endif
@@ -160,16 +160,16 @@ void VideoPlayer::setStyle(StyleType style)
 
 void VideoPlayer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 {
-    cocos2d::ui::Widget::draw(renderer, transform, flags);
+    axis::ui::Widget::draw(renderer, transform, flags);
 
     if (flags & FLAGS_TRANSFORM_DIRTY)
     {
-        auto uiRect = cocos2d::ui::Helper::convertBoundingBoxToScreen(this);
+        auto uiRect = axis::ui::Helper::convertBoundingBoxToScreen(this);
         JniHelper::callStaticVoidMethod(videoHelperClassName, "setVideoRect", _videoPlayerIndex, (int)uiRect.origin.x,
                                         (int)uiRect.origin.y, (int)uiRect.size.width, (int)uiRect.size.height);
     }
 
-#    if CC_VIDEOPLAYER_DEBUG_DRAW
+#    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode->clear();
     auto size         = getContentSize();
     Point vertices[4] = {Point::ZERO, Point(size.width, 0), Point(size.width, size.height), Point(0, size.height)};
@@ -262,7 +262,7 @@ bool VideoPlayer::isUserInputEnabled() const
 
 void VideoPlayer::setVisible(bool visible)
 {
-    cocos2d::ui::Widget::setVisible(visible);
+    axis::ui::Widget::setVisible(visible);
 
     if (!visible || isRunning())
     {
@@ -315,7 +315,7 @@ void VideoPlayer::onPlayEvent(int event)
     }
 }
 
-cocos2d::ui::Widget* VideoPlayer::createCloneInstance()
+axis::ui::Widget* VideoPlayer::createCloneInstance()
 {
     return VideoPlayer::create();
 }

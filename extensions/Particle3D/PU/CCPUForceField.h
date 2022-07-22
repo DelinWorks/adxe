@@ -24,14 +24,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_FORCE_FIELD_H__
-#define __CC_PU_PARTICLE_3D_FORCE_FIELD_H__
+#ifndef __AX_PU_PARTICLE_3D_FORCE_FIELD_H__
+#define __AX_PU_PARTICLE_3D_FORCE_FIELD_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
 #include "CCPUNoise.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /** Pure virtual ForceFieldCalculationFactory
  */
@@ -205,6 +205,6 @@ protected:
 //-------------------------------------------------------------------------
 //-------------------------------------------------------------------------
 
-NS_CC_END
+NS_AX_END
 
 #endif

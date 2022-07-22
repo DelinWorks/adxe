@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "2d/CCComponent.h"
 #include "ui/GUIExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup ui
  * @{
@@ -41,7 +41,7 @@ namespace ui
  *@brief A component class used for layout.
  * The LayoutComponent holds all the data for layouting.
  */
-class CC_GUI_DLL LayoutComponent : public Component
+class AX_GUI_DLL LayoutComponent : public Component
 {
 public:
     /**
@@ -428,5 +428,5 @@ protected:
 
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 #endif /* defined(__cocos2d_libs__LayoutComponent__) */

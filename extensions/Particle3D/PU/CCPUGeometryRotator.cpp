@@ -27,7 +27,7 @@
 #include "CCPUGeometryRotator.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 //-----------------------------------------------------------------------
 // Constants
 const bool PUGeometryRotator::DEFAULT_USE_OWN         = false;
@@ -51,7 +51,7 @@ PUGeometryRotator::PUGeometryRotator()
 PUGeometryRotator::~PUGeometryRotator()
 {
     if (_dynRotationSpeed)
-        CC_SAFE_DELETE(_dynRotationSpeed);
+        AX_SAFE_DELETE(_dynRotationSpeed);
 }
 //-----------------------------------------------------------------------
 const Vec3& PUGeometryRotator::getRotationAxis() const
@@ -80,7 +80,7 @@ PUDynamicAttribute* PUGeometryRotator::getRotationSpeed() const
 void PUGeometryRotator::setRotationSpeed(PUDynamicAttribute* dynRotationSpeed)
 {
     if (_dynRotationSpeed)
-        CC_SAFE_DELETE(_dynRotationSpeed);
+        AX_SAFE_DELETE(_dynRotationSpeed);
     _dynRotationSpeed = dynRotationSpeed;
 }
 //-----------------------------------------------------------------------
@@ -104,20 +104,20 @@ void PUGeometryRotator::initParticleForEmission(PUParticle3D* particle)
     //// Only continue if the particle is a visual particle
     // if (particle->particleType != Particle::PT_VISUAL)
     //	return;
-    // for (auto iter : _particleSystem->getParticlePool().getActiveParticleList())
+    // for (auto&& iter : _particleSystem->getParticlePool().getActiveParticleList())
     {
         // PUParticle3D *particle = static_cast<PUParticle3D*>(iter);
         if (!_rotationAxisSet)
         {
             // Set initial random rotation axis and orientation(PU 1.4)
-            particle->orientation.x = CCRANDOM_MINUS1_1();
-            particle->orientation.y = CCRANDOM_MINUS1_1();
-            particle->orientation.z = CCRANDOM_MINUS1_1();
-            particle->orientation.w = CCRANDOM_MINUS1_1();
+            particle->orientation.x = AXRANDOM_MINUS1_1();
+            particle->orientation.y = AXRANDOM_MINUS1_1();
+            particle->orientation.z = AXRANDOM_MINUS1_1();
+            particle->orientation.w = AXRANDOM_MINUS1_1();
             particle->orientation.normalize();
-            particle->rotationAxis.x = CCRANDOM_0_1();
-            particle->rotationAxis.y = CCRANDOM_0_1();
-            particle->rotationAxis.z = CCRANDOM_0_1();
+            particle->rotationAxis.x = AXRANDOM_0_1();
+            particle->rotationAxis.y = AXRANDOM_0_1();
+            particle->rotationAxis.z = AXRANDOM_0_1();
             particle->rotationAxis.normalize();
         }
 
@@ -132,7 +132,7 @@ void PUGeometryRotator::initParticleForEmission(PUParticle3D* particle)
 
 void PUGeometryRotator::updatePUAffector(PUParticle3D* particle, float deltaTime)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         //  Rotate the geometry
@@ -185,4 +185,4 @@ void PUGeometryRotator::copyAttributesTo(PUAffector* affector)
 
 //-----------------------------------------------------------------------
 
-NS_CC_END
+NS_AX_END

@@ -34,7 +34,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Touch;
 
@@ -43,7 +43,7 @@ class Touch;
 /** @class EventTouch
  * @brief Touch event.
  */
-class CC_DLL EventTouch : public Event
+class AX_DLL EventTouch : public Event
 {
 public:
     static const int MAX_TOUCHES = 15;
@@ -95,7 +95,7 @@ private:
     friend class GLView;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

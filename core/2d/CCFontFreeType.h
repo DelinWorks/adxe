@@ -40,9 +40,9 @@ typedef struct FT_FaceRec_* FT_Face;
 typedef struct FT_StrokerRec_* FT_Stroker;
 typedef struct FT_BBox_ FT_BBox;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_DLL FontFreeType : public Font
+class AX_DLL FontFreeType : public Font
 {
 public:
     static const int DistanceMapSpread;
@@ -146,6 +146,6 @@ private:
 
 /// @endcond
 
-NS_CC_END
+NS_AX_END
 
 #endif

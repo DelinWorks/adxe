@@ -26,8 +26,8 @@
 #include "UIScale9SpriteTest.h"
 #include "testResource.h"
 
-USING_NS_CC;
-using namespace cocos2d::ui;
+USING_NS_AX;
+using namespace axis::ui;
 
 UIScale9SpriteTests::UIScale9SpriteTests()
 {
@@ -105,7 +105,7 @@ bool UIScale9SpriteTest::init()
         this->addChild(sp1);
         sp1->runAction((FiniteTimeAction*)action2);
 
-        cocos2d::ui::Scale9Sprite* sp2 = ui::Scale9Sprite::create("cocosui/animationbuttonnormal.png");
+        axis::ui::Scale9Sprite* sp2 = ui::Scale9Sprite::create("cocosui/animationbuttonnormal.png");
         sp2->setPosition(350.0f, 160.0f);
         sp2->setPreferredSize(sp1->getContentSize() * 1.2f);
         sp2->setColor(Color3B::GREEN);
@@ -160,7 +160,7 @@ bool UIScale9SpriteHierarchialTest::init()
         this->addChild(sp1);
         sp1->runAction((FiniteTimeAction*)action2);
 
-        cocos2d::ui::Scale9Sprite* sp2 = ui::Scale9Sprite::create("cocosui/animationbuttonnormal.png");
+        axis::ui::Scale9Sprite* sp2 = ui::Scale9Sprite::create("cocosui/animationbuttonnormal.png");
         sp2->setPreferredSize(sp1->getContentSize() * 1.2f);
         sp2->setColor(Color3B::GREEN);
         sp2->setFlippedX(true);
@@ -186,7 +186,7 @@ bool UIScale9SpriteTouchTest::init()
         Size size   = Director::getInstance()->getVisibleSize();
 
         auto containerForSprite1 = Node::create();
-        auto sprite1             = cocos2d::ui::Scale9Sprite::create("Images/CyanSquare.png");
+        auto sprite1             = axis::ui::Scale9Sprite::create("Images/CyanSquare.png");
         sprite1->setPosition(origin + Vec2(size.width / 2, size.height / 2) + Vec2(-80.0f, 80.0f));
         containerForSprite1->addChild(sprite1);
         addChild(containerForSprite1, 10);
@@ -828,15 +828,15 @@ bool UIS9Flip::init()
                 statusLabel->setString("Scale9Disabled");
             }
 
-            CCLOG("scaleX = %f", flipXSprite->getScaleX());
-            CCLOG("scaleY = %f", flipYSprite->getScale());
+            AXLOG("scaleX = %f", flipXSprite->getScaleX());
+            AXLOG("scaleY = %f", flipYSprite->getScale());
             if (flipXSprite->isFlippedX())
             {
-                CCLOG("xxxxxxx");
+                AXLOG("xxxxxxx");
             }
             if (flipYSprite->isFlippedY())
             {
-                CCLOG("YYYYYY");
+                AXLOG("YYYYYY");
             }
 
             if (flipXSprite->isFlippedX())
@@ -890,10 +890,10 @@ bool UIS9ChangeAnchorPoint::init()
             {
                 normalSprite->setAnchorPoint(Vec2::ZERO);
                 normalSprite->setScale9Enabled(true);
-                CCLOG("position = %f, %f,  anchor point = %f, %f", normalSprite->getPosition().x,
+                AXLOG("position = %f, %f,  anchor point = %f, %f", normalSprite->getPosition().x,
                       normalSprite->getPosition().y, normalSprite->getAnchorPoint().x,
                       normalSprite->getAnchorPoint().y);
-                CCLOG("tests:content size : width = %f, height = %f", normalSprite->getContentSize().width,
+                AXLOG("tests:content size : width = %f, height = %f", normalSprite->getContentSize().width,
                       normalSprite->getContentSize().height);
             }
         });
@@ -908,10 +908,10 @@ bool UIS9ChangeAnchorPoint::init()
             {
                 normalSprite->setAnchorPoint(Vec2::ANCHOR_TOP_RIGHT);
                 normalSprite->setScale9Enabled(false);
-                CCLOG("position = %f, %f,  anchor point = %f, %f", normalSprite->getPosition().x,
+                AXLOG("position = %f, %f,  anchor point = %f, %f", normalSprite->getPosition().x,
                       normalSprite->getPosition().y, normalSprite->getAnchorPoint().x,
                       normalSprite->getAnchorPoint().y);
-                CCLOG("tests:content size : width = %f, height = %f", normalSprite->getContentSize().width,
+                AXLOG("tests:content size : width = %f, height = %f", normalSprite->getContentSize().width,
                       normalSprite->getContentSize().height);
             }
         });
@@ -939,14 +939,14 @@ bool UIS9NinePatchTest::init()
         playerSprite->setPosition(x, y);
         playerSprite->setContentSize(preferedSize);
         auto capInsets = playerSprite->getCapInsets();
-        CCLOG("player sprite capInset = %g, %g %g, %g", capInsets.origin.x, capInsets.origin.y, capInsets.size.width,
+        AXLOG("player sprite capInset = %g, %g %g, %g", capInsets.origin.x, capInsets.origin.y, capInsets.size.width,
               capInsets.size.height);
         this->addChild(playerSprite);
 
         auto animationBtnSprite = ui::Scale9Sprite::createWithSpriteFrameName("animationbuttonpressed.png");
         animationBtnSprite->setPosition(x - 100, y - 100);
         capInsets = animationBtnSprite->getCapInsets();
-        CCLOG("animationBtnSprite capInset = %g, %g %g, %g", capInsets.origin.x, capInsets.origin.y,
+        AXLOG("animationBtnSprite capInset = %g, %g %g, %g", capInsets.origin.x, capInsets.origin.y,
               capInsets.size.width, capInsets.size.height);
         this->addChild(animationBtnSprite);
 
@@ -954,7 +954,7 @@ bool UIS9NinePatchTest::init()
         monsterSprite->setPosition(x + 100, y - 100);
         capInsets = monsterSprite->getCapInsets();
         monsterSprite->setContentSize(preferedSize);
-        CCLOG("monsterSprite capInset = %g, %g %g, %g", capInsets.origin.x, capInsets.origin.y, capInsets.size.width,
+        AXLOG("monsterSprite capInset = %g, %g %g, %g", capInsets.origin.x, capInsets.origin.y, capInsets.size.width,
               capInsets.size.height);
         this->addChild(monsterSprite);
 
@@ -1174,7 +1174,7 @@ bool UIS9GrayStateOpacityTest::init()
         slider->setMaxPercent(100);
         slider->setPercent(100 * 100.0f / 255.0);
         slider->setPosition(Vec2(winSize.width / 2.0f, winSize.height / 2.0f - 100));
-        slider->addEventListener(CC_CALLBACK_2(UIS9GrayStateOpacityTest::sliderEvent, this));
+        slider->addEventListener(AX_CALLBACK_2(UIS9GrayStateOpacityTest::sliderEvent, this));
         _uiLayer->addChild(slider);
 
         return true;
@@ -1182,7 +1182,7 @@ bool UIS9GrayStateOpacityTest::init()
     return false;
 }
 
-void UIS9GrayStateOpacityTest::sliderEvent(cocos2d::Ref* sender, cocos2d::ui::Slider::EventType type)
+void UIS9GrayStateOpacityTest::sliderEvent(axis::Ref* sender, axis::ui::Slider::EventType type)
 {
     if (type == Slider::EventType::ON_PERCENTAGE_CHANGED)
     {

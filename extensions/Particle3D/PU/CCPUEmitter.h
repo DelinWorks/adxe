@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_EMITTER_H__
-#define __CC_PU_PARTICLE_3D_EMITTER_H__
+#ifndef __AX_PU_PARTICLE_3D_EMITTER_H__
+#define __AX_PU_PARTICLE_3D_EMITTER_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
@@ -35,13 +35,13 @@
 #include <vector>
 #include <string>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 struct PUParticle3D;
 class PUParticleSystem3D;
 /**
  * 3d particle emitter
  */
-class CC_EX_DLL PUEmitter : public Particle3DEmitter
+class AX_EX_DLL PUEmitter : public Particle3DEmitter
 {
     friend class PUParticleSystem3D;
 
@@ -576,6 +576,6 @@ protected:
     bool _isMarkedForEmission;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

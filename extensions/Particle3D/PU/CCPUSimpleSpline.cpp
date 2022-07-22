@@ -27,7 +27,7 @@
 #include "CCPUSimpleSpline.h"
 #include "base/ccMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 //---------------------------------------------------------------------
 PUSimpleSpline::PUSimpleSpline()
 {
@@ -82,7 +82,7 @@ Vec3 PUSimpleSpline::interpolate(float t) const
 Vec3 PUSimpleSpline::interpolate(unsigned int fromIndex, float t) const
 {
     // Bounds check
-    CCASSERT(fromIndex < _points.size(), "fromIndex out of bounds");
+    AXASSERT(fromIndex < _points.size(), "fromIndex out of bounds");
 
     if ((fromIndex + 1) == _points.size())
     {
@@ -204,7 +204,7 @@ void PUSimpleSpline::recalcTangents()
 //---------------------------------------------------------------------
 const Vec3& PUSimpleSpline::getPoint(unsigned short index) const
 {
-    CCASSERT(index < _points.size(), "Point index is out of bounds!!");
+    AXASSERT(index < _points.size(), "Point index is out of bounds!!");
 
     return _points[index];
 }
@@ -222,7 +222,7 @@ void PUSimpleSpline::clear()
 //---------------------------------------------------------------------
 void PUSimpleSpline::updatePoint(unsigned short index, const Vec3& value)
 {
-    CCASSERT(index < _points.size(), "Point index is out of bounds!!");
+    AXASSERT(index < _points.size(), "Point index is out of bounds!!");
 
     _points[index] = value;
     if (_autoCalc)
@@ -235,4 +235,4 @@ void PUSimpleSpline::setAutoCalculate(bool autoCalc)
 {
     _autoCalc = autoCalc;
 }
-NS_CC_END
+NS_AX_END

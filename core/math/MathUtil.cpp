@@ -22,7 +22,7 @@ This file was modified to fit the cocos2d-x project
 #include "math/MathUtil.h"
 #include "base/ccMacros.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
 #    include <cpu-features.h>
 #endif
 
@@ -33,7 +33,7 @@ This file was modified to fit the cocos2d-x project
 //#define USE_SSE           : SSE code used
 //#define INCLUDE_SSE       : SSE code included
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS)
 #    if defined(__arm64__)
 #        define USE_NEON64
 #        define INCLUDE_NEON64
@@ -42,7 +42,7 @@ This file was modified to fit the cocos2d-x project
 #        define INCLUDE_NEON32
 #    else
 #    endif
-#elif (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#elif (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
 #    if defined(__arm64__) || defined(__aarch64__)
 #        define USE_NEON64
 #        define INCLUDE_NEON64
@@ -73,7 +73,7 @@ This file was modified to fit the cocos2d-x project
 
 #include "math/MathUtil.inl"
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 void MathUtil::smooth(float* x, float target, float elapsedTime, float responseTime)
 {
@@ -105,7 +105,7 @@ bool MathUtil::isNeon32Enabled()
 {
 #ifdef USE_NEON32
     return true;
-#elif (defined(INCLUDE_NEON32) && (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID))
+#elif (defined(INCLUDE_NEON32) && (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID))
     class AnrdoidNeonChecker
     {
     public:
@@ -298,4 +298,4 @@ void MathUtil::crossVec3(const float* v1, const float* v2, float* dst)
 #endif
 }
 
-NS_CC_MATH_END
+NS_AX_MATH_END

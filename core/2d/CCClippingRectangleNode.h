@@ -30,7 +30,7 @@
 #include "2d/CCNode.h"
 #include "renderer/CCCallbackCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _2d
@@ -43,7 +43,7 @@ NS_CC_BEGIN
  The region of ClippingRectangleNode doesn't support any transform except scale.
 @js NA
 */
-class CC_DLL ClippingRectangleNode : public Node
+class AX_DLL ClippingRectangleNode : public Node
 {
 public:
     /**
@@ -102,4 +102,4 @@ protected:
 // end of _2d group
 /// @}
 
-NS_CC_END
+NS_AX_END

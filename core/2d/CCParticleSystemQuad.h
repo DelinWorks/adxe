@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include "2d/CCParticleSystem.h"
 #include "renderer/CCQuadCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class SpriteFrame;
 class EventCustom;
@@ -55,7 +55,7 @@ Special features and Limitations:
 @since v0.8
 @js NA
 */
-class CC_DLL ParticleSystemQuad : public ParticleSystem
+class AX_DLL ParticleSystemQuad : public ParticleSystem
 {
 public:
     /** Creates a Particle Emitter.
@@ -176,10 +176,10 @@ protected:
     backend::UniformLocation _textureLocation;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(ParticleSystemQuad);
+    AX_DISALLOW_COPY_AND_ASSIGN(ParticleSystemQuad);
 };
 
 // end of _2d group
 /// @}
 
-NS_CC_END
+NS_AX_END

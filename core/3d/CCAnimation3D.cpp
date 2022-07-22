@@ -27,7 +27,7 @@
 #include "3d/CCBundle3D.h"
 #include "platform/CCFileUtils.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 Animation3D* Animation3D::create(std::string_view fileName, std::string_view animationName)
 {
@@ -44,7 +44,7 @@ Animation3D* Animation3D::create(std::string_view fileName, std::string_view ani
     }
     else
     {
-        CC_SAFE_DELETE(animation);
+        AX_SAFE_DELETE(animation);
     }
 
     return animation;
@@ -86,16 +86,16 @@ Animation3D::~Animation3D()
     for (const auto& itor : _boneCurves)
     {
         Curve* curve = itor.second;
-        CC_SAFE_DELETE(curve);
+        AX_SAFE_DELETE(curve);
     }
 }
 
 Animation3D::Curve::Curve() : translateCurve(nullptr), rotCurve(nullptr), scaleCurve(nullptr) {}
 Animation3D::Curve::~Curve()
 {
-    CC_SAFE_RELEASE_NULL(translateCurve);
-    CC_SAFE_RELEASE_NULL(rotCurve);
-    CC_SAFE_RELEASE_NULL(scaleCurve);
+    AX_SAFE_RELEASE_NULL(translateCurve);
+    AX_SAFE_RELEASE_NULL(rotCurve);
+    AX_SAFE_RELEASE_NULL(scaleCurve);
 }
 
 bool Animation3D::init(const Animation3DData& data)
@@ -196,7 +196,7 @@ Animation3DCache* Animation3DCache::getInstance()
 }
 void Animation3DCache::destroyInstance()
 {
-    CC_SAFE_DELETE(_cacheInstance);
+    AX_SAFE_DELETE(_cacheInstance);
 }
 
 Animation3D* Animation3DCache::getAnimation(std::string_view key)
@@ -220,9 +220,9 @@ void Animation3DCache::addAnimation(std::string_view key, Animation3D* animation
 
 void Animation3DCache::removeAllAnimations()
 {
-    for (auto itor : _animations)
+    for (auto&& itor : _animations)
     {
-        CC_SAFE_RELEASE(itor.second);
+        AX_SAFE_RELEASE(itor.second);
     }
     _animations.clear();
 }
@@ -246,4 +246,4 @@ Animation3DCache::~Animation3DCache()
     removeAllAnimations();
 }
 
-NS_CC_END
+NS_AX_END

@@ -35,7 +35,7 @@ THE SOFTWARE.
 #include "base/CCRef.h"
 #include "base/CCMap.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup global
@@ -47,10 +47,10 @@ class ProfilingTimer;
 /** Profiler
  cocos2d builtin profiler.
 
- To use it, enable set the CC_ENABLE_PROFILERS=1 in the ccConfig.h file
+ To use it, enable set the AX_ENABLE_PROFILERS=1 in the ccConfig.h file
  */
 
-class CC_DLL Profiler : public Ref
+class AX_DLL Profiler : public Ref
 {
 public:
     /**
@@ -140,9 +140,9 @@ public:
     int32_t numberOfCalls;
 };
 
-extern void CC_DLL ProfilingBeginTimingBlock(const char* timerName);
-extern void CC_DLL ProfilingEndTimingBlock(const char* timerName);
-extern void CC_DLL ProfilingResetTimingBlock(const char* timerName);
+extern void AX_DLL ProfilingBeginTimingBlock(const char* timerName);
+extern void AX_DLL ProfilingEndTimingBlock(const char* timerName);
+extern void AX_DLL ProfilingResetTimingBlock(const char* timerName);
 
 /*
  * cocos2d profiling categories
@@ -156,7 +156,7 @@ extern bool kProfilerCategoryParticles;
 // end of global group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 /// @endcond
 #endif  // __SUPPORT_CCPROFILING_H__

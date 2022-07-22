@@ -24,15 +24,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_SLAVE_EMITTER_H__
-#define __CC_PU_PARTICLE_3D_SLAVE_EMITTER_H__
+#ifndef __AX_PU_PARTICLE_3D_SLAVE_EMITTER_H__
+#define __AX_PU_PARTICLE_3D_SLAVE_EMITTER_H__
 
 #include "extensions/Particle3D/PU/CCPUEmitter.h"
 #include "extensions/Particle3D/PU/CCPUListener.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 // FIXME
-class CC_EX_DLL PUSlaveEmitter : public PUEmitter, public PUListener
+class AX_EX_DLL PUSlaveEmitter : public PUEmitter, public PUListener
 {
 public:
     static PUSlaveEmitter* create();
@@ -95,6 +95,6 @@ protected:
     Vec3 _masterDirection;
     bool _masterEmitterNameSet;
 };
-NS_CC_END
+NS_AX_END
 
 #endif

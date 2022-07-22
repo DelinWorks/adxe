@@ -37,7 +37,7 @@
 #include "renderer/CCGroupCommand.h"
 #include "renderer/CCCallbackCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Technique;
 class Node;
@@ -51,7 +51,7 @@ class ProgramState;
 class Buffer;
 }  // namespace backend
 
-class CC_DLL Pass : public Ref
+class AX_DLL Pass : public Ref
 {
     friend class Material;
     friend class Technique;
@@ -185,4 +185,4 @@ private:
     bool _rendererDepthWrite                       = false;
 };
 
-NS_CC_END
+NS_AX_END

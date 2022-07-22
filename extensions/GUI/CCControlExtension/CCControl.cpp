@@ -37,7 +37,7 @@
 #include "base/CCEventDispatcher.h"
 #include "base/CCEventListenerTouch.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 Control::Control()
     : _enabled(false)
@@ -58,7 +58,7 @@ Control* Control::create()
     }
     else
     {
-        CC_SAFE_DELETE(pRet);
+        AX_SAFE_DELETE(pRet);
         return nullptr;
     }
 }
@@ -76,10 +76,10 @@ bool Control::init()
         auto dispatcher    = Director::getInstance()->getEventDispatcher();
         auto touchListener = EventListenerTouchOneByOne::create();
         touchListener->setSwallowTouches(true);
-        touchListener->onTouchBegan     = CC_CALLBACK_2(Control::onTouchBegan, this);
-        touchListener->onTouchMoved     = CC_CALLBACK_2(Control::onTouchMoved, this);
-        touchListener->onTouchEnded     = CC_CALLBACK_2(Control::onTouchEnded, this);
-        touchListener->onTouchCancelled = CC_CALLBACK_2(Control::onTouchCancelled, this);
+        touchListener->onTouchBegan     = AX_CALLBACK_2(Control::onTouchBegan, this);
+        touchListener->onTouchMoved     = AX_CALLBACK_2(Control::onTouchMoved, this);
+        touchListener->onTouchEnded     = AX_CALLBACK_2(Control::onTouchEnded, this);
+        touchListener->onTouchCancelled = AX_CALLBACK_2(Control::onTouchCancelled, this);
 
         dispatcher->addEventListenerWithSceneGraphPriority(touchListener, this);
 
@@ -117,10 +117,10 @@ void Control::sendActionsForControlEvents(EventType controlEvents)
             {
                 invocation->invoke(this);
             }
-#if CC_ENABLE_SCRIPT_BINDING
-            cocos2d::BasicScriptData data(this, (void*)&controlEvents);
-            cocos2d::ScriptEvent event(cocos2d::kControlEvent, (void*)&data);
-            auto scriptEngine = cocos2d::ScriptEngineManager::getInstance()->getScriptEngine();
+#if AX_ENABLE_SCRIPT_BINDING
+            axis::BasicScriptData data(this, (void*)&controlEvents);
+            axis::ScriptEvent event(axis::kControlEvent, (void*)&data);
+            auto scriptEngine = axis::ScriptEngineManager::getInstance()->getScriptEngine();
             if (scriptEngine)
                 scriptEngine->sendEvent(event);
 #endif
@@ -226,7 +226,7 @@ void Control::setOpacityModifyRGB(bool bOpacityModifyRGB)
 {
     _isOpacityModifyRGB = bOpacityModifyRGB;
 
-    for (auto child : _children)
+    for (auto&& child : _children)
     {
         child->setOpacityModifyRGB(bOpacityModifyRGB);
     }
@@ -344,4 +344,4 @@ Control::EventType operator|(Control::EventType a, Control::EventType b)
     return static_cast<Control::EventType>(static_cast<int>(a) | static_cast<int>(b));
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

@@ -37,7 +37,7 @@ namespace cocostudio
 class CocoLoader;
 struct stExpCocoNode;
 
-class CCS_DLL WidgetReader : public cocos2d::Ref, public WidgetReaderProtocol, public NodeReaderProtocol
+class CCS_DLL WidgetReader : public axis::Ref, public WidgetReaderProtocol, public NodeReaderProtocol
 {
     DECLARE_CLASS_NODE_READER_INFO
 
@@ -47,37 +47,37 @@ public:
 
     static WidgetReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
-    virtual void setPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options);
+    virtual void setPropsFromJsonDictionary(axis::ui::Widget* widget, const rapidjson::Value& options);
 
-    virtual void setColorPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options);
+    virtual void setColorPropsFromJsonDictionary(axis::ui::Widget* widget, const rapidjson::Value& options);
 
-    virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* pCocoNode);
+    virtual void setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* pCocoNode);
 
     /* flatbuffers refactoring */
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
                                                                          flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* widgetOptions);
-    void setLayoutComponentPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* widgetOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* widgetOptions);
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* widgetOptions);
+    void setLayoutComponentPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* widgetOptions);
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* widgetOptions);
     /**/
 
 protected:
     std::string getResourcePath(const rapidjson::Value& dict,
                                 std::string_view key,
-                                cocos2d::ui::Widget::TextureResType texType);
-    void setAnchorPointForWidget(cocos2d::ui::Widget* widget, const rapidjson::Value& options);
+                                axis::ui::Widget::TextureResType texType);
+    void setAnchorPointForWidget(axis::ui::Widget* widget, const rapidjson::Value& options);
 
     std::string getResourcePath(CocoLoader* cocoLoader,
                                 stExpCocoNode* pCocoNode,
-                                cocos2d::ui::Widget::TextureResType texType);
+                                axis::ui::Widget::TextureResType texType);
 
-    std::string getResourcePath(std::string_view path, cocos2d::ui::Widget::TextureResType texType);
+    std::string getResourcePath(std::string_view path, axis::ui::Widget::TextureResType texType);
 
-    void beginSetBasicProperties(cocos2d::ui::Widget* widget);
-    void endSetBasicProperties(cocos2d::ui::Widget* widget);
+    void beginSetBasicProperties(axis::ui::Widget* widget);
+    void endSetBasicProperties(axis::ui::Widget* widget);
 
     std::function<int(std::string_view)> valueToInt;
     std::function<bool(std::string_view)> valueToBool;
@@ -89,11 +89,11 @@ protected:
     float _positionPercentY;
     float _width;
     float _height;
-    cocos2d::Color3B _color;
+    axis::Color3B _color;
     int _opacity;
-    cocos2d::Vec2 _position;
+    axis::Vec2 _position;
     bool _isAdaptScreen;
-    cocos2d::Vec2 _originalAnchorPoint;
+    axis::Vec2 _originalAnchorPoint;
 };
 
 // property const define
@@ -141,7 +141,7 @@ extern const char* P_AnchorPointY;
 extern const char* P_ResourceType;
 extern const char* P_Path;
 
-#define CC_BASIC_PROPERTY_BINARY_READER                                                             \
+#define AX_BASIC_PROPERTY_BINARY_READER                                                             \
     if (key == P_IgnoreSize)                                                                        \
     {                                                                                               \
         widget->ignoreContentAdaptWithSize(valueToBool(value));                                     \
@@ -241,7 +241,7 @@ extern const char* P_Path;
             else if (innerKey == P_Gravity)                                                         \
             {                                                                                       \
                 linearParameter->setGravity(                                                        \
-                    (cocos2d::ui::LinearLayoutParameter::LinearGravity)valueToInt(innerValue));     \
+                    (axis::ui::LinearLayoutParameter::LinearGravity)valueToInt(innerValue));     \
             }                                                                                       \
             else if (innerKey == P_RelativeName)                                                    \
             {                                                                                       \
@@ -254,7 +254,7 @@ extern const char* P_Path;
             else if (innerKey == P_Align)                                                           \
             {                                                                                       \
                 relativeParameter->setAlign(                                                        \
-                    (cocos2d::ui::RelativeLayoutParameter::RelativeAlign)valueToInt(innerValue));   \
+                    (axis::ui::RelativeLayoutParameter::RelativeAlign)valueToInt(innerValue));   \
             }                                                                                       \
             else if (innerKey == P_MarginLeft)                                                      \
             {                                                                                       \
@@ -287,7 +287,7 @@ extern const char* P_Path;
         }                                                                                           \
     }
 
-#define CC_COLOR_PROPERTY_BINARY_READER                                               \
+#define AX_COLOR_PROPERTY_BINARY_READER                                               \
     else if (key == P_Opacity) { _opacity = valueToInt(value); }                      \
     else if (key == P_ColorR) { _color.r = valueToInt(value); }                       \
     else if (key == P_ColorG) { _color.g = valueToInt(value); }                       \

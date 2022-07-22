@@ -32,9 +32,9 @@
 
 #include "base/CCConsole.h"
 
-// #define CC_DOWNLOADER_DEBUG
-#if defined(CC_DOWNLOADER_DEBUG) || defined(_DEBUG)
-#    define DLLOG(format, ...) cocos2d::log(format, ##__VA_ARGS__)
+// #define AX_DOWNLOADER_DEBUG
+#if defined(AX_DOWNLOADER_DEBUG) || defined(_DEBUG)
+#    define DLLOG(format, ...) axis::log(format, ##__VA_ARGS__)
 #else
 #    define DLLOG(...) \
         do             \
@@ -42,13 +42,13 @@
         } while (0)
 #endif
 
-namespace cocos2d
-{
+NS_AX_BEGIN
+
 namespace network
 {
 class DownloadTask;
 
-class CC_DLL IDownloadTask
+class AX_DLL IDownloadTask
 {
 public:
     virtual ~IDownloadTask() {}
@@ -75,4 +75,4 @@ public:
 };
 
 }  // namespace network
-}  // namespace cocos2d
+NS_AX_END  // namespace axis

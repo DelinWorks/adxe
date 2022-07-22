@@ -23,8 +23,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#ifndef __CC_FILEUTILS_H__
-#define __CC_FILEUTILS_H__
+#ifndef __AX_FILEUTILS_H__
+#define __AX_FILEUTILS_H__
 
 #include <string>
 #include <vector>
@@ -45,7 +45,7 @@ THE SOFTWARE.
 #define AX_PC_RESOURCES_DIR "Resources/"
 #define AX_PC_RESOURCES_DIR_LEN (sizeof("Resources/") - 1)
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup platform
@@ -98,7 +98,7 @@ public:
 };
 
 /** Helper class to handle file operations. */
-class CC_DLL FileUtils
+class AX_DLL FileUtils
 {
 public:
     /**
@@ -187,7 +187,7 @@ public:
      *      - does not truncate the string when '\0' is found (returned string of getContents may have '\0' in the
      * middle.).
      *
-     *  The template version of can accept cocos2d::Data, std::basic_string and std::vector.
+     *  The template version of can accept axis::Data, std::basic_string and std::vector.
      *
      *  @code
      *  std::string sbuf;
@@ -208,7 +208,7 @@ public:
      * code.
      *
      *  @code
-     *  NS_CC_BEGIN // ResizableBufferAdapter needed in cocos2d namespace.
+     *  NS_AX_BEGIN // ResizableBufferAdapter needed in cocos2d namespace.
      *  template<>
      *  class ResizableBufferAdapter<AlreadyExistsBuffer> : public ResizableBuffer {
      *  public:
@@ -221,7 +221,7 @@ public:
      *      virtual void* buffer() const override {
      *          // your code here
      *      }
-     *  NS_CC_END
+     *  NS_AX_END
      *  @endcode
      *
      *  @param[in]  filename The resource file name which contains the path.
@@ -941,6 +941,6 @@ protected:
 // end of support group
 /** @} */
 
-NS_CC_END
+NS_AX_END
 
-#endif  // __CC_FILEUTILS_H__
+#endif  // __AX_FILEUTILS_H__

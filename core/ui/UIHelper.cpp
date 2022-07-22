@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "base/CCDirector.h"
 #include "base/ccUTF8.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -74,7 +74,7 @@ Widget* Helper::seekWidgetByName(Widget* root, std::string_view name)
         return root;
     }
     const auto& arrayRootChildren = root->getChildren();
-    for (auto& subWidget : arrayRootChildren)
+    for (auto&& subWidget : arrayRootChildren)
     {
         Widget* child = dynamic_cast<Widget*>(subWidget);
         if (child)
@@ -101,7 +101,7 @@ Widget* Helper::seekActionWidgetByActionTag(Widget* root, int tag)
         return root;
     }
     const auto& arrayRootChildren = root->getChildren();
-    for (auto& subWidget : arrayRootChildren)
+    for (auto&& subWidget : arrayRootChildren)
     {
         Widget* child = dynamic_cast<Widget*>(subWidget);
         if (child)
@@ -123,18 +123,18 @@ std::string Helper::getSubStringOfUTF8String(std::string_view str,
     std::u32string utf32;
     if (!StringUtils::UTF8ToUTF32(str, utf32))
     {
-        CCLOGERROR("Can't convert string to UTF-32: %s", str.data());
+        AXLOGERROR("Can't convert string to UTF-32: %s", str.data());
         return "";
     }
     if (utf32.size() < start)
     {
-        CCLOGERROR("'start' is out of range: %d, %s", static_cast<int32_t>(start), str.data());
+        AXLOGERROR("'start' is out of range: %d, %s", static_cast<int32_t>(start), str.data());
         return "";
     }
     std::string result;
     if (!StringUtils::UTF32ToUTF8(utf32.substr(start, length), result))
     {
-        CCLOGERROR("Can't convert internal UTF-32 string to UTF-8: %s", str.data());
+        AXLOGERROR("Can't convert internal UTF-32 string to UTF-8: %s", str.data());
         return "";
     }
     return result;
@@ -144,14 +144,14 @@ void Helper::changeLayoutSystemActiveState(bool bActive)
 {
     _activeLayout = bActive;
 }
-void Helper::doLayout(cocos2d::Node* rootNode)
+void Helper::doLayout(axis::Node* rootNode)
 {
     if (!_activeLayout)
     {
         return;
     }
 
-    for (auto& node : rootNode->getChildren())
+    for (auto&& node : rootNode->getChildren())
     {
         auto com     = node->getComponent(__LAYOUT_COMPONENT_NAME);
         Node* parent = node->getParent();
@@ -164,7 +164,7 @@ void Helper::doLayout(cocos2d::Node* rootNode)
     }
 }
 
-Rect Helper::restrictCapInsetRect(const cocos2d::Rect& capInsets, const Vec2& textureSize)
+Rect Helper::restrictCapInsetRect(const axis::Rect& capInsets, const Vec2& textureSize)
 {
     float x      = capInsets.origin.x;
     float y      = capInsets.origin.y;
@@ -205,4 +205,4 @@ Rect Helper::convertBoundingBoxToScreen(Node* node)
 }
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

@@ -36,7 +36,7 @@ THE SOFTWARE.
 #include "2d/CCSpriteFrameCache.h"
 #include "math/FastRNG.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class ParticleBatchNode;
 
@@ -80,7 +80,7 @@ struct EmissionShape
 struct ParticleEmissionMaskDescriptor
 {
     Vec2 size;
-    std::vector<cocos2d::Vec2> points;
+    std::vector<axis::Vec2> points;
 };
 
 /** @struct ParticleAnimationDescriptor
@@ -99,11 +99,11 @@ Structure that contains frame description
 */
 struct ParticleFrameDescriptor
 {
-    cocos2d::Rect rect;
+    axis::Rect rect;
     bool isRotated;
 };
 
-class CC_DLL ParticleData
+class AX_DLL ParticleData
 {
 public:
     float* posx;
@@ -239,7 +239,7 @@ public:
  * Particle emission mask cache.
  * @since axis-1.0.0b8
  */
-class CC_DLL ParticleEmissionMaskCache : public cocos2d::Ref
+class AX_DLL ParticleEmissionMaskCache : public axis::Ref
 {
 public:
     static ParticleEmissionMaskCache* getInstance();
@@ -306,7 +306,7 @@ private:
 
 };
 
-// typedef void (*CC_UPDATE_PARTICLE_IMP)(id, SEL, tParticle*, Vec2);
+// typedef void (*AX_UPDATE_PARTICLE_IMP)(id, SEL, tParticle*, Vec2);
 
 class Texture2D;
 
@@ -354,7 +354,7 @@ emitter.startSpin = 0;
 @endcode
 
 */
-class CC_DLL ParticleSystem : public Node, public TextureProtocol, public PlayableProtocol
+class AX_DLL ParticleSystem : public Node, public TextureProtocol, public PlayableProtocol
 {
 public:
     /** Mode
@@ -1144,7 +1144,7 @@ public:
      *
      * @return Returns true of the index was successfully found and added. Otherwise, false
      */
-    bool addAnimationIndex(cocos2d::SpriteFrame* frame);
+    bool addAnimationIndex(axis::SpriteFrame* frame);
 
     /** Add a particle animation index based on tex coords spicified using a sprite frame.
      * you can specify which index you want to override in this function
@@ -1154,7 +1154,7 @@ public:
      *
      * @return Returns true of the index was successfully found and added. Otherwise, false
      */
-    bool addAnimationIndex(unsigned short index, cocos2d::SpriteFrame* frame);
+    bool addAnimationIndex(unsigned short index, axis::SpriteFrame* frame);
 
     /** Add a particle animation index based on tex coords spicified.
      * you can specify which index you want to override in this function
@@ -1165,13 +1165,13 @@ public:
      *
      * @return Returns true of the index was successfully found and added. Otherwise, false
      */
-    bool addAnimationIndex(unsigned short index, cocos2d::Rect rect, bool rotated = false);
+    bool addAnimationIndex(unsigned short index, axis::Rect rect, bool rotated = false);
 
     /** You can specify what rect is used if an index in an animation descriptor wasn't found.
      *
      * @param rect Rect containting data about tex coords in pixels
      */
-    void setRectForUndefinedIndices(cocos2d::Rect rect) { _undefinedIndexRect = rect; };
+    void setRectForUndefinedIndices(axis::Rect rect) { _undefinedIndexRect = rect; };
 
     /** Add a particle animation descriptor with an index.
      *
@@ -1535,7 +1535,7 @@ protected:
     float _emitCounter;
 
     // Optimization
-    // CC_UPDATE_PARTICLE_IMP    updateParticleImp;
+    // AX_UPDATE_PARTICLE_IMP    updateParticleImp;
     // SEL                        updateParticleSel;
 
     /** weak reference to the SpriteBatchNode that renders the Sprite */
@@ -1647,7 +1647,7 @@ protected:
     /** Wether the animation goes with the time scale of the system or is independent. */
     bool _animationTimescaleInd;
     /** A rect that is used instead when an index is not found */
-    cocos2d::Rect _undefinedIndexRect;
+    axis::Rect _undefinedIndexRect;
     /** does FlippedY variance of each particle */
     int _yCoordFlipped;
 
@@ -1684,12 +1684,12 @@ protected:
     FastRNG _rng;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(ParticleSystem);
+    AX_DISALLOW_COPY_AND_ASSIGN(ParticleSystem);
 };
 
 // end of _2d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  //__CCPARTICLE_SYSTEM_H__

@@ -43,7 +43,7 @@
 #include "math/Mat4.h"
 #include "platform/CCPlatformMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Technique;
 class Pass;
@@ -58,7 +58,7 @@ class ProgramState;
 }
 
 /// Material
-class CC_DLL Material : public Ref
+class AX_DLL Material : public Ref
 {
     friend class Node;
     friend class Technique;
@@ -143,6 +143,18 @@ public:
 
     RenderState* getRenderState() { return &_renderState; }
 
+    /**
+     * Set material primitive draw type
+     * @param primitive Primitive draw type
+     */
+    void setPrimitiveType(axis::backend::PrimitiveType primitive) { _drawPrimitive = primitive; }
+
+    /**
+     * Get material primitive draw type
+     * @return Primitive draw type
+     */
+    axis::backend::PrimitiveType getPrimitiveType() const { return _drawPrimitive; }
+
 protected:
     Material();
     ~Material();
@@ -176,6 +188,9 @@ protected:
 
     std::unordered_map<std::string, int> _textureSlots;
     int _textureSlotIndex = 0;
+
+    axis::backend::PrimitiveType _drawPrimitive =
+        axis::backend::PrimitiveType::TRIANGLE;  // primitive draw type for meshes
 };
 
-NS_CC_END
+NS_AX_END

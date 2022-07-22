@@ -31,11 +31,11 @@
 
 #include "2d/CCComponent.h"
 
-#if CC_USE_3D_PHYSICS
+#if AX_USE_3D_PHYSICS
 
-#    if (CC_ENABLE_BULLET_INTEGRATION)
+#    if (AX_ENABLE_BULLET_INTEGRATION)
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -47,7 +47,7 @@ class Physics3DWorld;
 
 /** @brief Physics3DComponent: A component with 3D physics, you can add a rigid body to it, and then add this component
  * to a node, the node will move and rotate with this rigid body */
-class CC_DLL Physics3DComponent : public cocos2d::Component
+class AX_DLL Physics3DComponent : public axis::Component
 {
     friend class Physics3DWorld;
 
@@ -74,8 +74,8 @@ public:
      * @return created Physics3DComponent
      */
     static Physics3DComponent* create(Physics3DObject* physicsObj,
-                                      const cocos2d::Vec3& translateInPhysics = cocos2d::Vec3::ZERO,
-                                      const cocos2d::Quaternion& rotInPhsyics = cocos2d::Quaternion::ZERO);
+                                      const axis::Vec3& translateInPhysics = axis::Vec3::ZERO,
+                                      const axis::Quaternion& rotInPhsyics = axis::Quaternion::ZERO);
 
     /**
      * set Physics object to the component
@@ -108,7 +108,7 @@ public:
     /**
      * The node's transform in physics object space
      */
-    void setTransformInPhysics(const cocos2d::Vec3& translateInPhysics, const cocos2d::Quaternion& rotInPhsyics);
+    void setTransformInPhysics(const axis::Vec3& translateInPhysics, const axis::Quaternion& rotInPhsyics);
 
     /**
      * synchronization between node and physics is time consuming, you can skip some synchronization using this function
@@ -132,8 +132,8 @@ protected:
 
     void postSimulate();
 
-    cocos2d::Mat4 _transformInPhysics;  // transform in physics space
-    cocos2d::Mat4 _invTransformInPhysics;
+    axis::Mat4 _transformInPhysics;  // transform in physics space
+    axis::Mat4 _invTransformInPhysics;
 
     Physics3DObject* _physics3DObj;
     PhysicsSyncFlag _syncFlag;
@@ -141,10 +141,10 @@ protected:
 
 // end of 3d group
 /// @}
-NS_CC_END
+NS_AX_END
 
-#    endif  // CC_ENABLE_BULLET_INTEGRATION
+#    endif  // AX_ENABLE_BULLET_INTEGRATION
 
-#endif  // CC_USE_3D_PHYSICS
+#endif  // AX_USE_3D_PHYSICS
 
 #endif  // __PHYSICS_3D_COMPONENT_H__

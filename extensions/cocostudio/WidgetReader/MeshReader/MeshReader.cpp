@@ -38,7 +38,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -63,12 +63,12 @@ MeshReader* MeshReader::getInstance()
 
 void MeshReader::purge()
 {
-    CC_SAFE_DELETE(_instanceMeshReader);
+    AX_SAFE_DELETE(_instanceMeshReader);
 }
 
 void MeshReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceMeshReader);
+    AX_SAFE_DELETE(_instanceMeshReader);
 }
 
 Vec2 MeshReader::getVec2Attribute(pugi::xml_attribute attribute) const
@@ -205,7 +205,7 @@ Offset<Table> MeshReader::createOptionsWithFlatBuffers(pugi::xml_node objectData
     return *(Offset<Table>*)(&options);
 }
 
-void MeshReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* sprite3DOptions)
+void MeshReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* sprite3DOptions)
 {
     MeshRenderer* mesh = static_cast<MeshRenderer*>(node);
 

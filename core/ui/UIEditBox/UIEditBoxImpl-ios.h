@@ -27,14 +27,14 @@
 #ifndef __UIEditBoxIMPLIOS_H__
 #define __UIEditBoxIMPLIOS_H__
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS)
 
 #    include "ui/UIEditBox/UIEditBoxImpl-common.h"
 
 @class UIEditBoxImplIOS_objc;
 @class UIFont;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -63,7 +63,7 @@ public:
     virtual void setNativeInputMode(EditBox::InputMode inputMode) override;
     virtual void setNativeInputFlag(EditBox::InputFlag inputFlag) override;
     virtual void setNativeReturnType(EditBox::KeyboardReturnType returnType) override;
-    virtual void setNativeTextHorizontalAlignment(cocos2d::TextHAlignment alignment) override;
+    virtual void setNativeTextHorizontalAlignment(axis::TextHAlignment alignment) override;
     virtual void setNativeText(const char* pText) override;
     virtual void setNativePlaceHolder(const char* pText) override;
     virtual void setNativeVisible(bool visible) override;
@@ -85,8 +85,8 @@ private:
 
 }
 
-NS_CC_END
+NS_AX_END
 
-#endif /* #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS) */
+#endif /* #if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS) */
 
 #endif /* __UIEditBoxIMPLIOS_H__ */

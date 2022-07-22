@@ -23,15 +23,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_RENDERCOMMANDPOOL_H__
-#define __CC_RENDERCOMMANDPOOL_H__
+#ifndef __AX_RENDERCOMMANDPOOL_H__
+#define __AX_RENDERCOMMANDPOOL_H__
 /// @cond DO_NOT_SHOW
 
 #include <list>
 
 #include "platform/CCPlatformMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 template <class T>
 class RenderCommandPool
@@ -42,10 +42,10 @@ public:
     {
         //        if( 0 != _usedPool.size())
         //        {
-        //            CCLOG("All RenderCommand should not be used when Pool is released!");
+        //            AXLOG("All RenderCommand should not be used when Pool is released!");
         //        }
         _freePool.clear();
-        for (auto& allocatedPoolBlock : _allocatedPoolBlocks)
+        for (auto&& allocatedPoolBlock : _allocatedPoolBlocks)
         {
             delete[] allocatedPoolBlock;
             allocatedPoolBlock = nullptr;
@@ -70,7 +70,7 @@ public:
     {
         //        if(_usedPool.find(ptr) == _usedPool.end())
         //        {
-        //            CCLOG("push Back Wrong command!");
+        //            AXLOG("push Back Wrong command!");
         //            return;
         //        }
 
@@ -95,7 +95,7 @@ private:
     // std::set<T*> _usedPool;
 };
 
-NS_CC_END
+NS_AX_END
 
 /// @endcond
 #endif

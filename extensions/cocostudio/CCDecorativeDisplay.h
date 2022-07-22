@@ -34,10 +34,9 @@ THE SOFTWARE.
 #    include "CCColliderDetector.h"
 #endif
 
-namespace cocos2d
-{
+NS_AX_BEGIN
 class Node;
-}
+NS_AX_END
 
 namespace cocostudio
 {
@@ -45,7 +44,7 @@ namespace cocostudio
  *  @js NA
  *  @lua NA
  */
-class CCS_DLL DecorativeDisplay : public cocos2d::Ref
+class CCS_DLL DecorativeDisplay : public axis::Ref
 {
 public:
     static DecorativeDisplay* create();
@@ -56,15 +55,15 @@ public:
 
     virtual bool init();
 
-    virtual void setDisplay(cocos2d::Node* display);
-    virtual cocos2d::Node* getDisplay() const { return _display; }
+    virtual void setDisplay(axis::Node* display);
+    virtual axis::Node* getDisplay() const { return _display; }
 
     virtual void setDisplayData(DisplayData* data)
     {
         if (_displayData != data)
         {
-            CC_SAFE_RETAIN(data);
-            CC_SAFE_RELEASE(_displayData);
+            AX_SAFE_RETAIN(data);
+            AX_SAFE_RELEASE(_displayData);
             _displayData = data;
         }
     }
@@ -75,15 +74,15 @@ public:
     {
         if (_colliderDetector != detector)
         {
-            CC_SAFE_RETAIN(detector);
-            CC_SAFE_RELEASE(_colliderDetector);
+            AX_SAFE_RETAIN(detector);
+            AX_SAFE_RELEASE(_colliderDetector);
             _colliderDetector = detector;
         }
     }
     virtual ColliderDetector* getColliderDetector() const { return _colliderDetector; }
 #endif
 protected:
-    cocos2d::Node* _display;
+    axis::Node* _display;
     DisplayData* _displayData;
 
 #if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT || ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX

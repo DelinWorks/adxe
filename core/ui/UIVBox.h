@@ -29,7 +29,7 @@
 #include "ui/UILayout.h"
 #include "ui/GUIExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup ui
  * @{
@@ -42,7 +42,7 @@ namespace ui
  * VBox is just a convenient wrapper class for vertical layout type.
  * VBox lays out its children in a single vertical column.
  */
-class CC_GUI_DLL VBox : public Layout
+class AX_GUI_DLL VBox : public Layout
 {
 public:
     /**
@@ -81,6 +81,6 @@ public:
 
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__UIVBox__) */

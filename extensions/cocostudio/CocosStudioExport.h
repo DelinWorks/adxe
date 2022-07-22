@@ -7,7 +7,7 @@
 #        include <string.h>
 #    endif
 
-#    if defined(CC_STATIC)
+#    if defined(AX_STATIC)
 #        define CCS_DLL
 #    else
 #        if defined(_USRCCS_DLL)
@@ -32,5 +32,6 @@
 #endif
 
 #include "base/hlookup.h"
+#include "platform/CCPlatformMacros.h"
 
 #endif /* __CCEXTENSIONEXPORT_H__*/

@@ -8,16 +8,16 @@
 #include "base/CCDirector.h"
 
 /// cocos2d singleton objects
-#define CCDIRECTOR cocos2d::Director::getInstance()
+#define CCDIRECTOR axis::Director::getInstance()
 #define CCRUNONGL CCDIRECTOR->getScheduler()->performFunctionInCocosThread
 #define CCEVENTMGR CCDIRECTOR->getEventDispatcher()
 #define CCSCHTASKS CCDIRECTOR->getScheduler()
 #define CCACTIONMGR CCDIRECTOR->getActionManager()
-#define CCFILEUTILS cocos2d::FileUtils::getInstance()
-#define CCAUDIO cocos2d::SimpleAudioEngine::getInstance()
-#define CCAPP cocos2d::CCApplication::getInstance()
+#define CCFILEUTILS axis::FileUtils::getInstance()
+#define CCAUDIO axis::SimpleAudioEngine::getInstance()
+#define CCAPP axis::CCApplication::getInstance()
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 #ifdef _WIN32
 #    define nxbeep(t) MessageBeep(t)
@@ -44,40 +44,40 @@ static Label* createLabel(std::string_view text,
 
 static bool engine_inj_checkVisibility(Node* theNode)
 {
-    // CC_ASSERT(theNode != NULL);
+    // AX_ASSERT(theNode != NULL);
     bool visible = false;
     for (Node* ptr = theNode; (ptr != nullptr && (visible = ptr->isVisible())); ptr = ptr->getParent())
         ;
     return visible;
 }
 
-static bool engine_inj_containsTouchPoint(cocos2d::Node* target, cocos2d::Touch* touch)
+static bool engine_inj_containsTouchPoint(axis::Node* target, axis::Touch* touch)
 {
     assert(target != nullptr);
 
-    cocos2d::Point pt = target->convertTouchToNodeSpace(touch);
+    axis::Point pt = target->convertTouchToNodeSpace(touch);
 
     const Vec2& size = target->getContentSize();
 
-    cocos2d::Rect rc(0, 0, size.width, size.height);
+    axis::Rect rc(0, 0, size.width, size.height);
 
     bool contains = (rc.containsPoint(pt));
 
-    // CCLOG("check %#x coordinate:(%f, %f), contains:%d", target, pt.x, pt.y, contains);
+    // AXLOG("check %#x coordinate:(%f, %f), contains:%d", target, pt.x, pt.y, contains);
     return contains;
 }
 
-static bool engine_inj_containsPoint(cocos2d::Node* target, const cocos2d::Vec2& worldPoint)
+static bool engine_inj_containsPoint(axis::Node* target, const axis::Vec2& worldPoint)
 {
-    cocos2d::Point pt = target->convertToNodeSpace(worldPoint);
+    axis::Point pt = target->convertToNodeSpace(worldPoint);
 
     const Vec2& size = target->getContentSize();
 
-    cocos2d::Rect rc(0, 0, size.width, size.height);
+    axis::Rect rc(0, 0, size.width, size.height);
 
     bool contains = (rc.containsPoint(pt));
 
-    // CCLOG("check %#x coordinate:(%f, %f), contains:%d", target, pt.x, pt.y, contains);
+    // AXLOG("check %#x coordinate:(%f, %f), contains:%d", target, pt.x, pt.y, contains);
     return contains;
 }
 
@@ -126,7 +126,7 @@ static int _calcCharCount(const char* text)
     char ch = 0;
     while ((ch = *text) != 0x0)
     {
-        CC_BREAK_IF(!ch);
+        AX_BREAK_IF(!ch);
 
         if (0x80 != (0xC0 & ch))
         {
@@ -145,7 +145,7 @@ static int _truncateUTF8String(const char* text, int limit, int& nb)
     nb      = 0;
     while ((ch = *text) != 0x0)
     {
-        CC_BREAK_IF(!ch || n > limit);
+        AX_BREAK_IF(!ch || n > limit);
 
         if (0x80 != (0xC0 & ch))
         {
@@ -281,7 +281,7 @@ TextFieldEx* TextFieldEx::create(std::string_view placeholder,
         }
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    AX_SAFE_DELETE(ret);
     return nullptr;
 }
 
@@ -515,7 +515,7 @@ void TextFieldEx::keyboardDidHide(IMEKeyboardNotificationInfo& /*info*/)
 
 void TextFieldEx::openIME(void)
 {
-    CCLOG("TextFieldEx:: openIME");
+    AXLOG("TextFieldEx:: openIME");
     this->attachWithIME();
     __updateCursorPosition();
     __showCursor();
@@ -526,7 +526,7 @@ void TextFieldEx::openIME(void)
 
 void TextFieldEx::closeIME(void)
 {
-    CCLOG("TextFieldEx:: closeIME");
+    AXLOG("TextFieldEx:: closeIME");
     __hideCursor();
     this->detachWithIME();
 
@@ -906,7 +906,7 @@ void TextFieldEx::__initCursor(int height, int width, const Color4B& color)
     this->addChild(this->cursor);
 
     this->cursor->setPosition(Point(0, this->getContentSize().height / 2));
-    // nodes_layout::setNodeLB(this->cursor, cocos2d::Point::ZERO);
+    // nodes_layout::setNodeLB(this->cursor, axis::Point::ZERO);
 
     /*CCAction* blink = CCRepeatForever::create(
         (CCActionInterval *)CCSequence::create(CCFadeOut::create(0.25f),
@@ -1062,6 +1062,6 @@ void TextFieldEx::__moveCursorTo(float x)
 }
 };  // namespace ui
 
-NS_CC_END
+NS_AX_END
 
 #endif

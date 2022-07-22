@@ -27,7 +27,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -75,7 +75,7 @@ void CustomGUIReader::init(std::string& className, int createFunc, int setPropsF
     ObjectFactory* factoryCreate = ObjectFactory::getInstance();
     ObjectFactory::TInfo t;
     t._class = className;
-    t._func  = CC_CALLBACK_0(CustomGUIReader::createInstance, this);
+    t._func  = AX_CALLBACK_0(CustomGUIReader::createInstance, this);
     factoryCreate->registerType(t);
 
     auto guiReader            = GUIReader::getInstance();
@@ -86,7 +86,7 @@ void CustomGUIReader::init(std::string& className, int createFunc, int setPropsF
 }
 
 void CustomGUIReader::setCustomProps(std::string_view classType,
-                                     cocos2d::Ref* widget,
+                                     axis::Ref* widget,
                                      const rapidjson::Value& customOptions)
 {
     if (_setPropsFunc != 0)
@@ -97,7 +97,7 @@ void CustomGUIReader::setCustomProps(std::string_view classType,
 
         auto stack = LuaEngine::getInstance()->getLuaStack();
         stack->pushString(classType);
-        stack->pushObject(widget, "cc.Ref");
+        stack->pushObject(widget, "ax.Ref");
         stack->pushString(buffer.GetString(), static_cast<int>(buffer.GetSize()));
         stack->executeFunctionByHandler(_setPropsFunc, 3);
     }

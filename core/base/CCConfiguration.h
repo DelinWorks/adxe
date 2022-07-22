@@ -38,7 +38,7 @@ THE SOFTWARE.
  * @addtogroup base
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class EventCustom;
 
@@ -47,7 +47,7 @@ class EventCustom;
  * @since v0.99.0
  * @js NA
  */
-class CC_DLL Configuration : public Ref
+class AX_DLL Configuration : public Ref
 {
 public:
     /** Returns a shared instance of Configuration.
@@ -281,7 +281,7 @@ protected:
     EventCustom* _loadedEvent;
 };
 
-NS_CC_END
+NS_AX_END
 // end of base group
 /// @}
 

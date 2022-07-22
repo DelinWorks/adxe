@@ -27,7 +27,7 @@
 #include "3d/CCBundle3D.h"
 #include "3d/CCSkeleton3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 static int PALETTE_ROWS = 3;
 
@@ -36,7 +36,7 @@ MeshSkin::MeshSkin() : _rootBone(nullptr), _skeleton(nullptr) {}
 MeshSkin::~MeshSkin()
 {
     removeAllBones();
-    CC_SAFE_RELEASE(_skeleton);
+    AX_SAFE_RELEASE(_skeleton);
 }
 
 MeshSkin* MeshSkin::create(Skeleton3D* skeleton,
@@ -47,7 +47,7 @@ MeshSkin* MeshSkin::create(Skeleton3D* skeleton,
     skin->_skeleton = skeleton;
     skeleton->retain();
 
-    CCASSERT(boneNames.size() == invBindPose.size(), "bone names' num should equals to invBindPose's num");
+    AXASSERT(boneNames.size() == invBindPose.size(), "bone names' num should equals to invBindPose's num");
     for (const auto& it : boneNames)
     {
         auto bone = skeleton->getBoneByName(it);
@@ -103,7 +103,7 @@ Vec4* MeshSkin::getMatrixPalette()
     _matrixPalette.resize(_skinBones.size() * PALETTE_ROWS);
     int i = 0, paletteIndex = 0;
     static Mat4 t;
-    for (auto it : _skinBones)
+    for (auto&& it : _skinBones)
     {
         Mat4::multiply(it->getWorldMat(), _invBindPoses[i++], &t);
         _matrixPalette[paletteIndex++].set(t.m[0], t.m[4], t.m[8], t.m[12]);
@@ -127,7 +127,7 @@ ssize_t MeshSkin::getMatrixPaletteSizeInBytes() const
 void MeshSkin::removeAllBones()
 {
     _skinBones.clear();
-    CC_SAFE_RELEASE(_rootBone);
+    AX_SAFE_RELEASE(_rootBone);
 }
 
 void MeshSkin::addSkinBone(Bone3D* bone)
@@ -161,4 +161,4 @@ const Mat4& MeshSkin::getInvBindPose(const Bone3D* bone)
     return Mat4::IDENTITY;
 }
 
-NS_CC_END
+NS_AX_END

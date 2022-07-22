@@ -1,10 +1,10 @@
 #include "JoystickScene.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 JoystickScene::~JoystickScene()
 {
-    CC_SAFE_RELEASE(_joystick);
+    AX_SAFE_RELEASE(_joystick);
 }
 
 void JoystickScene::continueInit()

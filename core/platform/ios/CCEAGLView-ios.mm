@@ -69,7 +69,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 #import "base/CCIMEDispatcher.h"
 #import "platform/ios/CCInputView-ios.h"
 
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
 #    import <Metal/Metal.h>
 #    import "renderer/backend/metal/DeviceMTL.h"
 #    import "renderer/backend/metal/UtilsMTL.h"
@@ -94,7 +94,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 @synthesize surfaceSize = size_;
 @synthesize pixelFormat = pixelformat_, depthFormat = depthFormat_;
-#if !defined(CC_USE_METAL)
+#if !defined(AX_USE_METAL)
 @synthesize context = context_;
 #endif
 @synthesize multiSampling            = multiSampling_;
@@ -104,7 +104,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 + (Class)layerClass
 {
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
     return [CAMetalLayer class];
 #else
     return [CAEAGLLayer class];
@@ -190,18 +190,18 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
             self.contentScaleFactor = [[UIScreen mainScreen] scale];
         }
 
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
         id<MTLDevice> device = MTLCreateSystemDefaultDevice();
         if (!device)
         {
-            CCLOG("Doesn't support metal.");
+            AXLOG("Doesn't support metal.");
             return nil;
         }
         CAMetalLayer* metalLayer   = (CAMetalLayer*)[self layer];
         metalLayer.device          = device;
         metalLayer.pixelFormat     = MTLPixelFormatBGRA8Unorm;
         metalLayer.framebufferOnly = YES;
-        cocos2d::backend::DeviceMTL::setCAMetalLayer(metalLayer);
+        axis::backend::DeviceMTL::setCAMetalLayer(metalLayer);
 #else
         pixelformat_        = format;
         depthFormat_        = depth;
@@ -224,7 +224,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     if ((self = [super initWithCoder:aDecoder]))
     {
         self.textInputView = [[CCInputView alloc] initWithCoder:aDecoder];
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
         size_ = [self bounds].size;
 #else
         CAEAGLLayer* eaglLayer = (CAEAGLLayer*)[self layer];
@@ -258,7 +258,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     return (int)bound.height * self.contentScaleFactor;
 }
 
-#if !defined(CC_USE_METAL)
+#if !defined(AX_USE_METAL)
 - (BOOL)setupSurfaceWithSharegroup:(EAGLSharegroup*)sharegroup
 {
     CAEAGLLayer* eaglLayer = (CAEAGLLayer*)self.layer;
@@ -296,7 +296,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];  // remove keyboard notification
-#if !defined(CC_USE_METAL)
+#if !defined(AX_USE_METAL)
     [renderer_ release];
 #endif
     [self.textInputView release];
@@ -305,14 +305,14 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 - (void)layoutSubviews
 {
-    if (!cocos2d::Director::getInstance()->isValid())
+    if (!axis::Director::getInstance()->isValid())
         return;
 
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
     size_ = [self bounds].size;
     size_.width *= self.contentScaleFactor;
     size_.height *= self.contentScaleFactor;
-    cocos2d::backend::UtilsMTL::resizeDefaultAttachmentTexture(size_.width, size_.height);
+    axis::backend::UtilsMTL::resizeDefaultAttachmentTexture(size_.width, size_.height);
 #else
     [renderer_ resizeFromLayer:(CAEAGLLayer*)self.layer];
     size_ = [renderer_ backingSize];
@@ -320,20 +320,20 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     // Issue #914 #924
     //     Director *director = [Director sharedDirector];
     //     [director reshapeProjection:size_];
-    cocos2d::Size size;
+    axis::Size size;
     size.width  = size_.width;
     size.height = size_.height;
-    // cocos2d::Director::getInstance()->reshapeProjection(size);
+    // axis::Director::getInstance()->reshapeProjection(size);
 #endif
 
     // Avoid flicker. Issue #350
     if ([NSThread isMainThread])
     {
-        cocos2d::Director::getInstance()->drawScene();
+        axis::Director::getInstance()->drawScene();
     }
 }
 
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
 - (void)swapBuffers
 {}
 #else
@@ -385,10 +385,10 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
     if (![context_ presentRenderbuffer:GL_RENDERBUFFER])
     {
-        //         CCLOG(@"cocos2d: Failed to swap renderbuffer in %s\n", __FUNCTION__);
+        //         AXLOG(@"cocos2d: Failed to swap renderbuffer in %s\n", __FUNCTION__);
     }
 
-#    if COCOS2D_DEBUG
+#    if AXIS_DEBUG
     CHECK_GL_ERROR();
 #    endif
 
@@ -454,7 +454,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     {
         if (i >= IOS_MAX_TOUCHES_COUNT)
         {
-            CCLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
+            AXLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
             break;
         }
 
@@ -464,7 +464,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glview = axis::Director::getInstance()->getOpenGLView();
     glview->handleTouchesBegin(i, (intptr_t*)ids, xs, ys);
 }
 
@@ -481,7 +481,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     {
         if (i >= IOS_MAX_TOUCHES_COUNT)
         {
-            CCLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
+            AXLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
             break;
         }
 
@@ -499,7 +499,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glview = axis::Director::getInstance()->getOpenGLView();
     glview->handleTouchesMove(i, (intptr_t*)ids, xs, ys, fs, ms);
 }
 
@@ -514,7 +514,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     {
         if (i >= IOS_MAX_TOUCHES_COUNT)
         {
-            CCLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
+            AXLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
             break;
         }
 
@@ -524,7 +524,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glview = axis::Director::getInstance()->getOpenGLView();
     glview->handleTouchesEnd(i, (intptr_t*)ids, xs, ys);
 }
 
@@ -539,7 +539,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     {
         if (i >= IOS_MAX_TOUCHES_COUNT)
         {
-            CCLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
+            AXLOG("warning: touches more than 10, should adjust IOS_MAX_TOUCHES_COUNT");
             break;
         }
 
@@ -549,7 +549,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
         ++i;
     }
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glview = axis::Director::getInstance()->getOpenGLView();
     glview->handleTouchesCancel(i, (intptr_t*)ids, xs, ys);
 }
 
@@ -572,17 +572,17 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
     [UIView setAnimationDuration:duration];
     [UIView setAnimationBeginsFromCurrentState:YES];
 
-    // NSLog(@"[animation] dis = %f, scale = %f \n", dis, cocos2d::GLView::getInstance()->getScaleY());
+    // NSLog(@"[animation] dis = %f, scale = %f \n", dis, axis::GLView::getInstance()->getScaleY());
 
     if (dis < 0.0f)
         dis = 0.0f;
 
-    auto glview = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glview = axis::Director::getInstance()->getOpenGLView();
     dis *= glview->getScaleY();
 
     dis /= self.contentScaleFactor;
 
-#if defined(CC_TARGET_OS_TVOS)
+#if defined(AX_TARGET_OS_TVOS)
     self.frame = CGRectMake(originalRect_.origin.x, originalRect_.origin.y - dis, originalRect_.size.width,
                             originalRect_.size.height);
 #else
@@ -626,7 +626,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #pragma UIKeyboard notification
 
-#if !defined(CC_TARGET_OS_TVOS)
+#if !defined(AX_TARGET_OS_TVOS)
 namespace
 {
 UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrientation)
@@ -642,7 +642,7 @@ UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrien
 
 - (void)didMoveToWindow
 {
-#if !defined(CC_TARGET_OS_TVOS)
+#if !defined(AX_TARGET_OS_TVOS)
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onUIKeyboardNotification:)
                                                  name:UIKeyboardWillShowNotification
@@ -718,7 +718,7 @@ UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrien
         break;
     }
 
-    auto glview  = cocos2d::Director::getInstance()->getOpenGLView();
+    auto glview  = axis::Director::getInstance()->getOpenGLView();
     float scaleX = glview->getScaleX();
     float scaleY = glview->getScaleY();
 
@@ -742,12 +742,12 @@ UIInterfaceOrientation getFixedOrientation(UIInterfaceOrientation statusBarOrien
     end   = CGRectApplyAffineTransform(end,
                                        CGAffineTransformScale(CGAffineTransformIdentity, 1.0f / scaleX, 1.0f / scaleY));
 
-    cocos2d::IMEKeyboardNotificationInfo notiInfo;
-    notiInfo.begin    = cocos2d::Rect(begin.origin.x, begin.origin.y, begin.size.width, begin.size.height);
-    notiInfo.end      = cocos2d::Rect(end.origin.x, end.origin.y, end.size.width, end.size.height);
+    axis::IMEKeyboardNotificationInfo notiInfo;
+    notiInfo.begin    = axis::Rect(begin.origin.x, begin.origin.y, begin.size.width, begin.size.height);
+    notiInfo.end      = axis::Rect(end.origin.x, end.origin.y, end.size.width, end.size.height);
     notiInfo.duration = (float)aniDuration;
 
-    cocos2d::IMEDispatcher* dispatcher = cocos2d::IMEDispatcher::sharedDispatcher();
+    axis::IMEDispatcher* dispatcher = axis::IMEDispatcher::sharedDispatcher();
     if (UIKeyboardWillShowNotification == type)
     {
         dispatcher->dispatchKeyboardWillShow(notiInfo);

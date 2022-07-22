@@ -27,7 +27,7 @@
 #include "CCPUPositionEmitter.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 // Constants
 const bool PUPositionEmitter::DEFAULT_RANDOMIZE = true;
 
@@ -104,7 +104,7 @@ void PUPositionEmitter::initParticlePosition(PUParticle3D* particle)
      */
     if (_randomized)
     {
-        size_t i = (size_t)(CCRANDOM_0_1() * (_positionList.size() - 1));
+        size_t i = (size_t)(AXRANDOM_0_1() * (_positionList.size() - 1));
         particle->position =
             getDerivedPosition() + Vec3(_emitterScale.x * _positionList[i].x, _emitterScale.y * _positionList[i].y,
                                         _emitterScale.z * _positionList[i].z);
@@ -142,4 +142,4 @@ PUPositionEmitter* PUPositionEmitter::clone()
     return be;
 }
 
-NS_CC_END
+NS_AX_END

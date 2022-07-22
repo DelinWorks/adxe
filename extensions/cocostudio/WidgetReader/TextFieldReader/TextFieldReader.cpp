@@ -10,7 +10,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -46,10 +46,10 @@ TextFieldReader* TextFieldReader::getInstance()
 
 void TextFieldReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceTextFieldReader);
+    AX_SAFE_DELETE(instanceTextFieldReader);
 }
 
-void TextFieldReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void TextFieldReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     this->beginSetBasicProperties(widget);
 
@@ -63,9 +63,9 @@ void TextFieldReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader
         std::string value = stChildArray[i].GetValue(cocoLoader);
 
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_PlaceHolder) { textField->setPlaceHolder(value); }
         else if (key == P_Text) { textField->setString(value); }
@@ -260,7 +260,7 @@ Offset<Table> TextFieldReader::createOptionsWithFlatBuffers(pugi::xml_node objec
     return *(Offset<Table>*)(&options);
 }
 
-void TextFieldReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* textFieldOptions)
+void TextFieldReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* textFieldOptions)
 {
     TextField* textField = static_cast<TextField*>(node);
     auto options         = (TextFieldOptions*)textFieldOptions;

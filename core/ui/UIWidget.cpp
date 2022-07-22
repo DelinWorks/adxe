@@ -38,7 +38,7 @@ THE SOFTWARE.
 #include "2d/CCSprite.h"
 #include "ui/UIScale9Sprite.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -129,7 +129,7 @@ void Widget::FocusNavigationController::addKeyboardEventListener()
     if (nullptr == _keyboardListener)
     {
         _keyboardListener                = EventListenerKeyboard::create();
-        _keyboardListener->onKeyReleased = CC_CALLBACK_2(Widget::FocusNavigationController::onKeypadKeyPressed, this);
+        _keyboardListener->onKeyReleased = AX_CALLBACK_2(Widget::FocusNavigationController::onKeypadKeyPressed, this);
         EventDispatcher* dispatcher      = Director::getInstance()->getEventDispatcher();
         dispatcher->addEventListenerWithFixedPriority(_keyboardListener, _keyboardEventPriority);
     }
@@ -186,13 +186,13 @@ void Widget::cleanupWidget()
 {
     // clean up _touchListener
     _eventDispatcher->removeEventListener(_touchListener);
-    CC_SAFE_RELEASE_NULL(_touchListener);
+    AX_SAFE_RELEASE_NULL(_touchListener);
 
     // cleanup focused widget and focus navigation controller
     if (_focusedWidget == this)
     {
         // delete
-        CC_SAFE_DELETE(_focusNavigationController);
+        AX_SAFE_DELETE(_focusNavigationController);
         _focusedWidget = nullptr;
     }
 }
@@ -205,7 +205,7 @@ Widget* Widget::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -215,7 +215,7 @@ bool Widget::init()
     {
         initRenderer();
         setBright(true);
-        onFocusChanged      = CC_CALLBACK_2(Widget::onFocusChange, this);
+        onFocusChanged      = AX_CALLBACK_2(Widget::onFocusChange, this);
         onNextFocusedWidget = nullptr;
         this->setAnchorPoint(Vec2(0.5f, 0.5f));
 
@@ -517,7 +517,7 @@ void Widget::onSizeChanged()
 {
     if (!_usingLayoutComponent)
     {
-        for (auto& child : getChildren())
+        for (auto&& child : getChildren())
         {
             Widget* widgetChild = dynamic_cast<Widget*>(child);
             if (widgetChild)
@@ -560,18 +560,18 @@ void Widget::setTouchEnabled(bool enable)
     if (_touchEnabled)
     {
         _touchListener = EventListenerTouchOneByOne::create();
-        CC_SAFE_RETAIN(_touchListener);
+        AX_SAFE_RETAIN(_touchListener);
         _touchListener->setSwallowTouches(true);
-        _touchListener->onTouchBegan     = CC_CALLBACK_2(Widget::onTouchBegan, this);
-        _touchListener->onTouchMoved     = CC_CALLBACK_2(Widget::onTouchMoved, this);
-        _touchListener->onTouchEnded     = CC_CALLBACK_2(Widget::onTouchEnded, this);
-        _touchListener->onTouchCancelled = CC_CALLBACK_2(Widget::onTouchCancelled, this);
+        _touchListener->onTouchBegan     = AX_CALLBACK_2(Widget::onTouchBegan, this);
+        _touchListener->onTouchMoved     = AX_CALLBACK_2(Widget::onTouchMoved, this);
+        _touchListener->onTouchEnded     = AX_CALLBACK_2(Widget::onTouchEnded, this);
+        _touchListener->onTouchCancelled = AX_CALLBACK_2(Widget::onTouchCancelled, this);
         _eventDispatcher->addEventListenerWithSceneGraphPriority(_touchListener, this);
     }
     else
     {
         _eventDispatcher->removeEventListener(_touchListener);
-        CC_SAFE_RELEASE_NULL(_touchListener);
+        AX_SAFE_RELEASE_NULL(_touchListener);
     }
 }
 
@@ -770,9 +770,9 @@ bool Widget::onTouchBegan(Touch* touch, Event* /*unusedEvent*/)
     return true;
 }
 
-void Widget::propagateTouchEvent(cocos2d::ui::Widget::TouchEventType event,
-                                 cocos2d::ui::Widget* sender,
-                                 cocos2d::Touch* touch)
+void Widget::propagateTouchEvent(axis::ui::Widget::TouchEventType event,
+                                 axis::ui::Widget* sender,
+                                 axis::Touch* touch)
 {
     Widget* widgetParent = getWidgetParent();
     if (widgetParent)
@@ -958,7 +958,7 @@ bool Widget::isClippingParentContainsPoint(const Vec2& pt)
     return true;
 }
 
-void Widget::interceptTouchEvent(cocos2d::ui::Widget::TouchEventType event, cocos2d::ui::Widget* sender, Touch* touch)
+void Widget::interceptTouchEvent(axis::ui::Widget::TouchEventType event, axis::ui::Widget* sender, Touch* touch)
 {
     Widget* widgetParent = getWidgetParent();
     if (widgetParent)
@@ -1136,7 +1136,7 @@ void Widget::copyClonedWidgetChildren(Widget* model)
 {
     auto& modelChildren = model->getChildren();
 
-    for (auto& subWidget : modelChildren)
+    for (auto&& subWidget : modelChildren)
     {
         Widget* child = dynamic_cast<Widget*>(subWidget);
         if (child)
@@ -1188,7 +1188,7 @@ void Widget::copyProperties(Widget* widget)
     copySpecialProperties(widget);
 
     Map<int, LayoutParameter*>& layoutParameterDic = widget->_layoutParameterDictionary;
-    for (auto& iter : layoutParameterDic)
+    for (auto&& iter : layoutParameterDic)
     {
         setLayoutParameter(iter.second->clone());
     }
@@ -1262,7 +1262,7 @@ float Widget::getScaleY() const
 
 float Widget::getScale() const
 {
-    CCASSERT(this->getScaleX() == this->getScaleY(), "scaleX should be equal to scaleY.");
+    AXASSERT(this->getScaleX() == this->getScaleY(), "scaleX should be equal to scaleY.");
     return this->getScaleX();
 }
 
@@ -1344,7 +1344,7 @@ Widget* Widget::findNextFocusedWidget(FocusDirection direction, Widget* current)
     }
 }
 
-void Widget::dispatchFocusEvent(cocos2d::ui::Widget* widgetLoseFocus, cocos2d::ui::Widget* widgetGetFocus)
+void Widget::dispatchFocusEvent(axis::ui::Widget* widgetLoseFocus, axis::ui::Widget* widgetGetFocus)
 {
     // if the widgetLoseFocus doesn't get focus, it will use the previous focused widget instead
     if (widgetLoseFocus && !widgetLoseFocus->isFocused())
@@ -1415,7 +1415,7 @@ void Widget::enableDpadNavigation(bool enable)
     }
     else
     {
-        CC_SAFE_DELETE(_focusNavigationController);
+        AX_SAFE_DELETE(_focusNavigationController);
     }
 
     if (nullptr != _focusNavigationController)
@@ -1445,4 +1445,4 @@ bool Widget::isLayoutComponentEnabled() const
 }
 
 }  // namespace ui
-NS_CC_END
+NS_AX_END

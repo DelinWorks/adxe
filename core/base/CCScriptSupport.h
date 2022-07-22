@@ -41,11 +41,11 @@
  * @{
  */
 
-#if CC_ENABLE_SCRIPT_BINDING
+#if AX_ENABLE_SCRIPT_BINDING
 
 typedef struct lua_State lua_State;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class TimerScriptHandler;
 class Layer;
@@ -587,7 +587,7 @@ struct ScriptEvent
  * ScriptEngine. So a crash will appear on Win32 if you click the close button.
  * @js NA
  */
-class CC_DLL ScriptEngineProtocol
+class AX_DLL ScriptEngineProtocol
 {
 public:
     /**
@@ -644,7 +644,7 @@ public:
     /**
      * Release all native refs for the given owner in script scope
      */
-    virtual void releaseAllNativeRefs(cocos2d::Ref* /*owner*/) {}
+    virtual void releaseAllNativeRefs(axis::Ref* /*owner*/) {}
 
     /**
      * Remove script object,The specific meaning should refer to the ScriptType.
@@ -783,7 +783,7 @@ class Node;
  * @since v0.99.5-x-0.8.5
  * @js NA
  */
-class CC_DLL ScriptEngineManager
+class AX_DLL ScriptEngineManager
 {
 public:
     /**
@@ -864,9 +864,9 @@ private:
     ScriptEngineProtocol* _scriptEngine;
 };
 
-NS_CC_END
+NS_AX_END
 
-#endif  // #if CC_ENABLE_SCRIPT_BINDING
+#endif  // #if AX_ENABLE_SCRIPT_BINDING
 
 // end group
 /// @}

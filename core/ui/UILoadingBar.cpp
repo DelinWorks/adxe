@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include "ui/UIScale9Sprite.h"
 #include "2d/CCSprite.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /* FIXME:
  Code could be simplified by using Sprite's setContentSize feature.
@@ -67,7 +67,7 @@ LoadingBar* LoadingBar::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -86,7 +86,7 @@ LoadingBar* LoadingBar::create(std::string_view textureName, TextureResType texT
         widget->setPercent(percentage);
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -98,7 +98,7 @@ void LoadingBar::initRenderer()
     _barRenderer->setAnchorPoint(Vec2(0.0f, 0.5f));
 }
 
-void LoadingBar::setDirection(cocos2d::ui::LoadingBar::Direction direction)
+void LoadingBar::setDirection(axis::ui::LoadingBar::Direction direction)
 {
     if (_direction == direction)
     {
@@ -433,4 +433,4 @@ ResourceData LoadingBar::getRenderFile()
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

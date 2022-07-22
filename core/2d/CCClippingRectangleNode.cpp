@@ -27,7 +27,7 @@
 #include "math/Vec2.h"
 #include "platform/CCGLView.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 ClippingRectangleNode* ClippingRectangleNode::create(const Rect& clippingRegion)
 {
@@ -38,7 +38,7 @@ ClippingRectangleNode* ClippingRectangleNode::create(const Rect& clippingRegion)
         node->autorelease();
     }
     else
-        CC_SAFE_DELETE(node);
+        AX_SAFE_DELETE(node);
 
     return node;
 }
@@ -49,7 +49,7 @@ ClippingRectangleNode* ClippingRectangleNode::create()
     if (node->init())
         node->autorelease();
     else
-        CC_SAFE_DELETE(node);
+        AX_SAFE_DELETE(node);
 
     return node;
 }
@@ -94,15 +94,15 @@ void ClippingRectangleNode::visit(Renderer* renderer, const Mat4& parentTransfor
 {
     auto beforeVisitCmdScissor = renderer->nextCallbackCommand();
     beforeVisitCmdScissor->init(_globalZOrder);
-    beforeVisitCmdScissor->func = CC_CALLBACK_0(ClippingRectangleNode::onBeforeVisitScissor, this);
+    beforeVisitCmdScissor->func = AX_CALLBACK_0(ClippingRectangleNode::onBeforeVisitScissor, this);
     renderer->addCommand(beforeVisitCmdScissor);
 
     Node::visit(renderer, parentTransform, parentFlags);
 
     auto afterVisitCmdScissor = renderer->nextCallbackCommand();
     afterVisitCmdScissor->init(_globalZOrder);
-    afterVisitCmdScissor->func = CC_CALLBACK_0(ClippingRectangleNode::onAfterVisitScissor, this);
+    afterVisitCmdScissor->func = AX_CALLBACK_0(ClippingRectangleNode::onAfterVisitScissor, this);
     renderer->addCommand(afterVisitCmdScissor);
 }
 
-NS_CC_END
+NS_AX_END

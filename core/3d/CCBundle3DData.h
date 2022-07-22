@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_BUNDLE_3D_DATA_H__
-#define __CC_BUNDLE_3D_DATA_H__
+#ifndef __AX_BUNDLE_3D_DATA_H__
+#define __AX_BUNDLE_3D_DATA_H__
 
 #include "base/CCRef.h"
 #include "base/ccTypes.h"
@@ -42,7 +42,7 @@
 
 #include "yasio/detail/byte_buffer.hpp"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 using ilist_u16_t = std::initializer_list<uint16_t>;
 using ilist_u32_t = std::initializer_list<uint32_t>;
@@ -107,7 +107,7 @@ public:
     void push_back(const _Ty& val)
     {
         assert(_stride == sizeof(_Ty));
-        _buffer.append_n((uint8_t*)&val, _stride);
+        _buffer.insert(_buffer.end(), &val, &val + 1);
     }
 
     /** Inserts a list containing unsigned int (uint16_t/uint32_t) data. */
@@ -229,7 +229,7 @@ protected:
  * @js NA
  * @lua NA
  */
-struct CC_DLL MeshVertexAttrib
+struct AX_DLL MeshVertexAttrib
 {
     backend::VertexFormat type;
     shaderinfos::VertexKey vertexAttrib;
@@ -272,13 +272,13 @@ struct NodeData
     {
         id.clear();
         transform.setIdentity();
-        for (auto& it : children)
+        for (auto&& it : children)
         {
             delete it;
         }
         children.clear();
 
-        for (auto& modeldata : modelNodeDatas)
+        for (auto&& modeldata : modelNodeDatas)
         {
             delete modeldata;
         }
@@ -299,12 +299,12 @@ struct NodeDatas
 
     void resetData()
     {
-        for (auto& it : skeleton)
+        for (auto&& it : skeleton)
         {
             delete it;
         }
         skeleton.clear();
-        for (auto& it : nodes)
+        for (auto&& it : nodes)
         {
             delete it;
         }
@@ -318,7 +318,7 @@ struct NodeDatas
  */
 struct MeshData
 {
-    using IndexArray = ::cocos2d::IndexArray;
+    using IndexArray = ::axis::IndexArray;
     std::vector<float> vertex;
     int vertexSizeInFloat;
     std::vector<IndexArray> subMeshIndices;
@@ -369,7 +369,7 @@ struct MeshDatas
 
     void resetData()
     {
-        for (auto& it : meshDatas)
+        for (auto&& it : meshDatas)
         {
             delete it;
         }
@@ -581,6 +581,6 @@ struct Reference
     unsigned int offset;
 };
 
-NS_CC_END
+NS_AX_END
 
-#endif  //__CC_BUNDLE_3D_DATA_H__
+#endif  //__AX_BUNDLE_3D_DATA_H__

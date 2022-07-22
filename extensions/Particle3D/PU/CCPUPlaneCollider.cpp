@@ -27,7 +27,7 @@
 #include "CCPUPlaneCollider.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const Vec3 PUPlaneCollider::DEFAULT_NORMAL(0, 0, 0);
@@ -90,7 +90,7 @@ void PUPlaneCollider::calculateDirectionAfterCollision(PUParticle3D* particle, f
 
 void PUPlaneCollider::updatePUAffector(PUParticle3D* particle, float deltaTime)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         _predictedPosition = particle->position + _velocityScale * particle->direction;
@@ -169,4 +169,4 @@ void PUPlaneCollider::copyAttributesTo(PUAffector* affector)
     planeCollider->setNormal(_normal);
 }
 
-NS_CC_END
+NS_AX_END

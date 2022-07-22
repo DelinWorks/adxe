@@ -30,7 +30,7 @@
 #include "renderer/CCPass.h"
 #include "3d/CC3DProgramInfo.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class MeshIndexData;
 class VertexAttribValue;
@@ -54,7 +54,7 @@ class VertexAttribValue;
  * arrays, since it is slower than the server-side VAOs used by OpenGL
  * (when creating a VertexAttribBinding between a Mesh and Effect).
  */
-class CC_DLL VertexAttribBinding : public Ref
+class AX_DLL VertexAttribBinding : public Ref
 {
 public:
     /**
@@ -122,4 +122,4 @@ private:
     uint32_t _vertexAttribsFlags;
 };
 
-NS_CC_END
+NS_AX_END

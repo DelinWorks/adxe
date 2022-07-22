@@ -31,7 +31,7 @@ THE SOFTWARE.
 
 #include "2d/CCParticleSystemQuad.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -109,7 +109,7 @@ void DisplayFactory::updateDisplay(Bone* bone, float dt, bool dirty)
             do
             {
 #    if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT
-                CC_BREAK_IF(!detector->getBody());
+                AX_BREAK_IF(!detector->getBody());
 #    endif
 
                 Mat4 displayTransform  = display->getNodeToParentTransform();

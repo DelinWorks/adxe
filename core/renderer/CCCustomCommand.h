@@ -31,7 +31,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace backend
 {
@@ -42,7 +42,7 @@ class Buffer;
 Custom command is used to draw all things except triangle commands. You can use
 this command to draw things, just provide vertex/index data and set corret flags.
 */
-class CC_DLL CustomCommand : public RenderCommand
+class AX_DLL CustomCommand : public RenderCommand
 {
 public:
     enum class DrawType
@@ -252,7 +252,7 @@ protected:
     CallBackFunc _afterCallback  = nullptr;
 };
 
-NS_CC_END
+NS_AX_END
 /**
  end of support group
  @}

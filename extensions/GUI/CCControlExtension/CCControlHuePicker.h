@@ -38,7 +38,7 @@
 #include "CCInvocation.h"
 #include "extensions/ExtensionExport.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /**
  * @addtogroup GUI
@@ -47,7 +47,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-class CC_EX_DLL ControlHuePicker : public Control
+class AX_EX_DLL ControlHuePicker : public Control
 {
 public:
     static ControlHuePicker* create(Node* target, Vec2 pos);
@@ -73,21 +73,21 @@ protected:
     bool checkSliderPosition(Vec2 location);
 
     // manually put in the setters
-    CC_SYNTHESIZE_READONLY(float, _hue, Hue);
+    AX_SYNTHESIZE_READONLY(float, _hue, Hue);
     virtual void setHue(float val);
-    CC_SYNTHESIZE_READONLY(float, _huePercentage, HuePercentage);
+    AX_SYNTHESIZE_READONLY(float, _huePercentage, HuePercentage);
     virtual void setHuePercentage(float val);
 
     // not sure if these need to be there actually. I suppose someone might want to access the sprite?
-    CC_SYNTHESIZE_RETAIN(Sprite*, _background, Background);
-    CC_SYNTHESIZE_RETAIN(Sprite*, _slider, Slider);
-    CC_SYNTHESIZE_READONLY(Vec2, _startPos, StartPos);
+    AX_SYNTHESIZE_RETAIN(Sprite*, _background, Background);
+    AX_SYNTHESIZE_RETAIN(Sprite*, _slider, Slider);
+    AX_SYNTHESIZE_READONLY(Vec2, _startPos, StartPos);
 };
 
 // end of GUI group
 /// @}
 /// @}
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif

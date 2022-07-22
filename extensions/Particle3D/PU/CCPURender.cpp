@@ -40,7 +40,7 @@
 #include "3d/CCMesh.h"
 #include "2d/CCCamera.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 void PURender::updateRender(PUParticle3D* /*particle*/, float /*deltaTime*/, bool /*firstParticle*/) {}
 
@@ -66,7 +66,7 @@ PUParticle3DQuadRender* PUParticle3DQuadRender::create(std::string_view texFile)
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -86,7 +86,7 @@ void PUParticle3DQuadRender::render(Renderer* renderer, const Mat4& transform, P
                                                       backend::BufferType::VERTEX, backend::BufferUsage::DYNAMIC);
         if (_vertexBuffer == nullptr)
         {
-            CCLOG("PUParticle3DQuadRender::render create vertex buffer failed");
+            AXLOG("PUParticle3DQuadRender::render create vertex buffer failed");
             return;
         }
     }
@@ -98,7 +98,7 @@ void PUParticle3DQuadRender::render(Renderer* renderer, const Mat4& transform, P
                                                       backend::BufferType::INDEX, backend::BufferUsage::DYNAMIC);
         if (_indexBuffer == nullptr)
         {
-            CCLOG("PUParticle3DQuadRender::render create index buffer failed");
+            AXLOG("PUParticle3DQuadRender::render create index buffer failed");
             return;
         }
     }
@@ -112,7 +112,7 @@ void PUParticle3DQuadRender::render(Renderer* renderer, const Mat4& transform, P
     auto camera    = Camera::getVisitingCamera();
     auto cameraMat = camera->getNodeToWorldTransform();
 
-    // for (auto iter : activeParticleList){
+    // for (auto&& iter : activeParticleList){
     //     iter->depthInView = -(viewMat.m[2] * iter->positionInWorld.x + viewMat.m[6] * iter->positionInWorld.y +
     //     viewMat.m[10] * iter->positionInWorld.z + viewMat.m[14]);
     // }
@@ -145,7 +145,7 @@ void PUParticle3DQuadRender::render(Renderer* renderer, const Mat4& transform, P
         right.normalize();
     }
 
-    for (auto iter : activeParticleList)
+    for (auto&& iter : activeParticleList)
     {
         auto particle = static_cast<PUParticle3D*>(iter);
         determineUVCoords(particle);
@@ -508,7 +508,7 @@ void PUParticle3DModelRender::render(Renderer* renderer, const Mat4& transform, 
             MeshRenderer* mesh = MeshRenderer::create(_modelFile);
             if (mesh == nullptr)
             {
-                CCLOG("failed to load file %s", _modelFile.c_str());
+                AXLOG("failed to load file %s", _modelFile.c_str());
                 continue;
             }
             mesh->setTexture(_texFile);
@@ -539,7 +539,7 @@ void PUParticle3DModelRender::render(Renderer* renderer, const Mat4& transform, 
     Quaternion q;
     transform.decompose(nullptr, &q, nullptr);
     unsigned int index = 0;
-    for (auto iter : activeParticleList)
+    for (auto&& iter : activeParticleList)
     {
         auto particle = static_cast<PUParticle3D*>(iter);
         Mat4::createRotation(q * particle->orientation, &rotMat);
@@ -567,7 +567,7 @@ PUParticle3DModelRender::PUParticle3DModelRender()
 
 PUParticle3DModelRender::~PUParticle3DModelRender()
 {
-    for (auto iter : _meshList)
+    for (auto&& iter : _meshList)
     {
         iter->release();
     }
@@ -587,7 +587,7 @@ PUParticle3DModelRender* PUParticle3DModelRender::clone()
 
 void PUParticle3DModelRender::reset()
 {
-    for (auto iter : _meshList)
+    for (auto&& iter : _meshList)
     {
         iter->release();
     }
@@ -607,15 +607,15 @@ PUParticle3DEntityRender::PUParticle3DEntityRender()
 PUParticle3DEntityRender::~PUParticle3DEntityRender()
 {
     ;
-    // CC_SAFE_RELEASE(_texture);
-    CC_SAFE_RELEASE(_programState);
-    CC_SAFE_RELEASE(_vertexBuffer);
-    CC_SAFE_RELEASE(_indexBuffer);
+    // AX_SAFE_RELEASE(_texture);
+    AX_SAFE_RELEASE(_programState);
+    AX_SAFE_RELEASE(_vertexBuffer);
+    AX_SAFE_RELEASE(_indexBuffer);
 }
 
 bool PUParticle3DEntityRender::initRender(std::string_view texFile)
 {
-    CC_SAFE_RELEASE_NULL(_programState);
+    AX_SAFE_RELEASE_NULL(_programState);
     if (!texFile.empty())
     {
         auto tex = Director::getInstance()->getTextureCache()->addImage(texFile);
@@ -669,8 +669,8 @@ bool PUParticle3DEntityRender::initRender(std::string_view texFile)
     _stateBlock.setCullFaceSide(backend::CullMode::BACK);
     _stateBlock.setCullFace(true);
 
-    _meshCommand.setBeforeCallback(CC_CALLBACK_0(PUParticle3DEntityRender::onBeforeDraw, this));
-    _meshCommand.setAfterCallback(CC_CALLBACK_0(PUParticle3DEntityRender::onAfterDraw, this));
+    _meshCommand.setBeforeCallback(AX_CALLBACK_0(PUParticle3DEntityRender::onBeforeDraw, this));
+    _meshCommand.setAfterCallback(AX_CALLBACK_0(PUParticle3DEntityRender::onAfterDraw, this));
 
     return true;
 }
@@ -701,7 +701,7 @@ PUParticle3DBoxRender* PUParticle3DBoxRender::create(std::string_view texFile)
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -725,7 +725,7 @@ void PUParticle3DBoxRender::render(Renderer* renderer, const Mat4& transform, Pa
                                                       backend::BufferType::VERTEX, backend::BufferUsage::DYNAMIC);
         if (_vertexBuffer == nullptr)
         {
-            CCLOG("PUParticle3DBoxRender::render create vertex buffer failed");
+            AXLOG("PUParticle3DBoxRender::render create vertex buffer failed");
             return;
         }
         _vertices.resize(8 * particleSystem->getParticleQuota());
@@ -735,7 +735,7 @@ void PUParticle3DBoxRender::render(Renderer* renderer, const Mat4& transform, Pa
                                                       backend::BufferType::INDEX, backend::BufferUsage::DYNAMIC);
         if (_indexBuffer == nullptr)
         {
-            CCLOG("PUParticle3DBoxRender::render create index buffer failed");
+            AXLOG("PUParticle3DBoxRender::render create index buffer failed");
             return;
         }
         _indices.resize(36 * particleSystem->getParticleQuota());
@@ -746,7 +746,7 @@ void PUParticle3DBoxRender::render(Renderer* renderer, const Mat4& transform, Pa
     unsigned int index       = 0;
     Mat4 texRot;
     Vec3 val;
-    for (auto iter : particlePool.getActiveDataList())
+    for (auto&& iter : particlePool.getActiveDataList())
     {
         auto particle    = static_cast<PUParticle3D*>(iter);
         float halfHeight = particle->height * 0.5f;
@@ -891,7 +891,7 @@ PUSphereRender* PUSphereRender::create(std::string_view texFile)
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -917,7 +917,7 @@ void PUSphereRender::render(Renderer* renderer, const Mat4& transform, ParticleS
                                                       backend::BufferType::VERTEX, backend::BufferUsage::DYNAMIC);
         if (_vertexBuffer == nullptr)
         {
-            CCLOG("PUSphereRender::render create vertex buffer failed");
+            AXLOG("PUSphereRender::render create vertex buffer failed");
             return;
         }
         _vertices.resize(vertexCount * particleSystem->getParticleQuota());
@@ -927,7 +927,7 @@ void PUSphereRender::render(Renderer* renderer, const Mat4& transform, ParticleS
             backend::BufferUsage::DYNAMIC);
         if (_indexBuffer == nullptr)
         {
-            CCLOG("PUSphereRender::render create index buffer failed");
+            AXLOG("PUSphereRender::render create index buffer failed");
             return;
         }
         _indices.resize(indexCount * particleSystem->getParticleQuota());
@@ -943,7 +943,7 @@ void PUSphereRender::render(Renderer* renderer, const Mat4& transform, ParticleS
     Mat4 sclMat;
     Mat4 texRot;
     Vec3 val;
-    for (auto iter : particlePool.getActiveDataList())
+    for (auto&& iter : particlePool.getActiveDataList())
     {
         auto particle = static_cast<PUParticle3D*>(iter);
         float radius  = particle->width * 0.5f;
@@ -1062,4 +1062,4 @@ PUSphereRender* PUSphereRender::clone()
     return render;
 }
 
-NS_CC_END
+NS_AX_END

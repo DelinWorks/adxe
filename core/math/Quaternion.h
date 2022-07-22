@@ -32,7 +32,7 @@
  * @{
  */
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 class Mat4;
 
@@ -71,7 +71,7 @@ class Mat4;
  * q4 = (-0.8, 0.0, -0.6, 0.0).
  * For the point p = (1.0, 1.0, 1.0), the following figures show the trajectories of p using lerp, slerp, and squad.
  */
-class CC_DLL Quaternion
+class AX_DLL Quaternion
 {
     friend class Curve;
     friend class Transform;
@@ -421,7 +421,7 @@ private:
     static void slerpForSquad(const Quaternion& q1, const Quaternion& q2, float t, Quaternion* dst);
 };
 
-NS_CC_MATH_END
+NS_AX_MATH_END
 /**
  end of base group
  @}

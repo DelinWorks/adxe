@@ -24,14 +24,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_UTIL_H__
-#define __CC_PU_PARTICLE_3D_UTIL_H__
+#ifndef __AX_PU_PARTICLE_3D_UTIL_H__
+#define __AX_PU_PARTICLE_3D_UTIL_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
 #include <vector>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class PUUtil
 {
@@ -39,6 +39,6 @@ public:
     static Vec3 perpendicular(const Vec3& src);
     static Vec3 randomDeviant(const Vec3& src, float angle, const Vec3& up = Vec3::ZERO);
 };
-NS_CC_END
+NS_AX_END
 
 #endif

@@ -35,7 +35,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Event;
 class Controller;
@@ -44,7 +44,7 @@ class Controller;
  * @param Controller event listener.
  * @js NA
  */
-class CC_DLL EventListenerController : public EventListener
+class AX_DLL EventListenerController : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -72,7 +72,7 @@ protected:
     bool init();
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

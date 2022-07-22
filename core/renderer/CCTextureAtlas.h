@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include "base/CCRef.h"
 #include "base/ccConfig.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Texture2D;
 class EventCustom;
@@ -59,7 +59,7 @@ To render the quads using an interleaved vertex array list, you should modify th
 @warning If you want to use TextureAtlas, you'd better setup GL status before it's rendered.
          Otherwise, the effect of TextureAtlas will be affected by the GL status of other nodes.
 */
-class CC_DLL TextureAtlas : public Ref
+class AX_DLL TextureAtlas : public Ref
 {
 public:
     /** Creates a TextureAtlas with an filename and with an initial capacity for Quads.
@@ -239,7 +239,7 @@ protected:
     /** Quads that are going to be rendered */
     V3F_C4B_T2F_Quad* _quads = nullptr;
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     EventListenerCustom* _rendererRecreatedListener = nullptr;
 #endif
 };
@@ -247,4 +247,4 @@ protected:
 // end of textures group
 /// @}
 
-NS_CC_END
+NS_AX_END

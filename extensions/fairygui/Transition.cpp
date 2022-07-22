@@ -7,7 +7,7 @@
 #include "utils/ToolSet.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 using namespace std;
 
 const int OPTION_IGNORE_DISPLAY_CONTROLLER = 1;
@@ -53,8 +53,8 @@ class TValue_Shake : public TValueBase
 public:
     float amplitude;
     float duration;
-    cocos2d::Vec2 lastOffset;
-    cocos2d::Vec2 offset;
+    axis::Vec2 lastOffset;
+    axis::Vec2 offset;
 };
 
 class TValue_Text : public TValueBase
@@ -75,12 +75,12 @@ public:
     bool b3;
 
     TValue();
-    cocos2d::Vec2 getVec2() const;
-    void setVec2(const cocos2d::Vec2& value);
-    cocos2d::Vec4 getVec4() const;
-    void setVec4(const cocos2d::Vec4& value);
-    cocos2d::Color4B getColor() const;
-    void setColor(const cocos2d::Color4B& value);
+    axis::Vec2 getVec2() const;
+    void setVec2(const axis::Vec2& value);
+    axis::Vec4 getVec4() const;
+    void setVec4(const axis::Vec4& value);
+    axis::Color4B getColor() const;
+    void setColor(const axis::Color4B& value);
 };
 
 TValue::TValue()
@@ -90,23 +90,23 @@ TValue::TValue()
     b3 = false;
 }
 
-cocos2d::Vec2 TValue::getVec2() const
+axis::Vec2 TValue::getVec2() const
 {
-    return cocos2d::Vec2(f1, f2);
+    return axis::Vec2(f1, f2);
 }
 
-void TValue::setVec2(const cocos2d::Vec2& value)
+void TValue::setVec2(const axis::Vec2& value)
 {
     f1 = value.x;
     f2 = value.y;
 }
 
-cocos2d::Vec4 TValue::getVec4() const
+axis::Vec4 TValue::getVec4() const
 {
-    return cocos2d::Vec4(f1, f2, f3, f4);
+    return axis::Vec4(f1, f2, f3, f4);
 }
 
-void TValue::setVec4(const cocos2d::Vec4& value)
+void TValue::setVec4(const axis::Vec4& value)
 {
     f1 = value.x;
     f2 = value.y;
@@ -114,12 +114,12 @@ void TValue::setVec4(const cocos2d::Vec4& value)
     f4 = value.w;
 }
 
-cocos2d::Color4B TValue::getColor() const
+axis::Color4B TValue::getColor() const
 {
-    return cocos2d::Color4B(f1, f2, f3, f4);
+    return axis::Color4B(f1, f2, f3, f4);
 }
 
-void TValue::setColor(const cocos2d::Color4B& value)
+void TValue::setColor(const axis::Color4B& value)
 {
     f1 = value.r;
     f2 = value.g;
@@ -158,9 +158,9 @@ TweenConfig::TweenConfig()
 
 TweenConfig::~TweenConfig()
 {
-    CC_SAFE_DELETE(path);
-    CC_SAFE_DELETE(startValue);
-    CC_SAFE_DELETE(endValue);
+    AX_SAFE_DELETE(path);
+    AX_SAFE_DELETE(startValue);
+    AX_SAFE_DELETE(endValue);
 }
 
 class TransitionItem
@@ -253,7 +253,7 @@ TransitionItem::~TransitionItem()
         delete tweenConfig;
     }
 
-    CC_SAFE_DELETE(value);
+    AX_SAFE_DELETE(value);
 }
 
 Transition::Transition(GComponent* owner)
@@ -378,7 +378,7 @@ void Transition::play(int times, float delay, float startTime, float endTime, Pl
     if (delay == 0)
         onDelayedPlay();
     else
-        GTween::delayedCall(delay)->setTarget(this)->onComplete(CC_CALLBACK_0(Transition::onDelayedPlay, this));
+        GTween::delayedCall(delay)->setTarget(this)->onComplete(AX_CALLBACK_0(Transition::onDelayedPlay, this));
 }
 
 void Transition::changePlayTimes(int value)
@@ -867,9 +867,9 @@ void Transition::playItem(TransitionItem* item)
                 ->setRepeat(item->tweenConfig->repeat, item->tweenConfig->yoyo)
                 ->setTimeScale(_timeScale)
                 ->setTargetAny(item)
-                ->onStart(CC_CALLBACK_1(Transition::onTweenStart, this))
-                ->onUpdate(CC_CALLBACK_1(Transition::onTweenUpdate, this))
-                ->onComplete1(CC_CALLBACK_1(Transition::onTweenComplete, this));
+                ->onStart(AX_CALLBACK_1(Transition::onTweenStart, this))
+                ->onUpdate(AX_CALLBACK_1(Transition::onTweenUpdate, this))
+                ->onComplete1(AX_CALLBACK_1(Transition::onTweenComplete, this));
 
             if (_endTime >= 0)
                 item->tweener->setBreakpoint(_endTime - time);
@@ -894,9 +894,9 @@ void Transition::playItem(TransitionItem* item)
                 ->setDelay(time)
                 ->setTimeScale(_timeScale)
                 ->setTargetAny(item)
-                ->onStart(CC_CALLBACK_1(Transition::onTweenStart, this))
-                ->onUpdate(CC_CALLBACK_1(Transition::onTweenUpdate, this))
-                ->onComplete1(CC_CALLBACK_1(Transition::onTweenComplete, this));
+                ->onStart(AX_CALLBACK_1(Transition::onTweenStart, this))
+                ->onUpdate(AX_CALLBACK_1(Transition::onTweenUpdate, this))
+                ->onComplete1(AX_CALLBACK_1(Transition::onTweenComplete, this));
 
             if (_endTime >= 0)
                 item->tweener->setBreakpoint(_endTime - item->time);
@@ -922,7 +922,7 @@ void Transition::playItem(TransitionItem* item)
             item->tweener = GTween::delayedCall(time)
                 ->setTimeScale(_timeScale)
                 ->setTargetAny(item)
-                ->onComplete1(CC_CALLBACK_1(Transition::onDelayedPlayItem, this));
+                ->onComplete1(AX_CALLBACK_1(Transition::onDelayedPlayItem, this));
         }
     }
 

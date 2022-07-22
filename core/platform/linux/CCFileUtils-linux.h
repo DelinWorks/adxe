@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include <string>
 #include <vector>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup platform
@@ -39,7 +39,7 @@ NS_CC_BEGIN
  */
 
 //! @brief  Helper class to handle file operations
-class CC_DLL FileUtilsLinux : public FileUtils
+class AX_DLL FileUtilsLinux : public FileUtils
 {
     friend class FileUtils;
 
@@ -62,4 +62,4 @@ private:
 // end of platform group
 /// @}
 
-NS_CC_END
+NS_AX_END

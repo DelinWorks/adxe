@@ -25,12 +25,12 @@
 
 #include "physics3d/CCPhysics3D.h"
 
-#if CC_USE_3D_PHYSICS
+#if AX_USE_3D_PHYSICS
 
-#    if (CC_ENABLE_BULLET_INTEGRATION)
+#    if (AX_ENABLE_BULLET_INTEGRATION)
 #        include "bullet/BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 Physics3DShape::ShapeType Physics3DShape::getShapeType() const
 {
@@ -39,25 +39,25 @@ Physics3DShape::ShapeType Physics3DShape::getShapeType() const
 
 Physics3DShape::Physics3DShape() : _shapeType(ShapeType::UNKNOWN)
 {
-#        if (CC_ENABLE_BULLET_INTEGRATION)
+#        if (AX_ENABLE_BULLET_INTEGRATION)
     _btShape         = nullptr;
     _heightfieldData = nullptr;
 #        endif
 }
 Physics3DShape::~Physics3DShape()
 {
-#        if (CC_ENABLE_BULLET_INTEGRATION)
-    CC_SAFE_DELETE(_btShape);
-    CC_SAFE_DELETE_ARRAY(_heightfieldData);
-    for (auto iter : _compoundChildShapes)
+#        if (AX_ENABLE_BULLET_INTEGRATION)
+    AX_SAFE_DELETE(_btShape);
+    AX_SAFE_DELETE_ARRAY(_heightfieldData);
+    for (auto&& iter : _compoundChildShapes)
     {
-        CC_SAFE_RELEASE(iter);
+        AX_SAFE_RELEASE(iter);
     }
     _compoundChildShapes.clear();
 #        endif
 }
 
-Physics3DShape* Physics3DShape::createBox(const cocos2d::Vec3& extent)
+Physics3DShape* Physics3DShape::createBox(const axis::Vec3& extent)
 {
     auto shape = new Physics3DShape();
     shape->initBox(extent);
@@ -89,7 +89,7 @@ Physics3DShape* Physics3DShape::createCapsule(float radius, float height)
     return shape;
 }
 
-Physics3DShape* Physics3DShape::createConvexHull(const cocos2d::Vec3* points, int numPoints)
+Physics3DShape* Physics3DShape::createConvexHull(const axis::Vec3* points, int numPoints)
 {
     auto shape = new Physics3DShape();
     shape->initConvexHull(points, numPoints);
@@ -97,7 +97,7 @@ Physics3DShape* Physics3DShape::createConvexHull(const cocos2d::Vec3* points, in
     return shape;
 }
 
-Physics3DShape* Physics3DShape::createMesh(const cocos2d::Vec3* triangles, int numTriangles)
+Physics3DShape* Physics3DShape::createMesh(const axis::Vec3* triangles, int numTriangles)
 {
     auto shape = new Physics3DShape();
     shape->initMesh(triangles, numTriangles);
@@ -130,7 +130,7 @@ Physics3DShape* Physics3DShape::createCompoundShape(const std::vector<std::pair<
     return shape;
 }
 
-bool Physics3DShape::initBox(const cocos2d::Vec3& ext)
+bool Physics3DShape::initBox(const axis::Vec3& ext)
 {
     _shapeType = ShapeType::BOX;
     _btShape   = new btBoxShape(convertVec3TobtVector3(ext * 0.5f));
@@ -145,7 +145,7 @@ bool Physics3DShape::initSphere(float radius)
 bool Physics3DShape::initCylinder(float radius, float height)
 {
     _shapeType = ShapeType::CYLINDER;
-    _btShape   = new btCylinderShape(convertVec3TobtVector3(cocos2d::Vec3(radius, height, radius) * 0.5f));
+    _btShape   = new btCylinderShape(convertVec3TobtVector3(axis::Vec3(radius, height, radius) * 0.5f));
     return true;
 }
 bool Physics3DShape::initCapsule(float radius, float height)
@@ -155,14 +155,14 @@ bool Physics3DShape::initCapsule(float radius, float height)
     return true;
 }
 
-bool Physics3DShape::initConvexHull(const cocos2d::Vec3* points, int numPoints)
+bool Physics3DShape::initConvexHull(const axis::Vec3* points, int numPoints)
 {
     _shapeType = ShapeType::CONVEX;
-    _btShape   = new btConvexHullShape((btScalar*)points, numPoints, sizeof(cocos2d::Vec3));
+    _btShape   = new btConvexHullShape((btScalar*)points, numPoints, sizeof(axis::Vec3));
     return true;
 }
 
-bool Physics3DShape::initMesh(const cocos2d::Vec3* triangles, int numTriangles)
+bool Physics3DShape::initMesh(const axis::Vec3* triangles, int numTriangles)
 {
     _shapeType = ShapeType::MESH;
     auto mesh  = new btTriangleMesh(false);
@@ -206,18 +206,18 @@ bool Physics3DShape::initCompoundShape(const std::vector<std::pair<Physics3DShap
 {
     _shapeType    = ShapeType::COMPOUND;
     auto compound = new btCompoundShape;
-    for (auto iter : shapes)
+    for (auto&& iter : shapes)
     {
         compound->addChildShape(convertMat4TobtTransform(iter.second), iter.first->getbtShape());
-        CC_SAFE_RETAIN(iter.first);
+        AX_SAFE_RETAIN(iter.first);
         _compoundChildShapes.push_back(iter.first);
     }
     _btShape = compound;
     return true;
 }
 
-NS_CC_END
+NS_AX_END
 
-#    endif  // CC_ENABLE_BULLET_INTEGRATION
+#    endif  // AX_ENABLE_BULLET_INTEGRATION
 
-#endif  // CC_USE_3D_PHYSICS
+#endif  // AX_USE_3D_PHYSICS

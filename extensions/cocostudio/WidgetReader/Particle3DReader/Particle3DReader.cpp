@@ -34,7 +34,7 @@
 
 #include "Particle3D/PU/CCPUParticleSystem3D.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -59,12 +59,12 @@ Particle3DReader* Particle3DReader::getInstance()
 
 void Particle3DReader::purge()
 {
-    CC_SAFE_DELETE(_instanceParticle3DReader);
+    AX_SAFE_DELETE(_instanceParticle3DReader);
 }
 
 void Particle3DReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceParticle3DReader);
+    AX_SAFE_DELETE(_instanceParticle3DReader);
 }
 
 Offset<Table> Particle3DReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -121,7 +121,7 @@ Offset<Table> Particle3DReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void Particle3DReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* particle3DOptions)
+void Particle3DReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* particle3DOptions)
 {
     auto options = (Particle3DOptions*)particle3DOptions;
 

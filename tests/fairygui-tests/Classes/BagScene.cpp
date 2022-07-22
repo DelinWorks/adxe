@@ -1,6 +1,6 @@
 #include "BagScene.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 BagScene::BagScene() :_bagWindow(nullptr)
 {
@@ -8,7 +8,7 @@ BagScene::BagScene() :_bagWindow(nullptr)
 
 BagScene::~BagScene()
 {
-    CC_SAFE_RELEASE(_bagWindow);
+    AX_SAFE_RELEASE(_bagWindow);
 }
 
 void BagScene::continueInit()
