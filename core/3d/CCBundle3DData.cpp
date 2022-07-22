@@ -1,6 +1,6 @@
 #include "3d/CCBundle3DData.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 int MeshVertexAttrib::getAttribSizeBytes() const
 {
@@ -23,9 +23,9 @@ int MeshVertexAttrib::getAttribSizeBytes() const
     case backend::VertexFormat::USHORT2:
         return 4;
     default:
-        CCASSERT(false, "VertexFormat convert to size error");
+        AXASSERT(false, "VertexFormat convert to size error");
     }
     return ret;
 }
 
-NS_CC_END
+NS_AX_END

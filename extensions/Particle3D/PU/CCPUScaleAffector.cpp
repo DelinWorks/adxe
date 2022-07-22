@@ -27,7 +27,7 @@
 #include "CCPUScaleAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const float PUScaleAffector::DEFAULT_X_SCALE   = 1.0f;
@@ -59,26 +59,26 @@ PUScaleAffector::~PUScaleAffector()
 {
     if (_dynScaleX)
     {
-        CC_SAFE_DELETE(_dynScaleX);
+        AX_SAFE_DELETE(_dynScaleX);
     }
     if (_dynScaleY)
     {
-        CC_SAFE_DELETE(_dynScaleY);
+        AX_SAFE_DELETE(_dynScaleY);
     }
     if (_dynScaleZ)
     {
-        CC_SAFE_DELETE(_dynScaleZ);
+        AX_SAFE_DELETE(_dynScaleZ);
     }
     if (_dynScaleXYZ)
     {
-        CC_SAFE_DELETE(_dynScaleXYZ);
+        AX_SAFE_DELETE(_dynScaleXYZ);
     }
 }
 //-----------------------------------------------------------------------
 void PUScaleAffector::setDynScaleX(PUDynamicAttribute* dynScaleX)
 {
     if (_dynScaleX)
-        CC_SAFE_DELETE(_dynScaleX);
+        AX_SAFE_DELETE(_dynScaleX);
 
     _dynScaleX    = dynScaleX;
     _dynScaleXSet = true;
@@ -88,7 +88,7 @@ void PUScaleAffector::resetDynScaleX(bool resetToDefault)
 {
     if (resetToDefault)
     {
-        CC_SAFE_DELETE(_dynScaleX);
+        AX_SAFE_DELETE(_dynScaleX);
         _dynScaleX = new PUDynamicAttributeFixed();
         (static_cast<PUDynamicAttributeFixed*>(_dynScaleX))->setValue(DEFAULT_X_SCALE);
         _dynScaleXSet = false;
@@ -102,7 +102,7 @@ void PUScaleAffector::resetDynScaleX(bool resetToDefault)
 void PUScaleAffector::setDynScaleY(PUDynamicAttribute* dynScaleY)
 {
     if (_dynScaleY)
-        CC_SAFE_DELETE(_dynScaleY);
+        AX_SAFE_DELETE(_dynScaleY);
 
     _dynScaleY    = dynScaleY;
     _dynScaleYSet = true;
@@ -113,7 +113,7 @@ void PUScaleAffector::resetDynScaleY(bool resetToDefault)
     if (resetToDefault)
     {
 
-        CC_SAFE_DELETE(_dynScaleY);
+        AX_SAFE_DELETE(_dynScaleY);
         _dynScaleY = new PUDynamicAttributeFixed();
         (static_cast<PUDynamicAttributeFixed*>(_dynScaleY))->setValue(DEFAULT_X_SCALE);
         _dynScaleYSet = false;
@@ -127,7 +127,7 @@ void PUScaleAffector::resetDynScaleY(bool resetToDefault)
 void PUScaleAffector::setDynScaleZ(PUDynamicAttribute* dynScaleZ)
 {
     if (_dynScaleZ)
-        CC_SAFE_DELETE(_dynScaleZ);
+        AX_SAFE_DELETE(_dynScaleZ);
 
     _dynScaleZ    = dynScaleZ;
     _dynScaleZSet = true;
@@ -137,7 +137,7 @@ void PUScaleAffector::resetDynScaleZ(bool resetToDefault)
 {
     if (resetToDefault)
     {
-        CC_SAFE_DELETE(_dynScaleZ);
+        AX_SAFE_DELETE(_dynScaleZ);
         _dynScaleZ = new PUDynamicAttributeFixed();
         (static_cast<PUDynamicAttributeFixed*>(_dynScaleZ))->setValue(DEFAULT_X_SCALE);
         _dynScaleYSet = false;
@@ -151,7 +151,7 @@ void PUScaleAffector::resetDynScaleZ(bool resetToDefault)
 void PUScaleAffector::setDynScaleXYZ(PUDynamicAttribute* dynScaleXYZ)
 {
     if (_dynScaleXYZ)
-        CC_SAFE_DELETE(_dynScaleXYZ);
+        AX_SAFE_DELETE(_dynScaleXYZ);
 
     _dynScaleXYZ    = dynScaleXYZ;
     _dynScaleXYZSet = true;
@@ -161,7 +161,7 @@ void PUScaleAffector::resetDynScaleXYZ(bool resetToDefault)
 {
     if (resetToDefault)
     {
-        CC_SAFE_DELETE(_dynScaleXYZ);
+        AX_SAFE_DELETE(_dynScaleXYZ);
         _dynScaleXYZ = new PUDynamicAttributeFixed();
         (static_cast<PUDynamicAttributeFixed*>(_dynScaleXYZ))->setValue(DEFAULT_XYZ_SCALE);
         _dynScaleXYZSet = false;
@@ -198,7 +198,7 @@ void PUScaleAffector::updatePUAffector(PUParticle3D* particle, float deltaTime)
     //// Only continue if the particle is a visual particle
     // if (particle->particleType != Particle::PT_VISUAL)
     //	return;
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         float ds        = 0;
@@ -284,4 +284,4 @@ void PUScaleAffector::copyAttributesTo(PUAffector* affector)
     scaleAffector->_sinceStartSystem = _sinceStartSystem;
 }
 
-NS_CC_END
+NS_AX_END

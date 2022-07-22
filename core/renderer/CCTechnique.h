@@ -35,7 +35,7 @@
 #include "platform/CCPlatformMacros.h"
 #include "base/CCVector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Pass;
 class Material;
@@ -46,7 +46,7 @@ class ProgramState;
 }
 
 /// Technique
-class CC_DLL Technique : public Ref
+class AX_DLL Technique : public Ref
 {
     friend class Material;
     friend class Renderer;
@@ -99,4 +99,4 @@ protected:
     Material* _material = nullptr;
 };
 
-NS_CC_END
+NS_AX_END

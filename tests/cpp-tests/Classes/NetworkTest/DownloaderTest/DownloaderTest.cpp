@@ -32,7 +32,7 @@
 #include "ui/UIButton.h"
 #include "network/CCDownloader.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 static const char* sURLList[] = {
     "https://www.cocos2d-x.org/attachments/802/cocos2dx_landscape.png", "https://cocos2d-x.org/images/logo.png",
@@ -66,7 +66,7 @@ struct DownloaderTest : public TestCase
         TAG_SPRITE,
     };
 
-    Node* createDownloadView(const char* name, const cocos2d::ui::Button::ccWidgetClickCallback& callback)
+    Node* createDownloadView(const char* name, const axis::ui::Button::ccWidgetClickCallback& callback)
     {
         Size viewSize(220, 120);
         float margin = 5;
@@ -217,7 +217,7 @@ struct DownloaderTest : public TestCase
         };
 
         // define success callback
-        downloader->onDataTaskSuccess = [this](const cocos2d::network::DownloadTask& task,
+        downloader->onDataTaskSuccess = [this](const axis::network::DownloadTask& task,
                                                std::vector<unsigned char>& data) {
             // create texture from data
             Texture2D* texture = nullptr;
@@ -249,10 +249,10 @@ struct DownloaderTest : public TestCase
                 auto bar = (ui::LoadingBar*)view->getChildByTag(TAG_PROGRESS_BAR);
                 bar->setVisible(false);
             } while (0);
-            CC_SAFE_RELEASE(texture);
+            AX_SAFE_RELEASE(texture);
         };
 
-        downloader->onFileTaskSuccess = [this](const cocos2d::network::DownloadTask& task) {
+        downloader->onFileTaskSuccess = [this](const axis::network::DownloadTask& task) {
             Texture2D* texture = nullptr;
             do
             {
@@ -268,7 +268,7 @@ struct DownloaderTest : public TestCase
                         MIN((viewSize.height - 20) / spriteSize.height, (viewSize.width - 20) / spriteSize.width);
                     sprite->setScale(scale);
                     view->addChild(sprite, 5, TAG_SPRITE);
-                    CC_SAFE_RELEASE(texture);
+                    AX_SAFE_RELEASE(texture);
                 }
                 else
                 {
@@ -286,7 +286,7 @@ struct DownloaderTest : public TestCase
         };
 
         // define failed callback
-        downloader->onTaskError = [this](const cocos2d::network::DownloadTask& task, int errorCode,
+        downloader->onTaskError = [this](const axis::network::DownloadTask& task, int errorCode,
                                          int errorCodeInternal, std::string_view errorStr) {
             log("Failed to download : %s, identifier(%s) error code(%d), internal error code(%d) desc(%s)",
                 task.requestURL.c_str(), task.identifier.c_str(), errorCode, errorCodeInternal, errorStr.data());

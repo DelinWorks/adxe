@@ -6,11 +6,11 @@
 #include "CocosStudioExport.h"
 #include <functional>
 
-#if !defined(CC_USE_SPINE_CPP) || CC_USE_SPINE_CPP
+#if !defined(AX_USE_SPINE_CPP) || AX_USE_SPINE_CPP
 class CCS_DLL SpineSkeletonDataCache
 {
 public:
-    class SkeletonData : public cocos2d::Ref
+    class SkeletonData : public axis::Ref
     {
     public:
         SkeletonData(spine::SkeletonData* d, spine::AttachmentLoader* loader) : data(d), attachmentLoader(loader) {}
@@ -47,7 +47,7 @@ public:
 class SpineSkeletonDataCache
 {
 public:
-    class SkeletonData : public cocos2d::Ref
+    class SkeletonData : public axis::Ref
     {
     public:
         SkeletonData(spSkeletonData* d, spAttachmentLoader* loader) : data(d), attachmentLoader(loader) {}

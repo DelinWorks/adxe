@@ -41,19 +41,19 @@
 #include "renderer/CCPass.h"
 #include "xxhash.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 MeshCommand::MeshCommand()
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     : _rendererRecreatedListener(nullptr)
 #endif
 {
     _type = RenderCommand::Type::MESH_COMMAND;
     _is3D = true;
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     // listen the event that renderer was recreated on Android/WP8
     _rendererRecreatedListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED,
-                                                             CC_CALLBACK_1(MeshCommand::listenRendererRecreated, this));
+                                                             AX_CALLBACK_1(MeshCommand::listenRendererRecreated, this));
     Director::getInstance()->getEventDispatcher()->addEventListenerWithFixedPriority(_rendererRecreatedListener, -1);
 #endif
 }
@@ -75,13 +75,13 @@ void MeshCommand::init(float globalZOrder, const Mat4& transform)
 
 MeshCommand::~MeshCommand()
 {
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     Director::getInstance()->getEventDispatcher()->removeEventListener(_rendererRecreatedListener);
 #endif
 }
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
 void MeshCommand::listenRendererRecreated(EventCustom* event) {}
 #endif
 
-NS_CC_END
+NS_AX_END

@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_LUA_STACK_H_
-#define __CC_LUA_STACK_H_
+#ifndef __AX_LUA_STACK_H_
+#define __AX_LUA_STACK_H_
 
 extern "C" {
 #include "lua.h"
@@ -38,7 +38,7 @@ extern "C" {
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * LuaStack is used to manager the operation on the lua_State,eg., push data onto the lua_State, execute the function
@@ -328,8 +328,8 @@ protected:
     int _callFromLua;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end group
 /// @}
-#endif  // __CC_LUA_STACK_H_
+#endif  // __AX_LUA_STACK_H_

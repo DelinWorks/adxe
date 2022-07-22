@@ -29,7 +29,7 @@
 #include "renderer/ccShaders.h"
 #include "renderer/backend/ProgramState.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 int StencilStateManager::s_layer = -1;
 
@@ -66,7 +66,7 @@ StencilStateManager::StencilStateManager()
 
 StencilStateManager::~StencilStateManager()
 {
-    CC_SAFE_RELEASE(_programState);
+    AX_SAFE_RELEASE(_programState);
 }
 
 void StencilStateManager::drawFullScreenQuadClearStencil(float globalZOrder)
@@ -111,8 +111,8 @@ void StencilStateManager::updateLayerMask()
 
 void StencilStateManager::onBeforeVisit(float globalZOrder)
 {
-    _customCommand.setBeforeCallback(CC_CALLBACK_0(StencilStateManager::onBeforeDrawQuadCmd, this));
-    _customCommand.setAfterCallback(CC_CALLBACK_0(StencilStateManager::onAfterDrawQuadCmd, this));
+    _customCommand.setBeforeCallback(AX_CALLBACK_0(StencilStateManager::onBeforeDrawQuadCmd, this));
+    _customCommand.setAfterCallback(AX_CALLBACK_0(StencilStateManager::onAfterDrawQuadCmd, this));
 
     // draw a fullscreen solid rectangle to clear the stencil buffer
     drawFullScreenQuadClearStencil(globalZOrder);
@@ -220,4 +220,4 @@ void StencilStateManager::onAfterVisit()
     s_layer--;
 }
 
-NS_CC_END
+NS_AX_END

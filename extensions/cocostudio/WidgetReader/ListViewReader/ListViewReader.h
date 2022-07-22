@@ -40,15 +40,15 @@ public:
 
     static ListViewReader* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
-    virtual void setPropsFromJsonDictionary(cocos2d::ui::Widget* widget, const rapidjson::Value& options);
-    virtual void setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* pCocoNode);
+    virtual void setPropsFromJsonDictionary(axis::ui::Widget* widget, const rapidjson::Value& options);
+    virtual void setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* pCocoNode);
     flatbuffers::Offset<flatbuffers::Table> createOptionsWithFlatBuffers(pugi::xml_node objectData,
                                                                          flatbuffers::FlatBufferBuilder* builder);
-    void setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* listViewOptions);
-    cocos2d::Node* createNodeWithFlatBuffers(const flatbuffers::Table* listViewOptions);
+    void setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* listViewOptions);
+    axis::Node* createNodeWithFlatBuffers(const flatbuffers::Table* listViewOptions);
 
     int getResourceType(std::string_view key);
 };

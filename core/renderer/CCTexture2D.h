@@ -36,7 +36,7 @@ THE SOFTWARE.
 #include "base/ccTypes.h"
 #include "renderer/CCCustomCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Image;
 class NinePatchInfo;
@@ -71,7 +71,7 @@ class ProgramState;
  * texture dimensions i.e. "contentSize" != (pixelsWide, pixelsHigh) and (maxS, maxT) != (1.0, 1.0). Be aware that the
  * content of the generated textures will be upside-down!
  */
-class CC_DLL Texture2D : public Ref
+class AX_DLL Texture2D : public Ref
 {
 public:
     struct PixelFormatInfo
@@ -460,4 +460,4 @@ protected:
 // end of textures group
 /// @}
 
-NS_CC_END
+NS_AX_END

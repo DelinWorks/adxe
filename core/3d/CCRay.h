@@ -23,15 +23,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_RAY_H_
-#define __CC_RAY_H_
+#ifndef __AX_RAY_H_
+#define __AX_RAY_H_
 
 #include "math/CCMath.h"
 #include "3d/CCAABB.h"
 #include "3d/CCOBB.h"
 #include "3d/CCPlane.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -42,7 +42,7 @@ NS_CC_BEGIN
  * @brief Ray is a line with one end. usually use it to check intersects with some object,such as Plane, OBB, AABB
  * @js NA
  **/
-class CC_DLL Ray
+class AX_DLL Ray
 {
 public:
     /**
@@ -108,6 +108,6 @@ public:
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif

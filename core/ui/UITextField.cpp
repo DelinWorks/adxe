@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "base/ccUTF8.h"
 #include "2d/CCCamera.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -65,7 +65,7 @@ UICCTextField* UICCTextField::create(std::string_view placeholder, std::string_v
         }
         return pRet;
     }
-    CC_SAFE_DELETE(pRet);
+    AX_SAFE_DELETE(pRet);
 
     return nullptr;
 }
@@ -288,7 +288,7 @@ TextField* TextField::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -303,7 +303,7 @@ TextField* TextField::create(std::string_view placeholder, std::string_view font
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -403,12 +403,12 @@ const Color4B& TextField::getPlaceHolderColor() const
     return _textFieldRenderer->getColorSpaceHolder();
 }
 
-void TextField::setPlaceHolderColor(const cocos2d::Color3B& color)
+void TextField::setPlaceHolderColor(const axis::Color3B& color)
 {
     _textFieldRenderer->setColorSpaceHolder(color);
 }
 
-void TextField::setPlaceHolderColor(const cocos2d::Color4B& color)
+void TextField::setPlaceHolderColor(const axis::Color4B& color)
 {
     _textFieldRenderer->setColorSpaceHolder(color);
 }
@@ -418,7 +418,7 @@ const Color4B& TextField::getTextColor() const
     return _textFieldRenderer->getTextColor();
 }
 
-void TextField::setTextColor(const cocos2d::Color4B& textColor)
+void TextField::setTextColor(const axis::Color4B& textColor)
 {
     _textFieldRenderer->setTextColor(textColor);
 }
@@ -838,4 +838,4 @@ void TextField::setCursorFromPoint(const Vec2& point, const Camera* camera)
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

@@ -31,10 +31,9 @@ THE SOFTWARE.
 #include <map>
 #include <vector>
 
-namespace cocos2d
-{
+NS_AX_BEGIN
 class SpriteFrame;
-}
+NS_AX_END
 
 namespace cocostudio
 {
@@ -47,7 +46,7 @@ class CCS_DLL SpriteFrameCacheHelper
 {
 public:
     /** @deprecated Use getInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static SpriteFrameCacheHelper* sharedSpriteFrameCacheHelper()
+    AX_DEPRECATED_ATTRIBUTE static SpriteFrameCacheHelper* sharedSpriteFrameCacheHelper()
     {
         return SpriteFrameCacheHelper::getInstance();
     }
@@ -70,7 +69,7 @@ private:
     SpriteFrameCacheHelper();
     ~SpriteFrameCacheHelper();
 
-    hlookup::string_map<std::vector<cocos2d::SpriteFrame*>> _usingSpriteFrames;
+    hlookup::string_map<std::vector<axis::SpriteFrame*>> _usingSpriteFrames;
     static SpriteFrameCacheHelper* _spriteFrameCacheHelper;
 };
 

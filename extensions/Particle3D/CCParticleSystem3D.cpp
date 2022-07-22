@@ -28,7 +28,7 @@
 #include "CCParticle3DAffector.h"
 #include "CCParticle3DRender.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 Particle3D::Particle3D() : color(Vec4::ONE), rt_uv(Vec2::ONE), width(1.0f), height(1.0f), depth(1.0f) {}
 
@@ -48,8 +48,8 @@ ParticleSystem3D::~ParticleSystem3D()
 {
     // stopParticle();
     removeAllAffector();
-    CC_SAFE_RELEASE(_emitter);
-    CC_SAFE_RELEASE(_render);
+    AX_SAFE_RELEASE(_emitter);
+    AX_SAFE_RELEASE(_render);
 }
 
 void ParticleSystem3D::startParticleSystem()
@@ -96,10 +96,10 @@ void ParticleSystem3D::setEmitter(Particle3DEmitter* emitter)
 {
     if (_emitter != emitter)
     {
-        CC_SAFE_RELEASE(_emitter);
+        AX_SAFE_RELEASE(_emitter);
         emitter->_particleSystem = this;
         _emitter                 = emitter;
-        CC_SAFE_RETAIN(_emitter);
+        AX_SAFE_RETAIN(_emitter);
     }
 }
 
@@ -107,10 +107,10 @@ void ParticleSystem3D::setRender(Particle3DRender* render)
 {
     if (_render != render)
     {
-        CC_SAFE_RELEASE(_render);
+        AX_SAFE_RELEASE(_render);
         _render                  = render;
         _render->_particleSystem = this;
-        CC_SAFE_RETAIN(_render);
+        AX_SAFE_RETAIN(_render);
     }
 }
 
@@ -126,14 +126,14 @@ void ParticleSystem3D::addAffector(Particle3DAffector* affector)
 
 void ParticleSystem3D::removeAffector(int index)
 {
-    CCASSERT((unsigned int)index < _affectors.size(), "wrong index");
+    AXASSERT((unsigned int)index < _affectors.size(), "wrong index");
     _affectors.erase(_affectors.begin() + index);
 }
 
 void ParticleSystem3D::removeAllAffector()
 {
     // release all affectors
-    for (auto it : _affectors)
+    for (auto&& it : _affectors)
     {
         it->release();
     }
@@ -142,7 +142,7 @@ void ParticleSystem3D::removeAllAffector()
 
 Particle3DAffector* ParticleSystem3D::getAffector(int index)
 {
-    CCASSERT(index < (int)_affectors.size(), "wrong index");
+    AXASSERT(index < (int)_affectors.size(), "wrong index");
     return _affectors[index];
 }
 
@@ -159,7 +159,7 @@ void ParticleSystem3D::update(float delta)
             _emitter->updateEmitter(particle, delta);
         }
 
-        for (auto& it : _affectors)
+        for (auto&& it : _affectors)
         {
             it->updateAffector(particle, delta);
         }
@@ -206,4 +206,4 @@ void ParticleSystem3D::setEnabled(bool enabled)
     _isEnabled = enabled;
 }
 
-NS_CC_END
+NS_AX_END

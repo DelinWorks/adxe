@@ -26,8 +26,8 @@
  ****************************************************************************/
 
 #include "2d/CCFontAtlas.h"
-#if CC_TARGET_PLATFORM != CC_PLATFORM_WIN32 && CC_TARGET_PLATFORM != CC_PLATFORM_ANDROID
-#elif CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM != AX_PLATFORM_WIN32 && AX_TARGET_PLATFORM != AX_PLATFORM_ANDROID
+#elif AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 #    include "platform/android/jni/Java_org_cocos2dx_lib_Cocos2dxHelper.h"
 #endif
 #include <algorithm>
@@ -38,7 +38,7 @@
 #include "base/CCEventDispatcher.h"
 #include "base/CCEventType.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 const int FontAtlas::CacheTextureWidth     = 512;
 const int FontAtlas::CacheTextureHeight    = 512;
@@ -63,7 +63,7 @@ FontAtlas::FontAtlas(Font* theFont) : _font(theFont)
             _pixelFormat         = backend::PixelFormat::LA8;
             _currentPageDataSize = CacheTextureWidth * CacheTextureHeight << _strideShift;
 
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
             _currentPageDataSizeRGBA = CacheTextureWidth * CacheTextureHeight * 4;
 #endif
 
@@ -81,11 +81,11 @@ FontAtlas::FontAtlas(Font* theFont) : _font(theFont)
             _letterPadding += 2 * FontFreeType::DistanceMapSpread;
         }
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
         auto eventDispatcher = Director::getInstance()->getEventDispatcher();
 
         _rendererRecreatedListener = EventListenerCustom::create(
-            EVENT_RENDERER_RECREATED, CC_CALLBACK_1(FontAtlas::listenRendererRecreated, this));
+            EVENT_RENDERER_RECREATED, AX_CALLBACK_1(FontAtlas::listenRendererRecreated, this));
         eventDispatcher->addEventListenerWithFixedPriority(_rendererRecreatedListener, 1);
 #endif
     }
@@ -97,7 +97,7 @@ void FontAtlas::reinit()
         _currentPageData = new uint8_t[_currentPageDataSize];
     _currentPage = -1;
 
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
     if (_strideShift && !_currentPageDataRGBA)
         _currentPageDataRGBA = new uint8_t[_currentPageDataSizeRGBA];
 #endif
@@ -107,7 +107,7 @@ void FontAtlas::reinit()
 
 FontAtlas::~FontAtlas()
 {
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     if (_fontFreeType && _rendererRecreatedListener)
     {
         auto eventDispatcher = Director::getInstance()->getEventDispatcher();
@@ -119,9 +119,9 @@ FontAtlas::~FontAtlas()
     _font->release();
     releaseTextures();
 
-    CC_SAFE_DELETE_ARRAY(_currentPageData);
-#if defined(CC_USE_METAL)
-    CC_SAFE_DELETE_ARRAY(_currentPageDataRGBA);
+    AX_SAFE_DELETE_ARRAY(_currentPageData);
+#if defined(AX_USE_METAL)
+    AX_SAFE_DELETE_ARRAY(_currentPageDataRGBA);
 #endif
 }
 
@@ -139,7 +139,7 @@ void FontAtlas::reset()
 
 void FontAtlas::releaseTextures()
 {
-    for (auto& item : _atlasTextures)
+    for (auto&& item : _atlasTextures)
     {
         item.second->release();
     }
@@ -203,7 +203,7 @@ void FontAtlas::findNewCharacters(const std::u32string& u32Text, std::unordered_
     }
     else
     {
-        for (auto charCode : u32Text)
+        for (auto&& charCode : u32Text)
             if (_letterDefinitions.find(charCode) == _letterDefinitions.end())
                 charset.insert(charCode);
     }
@@ -234,12 +234,12 @@ bool FontAtlas::prepareLetterDefinitions(const std::u32string& utf32Text)
     Rect tempRect;
     FontLetterDefinition tempDef;
 
-    auto scaleFactor = CC_CONTENT_SCALE_FACTOR();
+    auto scaleFactor = AX_CONTENT_SCALE_FACTOR();
     auto pixelFormat = _pixelFormat;
 
     int startY = (int)_currentPageOrigY;
 
-    for (auto charCode : charCodeSet)
+    for (auto&& charCode : charCodeSet)
     {
         auto bitmap = _fontFreeType->getGlyphBitmap(charCode, bitmapWidth, bitmapHeight, tempRect, tempDef.xAdvance);
         if (bitmap && bitmapWidth > 0 && bitmapHeight > 0)
@@ -309,7 +309,7 @@ bool FontAtlas::prepareLetterDefinitions(const std::u32string& utf32Text)
 
 void FontAtlas::updateTextureContent(backend::PixelFormat format, int startY)
 {
-#if !defined(CC_USE_METAL)
+#if !defined(AX_USE_METAL)
     auto data = _currentPageData + (CacheTextureWidth * (int)startY << _strideShift);
     _atlasTextures[_currentPage]->updateWithSubData(data, 0, startY, CacheTextureWidth,
                                                     (int)_currentPageOrigY - startY + _currLineHeight);
@@ -343,7 +343,7 @@ void FontAtlas::addNewPage()
 
     memset(_currentPageData, 0, _currentPageDataSize);
 
-#if !defined(CC_USE_METAL)
+#if !defined(AX_USE_METAL)
     texture->initWithData(_currentPageData, _currentPageDataSize, _pixelFormat, CacheTextureWidth, CacheTextureHeight);
 #else
     if (_strideShift)
@@ -428,4 +428,4 @@ void FontAtlas::setAntiAliasTexParameters()
     }
 }
 
-NS_CC_END
+NS_AX_END

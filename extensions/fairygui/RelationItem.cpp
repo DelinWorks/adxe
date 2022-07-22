@@ -5,7 +5,7 @@
 #include "utils/WeakPtr.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 RelationItem::RelationItem(GObject* owner) : _target(nullptr)
 {
@@ -544,8 +544,8 @@ void RelationItem::addRefTarget(GObject* target)
         return;
 
     if (target != _owner->_parent)
-        target->addEventListener(UIEventType::PositionChange, CC_CALLBACK_1(RelationItem::onTargetXYChanged, this), EventTag(this));
-    target->addEventListener(UIEventType::SizeChange, CC_CALLBACK_1(RelationItem::onTargetSizeChanged, this), EventTag(this));
+        target->addEventListener(UIEventType::PositionChange, AX_CALLBACK_1(RelationItem::onTargetXYChanged, this), EventTag(this));
+    target->addEventListener(UIEventType::SizeChange, AX_CALLBACK_1(RelationItem::onTargetSizeChanged, this), EventTag(this));
 
     _targetData.x = target->_position.x;
     _targetData.y = target->_position.y;

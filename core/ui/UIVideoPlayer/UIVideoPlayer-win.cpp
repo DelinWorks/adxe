@@ -26,7 +26,7 @@
 
 #include "ui/UIVideoPlayer/UIVideoPlayer.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
 #    include <unordered_map>
 #    include <stdlib.h>
 #    include <string>
@@ -42,7 +42,7 @@
 #    include "yasio/detail/sz.hpp"
 //-----------------------------------------------------------------------------------------------------------
 
-USING_NS_CC;
+USING_NS_AX;
 
 //-----------------------------------------------------------------------------------------------------------
 
@@ -54,7 +54,7 @@ USING_NS_CC;
             (ps)->setUniform(__loc, &__v, sizeof(__v));           \
         } while (false)
 
-using namespace cocos2d::ui;
+using namespace axis::ui;
 
 namespace
 {
@@ -273,7 +273,7 @@ VideoPlayer::VideoPlayer()
 {
     auto pvd      = new PrivateVideoDescriptor{};
     _videoContext = pvd;
-#    if CC_VIDEOPLAYER_DEBUG_DRAW
+#    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode = DrawNode::create();
     addChild(_debugDrawNode);
 #    endif
@@ -325,7 +325,7 @@ VideoPlayer::VideoPlayer()
     }
     else
     {
-        cocos2d::log("Create VideoPlayer backend failed, hr=%d", (int)hr);
+        axis::log("Create VideoPlayer backend failed, hr=%d", (int)hr);
     }
 }
 
@@ -390,7 +390,7 @@ void VideoPlayer::setStyle(StyleType style)
 
 void VideoPlayer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 {
-    cocos2d::ui::Widget::draw(renderer, transform, flags);
+    axis::ui::Widget::draw(renderer, transform, flags);
 
     auto pvd     = (PrivateVideoDescriptor*)_videoContext;  //
     auto vrender = pvd->_vrender;
@@ -501,7 +501,7 @@ void VideoPlayer::draw(Renderer* renderer, const Mat4& transform, uint32_t flags
     if (pvd->_scaleDirty || (flags & FLAGS_TRANSFORM_DIRTY))
         pvd->rescaleTo(this);
 
-#    if CC_VIDEOPLAYER_DEBUG_DRAW
+#    if AX_VIDEOPLAYER_DEBUG_DRAW
     _debugDrawNode->clear();
     auto size         = getContentSize();
     Point vertices[4] = {Point::ZERO, Point(size.width, 0), Point(size.width, size.height), Point(0, size.height)};
@@ -635,7 +635,7 @@ bool VideoPlayer::isUserInputEnabled() const
 
 void VideoPlayer::setVisible(bool visible)
 {
-    cocos2d::ui::Widget::setVisible(visible);
+    axis::ui::Widget::setVisible(visible);
 }
 
 void VideoPlayer::onEnter()
@@ -664,7 +664,7 @@ void VideoPlayer::onPlayEvent(int event)
     }
 }
 
-cocos2d::ui::Widget* VideoPlayer::createCloneInstance()
+axis::ui::Widget* VideoPlayer::createCloneInstance()
 {
     return VideoPlayer::create();
 }

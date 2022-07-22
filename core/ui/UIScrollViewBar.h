@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 #include "ui/UIScrollView.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup ui
  * @{
@@ -42,7 +42,7 @@ namespace ui
 /**
  * Scroll bar being attached to ScrollView layout container.
  */
-class CC_GUI_DLL ScrollViewBar : public ProtectedNode
+class AX_GUI_DLL ScrollViewBar : public ProtectedNode
 {
 
 public:
@@ -182,6 +182,6 @@ private:
 }  // namespace ui
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__UISCROLLVIEWBAR_H__) */

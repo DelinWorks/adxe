@@ -23,13 +23,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_AABB_H__
-#define __CC_AABB_H__
+#ifndef __AX_AABB_H__
+#define __AX_AABB_H__
 
 #include "base/ccMacros.h"
 #include "math/CCMath.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -39,7 +39,7 @@ NS_CC_BEGIN
 /**
  * Axis Aligned Bounding Box (AABB), usually calculate some rough but fast collision detection.
  */
-class CC_DLL AABB
+class AX_DLL AABB
 {
 
 public:
@@ -123,6 +123,6 @@ public:
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif

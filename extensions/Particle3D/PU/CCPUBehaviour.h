@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_BEHAVIOUR_H__
-#define __CC_PU_PARTICLE_3D_BEHAVIOUR_H__
+#ifndef __AX_PU_PARTICLE_3D_BEHAVIOUR_H__
+#define __AX_PU_PARTICLE_3D_BEHAVIOUR_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
@@ -33,12 +33,12 @@
 #include <vector>
 #include <string>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct PUParticle3D;
 class PUParticleSystem3D;
 
-class CC_EX_DLL PUBehaviour : public Ref
+class AX_EX_DLL PUBehaviour : public Ref
 {
     friend class PUParticleSystem3D;
 
@@ -83,6 +83,6 @@ protected:
     Vec3 _behaviourScale;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

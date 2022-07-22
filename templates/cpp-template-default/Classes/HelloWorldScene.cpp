@@ -25,7 +25,7 @@
 
 #include "HelloWorldScene.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
@@ -57,7 +57,7 @@ bool HelloWorld::init()
 
     // add a "close" icon to exit the progress. it's an autorelease object
     auto closeItem = MenuItemImage::create("CloseNormal.png", "CloseSelected.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+                                           AX_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
     if (closeItem == nullptr || closeItem->getContentSize().width <= 0 || closeItem->getContentSize().height <= 0)
     {

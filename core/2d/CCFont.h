@@ -34,11 +34,11 @@
 #include "base/ccTypes.h"
 #include "base/ccUTF8.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class FontAtlas;
 
-class CC_DLL Font : public Ref
+class AX_DLL Font : public Ref
 {
 public:
     virtual FontAtlas* newFontAtlas()                                                                   = 0;
@@ -46,7 +46,7 @@ public:
     virtual int getFontMaxHeight() const { return 0; }
 };
 
-NS_CC_END
+NS_AX_END
 
 /// @endcond
 #endif

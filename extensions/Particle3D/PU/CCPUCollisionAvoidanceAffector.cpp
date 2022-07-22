@@ -27,7 +27,7 @@
 #include "CCPUCollisionAvoidanceAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 // Constants
 const float PUCollisionAvoidanceAffector::DEFAULT_RADIUS = 100.0f;
 
@@ -47,8 +47,8 @@ void PUCollisionAvoidanceAffector::setRadius(float radius)
 //-----------------------------------------------------------------------
 void PUCollisionAvoidanceAffector::updatePUAffector(PUParticle3D* /*particle*/, float /*deltaTime*/)
 {
-    CCASSERT(0, "nonsupport yet");
-    // for (auto iter : _particleSystem->getParticles())
+    AXASSERT(0, "nonsupport yet");
+    // for (auto&& iter : _particleSystem->getParticles())
     //{
     //	PUParticle3D *particle = iter;
     //	// Activate spatial hashing
@@ -102,4 +102,4 @@ void PUCollisionAvoidanceAffector::copyAttributesTo(PUAffector* affector)
     collisionAvoidanceAffector->_radius                      = _radius;
 }
 
-NS_CC_END
+NS_AX_END

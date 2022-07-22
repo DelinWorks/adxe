@@ -34,7 +34,7 @@
 #include "base/ccTypes.h"
 #include "base/CCVector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Properties;
 class Vec2;
@@ -156,7 +156,7 @@ class Data;
  * of a property. If the type is unknown, its string can be retrieved and interpreted
  * as necessary.
  */
-class CC_DLL Properties
+class AX_DLL Properties
 {
 public:
     /**

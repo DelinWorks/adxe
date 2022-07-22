@@ -11,7 +11,7 @@
 #include "utils/WeakPtr.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 GObject* GObject::_draggingObject = nullptr;
 
@@ -66,12 +66,12 @@ GObject::~GObject()
     if (_displayObject)
     {
         _displayObject->removeFromParent();
-        CC_SAFE_RELEASE(_displayObject);
+        AX_SAFE_RELEASE(_displayObject);
     }
     for (int i = 0; i < 10; i++)
-        CC_SAFE_DELETE(_gears[i]);
-    CC_SAFE_DELETE(_relations);
-    CC_SAFE_DELETE(_dragBounds);
+        AX_SAFE_DELETE(_gears[i]);
+    AX_SAFE_DELETE(_relations);
+    AX_SAFE_DELETE(_dragBounds);
 
     if (_weakPtrRef > 0)
         WeakPtr::markDisposed(this);
@@ -85,8 +85,8 @@ bool GObject::init()
     {
         _displayObject->setAnchorPoint(Vec2(0, 1));
         _displayObject->setCascadeOpacityEnabled(true);
-        _displayObject->setOnEnterCallback(CC_CALLBACK_0(GObject::onEnter, this));
-        _displayObject->setOnExitCallback(CC_CALLBACK_0(GObject::onExit, this));
+        _displayObject->setOnEnterCallback(AX_CALLBACK_0(GObject::onEnter, this));
+        _displayObject->setOnExitCallback(AX_CALLBACK_0(GObject::onExit, this));
     }
     return true;
 }
@@ -402,8 +402,8 @@ void GObject::setTooltips(const std::string& value)
     _tooltips = value;
     if (!_tooltips.empty())
     {
-        addEventListener(UIEventType::RollOver, CC_CALLBACK_1(GObject::onRollOver, this), EventTag(this));
-        addEventListener(UIEventType::RollOut, CC_CALLBACK_1(GObject::onRollOut, this), EventTag(this));
+        addEventListener(UIEventType::RollOver, AX_CALLBACK_1(GObject::onRollOver, this), EventTag(this));
+        addEventListener(UIEventType::RollOut, AX_CALLBACK_1(GObject::onRollOut, this), EventTag(this));
     }
 }
 
@@ -426,7 +426,7 @@ void GObject::setDraggable(bool value)
     }
 }
 
-void GObject::setDragBounds(const cocos2d::Rect& value)
+void GObject::setDragBounds(const axis::Rect& value)
 {
     if (_dragBounds == nullptr)
         _dragBounds = new Rect();
@@ -464,7 +464,7 @@ Vec2 GObject::localToGlobal(const Vec2& pt)
     return UIRoot->worldToRoot(pt2);
 }
 
-cocos2d::Rect GObject::localToGlobal(const cocos2d::Rect& rect)
+axis::Rect GObject::localToGlobal(const axis::Rect& rect)
 {
     Rect ret;
     Vec2 v = localToGlobal(rect.origin);
@@ -489,7 +489,7 @@ Vec2 GObject::globalToLocal(const Vec2& pt)
     return pt2;
 }
 
-cocos2d::Rect GObject::globalToLocal(const cocos2d::Rect& rect)
+axis::Rect GObject::globalToLocal(const axis::Rect& rect)
 {
     Rect ret;
     Vec2 v = globalToLocal(rect.origin);
@@ -501,7 +501,7 @@ cocos2d::Rect GObject::globalToLocal(const cocos2d::Rect& rect)
     return ret;
 }
 
-cocos2d::Rect GObject::transformRect(const cocos2d::Rect& rect, GObject* targetSpace)
+axis::Rect GObject::transformRect(const axis::Rect& rect, GObject* targetSpace)
 {
     if (targetSpace == this)
         return rect;
@@ -672,7 +672,7 @@ void GObject::removeFromParent()
         _parent->removeChild(this);
 }
 
-cocos2d::Value GObject::getProp(ObjectPropID propId)
+axis::Value GObject::getProp(ObjectPropID propId)
 {
     switch (propId)
     {
@@ -685,7 +685,7 @@ cocos2d::Value GObject::getProp(ObjectPropID propId)
     }
 }
 
-void GObject::setProp(ObjectPropID propId, const cocos2d::Value& value)
+void GObject::setProp(ObjectPropID propId, const axis::Value& value)
 {
     switch (propId)
     {
@@ -908,9 +908,9 @@ void GObject::initDrag()
 {
     if (_draggable)
     {
-        addEventListener(UIEventType::TouchBegin, CC_CALLBACK_1(GObject::onTouchBegin, this), EventTag(this));
-        addEventListener(UIEventType::TouchMove, CC_CALLBACK_1(GObject::onTouchMove, this), EventTag(this));
-        addEventListener(UIEventType::TouchEnd, CC_CALLBACK_1(GObject::onTouchEnd, this), EventTag(this));
+        addEventListener(UIEventType::TouchBegin, AX_CALLBACK_1(GObject::onTouchBegin, this), EventTag(this));
+        addEventListener(UIEventType::TouchMove, AX_CALLBACK_1(GObject::onTouchMove, this), EventTag(this));
+        addEventListener(UIEventType::TouchEnd, AX_CALLBACK_1(GObject::onTouchEnd, this), EventTag(this));
     }
     else
     {
@@ -937,8 +937,8 @@ void GObject::dragBegin(int touchId)
     _dragTesting = true;
     UIRoot->getInputProcessor()->addTouchMonitor(touchId, this);
 
-    addEventListener(UIEventType::TouchMove, CC_CALLBACK_1(GObject::onTouchMove, this), EventTag(this));
-    addEventListener(UIEventType::TouchEnd, CC_CALLBACK_1(GObject::onTouchEnd, this), EventTag(this));
+    addEventListener(UIEventType::TouchMove, AX_CALLBACK_1(GObject::onTouchMove, this), EventTag(this));
+    addEventListener(UIEventType::TouchEnd, AX_CALLBACK_1(GObject::onTouchEnd, this), EventTag(this));
 }
 
 void GObject::dragEnd()
@@ -964,7 +964,7 @@ void GObject::onTouchMove(EventContext* context)
     if (_draggingObject != this && _draggable && _dragTesting)
     {
         int sensitivity;
-#ifdef CC_PLATFORM_PC
+#ifdef AX_PLATFORM_PC
         sensitivity = UIConfig::clickDragSensitivity;
 #else
         sensitivity = UIConfig::touchDragSensitivity;

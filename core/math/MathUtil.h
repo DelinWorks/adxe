@@ -34,14 +34,14 @@
  * @{
  */
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 /**
  * Defines a math utility class.
  *
  * This is primarily used for optimized internal math operations.
  */
-class CC_DLL MathUtil
+class AX_DLL MathUtil
 {
     friend class Mat4;
     friend class Vec3;
@@ -132,7 +132,7 @@ private:
     static void crossVec3(const float* v1, const float* v2, float* dst);
 };
 
-NS_CC_MATH_END
+NS_AX_MATH_END
 /**
  end of base group
  @}

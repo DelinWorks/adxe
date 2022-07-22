@@ -29,7 +29,7 @@
 #include "2d/CCCamera.h"
 #include "renderer/CCRenderer.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 BillBoard::BillBoard() : _mode(Mode::VIEW_POINT_ORIENTED), _modeDirty(false)
 {
@@ -49,7 +49,7 @@ BillBoard* BillBoard::createWithTexture(Texture2D* texture, Mode mode)
         billboard->autorelease();
         return billboard;
     }
-    CC_SAFE_DELETE(billboard);
+    AX_SAFE_DELETE(billboard);
     return nullptr;
 }
 
@@ -62,7 +62,7 @@ BillBoard* BillBoard::create(std::string_view filename, Mode mode)
         billboard->autorelease();
         return billboard;
     }
-    CC_SAFE_DELETE(billboard);
+    AX_SAFE_DELETE(billboard);
     return nullptr;
 }
 
@@ -75,7 +75,7 @@ BillBoard* BillBoard::create(std::string_view filename, const Rect& rect, Mode m
         billboard->autorelease();
         return billboard;
     }
-    CC_SAFE_DELETE(billboard);
+    AX_SAFE_DELETE(billboard);
     return nullptr;
 }
 
@@ -88,7 +88,7 @@ BillBoard* BillBoard::create(Mode mode)
         billboard->autorelease();
         return billboard;
     }
-    CC_SAFE_DELETE(billboard);
+    AX_SAFE_DELETE(billboard);
     return nullptr;
 }
 
@@ -178,7 +178,7 @@ bool BillBoard::calculateBillboardTransform()
             camWorldMat.transformVector(Vec3(0.0f, 0.0f, -1.0f), &camDir);
             break;
         default:
-            CCASSERT(false, "invalid billboard mode");
+            AXASSERT(false, "invalid billboard mode");
             break;
         }
         _modeDirty = false;
@@ -253,4 +253,4 @@ BillBoard::Mode BillBoard::getMode() const
     return _mode;
 }
 
-NS_CC_END
+NS_AX_END

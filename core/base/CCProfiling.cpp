@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 using namespace std;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Profiling Categories
 /* set to false the categories that you don't want to profile */
@@ -78,7 +78,7 @@ Profiler::~Profiler() {}
 
 void Profiler::displayTimers()
 {
-    for (auto& iter : _activeTimers)
+    for (auto&& iter : _activeTimers)
     {
         ProfilingTimer* timer = iter.second;
         log("%s", timer->getDescription().c_str());
@@ -142,7 +142,7 @@ void ProfilingEndTimingBlock(const char* timerName)
     Profiler* p           = Profiler::getInstance();
     ProfilingTimer* timer = p->_activeTimers.at(timerName);
 
-    CCASSERT(timer, "CCProfilingTimer  not found");
+    AXASSERT(timer, "CCProfilingTimer  not found");
 
     int32_t duration =
         static_cast<int32_t>(chrono::duration_cast<chrono::microseconds>(now - timer->_startTime).count());
@@ -159,9 +159,9 @@ void ProfilingResetTimingBlock(const char* timerName)
     Profiler* p           = Profiler::getInstance();
     ProfilingTimer* timer = p->_activeTimers.at(timerName);
 
-    CCASSERT(timer, "CCProfilingTimer not found");
+    AXASSERT(timer, "CCProfilingTimer not found");
 
     timer->reset();
 }
 
-NS_CC_END
+NS_AX_END

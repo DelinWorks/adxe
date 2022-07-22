@@ -38,7 +38,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Value;
 
@@ -46,14 +46,14 @@ typedef std::vector<Value> ValueVector;
 typedef hlookup::string_map<Value> ValueMap;
 typedef std::unordered_map<int, Value> ValueMapIntKey;
 
-CC_DLL extern const ValueVector ValueVectorNull;
-CC_DLL extern const ValueMap ValueMapNull;
-CC_DLL extern const ValueMapIntKey ValueMapIntKeyNull;
+AX_DLL extern const ValueVector ValueVectorNull;
+AX_DLL extern const ValueMap ValueMapNull;
+AX_DLL extern const ValueMapIntKey ValueMapIntKeyNull;
 
 /*
  * This class is provide as a wrapper of basic types, such as int and bool.
  */
-class CC_DLL Value
+class AX_DLL Value
 {
 public:
     /** A predefined Value that has not value. */
@@ -279,13 +279,13 @@ private:
     Type _type;
 };
 
-inline const cocos2d::Value& optValue(const ValueMap& dictionary, std::string_view key)
+inline const axis::Value& optValue(const ValueMap& dictionary, std::string_view key)
 {
-    return dictionary.find(key) != dictionary.cend() ? dictionary.at(key) : cocos2d::Value::Null;
+    return dictionary.find(key) != dictionary.cend() ? dictionary.at(key) : axis::Value::Null;
 }
 
 /** @} */
 
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__cocos2d_libs__CCValue__) */

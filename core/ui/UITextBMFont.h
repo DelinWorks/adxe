@@ -33,10 +33,10 @@ THE SOFTWARE.
  * @addtogroup ui
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Label;
-struct CC_DLL ResourceData;
+struct AX_DLL ResourceData;
 
 namespace ui
 {
@@ -44,7 +44,7 @@ namespace ui
 /**
  * A widget for displaying BMFont label.
  */
-class CC_GUI_DLL TextBMFont : public Widget
+class AX_GUI_DLL TextBMFont : public Widget
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -120,7 +120,7 @@ protected:
 };
 
 }  // namespace ui
-NS_CC_END
+NS_AX_END
 // end of ui group
 /// @}
 

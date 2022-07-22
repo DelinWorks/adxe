@@ -38,7 +38,7 @@
  * @addtogroup ui
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 class DrawNode;
 class Texture2D;
 
@@ -57,7 +57,7 @@ namespace ui
  * Then you could call any methods of Sprite class with the return pointers.
  *
  */
-class CC_GUI_DLL Scale9Sprite : public Sprite
+class AX_GUI_DLL Scale9Sprite : public Sprite
 {
 public:
     /**

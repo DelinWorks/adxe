@@ -43,8 +43,8 @@
 
 #include "platform/CCSAXParser.h"
 
-USING_NS_CC;
-using namespace cocos2d::ui;
+USING_NS_AX;
+using namespace axis::ui;
 
 class ListenerComponent : public Component
 {
@@ -65,8 +65,8 @@ public:
     {
         setName(ListenerComponent::COMPONENT_NAME);
 
-        _touchListener                 = cocos2d::EventListenerTouchAllAtOnce::create();
-        _touchListener->onTouchesEnded = CC_CALLBACK_2(ListenerComponent::onTouchesEnded, this);
+        _touchListener                 = axis::EventListenerTouchAllAtOnce::create();
+        _touchListener->onTouchesEnded = AX_CALLBACK_2(ListenerComponent::onTouchesEnded, this);
 
         Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(_touchListener, _parent);
         _touchListener->retain();
@@ -144,7 +144,7 @@ RichElementText* RichElementText::create(int tag,
         element->autorelease();
         return element;
     }
-    CC_SAFE_DELETE(element);
+    AX_SAFE_DELETE(element);
     return nullptr;
 }
 
@@ -194,7 +194,7 @@ RichElementImage* RichElementImage::create(int tag,
         element->autorelease();
         return element;
     }
-    CC_SAFE_DELETE(element);
+    AX_SAFE_DELETE(element);
     return nullptr;
 }
 
@@ -235,7 +235,7 @@ void RichElementImage::setUrl(std::string_view url)
 RichElementCustomNode* RichElementCustomNode::create(int tag,
                                                      const Color3B& color,
                                                      uint8_t opacity,
-                                                     cocos2d::Node* customNode)
+                                                     axis::Node* customNode)
 {
     RichElementCustomNode* element = new RichElementCustomNode();
     if (element->init(tag, color, opacity, customNode))
@@ -243,11 +243,11 @@ RichElementCustomNode* RichElementCustomNode::create(int tag,
         element->autorelease();
         return element;
     }
-    CC_SAFE_DELETE(element);
+    AX_SAFE_DELETE(element);
     return nullptr;
 }
 
-bool RichElementCustomNode::init(int tag, const Color3B& color, uint8_t opacity, cocos2d::Node* customNode)
+bool RichElementCustomNode::init(int tag, const Color3B& color, uint8_t opacity, axis::Node* customNode)
 {
     if (RichElement::init(tag, color, opacity))
     {
@@ -266,7 +266,7 @@ RichElementNewLine* RichElementNewLine::create(int tag, const Color3B& color, ui
         element->autorelease();
         return element;
     }
-    CC_SAFE_DELETE(element);
+    AX_SAFE_DELETE(element);
     return nullptr;
 }
 
@@ -1006,7 +1006,7 @@ RichText* RichText::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -1018,7 +1018,7 @@ RichText* RichText::createWithXML(std::string_view xml, const ValueMap& defaults
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -1106,7 +1106,7 @@ RichText::HorizontalAlignment RichText::getHorizontalAlignment() const
     return static_cast<RichText::HorizontalAlignment>(_defaults.at(KEY_HORIZONTAL_ALIGNMENT).asInt());
 }
 
-void RichText::setHorizontalAlignment(cocos2d::ui::RichText::HorizontalAlignment a)
+void RichText::setHorizontalAlignment(axis::ui::RichText::HorizontalAlignment a)
 {
     if (static_cast<RichText::HorizontalAlignment>(_defaults.at(KEY_HORIZONTAL_ALIGNMENT).asInt()) != a)
     {
@@ -1125,7 +1125,7 @@ std::string RichText::getFontColor()
     return _defaults.at(KEY_FONT_COLOR_STRING).asString();
 }
 
-cocos2d::Color3B RichText::getFontColor3B()
+axis::Color3B RichText::getFontColor3B()
 {
     return color3BWithString(getFontColor());
 }
@@ -1160,7 +1160,7 @@ std::string RichText::getAnchorFontColor()
     return _defaults.at(KEY_ANCHOR_FONT_COLOR_STRING).asString();
 }
 
-cocos2d::Color3B RichText::getAnchorFontColor3B()
+axis::Color3B RichText::getAnchorFontColor3B()
 {
     return color3BWithString(getAnchorFontColor());
 }
@@ -1399,7 +1399,7 @@ ValueMap RichText::getDefaults() const
     return defaults;
 }
 
-cocos2d::Color3B RichText::color3BWithString(std::string_view color)
+axis::Color3B RichText::color3BWithString(std::string_view color)
 {
     if (color.length() == 4)
     {
@@ -1425,7 +1425,7 @@ cocos2d::Color3B RichText::color3BWithString(std::string_view color)
     return Color3B::WHITE;
 }
 
-std::string RichText::stringWithColor3B(const cocos2d::Color3B& color3b)
+std::string RichText::stringWithColor3B(const axis::Color3B& color3b)
 {
     int r = color3b.r;
     int g = color3b.g;
@@ -1435,7 +1435,7 @@ std::string RichText::stringWithColor3B(const cocos2d::Color3B& color3b)
     return std::string(buf, 7);
 }
 
-std::string RichText::stringWithColor4B(const cocos2d::Color4B& color4b)
+std::string RichText::stringWithColor4B(const axis::Color4B& color4b)
 {
     int r = color4b.r;
     int g = color4b.g;
@@ -1915,7 +1915,7 @@ void RichText::handleImageRenderer(std::string_view filePath,
     }
 }
 
-void RichText::handleCustomRenderer(cocos2d::Node* renderer)
+void RichText::handleCustomRenderer(axis::Node* renderer)
 {
     Vec2 imgSize = renderer->getContentSize();
     _leftSpaceWidth -= imgSize.width;
@@ -1949,11 +1949,11 @@ void RichText::formatRenderers()
         float nextPosY            = 0.0f;
         std::vector<std::pair<Vector<Node*>*, float>> rowWidthPairs;
         rowWidthPairs.reserve(_elementRenders.size());
-        for (auto& element : _elementRenders)
+        for (auto&& element : _elementRenders)
         {
             float nextPosX = 0.0f;
             float maxY     = 0.0f;
-            for (auto& iter : element)
+            for (auto&& iter : element)
             {
                 iter->setAnchorPoint(Vec2::ZERO);
                 iter->setPosition(nextPosX, nextPosY);
@@ -1967,7 +1967,7 @@ void RichText::formatRenderers()
             rowWidthPairs.emplace_back(&element, nextPosX);
         }
         this->setContentSize(Vec2(newContentSizeWidth, -nextPosY));
-        for (auto& row : rowWidthPairs)
+        for (auto&& row : rowWidthPairs)
             doHorizontalAlignment(*row.first, row.second);
     }
     else
@@ -1980,7 +1980,7 @@ void RichText::formatRenderers()
         {
             Vector<Node*>& row = _elementRenders[i];
             float maxHeight    = 0.0f;
-            for (auto& iter : row)
+            for (auto&& iter : row)
             {
                 maxHeight = std::max(iter->getContentSize().height, maxHeight);
             }
@@ -2004,7 +2004,7 @@ void RichText::formatRenderers()
             Vector<Node*>& row = _elementRenders[i];
             float nextPosX     = 0.0f;
             nextPosY -= (i != 0 ? maxHeights[i] + verticalSpace : maxHeights[i]);
-            for (auto& iter : row)
+            for (auto&& iter : row)
             {
                 iter->setAnchorPoint(Vec2::ZERO);
                 iter->setPosition(nextPosX, nextPosY);
@@ -2042,13 +2042,13 @@ float getPaddingAmount(const RichText::HorizontalAlignment alignment, const floa
     case RichText::HorizontalAlignment::RIGHT:
         return leftOver;
     default:
-        CCASSERT(false, "invalid horizontal alignment!");
+        AXASSERT(false, "invalid horizontal alignment!");
         return 0.f;
     }
 }
 }  // namespace
 
-void RichText::doHorizontalAlignment(const Vector<cocos2d::Node*>& row, float rowWidth)
+void RichText::doHorizontalAlignment(const Vector<axis::Node*>& row, float rowWidth)
 {
     const auto alignment = static_cast<HorizontalAlignment>(_defaults.at(KEY_HORIZONTAL_ALIGNMENT).asInt());
     if (alignment != HorizontalAlignment::LEFT)
@@ -2057,7 +2057,7 @@ void RichText::doHorizontalAlignment(const Vector<cocos2d::Node*>& row, float ro
         const auto leftOver     = getContentSize().width - (rowWidth + diff);
         const float leftPadding = getPaddingAmount(alignment, leftOver);
         const Vec2 offset(leftPadding, 0.f);
-        for (auto& node : row)
+        for (auto&& node : row)
         {
             node->setPosition(node->getPosition() + offset);
         }
@@ -2076,7 +2076,7 @@ void rtrim(std::string& s)
 }
 }  // namespace
 
-float RichText::stripTrailingWhitespace(const Vector<cocos2d::Node*>& row)
+float RichText::stripTrailingWhitespace(const Vector<axis::Node*>& row)
 {
     if (!row.empty())
     {
@@ -2100,7 +2100,7 @@ void RichText::adaptRenderers()
     this->formatText();
 }
 
-void RichText::pushToContainer(cocos2d::Node* renderer)
+void RichText::pushToContainer(axis::Node* renderer)
 {
     if (_elementRenders.empty())
     {

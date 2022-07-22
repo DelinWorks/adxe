@@ -29,7 +29,7 @@
 #include "ui/UILayout.h"
 #include "ui/GUIExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup ui
@@ -42,7 +42,7 @@ namespace ui
  * HBox is just a convenient wrapper class for horizontal layout type.
  * HBox lays out its children in a single horizontal row.
  */
-class CC_GUI_DLL HBox : public Layout
+class AX_GUI_DLL HBox : public Layout
 {
 public:
     /**
@@ -81,6 +81,6 @@ public:
 
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__UIHBox__) */

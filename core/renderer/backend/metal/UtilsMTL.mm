@@ -31,7 +31,7 @@
 #include "../PixelFormatUtils.h"
 #include "base/CCConfiguration.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 id<MTLTexture> UtilsMTL::_defaultColorAttachmentTexture        = nil;
 id<MTLTexture> UtilsMTL::_defaultDepthStencilAttachmentTexture = nil;
@@ -41,7 +41,7 @@ namespace
 MTLPixelFormat getSupportedDepthStencilFormat()
 {
     MTLPixelFormat pixelFormat = MTLPixelFormatDepth32Float_Stencil8;
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
     bool isDepth24Stencil8PixelFormatSupported = DeviceInfoMTL::supportD24S8();
     if (isDepth24Stencil8PixelFormatSupported)
         pixelFormat = MTLPixelFormatDepth24Unorm_Stencil8;
@@ -79,7 +79,7 @@ static GPUTextureFormatInfo s_textureFormats[] = {
     {MTLPixelFormatInvalid, MTLPixelFormatInvalid},  // ATC_INTERPOLATED_ALPHA
 
 /* astc */
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS)
     {MTLPixelFormatASTC_4x4_LDR, MTLPixelFormatASTC_4x4_sRGB},    // ASTC4x4
     {MTLPixelFormatASTC_5x5_LDR, MTLPixelFormatASTC_5x5_sRGB},    // ASTC5x5
     {MTLPixelFormatASTC_6x6_LDR, MTLPixelFormatASTC_6x6_sRGB},    // ASTC6x6
@@ -111,7 +111,7 @@ static GPUTextureFormatInfo s_textureFormats[] = {
     /* depth stencil */
     {MTLPixelFormat(255 /*Depth24Unorm_Stencil8*/), MTLPixelFormatInvalid},  // D24S8
 };
-static_assert(CC_ARRAYSIZE(s_textureFormats) == (int)PixelFormat::COUNT,
+static_assert(AX_ARRAYSIZE(s_textureFormats) == (int)PixelFormat::COUNT,
               "The OpenGL GPU texture format info table incomplete!");
 
 void UtilsMTL::initGPUTextureFormats()
@@ -199,4 +199,4 @@ void UtilsMTL::swizzleImage(unsigned char* image, std::size_t width, std::size_t
     }
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

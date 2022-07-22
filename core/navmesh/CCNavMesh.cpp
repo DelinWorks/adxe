@@ -24,7 +24,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "navmesh/CCNavMesh.h"
-#if CC_USE_NAVMESH
+#if AX_USE_NAVMESH
 
 #    include "platform/CCFileUtils.h"
 #    include "renderer/CCRenderer.h"
@@ -32,7 +32,7 @@
 #    include "recast/DetourDebugDraw.h"
 #    include <sstream>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 #    pragma pack(push, 1)
 struct TileCacheSetHeader
@@ -98,7 +98,7 @@ NavMesh* NavMesh::create(std::string_view navFilePath, std::string_view geomFile
         ref->autorelease();
         return ref;
     }
-    CC_SAFE_DELETE(ref);
+    AX_SAFE_DELETE(ref);
     return nullptr;
 }
 
@@ -120,20 +120,20 @@ NavMesh::~NavMesh()
     dtFreeCrowd(_crowed);
     dtFreeNavMesh(_navMesh);
     dtFreeNavMeshQuery(_navMeshQuery);
-    CC_SAFE_DELETE(_allocator);
-    CC_SAFE_DELETE(_compressor);
-    CC_SAFE_DELETE(_meshProcess);
-    CC_SAFE_DELETE(_geomData);
+    AX_SAFE_DELETE(_allocator);
+    AX_SAFE_DELETE(_compressor);
+    AX_SAFE_DELETE(_meshProcess);
+    AX_SAFE_DELETE(_geomData);
 
-    for (auto iter : _agentList)
+    for (auto&& iter : _agentList)
     {
-        CC_SAFE_RELEASE(iter);
+        AX_SAFE_RELEASE(iter);
     }
     _agentList.clear();
 
-    for (auto iter : _obstacleList)
+    for (auto&& iter : _obstacleList)
     {
-        CC_SAFE_RELEASE(iter);
+        AX_SAFE_RELEASE(iter);
     }
     _obstacleList.clear();
 }
@@ -290,7 +290,7 @@ void NavMesh::dtDraw()
     _debugDraw.depthMask(true);
 }
 
-void cocos2d::NavMesh::drawOffMeshConnections()
+void axis::NavMesh::drawOffMeshConnections()
 {
     unsigned int conColor  = duRGBA(192, 0, 128, 192);
     unsigned int baseColor = duRGBA(0, 0, 0, 64);
@@ -317,10 +317,10 @@ void cocos2d::NavMesh::drawOffMeshConnections()
     _debugDraw.end();
 }
 
-void cocos2d::NavMesh::drawObstacles()
+void axis::NavMesh::drawObstacles()
 {
     // Draw obstacles
-    for (auto iter : _obstacleList)
+    for (auto&& iter : _obstacleList)
     {
         if (iter)
         {
@@ -345,9 +345,9 @@ void cocos2d::NavMesh::drawObstacles()
     }
 }
 
-void cocos2d::NavMesh::drawAgents()
+void axis::NavMesh::drawAgents()
 {
-    for (auto iter : _agentList)
+    for (auto&& iter : _agentList)
     {
         if (iter)
         {
@@ -375,7 +375,7 @@ void cocos2d::NavMesh::drawAgents()
     }
 
     // Velocity stuff.
-    for (auto iter : _agentList)
+    for (auto&& iter : _agentList)
     {
         if (iter)
         {
@@ -478,13 +478,13 @@ void NavMesh::debugDraw(Renderer* renderer)
 
 void NavMesh::update(float dt)
 {
-    for (auto iter : _agentList)
+    for (auto&& iter : _agentList)
     {
         if (iter)
             iter->preUpdate(dt);
     }
 
-    for (auto iter : _obstacleList)
+    for (auto&& iter : _obstacleList)
     {
         if (iter)
             iter->preUpdate(dt);
@@ -496,20 +496,20 @@ void NavMesh::update(float dt)
     if (_tileCache)
         _tileCache->update(dt, _navMesh);
 
-    for (auto iter : _agentList)
+    for (auto&& iter : _agentList)
     {
         if (iter)
             iter->postUpdate(dt);
     }
 
-    for (auto iter : _obstacleList)
+    for (auto&& iter : _obstacleList)
     {
         if (iter)
             iter->postUpdate(dt);
     }
 }
 
-void cocos2d::NavMesh::findPath(const Vec3& start, const Vec3& end, std::vector<Vec3>& pathPoints)
+void axis::NavMesh::findPath(const Vec3& start, const Vec3& end, std::vector<Vec3>& pathPoints)
 {
     static const int MAX_POLYS  = 256;
     static const int MAX_SMOOTH = 2048;
@@ -660,6 +660,6 @@ void cocos2d::NavMesh::findPath(const Vec3& start, const Vec3& end, std::vector<
     }
 }
 
-NS_CC_END
+NS_AX_END
 
-#endif  // CC_USE_NAVMESH
+#endif  // AX_USE_NAVMESH

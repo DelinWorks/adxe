@@ -6,7 +6,7 @@
 #include "utils/ByteBuffer.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 using namespace std;
 
@@ -122,7 +122,7 @@ void GList::setColumnGap(int value)
     }
 }
 
-void GList::setAlign(cocos2d::TextHAlignment value)
+void GList::setAlign(axis::TextHAlignment value)
 {
     if (_align != value)
     {
@@ -133,7 +133,7 @@ void GList::setAlign(cocos2d::TextHAlignment value)
     }
 }
 
-void GList::setVerticalAlign(cocos2d::TextVAlignment value)
+void GList::setVerticalAlign(axis::TextVAlignment value)
 {
     if (_verticalAlign != value)
     {
@@ -189,9 +189,9 @@ GObject* GList::addChildAt(GObject* child, int index)
         button->setChangeStateOnClick(false);
     }
 
-    child->addEventListener(UIEventType::TouchBegin, CC_CALLBACK_1(GList::onItemTouchBegin, this), EventTag(this));
-    child->addClickListener(CC_CALLBACK_1(GList::onClickItem, this), EventTag(this));
-    child->addEventListener(UIEventType::RightClick, CC_CALLBACK_1(GList::onClickItem, this), EventTag(this));
+    child->addEventListener(UIEventType::TouchBegin, AX_CALLBACK_1(GList::onItemTouchBegin, this), EventTag(this));
+    child->addClickListener(AX_CALLBACK_1(GList::onClickItem, this), EventTag(this));
+    child->addEventListener(UIEventType::RightClick, AX_CALLBACK_1(GList::onClickItem, this), EventTag(this));
 
     return child;
 }
@@ -882,7 +882,7 @@ void GList::scrollToView(int index, bool ani, bool setFirst)
 
         checkVirtualList();
 
-        CCASSERT(index >= 0 && index < (int)_virtualItems.size(), "Invalid child index");
+        AXASSERT(index >= 0 && index < (int)_virtualItems.size(), "Invalid child index");
 
         if (_loop)
             index = floor(_firstIndex / _numItems) * _numItems + index;
@@ -996,11 +996,11 @@ void GList::setVirtual(bool loop)
 {
     if (!_virtual)
     {
-        CCASSERT(_scrollPane != nullptr, "FairyGUI: Virtual list must be scrollable!");
+        AXASSERT(_scrollPane != nullptr, "FairyGUI: Virtual list must be scrollable!");
 
         if (loop)
         {
-            CCASSERT(_layout != ListLayoutType::FLOW_HORIZONTAL && _layout != ListLayoutType::FLOW_VERTICAL,
+            AXASSERT(_layout != ListLayoutType::FLOW_HORIZONTAL && _layout != ListLayoutType::FLOW_VERTICAL,
                      "FairyGUI: Loop list is not supported for FlowHorizontal or FlowVertical layout!");
 
             _scrollPane->setBouncebackEffect(false);
@@ -1013,7 +1013,7 @@ void GList::setVirtual(bool loop)
         if (_itemSize.x == 0 || _itemSize.y == 0)
         {
             GObject* obj = getFromPool();
-            CCASSERT(obj != nullptr, "FairyGUI: Virtual List must have a default list item resource.");
+            AXASSERT(obj != nullptr, "FairyGUI: Virtual List must have a default list item resource.");
             _itemSize = obj->getSize();
             _itemSize.x = ceil(_itemSize.x);
             _itemSize.y = ceil(_itemSize.y);
@@ -1033,7 +1033,7 @@ void GList::setVirtual(bool loop)
                 _scrollPane->_loop = 1;
         }
 
-        addEventListener(UIEventType::Scroll, CC_CALLBACK_1(GList::onScroll, this));
+        addEventListener(UIEventType::Scroll, AX_CALLBACK_1(GList::onScroll, this));
         setVirtualListChangedFlag(true);
     }
 }
@@ -1050,7 +1050,7 @@ void GList::setNumItems(int value)
 {
     if (_virtual)
     {
-        CCASSERT(itemRenderer != nullptr, "FairyGUI: Set itemRenderer first!");
+        AXASSERT(itemRenderer != nullptr, "FairyGUI: Set itemRenderer first!");
 
         _numItems = value;
         if (_loop)
@@ -1108,12 +1108,12 @@ void GList::setNumItems(int value)
 
 void GList::refreshVirtualList()
 {
-    CCASSERT(_virtual, "FairyGUI: not virtual list");
+    AXASSERT(_virtual, "FairyGUI: not virtual list");
 
     setVirtualListChangedFlag(false);
 }
 
-cocos2d::Vec2 GList::getSnappingPosition(const cocos2d::Vec2& pt)
+axis::Vec2 GList::getSnappingPosition(const axis::Vec2& pt)
 {
     if (_virtual)
     {
@@ -1445,7 +1445,7 @@ void GList::handleScroll(bool forceUpdate)
             forceUpdate = false;
             if (enterCounter > 20)
             {
-                CCLOG("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
+                AXLOG("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
                 break;
             }
         }
@@ -1460,7 +1460,7 @@ void GList::handleScroll(bool forceUpdate)
             forceUpdate = false;
             if (enterCounter > 20)
             {
-                CCLOG("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
+                AXLOG("FairyGUI: list will never be filled as the item renderer function always returns a different size.");
                 break;
             }
         }

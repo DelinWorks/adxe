@@ -34,7 +34,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -44,7 +44,7 @@ class Widget;
 /** @class EventFocus
  * @brief Focus event.
  */
-class CC_DLL EventFocus : public Event
+class AX_DLL EventFocus : public Event
 {
 public:
     /** Constructor.
@@ -62,7 +62,7 @@ private:
     friend class EventListenerFocus;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

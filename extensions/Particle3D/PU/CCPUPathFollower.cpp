@@ -27,7 +27,7 @@
 #include "CCPUPathFollower.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 PUPathFollower::PUPathFollower(void) {}
 
@@ -47,7 +47,7 @@ void PUPathFollower::clearPoints()
 
 void PUPathFollower::updatePUAffector(PUParticle3D* particle, float deltaTime)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         if (_spline.getNumPoints() > 0)
@@ -82,4 +82,4 @@ void PUPathFollower::copyAttributesTo(PUAffector* affector)
     }
 }
 
-NS_CC_END
+NS_AX_END

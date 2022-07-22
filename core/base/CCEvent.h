@@ -34,14 +34,14 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Node;
 
 /** @class Event
  * @brief Base class of all kinds of events.
  */
-class CC_DLL Event : public Ref
+class AX_DLL Event : public Ref
 {
 public:
     /** Type Event type.*/
@@ -99,7 +99,7 @@ protected:
     friend class EventDispatcher;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

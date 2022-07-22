@@ -24,8 +24,8 @@
 
 #include "UILayoutTest.h"
 
-USING_NS_CC;
-using namespace cocos2d::ui;
+USING_NS_AX;
+using namespace axis::ui;
 
 UILayoutTests::UILayoutTests()
 {
@@ -282,7 +282,7 @@ bool UILayoutTest_BackGroundImage::init()
         TTFConfig ttfConfig("fonts/arial.ttf", 15);
         auto label1 = Label::createWithTTF(ttfConfig, "Print Resources");
         auto item1 =
-            MenuItemLabel::create(label1, CC_CALLBACK_1(UILayoutTest_BackGroundImage::printWidgetResources, this));
+            MenuItemLabel::create(label1, AX_CALLBACK_1(UILayoutTest_BackGroundImage::printWidgetResources, this));
         item1->setPosition(
             Vec2(VisibleRect::left().x + 60, VisibleRect::bottom().y + item1->getContentSize().height * 3));
         auto pMenu1 = Menu::create(item1, nullptr);
@@ -294,10 +294,10 @@ bool UILayoutTest_BackGroundImage::init()
     return false;
 }
 
-void UILayoutTest_BackGroundImage::printWidgetResources(cocos2d::Ref* sender)
+void UILayoutTest_BackGroundImage::printWidgetResources(axis::Ref* sender)
 {
-    cocos2d::ResourceData textureFile = _layout->getRenderFile();
-    CCLOG("textureFile  Name : %s, Type: %d", textureFile.file.c_str(), textureFile.type);
+    axis::ResourceData textureFile = _layout->getRenderFile();
+    AXLOG("textureFile  Name : %s, Type: %d", textureFile.file.c_str(), textureFile.type);
 }
 
 // UILayoutTest_BackGroundImage_Scale9
@@ -767,10 +767,10 @@ bool UILayoutComponentTest::init()
         _uiLayer->addChild(_baseLayer);
 
         Button* button = Button::create("cocosui/animationbuttonnormal.png");
-        CCLOG("content size should be greater than 0:  width = %f, height = %f", button->getContentSize().width,
+        AXLOG("content size should be greater than 0:  width = %f, height = %f", button->getContentSize().width,
               button->getContentSize().height);
         button->setPosition(Vec2(widgetSize.width / 2.0f, widgetSize.height / 2.0f));
-        button->addTouchEventListener(CC_CALLBACK_2(UILayoutComponentTest::touchEvent, this));
+        button->addTouchEventListener(AX_CALLBACK_2(UILayoutComponentTest::touchEvent, this));
         button->setZoomScale(0.4f);
         button->setPressedActionEnabled(true);
         _uiLayer->addChild(button);
@@ -979,7 +979,7 @@ bool UILayout_Clipping_Test::init()
         Layout* layout1 = Layout::create();
         layout1->setClippingEnabled(true);
         layout1->setContentSize(Size(widgetSize.width / 4, widgetSize.height / 3));
-        layout1->setClippingType(cocos2d::ui::Layout::ClippingType::SCISSOR);
+        layout1->setClippingType(axis::ui::Layout::ClippingType::SCISSOR);
         layout1->setPosition(Vec2(widgetSize.width / 4.0f, widgetSize.height / 2.0f));
         layout1->setAnchorPoint(Vec2(0.5, 0.5));
         _uiLayer->addChild(layout1);
@@ -988,7 +988,7 @@ bool UILayout_Clipping_Test::init()
         sublayout1->setClippingEnabled(true);
         sublayout1->setBackGroundImage("cocosui/Hello.png");
         sublayout1->setContentSize(Size(widgetSize.width / 6, widgetSize.width / 2));
-        sublayout1->setClippingType(cocos2d::ui::Layout::ClippingType::STENCIL);
+        sublayout1->setClippingType(axis::ui::Layout::ClippingType::STENCIL);
         sublayout1->setPosition(Vec2(widgetSize.width / 8.0f + widgetSize.width / 16.0f, widgetSize.height / 6.0f));
         sublayout1->setAnchorPoint(Vec2(0.5, 0.5));
         sublayout1->runAction(RepeatForever::create(Sequence::createWithTwoActions(
@@ -998,7 +998,7 @@ bool UILayout_Clipping_Test::init()
         Layout* layout2 = Layout::create();
         layout2->setClippingEnabled(true);
         layout2->setContentSize(Size(widgetSize.width / 4, widgetSize.height / 3));
-        layout2->setClippingType(cocos2d::ui::Layout::ClippingType::SCISSOR);
+        layout2->setClippingType(axis::ui::Layout::ClippingType::SCISSOR);
         layout2->setPosition(Vec2(widgetSize.width * 3.0f / 4.0f, widgetSize.height / 2.0f));
         layout2->setAnchorPoint(Vec2(0.5, 0.5));
         _uiLayer->addChild(layout2);
@@ -1007,7 +1007,7 @@ bool UILayout_Clipping_Test::init()
         sublayout2->setClippingEnabled(true);
         sublayout2->setBackGroundImage("cocosui/Hello.png");
         sublayout2->setContentSize(Size(widgetSize.width / 6, widgetSize.width / 2));
-        sublayout2->setClippingType(cocos2d::ui::Layout::ClippingType::SCISSOR);
+        sublayout2->setClippingType(axis::ui::Layout::ClippingType::SCISSOR);
         sublayout2->setPosition(Vec2(widgetSize.width / 8.0f + widgetSize.width / 16.0f, widgetSize.height / 6.0f));
         sublayout2->setAnchorPoint(Vec2(0.5, 0.5));
         sublayout2->runAction(RepeatForever::create(Sequence::createWithTwoActions(

@@ -23,7 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 #include "physics/CCPhysicsBody.h"
-#if CC_USE_PHYSICS
+#if AX_USE_PHYSICS
 
 #    include <climits>
 #    include <algorithm>
@@ -55,7 +55,7 @@ static void internalBodyUpdateVelocity(cpBody* body, cpVect gravity, cpFloat dam
     cpAssertSoft(body->m > 0.0f && body->i > 0.0f,
                  "Body's mass and moment must be positive to simulate. (Mass: %f Moment: f)", body->m, body->i);
 
-    cocos2d::PhysicsBody* physicsBody = static_cast<cocos2d::PhysicsBody*>(body->userData);
+    axis::PhysicsBody* physicsBody = static_cast<axis::PhysicsBody*>(body->userData);
 
     if (physicsBody->isGravityEnabled())
         body->v =
@@ -73,7 +73,7 @@ static void internalBodyUpdateVelocity(cpBody* body, cpVect gravity, cpFloat dam
     cpBodySetTorque(body, 0.0f);
 }
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 extern const float PHYSICS_INFINITY;
 
 const std::string PhysicsBody::COMPONENT_NAME = "PhysicsBody";
@@ -115,7 +115,7 @@ PhysicsBody::PhysicsBody()
 
 PhysicsBody::~PhysicsBody()
 {
-    for (auto& joint : _joints)
+    for (auto&& joint : _joints)
     {
         PhysicsBody* other = joint->getBodyA() == this ? joint->getBodyB() : joint->getBodyA();
         other->removeJoint(joint);
@@ -137,7 +137,7 @@ PhysicsBody* PhysicsBody::create()
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -155,7 +155,7 @@ PhysicsBody* PhysicsBody::create(float mass)
         }
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -175,7 +175,7 @@ PhysicsBody* PhysicsBody::create(float mass, float moment)
         }
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -189,7 +189,7 @@ PhysicsBody* PhysicsBody::createCircle(float radius, const PhysicsMaterial& mate
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -203,7 +203,7 @@ PhysicsBody* PhysicsBody::createBox(const Vec2& size, const PhysicsMaterial& mat
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -220,7 +220,7 @@ PhysicsBody* PhysicsBody::createPolygon(const Vec2* points,
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -238,7 +238,7 @@ PhysicsBody* PhysicsBody::createEdgeSegment(const Vec2& a,
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
     return nullptr;
 }
 
@@ -256,7 +256,7 @@ PhysicsBody* PhysicsBody::createEdgeBox(const Vec2& size,
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
 
     return nullptr;
 }
@@ -275,7 +275,7 @@ PhysicsBody* PhysicsBody::createEdgePolygon(const Vec2* points,
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
 
     return nullptr;
 }
@@ -294,7 +294,7 @@ PhysicsBody* PhysicsBody::createEdgeChain(const Vec2* points,
         return body;
     }
 
-    CC_SAFE_DELETE(body);
+    AX_SAFE_DELETE(body);
 
     return nullptr;
 }
@@ -308,7 +308,7 @@ bool PhysicsBody::init()
         cpBodySetUserData(_cpBody, this);
         cpBodySetVelocityUpdateFunc(_cpBody, internalBodyUpdateVelocity);
 
-        CC_BREAK_IF(_cpBody == nullptr);
+        AX_BREAK_IF(_cpBody == nullptr);
 
         return true;
     } while (false);
@@ -367,7 +367,7 @@ void PhysicsBody::setRotation(float rotation)
 
 void PhysicsBody::setScale(float scaleX, float scaleY)
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         _area -= shape->getArea();
         if (!_massSetByUser)
@@ -601,7 +601,7 @@ void PhysicsBody::setVelocity(const Vec2& velocity)
 {
     if (cpBodyGetType(_cpBody) == CP_BODY_TYPE_STATIC)
     {
-        CCLOG("physics warning: you can't set velocity for a static body.");
+        AXLOG("physics warning: you can't set velocity for a static body.");
         return;
     }
 
@@ -627,7 +627,7 @@ void PhysicsBody::setAngularVelocity(float velocity)
 {
     if (cpBodyGetType(_cpBody) == CP_BODY_TYPE_STATIC)
     {
-        CCLOG("physics warning: you can't set angular velocity for a static body.");
+        AXLOG("physics warning: you can't set angular velocity for a static body.");
         return;
     }
 
@@ -674,7 +674,7 @@ void PhysicsBody::setMoment(float moment)
 
 PhysicsShape* PhysicsBody::getShape(int tag) const
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         if (shape->getTag() == tag)
         {
@@ -687,7 +687,7 @@ PhysicsShape* PhysicsBody::getShape(int tag) const
 
 void PhysicsBody::removeShape(int tag, bool reduceMassAndMoment /* = true*/)
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         if (shape->getTag() == tag)
         {
@@ -725,7 +725,7 @@ void PhysicsBody::removeShape(PhysicsShape* shape, bool reduceMassAndMoment /* =
 
 void PhysicsBody::removeAllShapes(bool reduceMassAndMoment /* = true*/)
 {
-    for (auto& child : _shapes)
+    for (auto&& child : _shapes)
     {
         PhysicsShape* shape = dynamic_cast<PhysicsShape*>(child);
 
@@ -806,7 +806,7 @@ void PhysicsBody::update(float delta)
 
 void PhysicsBody::setCategoryBitmask(int bitmask)
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         shape->setCategoryBitmask(bitmask);
     }
@@ -826,7 +826,7 @@ int PhysicsBody::getCategoryBitmask() const
 
 void PhysicsBody::setContactTestBitmask(int bitmask)
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         shape->setContactTestBitmask(bitmask);
     }
@@ -846,7 +846,7 @@ int PhysicsBody::getContactTestBitmask() const
 
 void PhysicsBody::setCollisionBitmask(int bitmask)
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         shape->setCollisionBitmask(bitmask);
     }
@@ -866,7 +866,7 @@ int PhysicsBody::getCollisionBitmask() const
 
 void PhysicsBody::setGroup(int group)
 {
-    for (auto& shape : _shapes)
+    for (auto&& shape : _shapes)
     {
         shape->setGroup(group);
     }
@@ -982,7 +982,7 @@ void PhysicsBody::onAdd()
 
 void PhysicsBody::onRemove()
 {
-    CCASSERT(_owner != nullptr, "_owner can't be nullptr");
+    AXASSERT(_owner != nullptr, "_owner can't be nullptr");
 
     removeFromPhysicsWorld();
 
@@ -1009,6 +1009,6 @@ void PhysicsBody::removeFromPhysicsWorld()
     }
 }
 
-NS_CC_END
+NS_AX_END
 
-#endif  // CC_USE_PHYSICS
+#endif  // AX_USE_PHYSICS

@@ -25,7 +25,7 @@
 
 #include "3d/CCOBB.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 #define ROTATE(a, i, j, k, l)                        \
     g              = a.m[i + 4 * j];                 \
@@ -85,7 +85,7 @@ static float& _getElement(Vec3& point, int index)
     if (index == 2)
         return point.z;
 
-    CC_ASSERT(0);
+    AX_ASSERT(0);
     return point.x;
 }
 
@@ -374,7 +374,7 @@ Vec3 OBB::getEdgeDirection(int index) const
         tmpLine.normalize();
         break;
     default:
-        CCASSERT(0, "Invalid index!");
+        AXASSERT(0, "Invalid index!");
         break;
     }
     return tmpLine;
@@ -407,7 +407,7 @@ Vec3 OBB::getFaceDirection(int index) const
         faceDirection.normalize();
         break;
     default:
-        CCASSERT(0, "Invalid index!");
+        AXASSERT(0, "Invalid index!");
         break;
     }
     return faceDirection;
@@ -474,4 +474,4 @@ void OBB::transform(const Mat4& mat)
     computeExtAxis();
 }
 
-NS_CC_END
+NS_AX_END

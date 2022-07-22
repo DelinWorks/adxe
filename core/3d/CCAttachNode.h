@@ -29,7 +29,7 @@
 #include "math/CCMath.h"
 #include "2d/CCNode.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup _3d
  * @{
@@ -43,7 +43,7 @@ class Bone3D;
  *        auto attachNode = mesh->getAttachNode("left hand");
  *        attachNode->addChild(weapon);
  */
-class CC_DLL AttachNode : public Node
+class AX_DLL AttachNode : public Node
 {
 public:
     /**
@@ -70,5 +70,5 @@ protected:
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 #endif  // __CCATTACHNODE_H__

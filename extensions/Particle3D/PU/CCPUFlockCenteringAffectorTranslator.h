@@ -24,14 +24,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_FLOCK_CENTERING_AFFECTOR_TRANSLATOR_H__
-#define __CC_PU_PARTICLE_3D_FLOCK_CENTERING_AFFECTOR_TRANSLATOR_H__
+#ifndef __AX_PU_PARTICLE_3D_FLOCK_CENTERING_AFFECTOR_TRANSLATOR_H__
+#define __AX_PU_PARTICLE_3D_FLOCK_CENTERING_AFFECTOR_TRANSLATOR_H__
 
 #include "Particle3D/PU/CCPUScriptTranslator.h"
 #include "Particle3D/PU/CCPUScriptCompiler.h"
 #include "Particle3D/PU/CCPUFlockCenteringAffector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class PUFlockCenteringAffectorTranslator : public PUScriptTranslator
 {
@@ -43,6 +43,6 @@ public:
     virtual bool translateChildObject(PUScriptCompiler* compiler, PUAbstractNode* node);
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

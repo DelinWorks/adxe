@@ -3,7 +3,7 @@
 #include "GRoot.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 DragDropManager* DragDropManager::_inst = nullptr;
 
@@ -19,12 +19,12 @@ DragDropManager::DragDropManager() :
     _agent->setAlign(TextHAlignment::CENTER);
     _agent->setVerticalAlign(TextVAlignment::CENTER);
     _agent->setSortingOrder(INT_MAX);
-    _agent->addEventListener(UIEventType::DragEnd, CC_CALLBACK_1(DragDropManager::onDragEnd, this));
+    _agent->addEventListener(UIEventType::DragEnd, AX_CALLBACK_1(DragDropManager::onDragEnd, this));
 }
 
 DragDropManager::~DragDropManager()
 {
-    CC_SAFE_RELEASE(_agent);
+    AX_SAFE_RELEASE(_agent);
 }
 
 DragDropManager* DragDropManager::getInstance()

@@ -27,7 +27,7 @@
 #include "CCPUTextureRotator.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 // Constants
 const bool PUTextureRotator::DEFAULT_USE_OWN_SPEED   = false;
 const float PUTextureRotator::DEFAULT_ROTATION_SPEED = 10.0f;
@@ -50,12 +50,12 @@ PUTextureRotator::~PUTextureRotator()
 {
     if (_dynRotation)
     {
-        CC_SAFE_DELETE(_dynRotation);
+        AX_SAFE_DELETE(_dynRotation);
     }
 
     if (_dynRotationSpeed)
     {
-        CC_SAFE_DELETE(_dynRotationSpeed);
+        AX_SAFE_DELETE(_dynRotationSpeed);
     }
 }
 //-----------------------------------------------------------------------
@@ -77,7 +77,7 @@ PUDynamicAttribute* PUTextureRotator::getRotation() const
 void PUTextureRotator::setRotation(PUDynamicAttribute* dynRotation)
 {
     if (_dynRotation)
-        CC_SAFE_DELETE(_dynRotation);
+        AX_SAFE_DELETE(_dynRotation);
 
     _dynRotation = dynRotation;
 }
@@ -90,7 +90,7 @@ PUDynamicAttribute* PUTextureRotator::getRotationSpeed() const
 void PUTextureRotator::setRotationSpeed(PUDynamicAttribute* dynRotationSpeed)
 {
     if (_dynRotationSpeed)
-        CC_SAFE_DELETE(_dynRotationSpeed);
+        AX_SAFE_DELETE(_dynRotationSpeed);
 
     _dynRotationSpeed = dynRotationSpeed;
 }
@@ -128,7 +128,7 @@ void PUTextureRotator::initParticleForEmission(PUParticle3D* particle)
 
 void PUTextureRotator::updatePUAffector(PUParticle3D* particle, float deltaTime)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         //// Only continue if the particle is a visual particle
@@ -174,4 +174,4 @@ void PUTextureRotator::copyAttributesTo(PUAffector* affector)
     textureRotator->_useOwnRotationSpeed = _useOwnRotationSpeed;
 }
 
-NS_CC_END
+NS_AX_END

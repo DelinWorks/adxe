@@ -33,7 +33,7 @@ THE SOFTWARE.
  * @addtogroup ui
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -41,7 +41,7 @@ namespace ui
 /**
  *  Checkbox is a specific type of two-states button that can be either checked or unchecked.
  */
-class CC_GUI_DLL CheckBox : public AbstractCheckButton
+class AX_GUI_DLL CheckBox : public AbstractCheckButton
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -138,7 +138,7 @@ protected:
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END
 // end of ui group
 /// @}
 

@@ -31,7 +31,7 @@
 #include <spine/Extension.h>
 #include <spine/AttachmentVertices.h>
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace spine;
 
 static void deleteAttachmentVertices (void* vertices) {
@@ -139,7 +139,7 @@ Cocos2dTextureLoader::~Cocos2dTextureLoader() { }
 
 void Cocos2dTextureLoader::load(AtlasPage& page, const spine::String& path) {
 	Texture2D* texture = Director::getInstance()->getTextureCache()->addImage(path.buffer());
-	CCASSERT(texture != nullptr, "Invalid image");
+	AXASSERT(texture != nullptr, "Invalid image");
 	if (texture) {
 		texture->retain();
 #if COCOS2D_VERSION >= 0x0040000

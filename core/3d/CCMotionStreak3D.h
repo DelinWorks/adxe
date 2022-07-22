@@ -22,8 +22,8 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
-#ifndef __CC_MOTION_STREAK3D_H__
-#define __CC_MOTION_STREAK3D_H__
+#ifndef __AX_MOTION_STREAK3D_H__
+#define __AX_MOTION_STREAK3D_H__
 
 #include "base/CCProtocols.h"
 #include "2d/CCNode.h"
@@ -32,7 +32,7 @@ THE SOFTWARE.
 
 #include <vector>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Texture2D;
 
@@ -44,7 +44,7 @@ class Texture2D;
 /** @class MotionStreak3D.
  * @brief Creates a trailing path. It is created from a line segment sweeping along the path.
  */
-class CC_DLL MotionStreak3D : public Node, public TextureProtocol
+class AX_DLL MotionStreak3D : public Node, public TextureProtocol
 {
 public:
     /** Creates and initializes a motion streak with fade in seconds, minimum segments, stroke's width, color, texture
@@ -203,7 +203,7 @@ protected:
     CustomCommand _customCommand;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(MotionStreak3D);
+    AX_DISALLOW_COPY_AND_ASSIGN(MotionStreak3D);
 
     //CallbackCommand _beforeCommand;
     //CallbackCommand _afterCommand;
@@ -220,6 +220,6 @@ private:
 // end of _3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
-#endif  //__CC_MOTION_STREAK3D_H__
+#endif  //__AX_MOTION_STREAK3D_H__

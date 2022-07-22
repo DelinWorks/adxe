@@ -5,7 +5,7 @@
 #include "UIPackage.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 using namespace std;
 
@@ -15,7 +15,7 @@ std::string HtmlObject::selectResource;
 bool HtmlObject::usePool = true;
 
 GObjectPool HtmlObject::objectPool;
-cocos2d::Vector<GObject*> HtmlObject::loaderPool;
+axis::Vector<GObject*> HtmlObject::loaderPool;
 
 HtmlObject::HtmlObject() :_ui(nullptr), _hidden(false)
 {
@@ -36,7 +36,7 @@ HtmlObject::~HtmlObject()
         }
     }
 
-    CC_SAFE_RELEASE(_ui);
+    AX_SAFE_RELEASE(_ui);
 }
 
 void HtmlObject::create(FUIRichText* owner, HtmlElement* element)
@@ -143,7 +143,7 @@ void HtmlObject::createButton()
     else
     {
         _ui = GComponent::create();
-        CCLOGWARN("Set HtmlObject.buttonResource first");
+        AXLOGWARN("Set HtmlObject.buttonResource first");
     }
 
     _ui->retain();
@@ -168,7 +168,7 @@ void HtmlObject::createInput()
     else
     {
         _ui = GComponent::create();
-        CCLOGWARN("Set HtmlObject.inputResource first");
+        AXLOGWARN("Set HtmlObject.inputResource first");
     }
 
     _ui->retain();
@@ -211,7 +211,7 @@ void HtmlObject::createSelect()
     else
     {
         _ui = GComponent::create();
-        CCLOGWARN("Set HtmlObject.selectResource first");
+        AXLOGWARN("Set HtmlObject.selectResource first");
     }
 
     _ui->retain();

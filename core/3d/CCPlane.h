@@ -23,13 +23,13 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PLANE_H_
-#define __CC_PLANE_H_
+#ifndef __AX_PLANE_H_
+#define __AX_PLANE_H_
 
 #include "base/ccMacros.h"
 #include "math/CCMath.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 enum class PointSide
 {
@@ -43,7 +43,7 @@ enum class PointSide
  * @js NA
  * @lua NA
  **/
-class CC_DLL Plane
+class AX_DLL Plane
 {
 public:
     /**
@@ -106,6 +106,6 @@ protected:
     float _dist;   // original displacement of the normal
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

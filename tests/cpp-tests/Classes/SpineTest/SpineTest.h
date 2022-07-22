@@ -30,7 +30,7 @@
 #include "../BaseTest.h"
 #include <spine/spine-cocos2dx.h>
 
-#ifdef COCOS2D_DEBUG
+#ifdef AXIS_DEBUG
 #    include <spine/Debug.h>
 #endif
 
@@ -45,7 +45,7 @@ public:
 
 private:
     std::vector<std::string> _searchPaths;
-#ifdef COCOS2D_DEBUG
+#ifdef AXIS_DEBUG
     spine::DebugExtension* debugExtension = nullptr;
 #endif
 };
@@ -103,7 +103,7 @@ public:
     virtual bool init();
 
 private:
-    cocos2d::Vec2 position;
+    axis::Vec2 position;
 };
 
 class MixAndMatchExample : public SpineTestLayer
@@ -144,7 +144,7 @@ public:
 
 private:
     spine::SkeletonRenderer* frontNode;
-    cocos2d::DrawNode* betweenNode;
+    axis::DrawNode* betweenNode;
 };
 
 class SpineboyExample : public SpineTestLayer

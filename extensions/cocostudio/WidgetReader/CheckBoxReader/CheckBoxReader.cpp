@@ -11,7 +11,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -42,10 +42,10 @@ CheckBoxReader* CheckBoxReader::getInstance()
 
 void CheckBoxReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceCheckBoxReader);
+    AX_SAFE_DELETE(instanceCheckBoxReader);
 }
 
-void CheckBoxReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void CheckBoxReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
 
     CheckBox* checkBox = static_cast<CheckBox*>(widget);
@@ -57,9 +57,9 @@ void CheckBoxReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader*
         std::string key   = stChildArray[i].GetName(cocoLoader);
         std::string value = stChildArray[i].GetValue(cocoLoader);
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_BackGroundBoxData)
         {
@@ -425,7 +425,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
     return *(Offset<Table>*)&options;
 }
 
-void CheckBoxReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* checkBoxOptions)
+void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* checkBoxOptions)
 {
 
     auto options = (CheckBoxOptions*)checkBoxOptions;

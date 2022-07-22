@@ -33,9 +33,9 @@ THE SOFTWARE.
  * @addtogroup ui
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 class Sprite;
-struct CC_DLL ResourceData;
+struct AX_DLL ResourceData;
 
 namespace ui
 {
@@ -43,7 +43,7 @@ namespace ui
 /**
  *  AbstractCheckButton is a specific type of two-states button that can be either checked or unchecked.
  */
-class CC_GUI_DLL AbstractCheckButton : public Widget
+class AX_GUI_DLL AbstractCheckButton : public Widget
 {
 
 public:
@@ -259,7 +259,7 @@ protected:
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END
 // end of ui group
 /// @}
 

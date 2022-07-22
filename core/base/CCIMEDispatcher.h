@@ -24,8 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_IME_DISPATCHER_H__
-#define __CC_IME_DISPATCHER_H__
+#ifndef __AX_IME_DISPATCHER_H__
+#define __AX_IME_DISPATCHER_H__
 
 #include "base/CCIMEDelegate.h"
 
@@ -33,12 +33,12 @@ THE SOFTWARE.
  * @addtogroup base
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
 @brief    Input Method Edit Message Dispatcher.
 */
-class CC_DLL IMEDispatcher
+class AX_DLL IMEDispatcher
 {
 public:
     /**
@@ -136,8 +136,8 @@ private:
     Impl* _impl;
 };
 
-NS_CC_END
+NS_AX_END
 // end of base group
 /// @}
 
-#endif  // __CC_IME_DISPATCHER_H__
+#endif  // __AX_IME_DISPATCHER_H__

@@ -38,14 +38,14 @@
  * @addtogroup ui
  * @{
  */
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 class TableView;
 
 /**
  * Sole purpose of this delegate is to single touch event in this version.
  */
-class CC_EX_DLL TableViewDelegate : public ScrollViewDelegate
+class AX_EX_DLL TableViewDelegate : public ScrollViewDelegate
 {
 public:
     /**
@@ -94,7 +94,7 @@ public:
 /**
  * Data source that governs table backend data.
  */
-class CC_EX_DLL TableViewDataSource
+class AX_EX_DLL TableViewDataSource
 {
 public:
     /**
@@ -137,7 +137,7 @@ public:
  *
  * This is a very basic, minimal implementation to bring UITableView-like component into cocos2d world.
  */
-class CC_EX_DLL TableView : public ScrollView, public ScrollViewDelegate
+class AX_EX_DLL TableView : public ScrollView, public ScrollViewDelegate
 {
 public:
     enum class VerticalFillOrder
@@ -324,7 +324,7 @@ public:
     void _updateContentSize();
 };
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 // end of ui group
 /// @}
 

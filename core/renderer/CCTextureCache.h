@@ -43,11 +43,11 @@ THE SOFTWARE.
 #include "renderer/CCTexture2D.h"
 #include "platform/CCImage.h"
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
 #    include <list>
 #endif
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _2d
@@ -62,7 +62,7 @@ NS_CC_BEGIN
  * Once the texture is loaded, the next time it will return.
  * A reference of the previously loaded texture reducing GPU & CPU memory.
  */
-class CC_DLL TextureCache : public Ref
+class AX_DLL TextureCache : public Ref
 {
 public:
     // ETC1 ALPHA supports.
@@ -176,7 +176,7 @@ public:
     */
     void removeTextureForKey(std::string_view key);
 
-    /** Output to CCLOG the current contents of this TextureCache.
+    /** Output to AXLOG the current contents of this TextureCache.
      * This will attempt to calculate the size of each texture, and the total texture memory in use.
      *
      * @since v1.0
@@ -235,7 +235,7 @@ protected:
     static std::string s_etc1AlphaFileSuffix;
 };
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
 
 class VolatileTexture
 {
@@ -275,7 +275,7 @@ protected:
     FontDefinition _fontDefinition;
 };
 
-class CC_DLL VolatileTextureMgr
+class AX_DLL VolatileTextureMgr
 {
 public:
     static void addImageTexture(Texture2D* tt, std::string_view imageFileName);
@@ -306,6 +306,6 @@ private:
 // end of textures group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  //__CCTEXTURE_CACHE_H__

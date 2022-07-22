@@ -34,12 +34,12 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /** @class EventKeyboard
  * @brief Keyboard event.
  */
-class CC_DLL EventKeyboard : public Event
+class AX_DLL EventKeyboard : public Event
 {
 public:
     /**
@@ -235,7 +235,7 @@ private:
     friend class EventListenerKeyboard;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_OBSERVER_MANAGER_H__
-#define __CC_PU_PARTICLE_3D_OBSERVER_MANAGER_H__
+#ifndef __AX_PU_PARTICLE_3D_OBSERVER_MANAGER_H__
+#define __AX_PU_PARTICLE_3D_OBSERVER_MANAGER_H__
 
 #include "base/CCRef.h"
 #include "extensions/Particle3D/PU/CCPUScriptTranslator.h"
@@ -42,7 +42,7 @@
 #include "extensions/Particle3D/PU/CCPUOnTimeObserverTranslator.h"
 #include "extensions/Particle3D/PU/CCPUOnVelocityObserverTranslator.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 class PUObserverManager
 {
 public:
@@ -70,6 +70,6 @@ protected:
     PUOnVelocityObserverTranslator _onVelocityObserverTranslator;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

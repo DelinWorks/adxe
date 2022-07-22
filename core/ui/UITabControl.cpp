@@ -29,7 +29,7 @@
 #include "ui/UILayout.h"
 #include "ui/UITabControl.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -50,10 +50,10 @@ TabControl::TabControl()
 
 TabControl::~TabControl()
 {
-    for (auto& item : _tabItems)
+    for (auto&& item : _tabItems)
     {
         if (item)
-            CC_SAFE_DELETE(item);
+            AX_SAFE_DELETE(item);
     }
     _tabItems.clear();
 }
@@ -63,7 +63,7 @@ void TabControl::insertTab(int index, TabHeader* header, Layout* container)
     int cellSize = (int)_tabItems.size();
     if (index > cellSize)
     {
-        CCLOG("%s", "insert index error");
+        AXLOG("%s", "insert index error");
         return;
     }
 
@@ -73,7 +73,7 @@ void TabControl::insertTab(int index, TabHeader* header, Layout* container)
     _tabItems.insert(_tabItems.begin() + index, new TabItem(header, container));
     header->_tabView = this;
     header->_tabSelectedEvent =
-        CC_CALLBACK_2(TabControl::dispatchSelectedTabChanged, this);  // binding tab selected event
+        AX_CALLBACK_2(TabControl::dispatchSelectedTabChanged, this);  // binding tab selected event
 
     initAfterInsert(index);
 }
@@ -123,7 +123,7 @@ void TabControl::removeTab(int index)
     int cellSize = (int)_tabItems.size();
     if (cellSize == 0 || index >= cellSize)
     {
-        CCLOG("%s", "no tab or remove index error");
+        AXLOG("%s", "no tab or remove index error");
         return;
     }
 
@@ -134,7 +134,7 @@ void TabControl::removeTab(int index)
     auto header    = tabItem->header;
     auto container = tabItem->container;
     if (tabItem)
-        CC_SAFE_DELETE(tabItem);
+        AX_SAFE_DELETE(tabItem);
     _tabItems.erase(_tabItems.begin() + index);
 
     if (header != nullptr)
@@ -179,14 +179,14 @@ void TabControl::setHeaderDockPlace(TabControl::Dock dockPlace)
         initContainers();
 
         auto anpoint = getHeaderAnchorWithDock();
-        for (auto& item : _tabItems)
+        for (auto&& item : _tabItems)
         {
             item->header->setAnchorPoint(anpoint);
         }
     }
 }
 
-cocos2d::Vec2 TabControl::getHeaderAnchorWithDock() const
+axis::Vec2 TabControl::getHeaderAnchorWithDock() const
 {
     Vec2 anpoint(.5f, .0f);
     switch (_headerDockPlace)
@@ -280,7 +280,7 @@ void TabControl::initContainers()
         break;
     }
 
-    for (auto& tabItem : _tabItems)
+    for (auto&& tabItem : _tabItems)
     {
         Layout* container = tabItem->container;
         container->setPosition(_containerPosition);
@@ -366,7 +366,7 @@ TabControl* TabControl::create()
         tabview->autorelease();
         return tabview;
     }
-    CC_SAFE_DELETE(tabview);
+    AX_SAFE_DELETE(tabview);
     return nullptr;
 }
 
@@ -440,7 +440,7 @@ void TabControl::ignoreHeadersTextureSize(bool ignore)
         return;
 
     _ignoreHeaderTextureSize = ignore;
-    for (auto& item : _tabItems)
+    for (auto&& item : _tabItems)
     {
         item->header->ignoreContentAdaptWithSize(!ignore);
         if (ignore)
@@ -483,7 +483,7 @@ TabHeader* TabHeader::create()
         tabcell->autorelease();
         return tabcell;
     }
-    CC_SAFE_DELETE(tabcell);
+    AX_SAFE_DELETE(tabcell);
     return nullptr;
 }
 
@@ -501,7 +501,7 @@ TabHeader* TabHeader::create(std::string_view titleStr,
         tabcell->autorelease();
         return tabcell;
     }
-    CC_SAFE_DELETE(tabcell);
+    AX_SAFE_DELETE(tabcell);
     return nullptr;
 }
 
@@ -522,7 +522,7 @@ TabHeader* TabHeader::create(std::string_view titleStr,
         tabcell->autorelease();
         return tabcell;
     }
-    CC_SAFE_DELETE(tabcell);
+    AX_SAFE_DELETE(tabcell);
     return nullptr;
 }
 
@@ -721,4 +721,4 @@ void TabHeader::copySpecialProperties(Widget* model)
 }
 
 }  // namespace ui
-NS_CC_END
+NS_AX_END

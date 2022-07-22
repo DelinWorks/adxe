@@ -23,19 +23,19 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PARTICLE_3D_AFFECTOR_H__
-#define __CC_PARTICLE_3D_AFFECTOR_H__
+#ifndef __AX_PARTICLE_3D_AFFECTOR_H__
+#define __AX_PARTICLE_3D_AFFECTOR_H__
 
 #include "base/CCRef.h"
 #include <vector>
 #include "ExtensionExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class ParticleSystem3D;
 struct Particle3D;
 
-class CC_EX_DLL Particle3DAffector : public Ref
+class AX_EX_DLL Particle3DAffector : public Ref
 {
     friend class ParticleSystem3D;
 
@@ -56,6 +56,6 @@ protected:
     bool _isEnabled;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

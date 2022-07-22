@@ -11,7 +11,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -42,10 +42,10 @@ TextAtlasReader* TextAtlasReader::getInstance()
 
 void TextAtlasReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceTextAtlasReader);
+    AX_SAFE_DELETE(instanceTextAtlasReader);
 }
 
-void TextAtlasReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void TextAtlasReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     this->beginSetBasicProperties(widget);
 
@@ -67,9 +67,9 @@ void TextAtlasReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader
         std::string value = stChildArray[i].GetValue(cocoLoader);
 
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_StringValue) { stringValue = value; }
         else if (key == P_CharMapFileData)
@@ -122,7 +122,7 @@ void TextAtlasReader::setPropsFromJsonDictionary(Widget* widget, const rapidjson
         break;
     }
     case 1:
-        CCLOG("Wrong res type of LabelAtlas!");
+        AXLOG("Wrong res type of LabelAtlas!");
         break;
     default:
         break;
@@ -220,7 +220,7 @@ Offset<Table> TextAtlasReader::createOptionsWithFlatBuffers(pugi::xml_node objec
     return *(Offset<Table>*)(&options);
 }
 
-void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* textAtlasOptions)
+void TextAtlasReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* textAtlasOptions)
 {
     TextAtlas* labelAtlas = static_cast<TextAtlas*>(node);
     auto options          = (TextAtlasOptions*)textAtlasOptions;
@@ -254,7 +254,7 @@ void TextAtlasReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuf
     }
 
     case 1:
-        CCLOG("Wrong res type of LabelAtlas!");
+        AXLOG("Wrong res type of LabelAtlas!");
         break;
 
     default:

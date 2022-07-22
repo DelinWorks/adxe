@@ -25,7 +25,7 @@
 #include "ShaderCache.h"
 #include "renderer/backend/Device.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 std::unordered_map<std::size_t, backend::ShaderModule*> ShaderCache::_cachedShaders;
 ShaderCache* ShaderCache::_sharedShaderCache = nullptr;
@@ -37,7 +37,7 @@ ShaderCache* ShaderCache::getInstance()
         _sharedShaderCache = new ShaderCache();
         if (!_sharedShaderCache->init())
         {
-            CC_SAFE_DELETE(_sharedShaderCache);
+            AX_SAFE_DELETE(_sharedShaderCache);
         }
     }
     return _sharedShaderCache;
@@ -45,16 +45,16 @@ ShaderCache* ShaderCache::getInstance()
 
 void ShaderCache::destroyInstance()
 {
-    CC_SAFE_RELEASE_NULL(_sharedShaderCache);
+    AX_SAFE_RELEASE_NULL(_sharedShaderCache);
 }
 
 ShaderCache::~ShaderCache()
 {
-    for (auto& shaderModule : _cachedShaders)
+    for (auto&& shaderModule : _cachedShaders)
     {
-        CC_SAFE_RELEASE(shaderModule.second);
+        AX_SAFE_RELEASE(shaderModule.second);
     }
-    CCLOGINFO("deallocing ProgramCache: %p", this);
+    AXLOGINFO("deallocing ProgramCache: %p", this);
 }
 
 bool ShaderCache::init()
@@ -95,7 +95,7 @@ void ShaderCache::removeUnusedShader()
         auto shaderModule = iter->second;
         if (shaderModule->getReferenceCount() == 1)
         {
-            //            CCLOG("cocos2d: TextureCache: removing unused program");
+            //            AXLOG("cocos2d: TextureCache: removing unused program");
             shaderModule->release();
             iter = _cachedShaders.erase(iter);
         }
@@ -106,4 +106,4 @@ void ShaderCache::removeUnusedShader()
     }
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

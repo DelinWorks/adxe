@@ -28,7 +28,7 @@
 #include "extensions/Particle3D/PU/CCPUAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const unsigned int PUDoPlacementParticleEventHandler::DEFAULT_NUMBER_OF_PARTICLES = 1;
@@ -81,7 +81,7 @@ void PUDoPlacementParticleEventHandler::handle(PUParticleSystem3D* particleSyste
             if (parentSystem)
             {
                 auto children = parentSystem->getChildren();
-                for (auto iter : children)
+                for (auto&& iter : children)
                 {
                     PUParticleSystem3D* child = dynamic_cast<PUParticleSystem3D*>(iter);
                     if (child)
@@ -290,4 +290,4 @@ void PUDoPlacementParticleEventHandler::copyAttributesTo(PUEventHandler* eventHa
     doPlacementParticleEventHandler->_inheritParticleDepth     = _inheritParticleDepth;
 }
 
-NS_CC_END
+NS_AX_END

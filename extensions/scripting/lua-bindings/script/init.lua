@@ -35,6 +35,14 @@ if (unpack) then
     table.unpack = unpack
 end
 
+-- < axis-1.0
+cc = ax
+cc.Director.setDisplayStats = ax.Director.setStatsDisplay
+cc.Sprite3D = ax.MeshRenderer
+ccexp = axexp
+ccui = axui
+ccb = axb
+
 require "cocos.cocos2d.Cocos2d"
 require "cocos.cocos2d.Cocos2dConstants"
 require "cocos.cocos2d.functions"
@@ -98,6 +106,6 @@ require "cocos.cocos2d.bitExtend"
 -- physics3d
 require "cocos.physics3d.physics3d-constants"
 
-if CC_USE_FRAMEWORK then
+if AX_USE_FRAMEWORK then
     require "cocos.framework.init"
 end

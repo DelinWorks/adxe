@@ -25,7 +25,7 @@ THE SOFTWARE.
 
 #include "ui/UICheckBox.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -44,7 +44,7 @@ CheckBox* CheckBox::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -61,7 +61,7 @@ CheckBox* CheckBox::create(std::string_view backGround,
         pWidget->autorelease();
         return pWidget;
     }
-    CC_SAFE_DELETE(pWidget);
+    AX_SAFE_DELETE(pWidget);
     return nullptr;
 }
 
@@ -73,7 +73,7 @@ CheckBox* CheckBox::create(std::string_view backGround, std::string_view cross, 
         pWidget->autorelease();
         return pWidget;
     }
-    CC_SAFE_DELETE(pWidget);
+    AX_SAFE_DELETE(pWidget);
     return nullptr;
 }
 
@@ -144,4 +144,4 @@ void CheckBox::copySpecialProperties(Widget* widget)
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

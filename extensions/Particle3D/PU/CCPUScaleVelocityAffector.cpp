@@ -27,7 +27,7 @@
 #include "CCPUScaleVelocityAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 // Constants
 const float PUScaleVelocityAffector::DEFAULT_VELOCITY_SCALE = 1.0f;
 
@@ -42,13 +42,13 @@ PUScaleVelocityAffector::~PUScaleVelocityAffector()
 {
     if (_dynScaleVelocity)
     {
-        CC_SAFE_DELETE(_dynScaleVelocity);
+        AX_SAFE_DELETE(_dynScaleVelocity);
     }
 }
 //-----------------------------------------------------------------------
 void PUScaleVelocityAffector::updatePUAffector(PUParticle3D* particle, float deltaTime)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         float ds = 0;
@@ -91,7 +91,7 @@ void PUScaleVelocityAffector::updatePUAffector(PUParticle3D* particle, float del
 void PUScaleVelocityAffector::setDynScaleVelocity(PUDynamicAttribute* dynScaleVelocity)
 {
     if (_dynScaleVelocity)
-        CC_SAFE_DELETE(_dynScaleVelocity);
+        AX_SAFE_DELETE(_dynScaleVelocity);
 
     _dynScaleVelocity = dynScaleVelocity;
 }
@@ -100,7 +100,7 @@ void PUScaleVelocityAffector::resetDynScaleVelocity(bool resetToDefault)
 {
     if (resetToDefault)
     {
-        CC_SAFE_DELETE(_dynScaleVelocity);
+        AX_SAFE_DELETE(_dynScaleVelocity);
         _dynScaleVelocity = new PUDynamicAttributeFixed();
         (static_cast<PUDynamicAttributeFixed*>(_dynScaleVelocity))->setValue(DEFAULT_VELOCITY_SCALE);
     }
@@ -123,4 +123,4 @@ void PUScaleVelocityAffector::copyAttributesTo(PUAffector* affector)
     scaleVelocityAffector->_stopAtFlip       = _stopAtFlip;
 }
 
-NS_CC_END
+NS_AX_END

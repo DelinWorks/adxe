@@ -43,12 +43,12 @@
 
 struct zlib_filefunc_def_s;
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /**
  * @brief   This class is used to auto update resources, such as pictures or scripts.
  */
-class CC_EX_DLL AssetsManagerEx : public Ref
+class AX_EX_DLL AssetsManagerEx : public Ref
 {
 public:
     //! Update states
@@ -336,6 +336,6 @@ private:
     bool _inited = false;
 };
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif /* defined(__AssetsManagerEx__) */

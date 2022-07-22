@@ -12,7 +12,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -46,7 +46,7 @@ RadioButtonGroupReader* RadioButtonGroupReader::getInstance()
 
 void RadioButtonGroupReader::destroyInstance()
 {
-    CC_SAFE_DELETE(s_readerInstance);
+    AX_SAFE_DELETE(s_readerInstance);
 }
 
 Offset<Table> RadioButtonGroupReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -77,7 +77,7 @@ Offset<Table> RadioButtonGroupReader::createOptionsWithFlatBuffers(pugi::xml_nod
     return *(Offset<Table>*)(&options);
 }
 
-void RadioButtonGroupReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* params)
+void RadioButtonGroupReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* params)
 {
     auto radioButtonGroup = static_cast<ui::RadioButtonGroup*>(node);
     auto options          = (RadioButtonGroupOptions*)params;

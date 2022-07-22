@@ -31,24 +31,24 @@
 #include "2d/CCFontAtlas.h"
 #include "2d/CCFontFNT.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 void Label::computeAlignmentOffset()
 {
     _linesOffsetX.clear();
     switch (_hAlignment)
     {
-    case cocos2d::TextHAlignment::LEFT:
+    case axis::TextHAlignment::LEFT:
         _linesOffsetX.assign(_numberOfLines, 0);
         break;
-    case cocos2d::TextHAlignment::CENTER:
-        for (auto lineWidth : _linesWidth)
+    case axis::TextHAlignment::CENTER:
+        for (auto&& lineWidth : _linesWidth)
         {
             _linesOffsetX.push_back((_contentSize.width - lineWidth) / 2.f);
         }
         break;
-    case cocos2d::TextHAlignment::RIGHT:
-        for (auto lineWidth : _linesWidth)
+    case axis::TextHAlignment::RIGHT:
+        for (auto&& lineWidth : _linesWidth)
         {
             _linesOffsetX.push_back(_contentSize.width - lineWidth);
         }
@@ -59,13 +59,13 @@ void Label::computeAlignmentOffset()
 
     switch (_vAlignment)
     {
-    case cocos2d::TextVAlignment::TOP:
+    case axis::TextVAlignment::TOP:
         _letterOffsetY = _contentSize.height;
         break;
-    case cocos2d::TextVAlignment::CENTER:
+    case axis::TextVAlignment::CENTER:
         _letterOffsetY = (_contentSize.height + _textDesiredHeight) / 2.f;
         break;
-    case cocos2d::TextVAlignment::BOTTOM:
+    case axis::TextVAlignment::BOTTOM:
         _letterOffsetY = _textDesiredHeight;
         break;
     default:
@@ -83,7 +83,7 @@ int Label::getFirstWordLen(const std::u32string& utf32Text, int startIndex, int 
     int len          = 0;
     auto nextLetterX = 0;
     FontLetterDefinition letterDef;
-    auto contentScaleFactor = CC_CONTENT_SCALE_FACTOR();
+    auto contentScaleFactor = AX_CONTENT_SCALE_FACTOR();
 
     for (int index = startIndex; index < textLen; ++index)
     {
@@ -141,7 +141,7 @@ void Label::updateBMFontScale()
     {
         FontFNT* bmFont       = (FontFNT*)font;
         auto originalFontSize = bmFont->getOriginalFontSize();
-        _bmfontScale          = _bmFontSize * CC_CONTENT_SCALE_FACTOR() / originalFontSize;
+        _bmfontScale          = _bmFontSize * AX_CONTENT_SCALE_FACTOR() / originalFontSize;
     }
     else
     {
@@ -159,7 +159,7 @@ bool Label::multilineTextWrap(const std::function<int(const std::u32string&, int
     float letterRight         = 0.f;
     float nextWhitespaceWidth = 0.f;
 
-    auto contentScaleFactor = CC_CONTENT_SCALE_FACTOR();
+    auto contentScaleFactor = AX_CONTENT_SCALE_FACTOR();
     float lineSpacing       = _lineSpacing * contentScaleFactor;
     float highestY          = 0.f;
     float lowestY           = 0.f;
@@ -212,7 +212,7 @@ bool Label::multilineTextWrap(const std::function<int(const std::u32string&, int
             if (!getFontLetterDef(character, letterDef))
             {
                 recordPlaceholderInfo(letterIndex, character);
-                CCLOG("LabelTextFormatter error: can't find letter definition in font file for letter: 0x%x",
+                AXLOG("LabelTextFormatter error: can't find letter definition in font file for letter: 0x%x",
                       character);
                 continue;
             }
@@ -318,12 +318,12 @@ bool Label::multilineTextWrap(const std::function<int(const std::u32string&, int
 
 bool Label::multilineTextWrapByWord()
 {
-    return multilineTextWrap(CC_CALLBACK_3(Label::getFirstWordLen, this));
+    return multilineTextWrap(AX_CALLBACK_3(Label::getFirstWordLen, this));
 }
 
 bool Label::multilineTextWrapByChar()
 {
-    return multilineTextWrap(CC_CALLBACK_3(Label::getFirstCharLen, this));
+    return multilineTextWrap(AX_CALLBACK_3(Label::getFirstCharLen, this));
 }
 
 bool Label::isVerticalClamp()
@@ -421,7 +421,7 @@ void Label::shrinkLabelToContentSize(const std::function<bool(void)>& lambda)
     }
 }
 
-void Label::recordLetterInfo(const cocos2d::Vec2& point, char32_t utf32Char, int letterIndex, int lineIndex)
+void Label::recordLetterInfo(const axis::Vec2& point, char32_t utf32Char, int letterIndex, int lineIndex)
 {
     if (static_cast<std::size_t>(letterIndex) >= _lettersInfo.size())
     {
@@ -447,4 +447,4 @@ void Label::recordPlaceholderInfo(int letterIndex, char32_t utf32Char)
     _lettersInfo[letterIndex].valid     = false;
 }
 
-NS_CC_END
+NS_AX_END

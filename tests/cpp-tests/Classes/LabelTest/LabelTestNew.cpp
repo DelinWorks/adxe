@@ -27,7 +27,7 @@
 #include "renderer/CCRenderer.h"
 #include "2d/CCFontAtlasCache.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace extension;
 
@@ -180,7 +180,7 @@ LabelFNTColorAndOpacity::LabelFNTColorAndOpacity()
     label2->setPosition(VisibleRect::center());
     label3->setPosition(VisibleRect::rightTop());
 
-    schedule(CC_CALLBACK_1(LabelFNTColorAndOpacity::step, this), "step_key");
+    schedule(AX_CALLBACK_1(LabelFNTColorAndOpacity::step, this), "step_key");
 }
 
 void LabelFNTColorAndOpacity::step(float dt)
@@ -259,7 +259,7 @@ LabelFNTSpriteActions::LabelFNTSpriteActions()
     auto lastChar = (Sprite*)label2->getLetter(3);
     lastChar->runAction(rot_4ever->clone());
 
-    schedule(CC_CALLBACK_1(LabelFNTSpriteActions::step, this), 0.1f, "step_key");
+    schedule(AX_CALLBACK_1(LabelFNTSpriteActions::step, this), 0.1f, "step_key");
 }
 
 void LabelFNTSpriteActions::step(float dt)
@@ -397,7 +397,7 @@ LabelFNTHundredLabels::LabelFNTHundredLabels()
 
         auto s = Director::getInstance()->getWinSize();
 
-        auto p = Vec2(CCRANDOM_0_1() * s.width, CCRANDOM_0_1() * s.height);
+        auto p = Vec2(AXRANDOM_0_1() * s.width, AXRANDOM_0_1() * s.height);
         label->setPosition(p);
     }
 }
@@ -422,14 +422,14 @@ LabelFNTMultiLine::LabelFNTMultiLine()
     addChild(label1, 0, kTagBitmapAtlas1);
 
     s = label1->getContentSize();
-    CCLOG("content size: %.2fx%.2f", s.width, s.height);
+    AXLOG("content size: %.2fx%.2f", s.width, s.height);
 
     // Center
     auto label2 = Label::createWithBMFont("fonts/bitmapFontTest3.fnt", "Multi line\nCenter");
     addChild(label2, 0, kTagBitmapAtlas2);
 
     s = label2->getContentSize();
-    CCLOG("content size: %.2fx%.2f", s.width, s.height);
+    AXLOG("content size: %.2fx%.2f", s.width, s.height);
 
     // right
     auto label3 = Label::createWithBMFont("fonts/bitmapFontTest3.fnt", "Multi line\nRight\nThree lines Three");
@@ -437,7 +437,7 @@ LabelFNTMultiLine::LabelFNTMultiLine()
     addChild(label3, 0, kTagBitmapAtlas3);
 
     s = label3->getContentSize();
-    CCLOG("content size: %.2fx%.2f", s.width, s.height);
+    AXLOG("content size: %.2fx%.2f", s.width, s.height);
 
     label1->setPosition(VisibleRect::leftBottom());
     label2->setPosition(VisibleRect::center());
@@ -473,7 +473,7 @@ LabelFNTandTTFEmpty::LabelFNTandTTFEmpty()
     addChild(label3, 0, kTagBitmapAtlas3);
     label3->setPosition(Vec2(s.width / 2, 100.0f));
 
-    schedule(CC_CALLBACK_1(LabelFNTandTTFEmpty::updateStrings, this), 1.0f, "update_strings_key");
+    schedule(AX_CALLBACK_1(LabelFNTandTTFEmpty::updateStrings, this), 1.0f, "update_strings_key");
 
     setEmpty = false;
 }
@@ -593,9 +593,9 @@ bool LabelFNTMultiLineAlignment::init()
     }
 
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesBegan = CC_CALLBACK_2(LabelFNTMultiLineAlignment::onTouchesBegan, this);
-    listener->onTouchesMoved = CC_CALLBACK_2(LabelFNTMultiLineAlignment::onTouchesMoved, this);
-    listener->onTouchesEnded = CC_CALLBACK_2(LabelFNTMultiLineAlignment::onTouchesEnded, this);
+    listener->onTouchesBegan = AX_CALLBACK_2(LabelFNTMultiLineAlignment::onTouchesBegan, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(LabelFNTMultiLineAlignment::onTouchesMoved, this);
+    listener->onTouchesEnded = AX_CALLBACK_2(LabelFNTMultiLineAlignment::onTouchesEnded, this);
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     // ask director the the window size
@@ -609,11 +609,11 @@ bool LabelFNTMultiLineAlignment::init()
 
     MenuItemFont::setFontSize(20);
     auto longSentences =
-        MenuItemFont::create("Long Flowing Sentences", CC_CALLBACK_1(LabelFNTMultiLineAlignment::stringChanged, this));
+        MenuItemFont::create("Long Flowing Sentences", AX_CALLBACK_1(LabelFNTMultiLineAlignment::stringChanged, this));
     auto lineBreaks = MenuItemFont::create("Short Sentences With Intentional Line Breaks",
-                                           CC_CALLBACK_1(LabelFNTMultiLineAlignment::stringChanged, this));
+                                           AX_CALLBACK_1(LabelFNTMultiLineAlignment::stringChanged, this));
     auto mixed      = MenuItemFont::create("Long Sentences Mixed With Intentional Line Breaks",
-                                           CC_CALLBACK_1(LabelFNTMultiLineAlignment::stringChanged, this));
+                                           AX_CALLBACK_1(LabelFNTMultiLineAlignment::stringChanged, this));
     auto stringMenu = Menu::create(longSentences, lineBreaks, mixed, nullptr);
     stringMenu->alignItemsVertically();
 
@@ -627,9 +627,9 @@ bool LabelFNTMultiLineAlignment::init()
 
     MenuItemFont::setFontSize(30);
 
-    auto left   = MenuItemFont::create("Left", CC_CALLBACK_1(LabelFNTMultiLineAlignment::alignmentChanged, this));
-    auto center = MenuItemFont::create("Center", CC_CALLBACK_1(LabelFNTMultiLineAlignment::alignmentChanged, this));
-    auto right  = MenuItemFont::create("Right", CC_CALLBACK_1(LabelFNTMultiLineAlignment::alignmentChanged, this));
+    auto left   = MenuItemFont::create("Left", AX_CALLBACK_1(LabelFNTMultiLineAlignment::alignmentChanged, this));
+    auto center = MenuItemFont::create("Center", AX_CALLBACK_1(LabelFNTMultiLineAlignment::alignmentChanged, this));
+    auto right  = MenuItemFont::create("Right", AX_CALLBACK_1(LabelFNTMultiLineAlignment::alignmentChanged, this));
 
     auto alignmentMenu = Menu::create(left, center, right, nullptr);
     alignmentMenu->alignItemsHorizontallyWithPadding(alignmentItemPadding);
@@ -673,7 +673,7 @@ std::string LabelFNTMultiLineAlignment::subtitle() const
     return "";
 }
 
-void LabelFNTMultiLineAlignment::selectAlignmentItem(cocos2d::MenuItemFont* item)
+void LabelFNTMultiLineAlignment::selectAlignmentItem(axis::MenuItemFont* item)
 {
     if (this->_lastAlignmentItem && this->_lastAlignmentItem != item)
     {
@@ -700,7 +700,7 @@ void LabelFNTMultiLineAlignment::selectAlignmentItem(cocos2d::MenuItemFont* item
     }
 }
 
-void LabelFNTMultiLineAlignment::selectSentenceItem(cocos2d::MenuItemFont* item)
+void LabelFNTMultiLineAlignment::selectSentenceItem(axis::MenuItemFont* item)
 {
     if (this->_lastSentenceItem && this->_lastSentenceItem != item)
     {
@@ -714,7 +714,7 @@ void LabelFNTMultiLineAlignment::selectSentenceItem(cocos2d::MenuItemFont* item)
     this->_label->setString(str);
 }
 
-std::string LabelFNTMultiLineAlignment::getItemString(cocos2d::MenuItemFont* item)
+std::string LabelFNTMultiLineAlignment::getItemString(axis::MenuItemFont* item)
 {
     std::string str;
 
@@ -737,7 +737,7 @@ std::string LabelFNTMultiLineAlignment::getItemString(cocos2d::MenuItemFont* ite
     return str;
 }
 
-void LabelFNTMultiLineAlignment::stringChanged(cocos2d::Ref* sender)
+void LabelFNTMultiLineAlignment::stringChanged(axis::Ref* sender)
 {
     auto item = (MenuItemFont*)sender;
 
@@ -746,7 +746,7 @@ void LabelFNTMultiLineAlignment::stringChanged(cocos2d::Ref* sender)
     this->snapArrowsToEdge();
 }
 
-void LabelFNTMultiLineAlignment::alignmentChanged(cocos2d::Ref* sender)
+void LabelFNTMultiLineAlignment::alignmentChanged(axis::Ref* sender)
 {
     auto item = static_cast<MenuItemFont*>(sender);
 
@@ -755,7 +755,7 @@ void LabelFNTMultiLineAlignment::alignmentChanged(cocos2d::Ref* sender)
     this->snapArrowsToEdge();
 }
 
-void LabelFNTMultiLineAlignment::onTouchesBegan(const std::vector<Touch*>& touches, cocos2d::Event* event)
+void LabelFNTMultiLineAlignment::onTouchesBegan(const std::vector<Touch*>& touches, axis::Event* event)
 {
     auto touch    = touches[0];
     auto location = touch->getLocationInView();
@@ -767,7 +767,7 @@ void LabelFNTMultiLineAlignment::onTouchesBegan(const std::vector<Touch*>& touch
     }
 }
 
-void LabelFNTMultiLineAlignment::onTouchesEnded(const std::vector<Touch*>& touches, cocos2d::Event* event)
+void LabelFNTMultiLineAlignment::onTouchesEnded(const std::vector<Touch*>& touches, axis::Event* event)
 {
     _drag = false;
     this->snapArrowsToEdge();
@@ -775,7 +775,7 @@ void LabelFNTMultiLineAlignment::onTouchesEnded(const std::vector<Touch*>& touch
     this->_arrowsBar->setVisible(false);
 }
 
-void LabelFNTMultiLineAlignment::onTouchesMoved(const std::vector<Touch*>& touches, cocos2d::Event* event)
+void LabelFNTMultiLineAlignment::onTouchesMoved(const std::vector<Touch*>& touches, axis::Event* event)
 {
     if (!_drag)
     {
@@ -835,7 +835,7 @@ std::string LabelFNTMultiLineAlignmentUNICODE::subtitle() const
     return "";
 }
 
-std::string LabelFNTMultiLineAlignmentUNICODE::getItemString(cocos2d::MenuItemFont* item)
+std::string LabelFNTMultiLineAlignmentUNICODE::getItemString(axis::MenuItemFont* item)
 {
     std::string str;
 
@@ -1055,9 +1055,9 @@ LabelTTFDynamicAlignment::LabelTTFDynamicAlignment()
     addChild(_label);
 
     auto menu = Menu::create(
-        MenuItemFont::create("Left", CC_CALLBACK_1(LabelTTFDynamicAlignment::setAlignmentLeft, this)),
-        MenuItemFont::create("Center", CC_CALLBACK_1(LabelTTFDynamicAlignment::setAlignmentCenter, this)),
-        MenuItemFont::create("Right", CC_CALLBACK_1(LabelTTFDynamicAlignment::setAlignmentRight, this)), nullptr);
+        MenuItemFont::create("Left", AX_CALLBACK_1(LabelTTFDynamicAlignment::setAlignmentLeft, this)),
+        MenuItemFont::create("Center", AX_CALLBACK_1(LabelTTFDynamicAlignment::setAlignmentCenter, this)),
+        MenuItemFont::create("Right", AX_CALLBACK_1(LabelTTFDynamicAlignment::setAlignmentRight, this)), nullptr);
 
     menu->alignItemsHorizontallyWithPadding(20);
     menu->setPosition(winSize.width / 2, winSize.height * 0.25f);
@@ -1208,8 +1208,8 @@ LabelTTFEmoji::LabelTTFEmoji()
     auto label = Label::createWithTTF(emojiString, "fonts/NotoEmoji-Regular.ttf", 23);
     label->setPosition(winSize.width / 2, winSize.height / 2);
     label->setDimensions(winSize.width, winSize.height);
-    label->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+    label->setVerticalAlignment(axis::TextVAlignment::CENTER);
+    label->setHorizontalAlignment(axis::TextHAlignment::CENTER);
     addChild(label);
 }
 
@@ -1376,7 +1376,7 @@ void LabelShadowTest::onEnter()
     slider->loadProgressBarTexture("cocosui/sliderProgress.png");
     slider->setPosition(Vec2(size.width / 2.0f, size.height * 0.15f + slider->getContentSize().height * 2.0f));
     slider->setPercent(52);
-    slider->addEventListener(CC_CALLBACK_2(LabelShadowTest::sliderEvent, this));
+    slider->addEventListener(AX_CALLBACK_2(LabelShadowTest::sliderEvent, this));
     addChild(slider, 999);
 
     auto slider2 = ui::Slider::create();
@@ -1388,7 +1388,7 @@ void LabelShadowTest::onEnter()
     slider2->setPosition(Vec2(size.width * 0.15f, size.height / 2.0f));
     slider2->setRotation(90);
     slider2->setPercent(52);
-    slider2->addEventListener(CC_CALLBACK_2(LabelShadowTest::sliderEvent, this));
+    slider2->addEventListener(AX_CALLBACK_2(LabelShadowTest::sliderEvent, this));
     addChild(slider2, 999);
 
     float subtitleY         = _subtitleLabel->getPosition().y;
@@ -1465,7 +1465,7 @@ LabelCharMapTest::LabelCharMapTest()
     label2->setPosition(Vec2(10, 200));
     label2->setOpacity(32);
 
-    schedule(CC_CALLBACK_1(LabelCharMapTest::step, this), "step_key");
+    schedule(AX_CALLBACK_1(LabelCharMapTest::step, this), "step_key");
 }
 
 void LabelCharMapTest::step(float dt)
@@ -1513,19 +1513,19 @@ LabelCharMapColorTest::LabelCharMapColorTest()
 
     auto fade    = FadeOut::create(1.0f);
     auto fade_in = fade->reverse();
-    auto cb      = CallFunc::create(CC_CALLBACK_0(LabelCharMapColorTest::actionFinishCallback, this));
+    auto cb      = CallFunc::create(AX_CALLBACK_0(LabelCharMapColorTest::actionFinishCallback, this));
     auto seq     = Sequence::create(fade, fade_in, cb, nullptr);
     auto repeat  = RepeatForever::create(seq);
     label2->runAction(repeat);
 
     _time = 0;
 
-    schedule(CC_CALLBACK_1(LabelCharMapColorTest::step, this), "step_key");
+    schedule(AX_CALLBACK_1(LabelCharMapColorTest::step, this), "step_key");
 }
 
 void LabelCharMapColorTest::actionFinishCallback()
 {
-    CCLOG("Action finished");
+    AXLOG("Action finished");
 }
 
 void LabelCharMapColorTest::step(float dt)
@@ -1661,16 +1661,16 @@ LabelAlignmentTest::LabelAlignmentTest()
 
     MenuItemFont::setFontSize(30);
     auto menu = Menu::create(
-        MenuItemFont::create("Left", CC_CALLBACK_1(LabelAlignmentTest::setAlignmentLeft, this)),
-        MenuItemFont::create("Center", CC_CALLBACK_1(LabelAlignmentTest::setAlignmentCenter, this)),
-        MenuItemFont::create("Right", CC_CALLBACK_1(LabelAlignmentTest::setAlignmentRight, this)), nullptr);
+        MenuItemFont::create("Left", AX_CALLBACK_1(LabelAlignmentTest::setAlignmentLeft, this)),
+        MenuItemFont::create("Center", AX_CALLBACK_1(LabelAlignmentTest::setAlignmentCenter, this)),
+        MenuItemFont::create("Right", AX_CALLBACK_1(LabelAlignmentTest::setAlignmentRight, this)), nullptr);
     menu->alignItemsVerticallyWithPadding(4);
     menu->setPosition(Vec2(50.0f, s.height / 2 - 20));
     this->addChild(menu);
 
-    menu = Menu::create(MenuItemFont::create("Top", CC_CALLBACK_1(LabelAlignmentTest::setAlignmentTop, this)),
-                        MenuItemFont::create("Middle", CC_CALLBACK_1(LabelAlignmentTest::setAlignmentMiddle, this)),
-                        MenuItemFont::create("Bottom", CC_CALLBACK_1(LabelAlignmentTest::setAlignmentBottom, this)),
+    menu = Menu::create(MenuItemFont::create("Top", AX_CALLBACK_1(LabelAlignmentTest::setAlignmentTop, this)),
+                        MenuItemFont::create("Middle", AX_CALLBACK_1(LabelAlignmentTest::setAlignmentMiddle, this)),
+                        MenuItemFont::create("Bottom", AX_CALLBACK_1(LabelAlignmentTest::setAlignmentBottom, this)),
                         nullptr);
     menu->alignItemsVerticallyWithPadding(4);
     menu->setPosition(Vec2(s.width - 50, s.height / 2 - 20));
@@ -1793,7 +1793,7 @@ LabelLineHeightTest::LabelLineHeightTest()
     slider->loadProgressBarTexture("cocosui/sliderProgress.png");
     slider->setPosition(Vec2(size.width / 2.0f, size.height * 0.15f + slider->getContentSize().height * 2.0f));
     slider->setPercent(label->getLineHeight());
-    slider->addEventListener(CC_CALLBACK_2(LabelLineHeightTest::sliderEvent, this));
+    slider->addEventListener(AX_CALLBACK_2(LabelLineHeightTest::sliderEvent, this));
     addChild(slider);
 }
 
@@ -1837,7 +1837,7 @@ LabelAdditionalKerningTest::LabelAdditionalKerningTest()
     slider->loadProgressBarTexture("cocosui/sliderProgress.png");
     slider->setPosition(Vec2(size.width / 2.0f, size.height * 0.15f + slider->getContentSize().height * 2.0f));
     slider->setPercent(0);
-    slider->addEventListener(CC_CALLBACK_2(LabelAdditionalKerningTest::sliderEvent, this));
+    slider->addEventListener(AX_CALLBACK_2(LabelAdditionalKerningTest::sliderEvent, this));
     addChild(slider);
 }
 
@@ -2261,7 +2261,7 @@ LabelLayoutBaseTest::LabelLayoutBaseTest()
     this->initSliders(size);
 }
 
-void LabelLayoutBaseTest::initFontSizeChange(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initFontSizeChange(const axis::Size& size)
 {
     auto fontSizeLabel = Label::createWithSystemFont("font size:20", "Arial", 10);
     fontSizeLabel->setName("fontSize");
@@ -2281,7 +2281,7 @@ void LabelLayoutBaseTest::initFontSizeChange(const cocos2d::Size& size)
     this->addChild(fontSizeLabel);
 }
 
-void LabelLayoutBaseTest::initWrapOption(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initWrapOption(const axis::Size& size)
 {
     auto label = Label::createWithSystemFont("Enable Wrap:", "Arial", 10);
     label->setColor(Color3B::WHITE);
@@ -2310,7 +2310,7 @@ void LabelLayoutBaseTest::initWrapOption(const cocos2d::Size& size)
     this->addChild(checkBox);
 }
 
-void LabelLayoutBaseTest::initToggleLabelTypeOption(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initToggleLabelTypeOption(const axis::Size& size)
 {
     auto label = Label::createWithSystemFont("Toggle Label Type:", "Arial", 10);
     label->setColor(Color3B::WHITE);
@@ -2347,28 +2347,28 @@ void LabelLayoutBaseTest::initToggleLabelTypeOption(const cocos2d::Size& size)
     this->addChild(checkBox);
 }
 
-void LabelLayoutBaseTest::initAlignmentOption(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initAlignmentOption(const axis::Size& size)
 {
     // add text alignment settings
     MenuItemFont::setFontSize(30);
     auto menu = Menu::create(
-        MenuItemFont::create("Left", CC_CALLBACK_1(LabelLayoutBaseTest::setAlignmentLeft, this)),
-        MenuItemFont::create("Center", CC_CALLBACK_1(LabelLayoutBaseTest::setAlignmentCenter, this)),
-        MenuItemFont::create("Right", CC_CALLBACK_1(LabelLayoutBaseTest::setAlignmentRight, this)), nullptr);
+        MenuItemFont::create("Left", AX_CALLBACK_1(LabelLayoutBaseTest::setAlignmentLeft, this)),
+        MenuItemFont::create("Center", AX_CALLBACK_1(LabelLayoutBaseTest::setAlignmentCenter, this)),
+        MenuItemFont::create("Right", AX_CALLBACK_1(LabelLayoutBaseTest::setAlignmentRight, this)), nullptr);
     menu->alignItemsVerticallyWithPadding(4);
     menu->setPosition(Vec2(50.0f, size.height / 2 - 20));
     this->addChild(menu);
 
-    menu = Menu::create(MenuItemFont::create("Top", CC_CALLBACK_1(LabelLayoutBaseTest::setAlignmentTop, this)),
-                        MenuItemFont::create("Middle", CC_CALLBACK_1(LabelLayoutBaseTest::setAlignmentMiddle, this)),
-                        MenuItemFont::create("Bottom", CC_CALLBACK_1(LabelLayoutBaseTest::setAlignmentBottom, this)),
+    menu = Menu::create(MenuItemFont::create("Top", AX_CALLBACK_1(LabelLayoutBaseTest::setAlignmentTop, this)),
+                        MenuItemFont::create("Middle", AX_CALLBACK_1(LabelLayoutBaseTest::setAlignmentMiddle, this)),
+                        MenuItemFont::create("Bottom", AX_CALLBACK_1(LabelLayoutBaseTest::setAlignmentBottom, this)),
                         nullptr);
     menu->alignItemsVerticallyWithPadding(4);
     menu->setPosition(Vec2(size.width - 50, size.height / 2 - 20));
     this->addChild(menu);
 }
 
-void LabelLayoutBaseTest::initSliders(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initSliders(const axis::Size& size)
 {
     auto slider = ui::Slider::create();
     slider->setTag(1);
@@ -2417,7 +2417,7 @@ void LabelLayoutBaseTest::initSliders(const cocos2d::Size& size)
     });
 }
 
-void LabelLayoutBaseTest::initTestLabel(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initTestLabel(const axis::Size& size)
 {
     auto center = VisibleRect::center();
     _label = Label::createWithTTF("五六七八This is a very long sentence一二三四.", "fonts/HKYuanMini.ttf", 20);
@@ -2429,7 +2429,7 @@ void LabelLayoutBaseTest::initTestLabel(const cocos2d::Size& size)
     _labelType = 0;
 }
 
-void LabelLayoutBaseTest::initDrawNode(const cocos2d::Size& size)
+void LabelLayoutBaseTest::initDrawNode(const axis::Size& size)
 {
     _drawNode = DrawNode::create();
 
@@ -2468,7 +2468,7 @@ void LabelLayoutBaseTest::setAlignmentBottom(Ref* sender)
     _label->setVerticalAlignment(TextVAlignment::BOTTOM);
 }
 
-void LabelLayoutBaseTest::valueChanged(cocos2d::Ref* sender, cocos2d::extension::Control::EventType controlEvent)
+void LabelLayoutBaseTest::valueChanged(axis::Ref* sender, axis::extension::Control::EventType controlEvent)
 {
     ControlStepper* pControl = (ControlStepper*)sender;
     // Change value of label.
@@ -2498,10 +2498,10 @@ void LabelLayoutBaseTest::valueChanged(cocos2d::Ref* sender, cocos2d::extension:
     //    letterSprite->stopAllActions();
     //    letterSprite->runAction(Sequence::create(moveBy, moveBy->clone()->reverse(), nullptr ));
     //
-    //    CCLOG("label line height = %f", _label->getLineHeight());
+    //    AXLOG("label line height = %f", _label->getLineHeight());
 }
 
-void LabelLayoutBaseTest::updateDrawNodeSize(const cocos2d::Size& drawNodeSize)
+void LabelLayoutBaseTest::updateDrawNodeSize(const axis::Size& drawNodeSize)
 {
     auto origin    = Director::getInstance()->getWinSize();
     auto labelSize = _label->getContentSize();
@@ -2767,7 +2767,7 @@ void LabelToggleTypeTest::initToggleCheckboxes()
         float posX               = startPosX + BUTTON_WIDTH * i;
         radioButton->setPosition(Vec2(posX, winSize.height / 2.0f + 70));
         radioButton->setScale(1.2f);
-        radioButton->addEventListener(CC_CALLBACK_2(LabelToggleTypeTest::onChangedRadioButtonSelect, this));
+        radioButton->addEventListener(AX_CALLBACK_2(LabelToggleTypeTest::onChangedRadioButtonSelect, this));
         radioButton->setTag(i);
         radioButtonGroup->addRadioButton(radioButton);
         this->addChild(radioButton);
@@ -2913,7 +2913,7 @@ void LabelSystemFontTest::initToggleCheckboxes()
         float posX               = startPosX + BUTTON_WIDTH * i;
         radioButton->setPosition(Vec2(posX, winSize.height / 2.0f + 70));
         radioButton->setScale(1.2f);
-        radioButton->addEventListener(CC_CALLBACK_2(LabelSystemFontTest::onChangedRadioButtonSelect, this));
+        radioButton->addEventListener(AX_CALLBACK_2(LabelSystemFontTest::onChangedRadioButtonSelect, this));
         radioButton->setTag(i);
         radioButtonGroup->addRadioButton(radioButton);
         this->addChild(radioButton);
@@ -3077,7 +3077,7 @@ LabelItalics::LabelItalics()
     addChild(_label2a, 0, kTagBitmapAtlas2);
     _label2a->setPosition(Vec2(s.width / 2, s.height * 1 / 6));
 
-    auto menuItem = MenuItemFont::create("disable italics", [&](cocos2d::Ref* sender) {
+    auto menuItem = MenuItemFont::create("disable italics", [&](axis::Ref* sender) {
         _label2a->disableEffect(LabelEffect::ITALICS);
         _label1a->disableEffect(LabelEffect::ITALICS);
     });
@@ -3129,7 +3129,7 @@ LabelBold::LabelBold()
     addChild(_label2a, 0, kTagBitmapAtlas2);
     _label2a->setPosition(Vec2(s.width / 2, s.height * 1 / 6));
 
-    auto menuItem = MenuItemFont::create("disable bold", [&](cocos2d::Ref* sender) {
+    auto menuItem = MenuItemFont::create("disable bold", [&](axis::Ref* sender) {
         _label2a->disableEffect(LabelEffect::BOLD);
         _label1a->disableEffect(LabelEffect::BOLD);
     });
@@ -3181,7 +3181,7 @@ LabelUnderline::LabelUnderline()
     addChild(_label2a, 0, kTagBitmapAtlas2);
     _label2a->setPosition(Vec2(s.width / 2, s.height * 1 / 6));
 
-    auto menuItem = MenuItemFont::create("disable underline", [&](cocos2d::Ref* sender) {
+    auto menuItem = MenuItemFont::create("disable underline", [&](axis::Ref* sender) {
         _label2a->disableEffect(LabelEffect::UNDERLINE);
         _label1a->disableEffect(LabelEffect::UNDERLINE);
     });
@@ -3223,7 +3223,7 @@ LabelUnderlineMultiline::LabelUnderlineMultiline()
     addChild(_label2a, 0, kTagBitmapAtlas2);
     _label2a->setPosition(Vec2(s.width / 2, s.height * 1 / 3));
 
-    auto menuItem = MenuItemFont::create("disable underline", [&](cocos2d::Ref* sender) {
+    auto menuItem = MenuItemFont::create("disable underline", [&](axis::Ref* sender) {
         _label2a->disableEffect(LabelEffect::UNDERLINE);
         _label1a->disableEffect(LabelEffect::UNDERLINE);
     });
@@ -3265,7 +3265,7 @@ LabelStrikethrough::LabelStrikethrough()
     addChild(_label2a, 0, kTagBitmapAtlas2);
     _label2a->setPosition(Vec2(s.width / 2, s.height * 1 / 3));
 
-    auto menuItem = MenuItemFont::create("disable underline", [&](cocos2d::Ref* sender) {
+    auto menuItem = MenuItemFont::create("disable underline", [&](axis::Ref* sender) {
         _label2a->disableEffect(LabelEffect::STRIKETHROUGH);
         _label1a->disableEffect(LabelEffect::STRIKETHROUGH);
     });
@@ -3313,7 +3313,7 @@ LabelLocalizationTest::LabelLocalizationTest()
         float posX               = startPosX + BUTTON_WIDTH * i;
         radioButton->setPosition(Vec2(posX, winSize.height / 2.0f + 70));
         radioButton->setScale(1.2f);
-        radioButton->addEventListener(CC_CALLBACK_2(LabelLocalizationTest::onChangedRadioButtonSelect, this));
+        radioButton->addEventListener(AX_CALLBACK_2(LabelLocalizationTest::onChangedRadioButtonSelect, this));
         radioButton->setTag(i);
         radioButtonGroup->addRadioButton(radioButton);
         this->addChild(radioButton);
@@ -3403,14 +3403,14 @@ LabelIssue15214::LabelIssue15214()
     // 1
     Label* label = Label::createWithTTF("TTF with setColor()", "fonts/arial.ttf", 24.0f);
     label->enableUnderline();
-    label->setColor(cocos2d::Color3B::BLUE);
+    label->setColor(axis::Color3B::BLUE);
     label->setPosition(size.width / 2, size.height / 5 * 4);
     this->addChild(label);
 
     // 2
     Label* label2 = Label::createWithSystemFont("System with setColor()", "Verdana", 24.0f);
     label2->enableUnderline();
-    label2->setColor(cocos2d::Color3B::BLUE);
+    label2->setColor(axis::Color3B::BLUE);
     label2->setPosition(size.width / 2, size.height / 5 * 3);
     this->addChild(label2);
 
@@ -3571,7 +3571,7 @@ LabelIssue17902::LabelIssue17902()
     label->setPosition(center);
     addChild(label);
 
-    scheduleOnce(CC_CALLBACK_0(LabelIssue17902::purgeCachedData, this), 1.0f, "purge_cached_data");
+    scheduleOnce(AX_CALLBACK_0(LabelIssue17902::purgeCachedData, this), 1.0f, "purge_cached_data");
 }
 
 void LabelIssue17902::purgeCachedData()
@@ -3597,7 +3597,7 @@ LabelIssue20523::LabelIssue20523()
     auto size           = Director::getInstance()->getWinSize();
     auto _crashingLabel = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 120);
     _crashingLabel->setPosition(Vec2(size.width / 2, size.height / 2));
-    _crashingLabel->setColor(cocos2d::Color3B(200, 200, 200));
+    _crashingLabel->setColor(axis::Color3B(200, 200, 200));
     addChild(_crashingLabel, 1);
     //_crashingLabel->setWidth(size.width);
 
@@ -3606,7 +3606,7 @@ LabelIssue20523::LabelIssue20523()
             ++_i;
             _crashingLabel->setString(std::to_string(_i));
         },
-        1, CC_REPEAT_FOREVER, 0, "repeat");
+        1, AX_REPEAT_FOREVER, 0, "repeat");
 }
 
 std::string LabelIssue20523::title() const
@@ -3646,7 +3646,7 @@ std::string LabelLetterColorsTest::subtitle() const
     return "Should not crash!";
 }
 
-void LabelLetterColorsTest::setLetterColors(cocos2d::Label* label, const cocos2d::Color3B& color)
+void LabelLetterColorsTest::setLetterColors(axis::Label* label, const axis::Color3B& color)
 {
     int n = label->getStringLength();
     for (int i = 0; i < n; ++i)

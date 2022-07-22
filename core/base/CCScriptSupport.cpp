@@ -26,14 +26,14 @@
 
 #include "base/CCScriptSupport.h"
 
-#if CC_ENABLE_SCRIPT_BINDING
+#if AX_ENABLE_SCRIPT_BINDING
 
 #    include "base/CCScheduler.h"
 #    include "2d/CCNode.h"
 
-bool CC_DLL cc_assert_script_compatible(const char* msg)
+bool AX_DLL cc_assert_script_compatible(const char* msg)
 {
-    cocos2d::ScriptEngineProtocol* engine = cocos2d::ScriptEngineManager::getInstance()->getScriptEngine();
+    axis::ScriptEngineProtocol* engine = axis::ScriptEngineManager::getInstance()->getScriptEngine();
     if (engine && engine->handleAssert(msg))
     {
         return true;
@@ -41,7 +41,7 @@ bool CC_DLL cc_assert_script_compatible(const char* msg)
     return false;
 }
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 //
 // // ScriptHandlerEntry
@@ -181,6 +181,6 @@ int ScriptEngineManager::sendEventToLua(const ScriptEvent& event)
     return 0;
 }
 
-NS_CC_END
+NS_AX_END
 
-#endif  // #if CC_ENABLE_SCRIPT_BINDING
+#endif  // #if AX_ENABLE_SCRIPT_BINDING

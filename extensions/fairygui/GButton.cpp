@@ -8,7 +8,7 @@
 #include "utils/ToolSet.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 const std::string GButton::UP = "up";
 const std::string GButton::DOWN = "down";
@@ -68,7 +68,7 @@ void GButton::setSelectedIcon(const std::string& value)
         _iconObject->setIcon((_selected && _selectedIcon.length() > 0) ? _selectedIcon : _icon);
 }
 
-cocos2d::Color3B GButton::getTitleColor() const
+axis::Color3B GButton::getTitleColor() const
 {
     GTextField* tf = getTextField();
     if (tf)
@@ -77,7 +77,7 @@ cocos2d::Color3B GButton::getTitleColor() const
         return Color3B::BLACK;
 }
 
-void GButton::setTitleColor(const cocos2d::Color3B& value)
+void GButton::setTitleColor(const axis::Color3B& value)
 {
     GTextField* tf = getTextField();
     if (tf)
@@ -217,7 +217,7 @@ GTextField* GButton::getTextField() const
         return nullptr;
 }
 
-cocos2d::Value GButton::getProp(ObjectPropID propId)
+axis::Value GButton::getProp(ObjectPropID propId)
 {
     switch (propId)
     {
@@ -240,7 +240,7 @@ cocos2d::Value GButton::getProp(ObjectPropID propId)
     }
 }
 
-void GButton::setProp(ObjectPropID propId, const cocos2d::Value& value)
+void GButton::setProp(ObjectPropID propId, const axis::Value& value)
 {
     switch (propId)
     {
@@ -289,12 +289,12 @@ void GButton::constructExtension(ByteBuffer* buffer)
     if (_mode == ButtonMode::COMMON)
         setState(UP);
 
-    addEventListener(UIEventType::RollOver, CC_CALLBACK_1(GButton::onRollOver, this));
-    addEventListener(UIEventType::RollOut, CC_CALLBACK_1(GButton::onRollOut, this));
-    addEventListener(UIEventType::TouchBegin, CC_CALLBACK_1(GButton::onTouchBegin, this));
-    addEventListener(UIEventType::TouchEnd, CC_CALLBACK_1(GButton::onTouchEnd, this));
-    addEventListener(UIEventType::Click, CC_CALLBACK_1(GButton::onClick, this));
-    addEventListener(UIEventType::Exit, CC_CALLBACK_1(GButton::onExit, this));
+    addEventListener(UIEventType::RollOver, AX_CALLBACK_1(GButton::onRollOver, this));
+    addEventListener(UIEventType::RollOut, AX_CALLBACK_1(GButton::onRollOut, this));
+    addEventListener(UIEventType::TouchBegin, AX_CALLBACK_1(GButton::onTouchBegin, this));
+    addEventListener(UIEventType::TouchEnd, AX_CALLBACK_1(GButton::onTouchEnd, this));
+    addEventListener(UIEventType::Click, AX_CALLBACK_1(GButton::onClick, this));
+    addEventListener(UIEventType::Exit, AX_CALLBACK_1(GButton::onExit, this));
 }
 
 void GButton::setup_afterAdd(ByteBuffer* buffer, int beginPos)

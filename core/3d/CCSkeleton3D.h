@@ -30,7 +30,7 @@
 #include "base/CCRef.h"
 #include "base/CCVector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -41,7 +41,7 @@ NS_CC_BEGIN
  * @brief Defines a basic hierarchical structure of transformation spaces.
  * @lua NA
  */
-class CC_DLL Bone3D : public Ref
+class AX_DLL Bone3D : public Ref
 {
     friend class Skeleton3D;
     friend class MeshSkin;
@@ -177,7 +177,7 @@ protected:
  * Skeleton
  *
  */
-class CC_DLL Skeleton3D : public Ref
+class AX_DLL Skeleton3D : public Ref
 {
 public:
     /**
@@ -224,6 +224,6 @@ protected:
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  // __CCSKELETON3D_H__

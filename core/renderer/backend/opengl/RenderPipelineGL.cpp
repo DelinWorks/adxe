@@ -31,15 +31,15 @@ Copyright (c) 2020 C4games Ltd.
 
 #include <assert.h>
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 void RenderPipelineGL::update(const RenderTarget*, const PipelineDescriptor& pipelineDescirptor)
 {
     if (_programGL != pipelineDescirptor.programState->getProgram())
     {
-        CC_SAFE_RELEASE(_programGL);
+        AX_SAFE_RELEASE(_programGL);
         _programGL = static_cast<ProgramGL*>(pipelineDescirptor.programState->getProgram());
-        CC_SAFE_RETAIN(_programGL);
+        AX_SAFE_RETAIN(_programGL);
     }
 
     updateBlendState(pipelineDescirptor.blendDescriptor);
@@ -74,7 +74,7 @@ void RenderPipelineGL::updateBlendState(const BlendDescriptor& descriptor)
 
 RenderPipelineGL::~RenderPipelineGL()
 {
-    CC_SAFE_RELEASE(_programGL);
+    AX_SAFE_RELEASE(_programGL);
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

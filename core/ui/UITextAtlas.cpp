@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "ui/UITextAtlas.h"
 #include "2d/CCLabel.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -55,7 +55,7 @@ TextAtlas* TextAtlas::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -79,7 +79,7 @@ TextAtlas* TextAtlas::create(std::string_view stringValue,
         widget->setProperty(stringValue, charMapFile, itemWidth, itemHeight, startCharMap);
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -100,7 +100,7 @@ void TextAtlas::setProperty(std::string_view stringValue,
 
     updateContentSizeWithTextureSize(_labelAtlasRenderer->getContentSize());
     _labelAtlasRendererAdaptDirty = true;
-    //    CCLOG("cs w %f, h %f", _contentSize.width, _contentSize.height);
+    //    AXLOG("cs w %f, h %f", _contentSize.width, _contentSize.height);
 }
 
 void TextAtlas::setString(std::string_view value)
@@ -113,7 +113,7 @@ void TextAtlas::setString(std::string_view value)
     _labelAtlasRenderer->setString(value);
     updateContentSizeWithTextureSize(_labelAtlasRenderer->getContentSize());
     _labelAtlasRendererAdaptDirty = true;
-    //    CCLOG("cssss w %f, h %f", _contentSize.width, _contentSize.height);
+    //    AXLOG("cssss w %f, h %f", _contentSize.width, _contentSize.height);
 }
 
 std::string_view TextAtlas::getString() const
@@ -202,4 +202,4 @@ ResourceData TextAtlas::getRenderFile()
 }
 
 }  // namespace ui
-NS_CC_END
+NS_AX_END

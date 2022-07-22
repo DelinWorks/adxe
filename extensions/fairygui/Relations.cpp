@@ -3,7 +3,7 @@
 #include "utils/ByteBuffer.h"
 
 NS_FGUI_BEGIN
-USING_NS_CC;
+USING_NS_AX;
 
 Relations::Relations(GObject* owner) :
     handling(nullptr)
@@ -23,7 +23,7 @@ void Relations::add(GObject * target, RelationType relationType)
 
 void Relations::add(GObject * target, RelationType relationType, bool usePercent)
 {
-    CCASSERT(target, "target is null");
+    AXASSERT(target, "target is null");
 
     for (auto it = _items.begin(); it != _items.end(); ++it)
     {

@@ -24,21 +24,21 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_APPLICATION_PROTOCOL_H__
-#define __CC_APPLICATION_PROTOCOL_H__
+#ifndef __AX_APPLICATION_PROTOCOL_H__
+#define __AX_APPLICATION_PROTOCOL_H__
 
 #include "platform/CCPlatformMacros.h"
 #include "base/CCAutoreleasePool.h"
 #include "base/ccTypes.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup platform
  * @{
  */
 
-class CC_DLL ApplicationProtocol
+class AX_DLL ApplicationProtocol
 {
 public:
     /** Since WINDOWS and ANDROID are defined as macros, we could not just use these keywords in enumeration(Platform).
@@ -147,6 +147,6 @@ public:
 // end of platform group
 /** @} */
 
-NS_CC_END
+NS_AX_END
 
-#endif  // __CC_APPLICATION_PROTOCOL_H__
+#endif  // __AX_APPLICATION_PROTOCOL_H__

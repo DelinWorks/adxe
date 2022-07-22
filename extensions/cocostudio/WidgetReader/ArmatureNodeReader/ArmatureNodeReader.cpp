@@ -7,11 +7,11 @@
 #include "CSParseBinary_generated.h"
 #include "WidgetReader/ArmatureNodeReader/CSArmatureNode_generated.h"
 #include "CCArmature.h"
-#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
+#if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
 #    include "DragonBones/CCDragonBonesHeaders.h"
 #endif
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace cocostudio;
 using namespace flatbuffers;
 
@@ -34,7 +34,7 @@ ArmatureNodeReader* ArmatureNodeReader::getInstance()
 
 void ArmatureNodeReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceArmatureNodeReader);
+    AX_SAFE_DELETE(_instanceArmatureNodeReader);
 }
 
 Offset<Table> ArmatureNodeReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -129,7 +129,7 @@ Offset<Table> ArmatureNodeReader::createOptionsWithFlatBuffers(pugi::xml_node ob
     return *(Offset<Table>*)(&options);
 }
 
-void ArmatureNodeReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* nodeOptions)
+void ArmatureNodeReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* nodeOptions)
 {
     Node** ppResult = (Node**)(node);
     auto options    = (flatbuffers::CSArmatureNodeOption*)nodeOptions;
@@ -142,7 +142,7 @@ void ArmatureNodeReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flat
     if (FileUtils::getInstance()->isFileExist(filepath))
     {
         fileExist = true;
-#if defined(CC_BUILD_WITH_DRANGBONES) && CC_BUILD_WITH_DRANGBONES
+#if defined(AX_BUILD_WITH_DRANGBONES) && AX_BUILD_WITH_DRANGBONES
         auto filep = filepath.rfind('.');
         if (filep != std::string::npos && strcmp(&filepath[filep], ".json") == 0)
         {  // Currently, adjust by file ext, regard as DragonBones 4.5/5.0
@@ -215,7 +215,7 @@ void ArmatureNodeReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flat
     }
 }
 
-cocos2d::Node* ArmatureNodeReader::createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions)
+axis::Node* ArmatureNodeReader::createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions)
 {
     Node* node = nullptr;  // auto node = Armature::create();
 

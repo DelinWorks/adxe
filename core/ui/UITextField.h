@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "2d/CCTextFieldTTF.h"
 #include "ui/GUIExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup ui
  * @{
@@ -45,7 +45,7 @@ namespace ui
  * @js NA
  * @lua NA
  */
-class CC_GUI_DLL UICCTextField : public TextFieldTTF, public TextFieldDelegate
+class AX_GUI_DLL UICCTextField : public TextFieldTTF, public TextFieldDelegate
 {
 public:
     /**
@@ -223,7 +223,7 @@ protected:
  * @js NA
  * @lua NA
  */
-class CC_GUI_DLL TextField : public Widget
+class AX_GUI_DLL TextField : public Widget
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -650,6 +650,6 @@ protected:
 
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__TextField__) */

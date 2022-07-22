@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "math/CCMath.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup base
@@ -46,7 +46,7 @@ NS_CC_BEGIN
  * @return A Core Graphics structure that represents a rectangle.
  *      If the string is not well-formed, the function returns Rect::ZERO.
  */
-Rect CC_DLL RectFromString(std::string_view str);
+Rect AX_DLL RectFromString(std::string_view str);
 
 /**
  * @brief Returns a Core Graphics point structure corresponding to the data in a given string.
@@ -58,7 +58,7 @@ Rect CC_DLL RectFromString(std::string_view str);
  * @return A Core Graphics structure that represents a point.
  *      If the string is not well-formed, the function returns Vec2::ZERO.
  */
-Vec2 CC_DLL PointFromString(std::string_view str);
+Vec2 AX_DLL PointFromString(std::string_view str);
 
 /**
  * @brief Returns a Core Graphics size structure corresponding to the data in a given string.
@@ -70,11 +70,11 @@ Vec2 CC_DLL PointFromString(std::string_view str);
  * @return A Core Graphics structure that represents a size.
  *      If the string is not well-formed, the function returns Vec2::ZERO.
  */
-Vec2 CC_DLL SizeFromString(std::string_view str);
+Vec2 AX_DLL SizeFromString(std::string_view str);
 
 // end of data_structure group
 /** @} */
 
-NS_CC_END
+NS_AX_END
 
 #endif  // __PLATFORM_CCNS_H__

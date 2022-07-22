@@ -34,7 +34,7 @@
 #include "base/CCProtocols.h"
 #include "renderer/CCCustomCommand.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Texture2D;
 class TextureAtlas;
@@ -68,7 +68,7 @@ class ParticleSystem;
  * @since v1.1
  */
 
-class CC_DLL ParticleBatchNode : public Node, public TextureProtocol
+class AX_DLL ParticleBatchNode : public Node, public TextureProtocol
 {
 public:
     /** Create the particle system with Texture2D, a capacity of particles, which particle system to use.
@@ -190,4 +190,4 @@ private:
 // end of _2d group
 /// @}
 
-NS_CC_END
+NS_AX_END

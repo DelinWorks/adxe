@@ -40,36 +40,36 @@ struct cpBody;
 namespace cocostudio
 {
 
-CC_DEPRECATED_ATTRIBUTE typedef ProcessBase CCProcessBase;
-CC_DEPRECATED_ATTRIBUTE typedef BaseData CCBaseData;
-CC_DEPRECATED_ATTRIBUTE typedef DisplayData CCDisplayData;
-CC_DEPRECATED_ATTRIBUTE typedef SpriteDisplayData CCSpriteDisplayData;
-CC_DEPRECATED_ATTRIBUTE typedef ArmatureDisplayData CCArmatureDisplayData;
-CC_DEPRECATED_ATTRIBUTE typedef ParticleDisplayData CCParticleDisplayData;
-CC_DEPRECATED_ATTRIBUTE typedef BoneData CCBoneData;
-CC_DEPRECATED_ATTRIBUTE typedef FrameData CCFrameData;
-CC_DEPRECATED_ATTRIBUTE typedef MovementBoneData CCMovementBoneData;
-CC_DEPRECATED_ATTRIBUTE typedef MovementData CCMovementData;
-CC_DEPRECATED_ATTRIBUTE typedef AnimationData CCAnimationData;
-CC_DEPRECATED_ATTRIBUTE typedef ContourData CCContourData;
-CC_DEPRECATED_ATTRIBUTE typedef TextureData CCTextureData;
-CC_DEPRECATED_ATTRIBUTE typedef DecorativeDisplay CCDecorativeDisplay;
-CC_DEPRECATED_ATTRIBUTE typedef DisplayData CCDisplayData;
-CC_DEPRECATED_ATTRIBUTE typedef DisplayFactory CCDisplayFactory;
-CC_DEPRECATED_ATTRIBUTE typedef BatchNode CCBatchNode;
-CC_DEPRECATED_ATTRIBUTE typedef DecorativeDisplay CCDecorativeDisplay;
-CC_DEPRECATED_ATTRIBUTE typedef DisplayManager CCDisplayManager;
-CC_DEPRECATED_ATTRIBUTE typedef ColliderBody CCColliderBody;
-CC_DEPRECATED_ATTRIBUTE typedef ColliderDetector CCColliderDetector;
-CC_DEPRECATED_ATTRIBUTE typedef SpriteFrameCacheHelper CCSpriteFrameCacheHelper;
-CC_DEPRECATED_ATTRIBUTE typedef ArmatureData CCArmatureData;
-CC_DEPRECATED_ATTRIBUTE typedef Bone CCBone;
-CC_DEPRECATED_ATTRIBUTE typedef ArmatureAnimation CCArmatureAnimation;
-CC_DEPRECATED_ATTRIBUTE typedef Armature CCArmature;
-CC_DEPRECATED_ATTRIBUTE typedef ArmatureDataManager CCArmatureDataManager;
-CC_DEPRECATED_ATTRIBUTE typedef cocos2d::tweenfunc::TweenType CCTweenType;
+AX_DEPRECATED_ATTRIBUTE typedef ProcessBase CCProcessBase;
+AX_DEPRECATED_ATTRIBUTE typedef BaseData CCBaseData;
+AX_DEPRECATED_ATTRIBUTE typedef DisplayData CCDisplayData;
+AX_DEPRECATED_ATTRIBUTE typedef SpriteDisplayData CCSpriteDisplayData;
+AX_DEPRECATED_ATTRIBUTE typedef ArmatureDisplayData CCArmatureDisplayData;
+AX_DEPRECATED_ATTRIBUTE typedef ParticleDisplayData CCParticleDisplayData;
+AX_DEPRECATED_ATTRIBUTE typedef BoneData CCBoneData;
+AX_DEPRECATED_ATTRIBUTE typedef FrameData CCFrameData;
+AX_DEPRECATED_ATTRIBUTE typedef MovementBoneData CCMovementBoneData;
+AX_DEPRECATED_ATTRIBUTE typedef MovementData CCMovementData;
+AX_DEPRECATED_ATTRIBUTE typedef AnimationData CCAnimationData;
+AX_DEPRECATED_ATTRIBUTE typedef ContourData CCContourData;
+AX_DEPRECATED_ATTRIBUTE typedef TextureData CCTextureData;
+AX_DEPRECATED_ATTRIBUTE typedef DecorativeDisplay CCDecorativeDisplay;
+AX_DEPRECATED_ATTRIBUTE typedef DisplayData CCDisplayData;
+AX_DEPRECATED_ATTRIBUTE typedef DisplayFactory CCDisplayFactory;
+AX_DEPRECATED_ATTRIBUTE typedef BatchNode CCBatchNode;
+AX_DEPRECATED_ATTRIBUTE typedef DecorativeDisplay CCDecorativeDisplay;
+AX_DEPRECATED_ATTRIBUTE typedef DisplayManager CCDisplayManager;
+AX_DEPRECATED_ATTRIBUTE typedef ColliderBody CCColliderBody;
+AX_DEPRECATED_ATTRIBUTE typedef ColliderDetector CCColliderDetector;
+AX_DEPRECATED_ATTRIBUTE typedef SpriteFrameCacheHelper CCSpriteFrameCacheHelper;
+AX_DEPRECATED_ATTRIBUTE typedef ArmatureData CCArmatureData;
+AX_DEPRECATED_ATTRIBUTE typedef Bone CCBone;
+AX_DEPRECATED_ATTRIBUTE typedef ArmatureAnimation CCArmatureAnimation;
+AX_DEPRECATED_ATTRIBUTE typedef Armature CCArmature;
+AX_DEPRECATED_ATTRIBUTE typedef ArmatureDataManager CCArmatureDataManager;
+AX_DEPRECATED_ATTRIBUTE typedef axis::tweenfunc::TweenType CCTweenType;
 
-class CCS_DLL Armature : public cocos2d::Node, public cocos2d::BlendProtocol
+class CCS_DLL Armature : public axis::Node, public axis::BlendProtocol
 {
 
 public:
@@ -144,12 +144,12 @@ public:
      * Get Armature's bone dictionary
      * @return Armature's bone dictionary
      */
-    const cocos2d::StringMap<Bone*>& getBoneDic() const;
+    const axis::StringMap<Bone*>& getBoneDic() const;
 
     /**
      * This boundingBox will calculate all bones' boundingBox every time
      */
-    virtual cocos2d::Rect getBoundingBox() const override;
+    virtual axis::Rect getBoundingBox() const override;
 
     Bone* getBoneAtPoint(float x, float y) const;
 
@@ -158,34 +158,34 @@ public:
      * @js NA
      * @lua NA
      */
-    virtual void visit(cocos2d::Renderer* renderer,
-                       const cocos2d::Mat4& parentTransform,
+    virtual void visit(axis::Renderer* renderer,
+                       const axis::Mat4& parentTransform,
                        uint32_t parentFlags) override;
-    virtual void draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
+    virtual void draw(axis::Renderer* renderer, const axis::Mat4& transform, uint32_t flags) override;
     virtual void update(float dt) override;
 
     virtual void onEnter() override;
     virtual void onExit() override;
 
-    virtual const cocos2d::Mat4& getNodeToParentTransform() const override;
+    virtual const axis::Mat4& getNodeToParentTransform() const override;
     /**
      *  @js NA
      *  @lua NA
      */
-    inline void setBlendFunc(const cocos2d::BlendFunc& blendFunc) override { _blendFunc = blendFunc; }
+    inline void setBlendFunc(const axis::BlendFunc& blendFunc) override { _blendFunc = blendFunc; }
     /**
      *  @js NA
      *  @lua NA
      */
-    inline const cocos2d::BlendFunc& getBlendFunc() const override { return _blendFunc; }
+    inline const axis::BlendFunc& getBlendFunc() const override { return _blendFunc; }
 
     /**
      * Set contentsize and Calculate anchor point.
      */
     virtual void updateOffsetPoint();
-    virtual void setAnchorPoint(const cocos2d::Vec2& point) override;
-    virtual const cocos2d::Vec2& getAnchorPointInPoints() const override;
-    virtual const cocos2d::Vec2& getOffsetPoints() const;
+    virtual void setAnchorPoint(const axis::Vec2& point) override;
+    virtual const axis::Vec2& getAnchorPointInPoints() const override;
+    virtual const axis::Vec2& getOffsetPoints() const;
 
     virtual void setAnimation(ArmatureAnimation* animation);
     virtual ArmatureAnimation* getAnimation() const;
@@ -195,7 +195,7 @@ public:
 #if ENABLE_PHYSICS_BOX2D_DETECT || ENABLE_PHYSICS_CHIPMUNK_DETECT
     virtual void setColliderFilter(ColliderFilter* filter);
 #elif ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
-    CC_DEPRECATED_ATTRIBUTE virtual void drawContour();
+    AX_DEPRECATED_ATTRIBUTE virtual void drawContour();
 #endif
 
     virtual void setArmatureData(ArmatureData* armatureData) { _armatureData = armatureData; }
@@ -258,16 +258,16 @@ protected:
 
     mutable bool _armatureTransformDirty;
 
-    cocos2d::StringMap<Bone*>
+    axis::StringMap<Bone*>
         _boneDic;  //! The dictionary of the bones, include all bones in the armature, no matter it is the direct bone
                    //! or the indirect bone. It is different from m_pChindren.
 
-    cocos2d::Vector<Bone*> _topBoneList;
+    axis::Vector<Bone*> _topBoneList;
 
-    cocos2d::BlendFunc _blendFunc;  //! It's required for CCTextureProtocol inheritance
+    axis::BlendFunc _blendFunc;  //! It's required for CCTextureProtocol inheritance
 
-    cocos2d::Vec2 _offsetPoint;
-    cocos2d::Vec2 _realAnchorPointInPoints;
+    axis::Vec2 _offsetPoint;
+    axis::Vec2 _realAnchorPointInPoints;
 
     ArmatureAnimation* _animation;
 

@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "2d/CCTMXObjectGroup.h"
 #include "base/ccMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // implementation TMXObjectGroup
 
@@ -37,7 +37,7 @@ TMXObjectGroup::TMXObjectGroup() : _groupName("") {}
 
 TMXObjectGroup::~TMXObjectGroup()
 {
-    CCLOGINFO("deallocing TMXObjectGroup: %p", this);
+    AXLOGINFO("deallocing TMXObjectGroup: %p", this);
 }
 
 ValueMap TMXObjectGroup::getObject(std::string_view objectName) const
@@ -67,4 +67,4 @@ Value TMXObjectGroup::getProperty(std::string_view propertyName) const
     return Value();
 }
 
-NS_CC_END
+NS_AX_END

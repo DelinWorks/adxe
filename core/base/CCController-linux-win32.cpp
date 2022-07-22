@@ -27,7 +27,7 @@ THE SOFTWARE.
 
 #include "base/CCController.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX || AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
 #    include <functional>
 #    include "base/ccMacros.h"
 #    include "base/CCDirector.h"
@@ -35,9 +35,9 @@ THE SOFTWARE.
 #    include "base/CCEventController.h"
 #    include "glfw3.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_DLL ControllerImpl
+class AX_DLL ControllerImpl
 {
 public:
     ControllerImpl()
@@ -57,7 +57,7 @@ public:
         // The configuration files were parsed into C++ code with:
         // https://github.com/Rubonnek/retroarch-joypad-config-to-cpp-mapper
         // which provides the following mapping from the RetroArch
-        // configuration variables towards the cocos2d::Controller::Key key
+        // configuration variables towards the axis::Controller::Key key
         // codes.  Hardware-wise, the mapping goes from a theoretical SNES
         // controller with extra joysticks and shoulder buttons, towards an
         // Xbox-like controller which is widely common on mobile phones.
@@ -4182,7 +4182,7 @@ public:
     {
         // If there are any controllers connected that were not deleted at the end of execution, delete them.
         // This wil prevent any memory leaks showing up in valgrind
-        for (auto& controller : Controller::s_allController)
+        for (auto&& controller : Controller::s_allController)
         {
             delete controller;
         }
@@ -4211,7 +4211,7 @@ public:
             return;
 
         // It's a new controller being connected.
-        auto controller         = new cocos2d::Controller();
+        auto controller         = new axis::Controller();
         controller->_deviceId   = deviceId;
         controller->_deviceName = deviceName;
         Controller::s_allController.push_back(controller);
@@ -4222,14 +4222,14 @@ public:
             if (deviceName.compare(it.first) == 0)
             {
                 // Found controller profile. Attach it to the controller:
-                CCLOG("ControllerImpl: Found input profile for controller: %s", deviceName.data());
+                AXLOG("ControllerImpl: Found input profile for controller: %s", deviceName.data());
                 controller->_buttonInputMap = it.second.first;
                 controller->_axisInputMap   = it.second.second;
 
 // Show a one-time warning in debug mode for every button that's currently not matched in the input profile.
 // This will let the developers know that the mapping must be included in the constructor of ControllerImpl located
 // above.
-#    ifdef COCOS2D_DEBUG
+#    ifdef AXIS_DEBUG
                 int count;
                 glfwGetJoystickButtons(deviceId, &count);
                 for (int i = 0; i < count; ++i)
@@ -4238,7 +4238,7 @@ public:
                     const auto& it = controller->_buttonInputMap.find(i);
                     if (it == controller->_buttonInputMap.end())
                     {
-                        CCLOG(
+                        AXLOG(
                             "ControllerImpl: Could not find a button input mapping for controller \"%s\", and keyCode "
                             "\"%d\". This keyCode will not match any from Controller::Key",
                             controller->getDeviceName().data(), i);
@@ -4252,7 +4252,7 @@ public:
                     const auto& it = controller->_axisInputMap.find(i);
                     if (it == controller->_axisInputMap.end())
                     {
-                        CCLOG(
+                        AXLOG(
                             "ControllerImpl: Could not find an axis input mapping for controller \"%s\", and keyCode "
                             "\"%d\". This keyCode will not match any from Controller::Key",
                             controller->getDeviceName().data(), i);
@@ -4265,15 +4265,15 @@ public:
         }
 
 // Show a warning if the controller input profile is non-existent:
-#    ifdef COCOS2D_DEBUG
+#    ifdef AXIS_DEBUG
         if (controller->_buttonInputMap.empty())
         {
-            CCLOG("ControllerImpl: Could not find a button input map for controller: %s", deviceName.data());
+            AXLOG("ControllerImpl: Could not find a button input map for controller: %s", deviceName.data());
         }
 
         if (controller->_axisInputMap.empty())
         {
-            CCLOG("ControllerImpl: Could not find an axis input map for controller: %s", deviceName.data());
+            AXLOG("ControllerImpl: Could not find an axis input map for controller: %s", deviceName.data());
         }
 #    endif
 
@@ -4286,7 +4286,7 @@ public:
         auto iter = findController(deviceId);
         if (iter == Controller::s_allController.end())
         {
-            CCLOGERROR("ControllerImpl Error: Could not find the controller!");
+            AXLOGERROR("ControllerImpl Error: Could not find the controller!");
             return;
         }
 
@@ -4299,7 +4299,7 @@ public:
         auto iter = findController(deviceId);
         if (iter == Controller::s_allController.end())
         {
-            CCLOG("ControllerImpl::onButtonEvent: new controller detected. Registering...");
+            AXLOG("ControllerImpl::onButtonEvent: new controller detected. Registering...");
             onConnected(glfwGetJoystickName(deviceId), deviceId);
             iter = findController(deviceId);
         }
@@ -4312,7 +4312,7 @@ public:
         auto iter = findController(deviceId);
         if (iter == Controller::s_allController.end())
         {
-            CCLOG("ControllerImpl::onAxisEvent: new controller detected. Registering...");
+            AXLOG("ControllerImpl::onAxisEvent: new controller detected. Registering...");
             onConnected(glfwGetJoystickName(deviceId), deviceId);
             iter = findController(deviceId);
         }
@@ -4332,10 +4332,10 @@ public:
         {
             ControllerImpl::getInstance()->onDisconnected(deviceId);
         }
-#    ifdef COCOS2D_DEBUG
+#    ifdef AXIS_DEBUG
         else
         {
-            CCLOG("ControllerImpl: Unhandled GLFW joystick event: %d", event);
+            AXLOG("ControllerImpl: Unhandled GLFW joystick event: %d", event);
         }
 #    endif
     }
@@ -4395,7 +4395,7 @@ std::map<std::string, std::pair<std::unordered_map<int, int>, std::unordered_map
 
 void Controller::startDiscoveryController()
 {
-    // Check for existing josyticks and register them as cocos2d::Controller:
+    // Check for existing josyticks and register them as axis::Controller:
     for (int deviceId = GLFW_JOYSTICK_1; deviceId <= GLFW_JOYSTICK_LAST; ++deviceId)
     {
         if (glfwJoystickPresent(deviceId))
@@ -4422,7 +4422,7 @@ void Controller::stopDiscoveryController()
     glfwSetJoystickCallback(nullptr);
 
     // Also remove all the connected controllers:
-    for (auto& controller : Controller::s_allController)
+    for (auto&& controller : Controller::s_allController)
     {
         delete controller;
     }
@@ -4452,6 +4452,6 @@ Controller::~Controller()
     delete _axisEvent;
 }
 
-NS_CC_END
+NS_AX_END
 
-#endif  // #if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#endif  // #if (AX_TARGET_PLATFORM == AX_PLATFORM_LINUX || AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)

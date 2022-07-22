@@ -13,8 +13,8 @@ Sync from https://github.com/Xrysnow/cocos2d-x-imgui and do a little changes
 ## How to use
 ```cpp
 #include "ImGui/ImGuiPresenter.h"
-USING_NS_CC;
-USING_NS_CC_EXT;
+USING_NS_AX;
+USING_NS_AX_EXT;
 
 class GameScene : public Scene {
 public:
@@ -26,7 +26,7 @@ public:
         ImGuiPresenter::getInstance()->addFont(R"(C:\Windows\Fonts\msyh.ttc)", ImGuiPresenter::DEFAULT_FONT_SIZE,
                                            ImGuiPresenter::CHS_GLYPH_RANGE::GENERAL);
         */
-        ImGuiPresenter::getInstance()->addRenderLoop("#im01", CC_CALLBACK_0(GameScene::onImGuiDraw, this), this);
+        ImGuiPresenter::getInstance()->addRenderLoop("#im01", AX_CALLBACK_0(GameScene::onImGuiDraw, this), this);
     }
     void onExit() override
     {

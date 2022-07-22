@@ -20,8 +20,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-#ifndef DRAGONBONES_CC_SLOT_H
-#define DRAGONBONES_CC_SLOT_H
+#ifndef DRAGONBONES_AX_SLOT_H
+#define DRAGONBONES_AX_SLOT_H
 
 #include "DragonBonesHeaders.h"
 #include "cocos2d.h"
@@ -38,7 +38,7 @@ class CCSlot : public Slot
 
 private:
     float _textureScale;
-    cocos2d::Node* _renderDisplay;
+    axis::Node* _renderDisplay;
 
 protected:
     virtual void _onClear() override;
@@ -68,9 +68,9 @@ public:
      * @version DragonBones 3.0
      * @language en_US
      */
-    inline cocos2d::Node* getCCDisplay() const { return static_cast<cocos2d::Node*>(_display); }
-    inline void setCCDisplay(cocos2d::Node* value) { setDisplay(value, DisplayType::Image); }
+    inline axis::Node* getCCDisplay() const { return static_cast<axis::Node*>(_display); }
+    inline void setCCDisplay(axis::Node* value) { setDisplay(value, DisplayType::Image); }
 };
 
 DRAGONBONES_NAMESPACE_END
-#endif  // DRAGONBONES_CC_SLOT_H
+#endif  // DRAGONBONES_AX_SLOT_H

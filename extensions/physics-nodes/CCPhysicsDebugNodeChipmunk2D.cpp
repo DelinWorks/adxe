@@ -34,7 +34,7 @@
 #include <limits.h>
 #include <string.h>
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 Vec2 physicsDebugNodeOffset;
 
@@ -116,7 +116,7 @@ static void DrawShape(cpShape* shape, DrawNode* renderer)
             renderer->drawPolygon(pPoints, num, color, 1.0, line);
         }
 
-        CC_SAFE_DELETE_ARRAY(pPoints);
+        AX_SAFE_DELETE_ARRAY(pPoints);
     }
     break;
     default:
@@ -207,7 +207,7 @@ static void DrawConstraint(cpConstraint* constraint, DrawNode* renderer)
     }
     else
     {
-        CCLOG("Cannot draw constraint");
+        AXLOG("Cannot draw constraint");
     }
 }
 
@@ -251,4 +251,4 @@ void PhysicsDebugNodeChipmunk2D::setSpace(cpSpace* space)
     _spacePtr = space;
 }
 
-NS_CC_EXT_END
+NS_AX_EXT_END

@@ -25,7 +25,7 @@
 #include "platform/CCPlatformMacros.h"
 #include "math/CCMath.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Image;
 class SpriteFrame;
@@ -42,7 +42,7 @@ class SpriteFrame;
  *  - TexturePacker Trim mode is not supported at the moment.
  */
 
-class CC_DLL NinePatchImageParser
+class AX_DLL NinePatchImageParser
 {
 public:
     /**
@@ -116,4 +116,4 @@ private:
     bool _isRotated;
 };
 
-NS_CC_END
+NS_AX_END

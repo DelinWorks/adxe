@@ -12,7 +12,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -46,10 +46,10 @@ LoadingBarReader* LoadingBarReader::getInstance()
 
 void LoadingBarReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceLoadingBar);
+    AX_SAFE_DELETE(instanceLoadingBar);
 }
 
-void LoadingBarReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void LoadingBarReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     WidgetReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 
@@ -67,9 +67,9 @@ void LoadingBarReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoade
         std::string value = stChildArray[i].GetValue(cocoLoader);
 
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_Scale9Enable) { loadingBar->setScale9Enabled(valueToBool(value)); }
         else if (key == P_TextureData)
@@ -223,7 +223,7 @@ Offset<Table> LoadingBarReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void LoadingBarReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* loadingBarOptions)
+void LoadingBarReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* loadingBarOptions)
 {
     LoadingBar* loadingBar = static_cast<LoadingBar*>(node);
 

@@ -30,8 +30,8 @@
 #include "3d/CCBundle3D.h"
 #include "2d/CCLight.h"
 
-USING_NS_CC_EXT;
-USING_NS_CC;
+USING_NS_AX_EXT;
+USING_NS_AX;
 
 struct AgentUserData
 {
@@ -40,7 +40,7 @@ struct AgentUserData
 
 NavMeshTests::NavMeshTests()
 {
-#if (CC_USE_NAVMESH == 0) || (CC_USE_PHYSICS == 0)
+#if (AX_USE_NAVMESH == 0) || (AX_USE_PHYSICS == 0)
     ADD_TEST_CASE(NavMeshDisabled);
 #else
     ADD_TEST_CASE(NavMeshBasicTestDemo);
@@ -48,12 +48,12 @@ NavMeshTests::NavMeshTests()
 #endif
 };
 
-#if (CC_USE_NAVMESH == 0) || (CC_USE_PHYSICS == 0)
+#if (AX_USE_NAVMESH == 0) || (AX_USE_PHYSICS == 0)
 void NavMeshDisabled::onEnter()
 {
     TTFConfig ttfConfig("fonts/arial.ttf", 16);
     auto label =
-        Label::createWithTTF(ttfConfig, "Should define CC_USE_NAVMESH & CC_USE_PHYSICS\n to run this test case");
+        Label::createWithTTF(ttfConfig, "Should define AX_USE_NAVMESH & AX_USE_PHYSICS\n to run this test case");
 
     auto size = Director::getInstance()->getWinSize();
     label->setPosition(Vec2(size.width / 2, size.height / 2));
@@ -68,7 +68,7 @@ NavMeshBaseTestDemo::NavMeshBaseTestDemo() : _camera(nullptr), _needMoveAgents(f
 
 NavMeshBaseTestDemo::~NavMeshBaseTestDemo()
 {
-    for (auto iter : _agents)
+    for (auto&& iter : _agents)
     {
         AgentUserData* data = static_cast<AgentUserData*>(iter.first->getUserData());
         delete data;
@@ -93,9 +93,9 @@ bool NavMeshBaseTestDemo::init()
         this->addChild(_camera);
 
         auto listener = EventListenerTouchAllAtOnce::create();
-        listener->onTouchesBegan = CC_CALLBACK_2(NavMeshBaseTestDemo::onTouchesBegan, this);
-        listener->onTouchesMoved = CC_CALLBACK_2(NavMeshBaseTestDemo::onTouchesMoved, this);
-        listener->onTouchesEnded = CC_CALLBACK_2(NavMeshBaseTestDemo::onTouchesEnded, this);
+        listener->onTouchesBegan = AX_CALLBACK_2(NavMeshBaseTestDemo::onTouchesBegan, this);
+        listener->onTouchesMoved = AX_CALLBACK_2(NavMeshBaseTestDemo::onTouchesMoved, this);
+        listener->onTouchesEnded = AX_CALLBACK_2(NavMeshBaseTestDemo::onTouchesEnded, this);
         _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
         initScene();
@@ -105,20 +105,20 @@ bool NavMeshBaseTestDemo::init()
     return true;
 }
 
-void NavMeshBaseTestDemo::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void NavMeshBaseTestDemo::onTouchesBegan(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     _needMoveAgents = true;
     touchesBegan(touches, event);
 }
 
-void NavMeshBaseTestDemo::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void NavMeshBaseTestDemo::onTouchesMoved(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     if (touches.size() && _camera)
     {
         auto touch = touches[0];
         auto delta = touch->getDelta();
 
-        _angle -= CC_DEGREES_TO_RADIANS(delta.x);
+        _angle -= AX_DEGREES_TO_RADIANS(delta.x);
         _camera->setPosition3D(Vec3(100.0f * sinf(_angle), 50.0f, 100.0f * cosf(_angle)));
         _camera->lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 
@@ -130,7 +130,7 @@ void NavMeshBaseTestDemo::onTouchesMoved(const std::vector<cocos2d::Touch*>& tou
     touchesMoved(touches, event);
 }
 
-void NavMeshBaseTestDemo::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void NavMeshBaseTestDemo::onTouchesEnded(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     touchesEnded(touches, event);
 }
@@ -220,9 +220,9 @@ Vec3 jump(const Vec3* pV1, const Vec3* pV2, float height, float t)
     return pOut;
 }
 
-void NavMeshBaseTestDemo::moveAgents(const cocos2d::Vec3& des)
+void NavMeshBaseTestDemo::moveAgents(const axis::Vec3& des)
 {
-    for (auto iter : _agents)
+    for (auto&& iter : _agents)
     {
         NavMeshAgent::MoveCallback callback = [](NavMeshAgent* agent, float totalTimeAfterMove) {
             AgentUserData* data = static_cast<AgentUserData*>(agent->getUserData());
@@ -258,7 +258,7 @@ void NavMeshBaseTestDemo::moveAgents(const cocos2d::Vec3& des)
 
 void NavMeshBaseTestDemo::update(float delta)
 {
-    for (auto iter : _agents)
+    for (auto&& iter : _agents)
     {
         float speed = iter.first->getCurrentVelocity().length() * 0.2f;
         iter.second->setSpeed(0.0f < speed ? speed : 0.0f);
@@ -279,7 +279,7 @@ std::string NavMeshBasicTestDemo::subtitle() const
     return "Basic Test";
 }
 
-void NavMeshBasicTestDemo::touchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void NavMeshBasicTestDemo::touchesEnded(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     if (!_needMoveAgents)
         return;
@@ -355,8 +355,8 @@ bool NavMeshAdvanceTestDemo::init()
     _debugLabel->retain();
 
     auto menuItem0 = MenuItemLabel::create(_obstacleLabel, [=](Ref*) {
-        float x = cocos2d::random(-50.0f, 50.0f);
-        float z = cocos2d::random(-50.0f, 50.0f);
+        float x = axis::random(-50.0f, 50.0f);
+        float z = axis::random(-50.0f, 50.0f);
         Physics3DWorld::HitResult result;
         getPhysics3DWorld()->rayCast(Vec3(x, 50.0f, z), Vec3(x, -50.0f, z), &result);
         createObstacle(result.hitPosition);
@@ -365,8 +365,8 @@ bool NavMeshAdvanceTestDemo::init()
     menuItem0->setPosition(Vec2(VisibleRect::left().x, VisibleRect::top().y - 50));
 
     auto menuItem1 = MenuItemLabel::create(_agentLabel, [=](Ref*) {
-        float x = cocos2d::random(-50.0f, 50.0f);
-        float z = cocos2d::random(-50.0f, 50.0f);
+        float x = axis::random(-50.0f, 50.0f);
+        float z = axis::random(-50.0f, 50.0f);
         Physics3DWorld::HitResult result;
         getPhysics3DWorld()->rayCast(Vec3(x, 50.0f, z), Vec3(x, -50.0f, z), &result);
         createAgent(result.hitPosition);
@@ -415,7 +415,7 @@ std::string NavMeshAdvanceTestDemo::subtitle() const
     return "Advance Test";
 }
 
-void NavMeshAdvanceTestDemo::touchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void NavMeshAdvanceTestDemo::touchesEnded(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     if (!_needMoveAgents)
         return;

@@ -16,17 +16,17 @@
 
 using namespace std;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 void PlistSpriteSheetLoader::load(std::string_view filePath, SpriteFrameCache& cache)
 {
-    CCASSERT(!filePath.empty(), "plist filename should not be nullptr");
+    AXASSERT(!filePath.empty(), "plist filename should not be nullptr");
 
     const auto fullPath = FileUtils::getInstance()->fullPathForFilename(filePath);
     if (fullPath.empty())
     {
         // return if plist file doesn't exist
-        CCLOG("cocos2d: SpriteFrameCache: can not find %s", filePath.data());
+        AXLOG("cocos2d: SpriteFrameCache: can not find %s", filePath.data());
         return;
     }
 
@@ -61,7 +61,7 @@ void PlistSpriteSheetLoader::load(std::string_view filePath, SpriteFrameCache& c
         // append .png
         texturePath = texturePath.append(".png");
 
-        CCLOG("cocos2d: SpriteFrameCache: Trying to use file %s as texture", texturePath.c_str());
+        AXLOG("cocos2d: SpriteFrameCache: Trying to use file %s as texture", texturePath.c_str());
     }
     addSpriteFramesWithDictionary(dict, texturePath, filePath, cache);
 }
@@ -76,7 +76,7 @@ void PlistSpriteSheetLoader::load(std::string_view filePath, Texture2D* texture,
 
 void PlistSpriteSheetLoader::load(std::string_view filePath, std::string_view textureFileName, SpriteFrameCache& cache)
 {
-    CCASSERT(!textureFileName.empty(), "texture name should not be null");
+    AXASSERT(!textureFileName.empty(), "texture name should not be null");
     const auto fullPath = FileUtils::getInstance()->fullPathForFilename(filePath);
     auto dict           = FileUtils::getInstance()->getValueMapFromFile(fullPath);
     addSpriteFramesWithDictionary(dict, textureFileName, filePath, cache);
@@ -143,7 +143,7 @@ void PlistSpriteSheetLoader::reload(std::string_view filePath, SpriteFrameCache&
     }
     else
     {
-        CCLOG("cocos2d: SpriteFrameCache: Couldn't load texture");
+        AXLOG("cocos2d: SpriteFrameCache: Couldn't load texture");
     }
 }
 
@@ -163,7 +163,7 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dictionary,
     Version 3 with TexturePacker 4.0 polygon mesh packing
     */
 
-    if (dictionary["frames"].getType() != cocos2d::Value::Type::MAP)
+    if (dictionary["frames"].getType() != axis::Value::Type::MAP)
         return;
 
     auto spriteSheet    = std::make_shared<SpriteSheet>();
@@ -189,14 +189,14 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dictionary,
     }
 
     // check the format
-    CCASSERT(format >= 0 && format <= 3,
+    AXASSERT(format >= 0 && format <= 3,
              "format is not supported for SpriteFrameCache addSpriteFramesWithDictionary:textureFilename:");
 
     std::vector<std::string> frameAliases;
     auto textureFileName = Director::getInstance()->getTextureCache()->getTextureFilePath(texture);
     Image* image         = nullptr;
     NinePatchImageParser parser;
-    for (auto& iter : framesDict)
+    for (auto&& iter : framesDict)
     {
         auto& frameDict      = iter.second.asValueMap();
         auto spriteFrameName = iter.first;
@@ -219,7 +219,7 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dictionary,
             // check ow/oh
             if (!ow || !oh)
             {
-                CCLOGWARN(
+                AXLOGWARN(
                     "cocos2d: WARNING: originalWidth/Height not found on the SpriteFrame. AnchorPoint won't work as "
                     "expected. Regenerate the .plist");
             }
@@ -268,7 +268,7 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dictionary,
                 }
                 else
                 {
-                    CCLOGWARN("cocos2d: WARNING: an alias with name %s already exists", oneAlias.c_str());
+                    AXLOGWARN("cocos2d: WARNING: an alias with name %s already exists", oneAlias.c_str());
                 }
             }
 
@@ -279,7 +279,7 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dictionary,
 
             if (frameDict.find("vertices") != frameDict.end())
             {
-                using cocos2d::utils::parseIntegerList;
+                using axis::utils::parseIntegerList;
                 auto vertices   = parseIntegerList(optValue(frameDict, "vertices"sv).asString());
                 auto verticesUV = parseIntegerList(optValue(frameDict, "verticesUV"sv).asString());
                 auto indices    = parseIntegerList(optValue(frameDict, "triangles"sv).asString());
@@ -317,7 +317,7 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dictionary,
 
     spriteSheet->full = true;
 
-    CC_SAFE_DELETE(image);
+    AX_SAFE_DELETE(image);
 }
 
 void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dict,
@@ -367,7 +367,7 @@ void PlistSpriteSheetLoader::addSpriteFramesWithDictionary(ValueMap& dict,
     }
     else
     {
-        CCLOG("cocos2d: SpriteFrameCache: Couldn't load texture");
+        AXLOG("cocos2d: SpriteFrameCache: Couldn't load texture");
     }
 }
 
@@ -387,14 +387,14 @@ void PlistSpriteSheetLoader::reloadSpriteFramesWithDictionary(ValueMap& dict,
     }
 
     // check the format
-    CCASSERT(format >= 0 && format <= 3,
+    AXASSERT(format >= 0 && format <= 3,
              "format is not supported for SpriteFrameCache addSpriteFramesWithDictionary:textureFilename:");
 
     auto spriteSheet    = std::make_shared<SpriteSheet>();
     spriteSheet->format = getFormat();
     spriteSheet->path   = plist;
 
-    for (auto& iter : framesDict)
+    for (auto&& iter : framesDict)
     {
         const ValueMap& frameDict        = iter.second.asValueMap();
         std::string_view spriteFrameName = iter.first;
@@ -417,7 +417,7 @@ void PlistSpriteSheetLoader::reloadSpriteFramesWithDictionary(ValueMap& dict,
             // check ow/oh
             if (!ow || !oh)
             {
-                CCLOGWARN(
+                AXLOGWARN(
                     "cocos2d: WARNING: originalWidth/Height not found on the SpriteFrame. AnchorPoint won't work as "
                     "expected. Regenerate the .plist");
             }
@@ -466,7 +466,7 @@ void PlistSpriteSheetLoader::reloadSpriteFramesWithDictionary(ValueMap& dict,
                 }
                 else
                 {
-                    CCLOGWARN("cocos2d: WARNING: an alias with name %s already exists", oneAlias.c_str());
+                    AXLOGWARN("cocos2d: WARNING: an alias with name %s already exists", oneAlias.c_str());
                 }
             }
 
@@ -485,4 +485,4 @@ void PlistSpriteSheetLoader::reloadSpriteFramesWithDictionary(ValueMap& dict,
     }
 }
 
-NS_CC_END
+NS_AX_END

@@ -25,12 +25,12 @@
 
 #pragma once
 
-#define CC_BACKEND_BEGIN \
-    namespace cocos2d    \
+#define NS_AX_BACKEND_BEGIN \
+    namespace axis    \
     {                    \
     namespace backend    \
     {
-#define CC_BACKEND_END \
+#define NS_AX_BACKEND_END \
     }                  \
     }
 
@@ -38,4 +38,4 @@
 
 #define MAX_INFLIGHT_BUFFER 3
 
-#define CC_ARRAYSIZE(A) (sizeof(A) / sizeof((A)[0]))
+#define AX_ARRAYSIZE(A) (sizeof(A) / sizeof((A)[0]))

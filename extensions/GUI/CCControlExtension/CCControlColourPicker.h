@@ -40,7 +40,7 @@
 #include "CCControlSaturationBrightnessPicker.h"
 #include "extensions/ExtensionExport.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /**
  * @addtogroup GUI
@@ -49,7 +49,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-class CC_EX_DLL ControlColourPicker : public Control
+class AX_EX_DLL ControlColourPicker : public Control
 {
 public:
     static ControlColourPicker* create();
@@ -79,15 +79,15 @@ protected:
     virtual bool onTouchBegan(Touch* touch, Event* pEvent) override;
 
     HSV _hsv;
-    CC_SYNTHESIZE_RETAIN(ControlSaturationBrightnessPicker*, _colourPicker, colourPicker)
-    CC_SYNTHESIZE_RETAIN(ControlHuePicker*, _huePicker, HuePicker)
-    CC_SYNTHESIZE_RETAIN(Sprite*, _background, Background)
+    AX_SYNTHESIZE_RETAIN(ControlSaturationBrightnessPicker*, _colourPicker, colourPicker)
+    AX_SYNTHESIZE_RETAIN(ControlHuePicker*, _huePicker, HuePicker)
+    AX_SYNTHESIZE_RETAIN(Sprite*, _background, Background)
 };
 
 // end of GUI group
 /// @}
 /// @}
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif

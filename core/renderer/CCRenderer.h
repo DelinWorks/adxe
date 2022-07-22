@@ -38,7 +38,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 using CullMode = backend::CullMode;
 using Winding  = backend::Winding;
@@ -126,7 +126,7 @@ class GroupCommandManager;
 
 Whenever possible prefer to use `TrianglesCommand` objects since the renderer will automatically batch them.
  */
-class CC_DLL Renderer
+class AX_DLL Renderer
 {
 public:
     /**The max number of vertices in a vertex buffer object.*/
@@ -571,7 +571,7 @@ protected:
     std::deque<StateBlock> _stateBlockStack;
 };
 
-NS_CC_END
+NS_AX_END
 
 /**
  end of support group

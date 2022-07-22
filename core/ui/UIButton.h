@@ -34,11 +34,11 @@ THE SOFTWARE.
  * @addtogroup ui
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Label;
 class SpriteFrame;
-struct CC_DLL ResourceData;
+struct AX_DLL ResourceData;
 
 namespace ui
 {
@@ -48,7 +48,7 @@ class Scale9Sprite;
  * Represents a push-button widget.
  * Push-buttons can be pressed, or clicked, by the user to perform an action.
  */
-class CC_GUI_DLL Button : public Widget
+class AX_GUI_DLL Button : public Widget
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -389,7 +389,7 @@ protected:
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END
 // end of ui group
 /// @}
 

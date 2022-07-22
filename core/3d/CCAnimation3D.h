@@ -34,7 +34,7 @@
 #include "base/CCRef.h"
 #include "3d/CCBundle3DData.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup _3d
  * @{
@@ -43,7 +43,7 @@ NS_CC_BEGIN
 /**
  * @brief static animation data, shared
  */
-class CC_DLL Animation3D : public Ref
+class AX_DLL Animation3D : public Ref
 {
     friend class Bundle3D;
 
@@ -130,6 +130,6 @@ protected:
 
 // end of 3d group
 /// @}
-NS_CC_END
+NS_AX_END
 
 #endif  // __CCANIMATION3D_H__

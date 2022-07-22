@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "ui/GUIExport.h"
 #include <list>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 /**
  * @addtogroup ui
  * @{
@@ -47,7 +47,7 @@ class ScrollViewBar;
  * Layout container for a view hierarchy that can be scrolled by the user, allowing it to be larger than the physical
  * display. It holds a inner `Layout` container for storing child items horizontally or vertically.
  */
-class CC_GUI_DLL ScrollView : public Layout
+class AX_GUI_DLL ScrollView : public Layout
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -683,5 +683,5 @@ protected:
 }  // namespace ui
 // end of ui group
 /// @}
-NS_CC_END
+NS_AX_END
 #endif /* defined(__CocoGUI__ScrollView__) */

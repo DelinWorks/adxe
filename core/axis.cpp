@@ -29,16 +29,16 @@ THE SOFTWARE.
 
 #include "platform/CCPlatformMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-CC_DLL const char* axisVersion()
+AX_DLL const char* axisVersion()
 {
     return "axis-1.0.0b9";
 }
 
-CC_DLL const char* cocos2dVersion()
+AX_DLL const char* cocos2dVersion()
 {
     return axisVersion();
 }
 
-NS_CC_END
+NS_AX_END

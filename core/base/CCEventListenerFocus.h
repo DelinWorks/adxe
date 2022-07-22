@@ -34,7 +34,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -44,7 +44,7 @@ class Widget;
 /** @class EventListenerFocus
  * @brief Focus event listener.
  */
-class CC_DLL EventListenerFocus : public EventListener
+class AX_DLL EventListenerFocus : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -74,7 +74,7 @@ public:
     friend class EventDispatcher;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

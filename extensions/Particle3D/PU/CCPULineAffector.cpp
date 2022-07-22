@@ -27,7 +27,7 @@
 #include "CCPULineAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const float PULineAffector::DEFAULT_MAX_DEVIATION = 1.0f;
@@ -117,20 +117,20 @@ void PULineAffector::preUpdateAffector(float deltaTime)
 void PULineAffector::updatePUAffector(PUParticle3D* particle, float /*deltaTime*/)
 {
     //_first = true;
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         (static_cast<PUParticleSystem3D*>(_particleSystem))
             ->rotationOffset(particle->originalPosition);  // Always update
-        if (_update && CCRANDOM_0_1() > 0.5f && !_first)
+        if (_update && AXRANDOM_0_1() > 0.5f && !_first)
         {
             // Generate a random vector perpendicular on the line
             Vec3 perpendicular;
-            Vec3::cross(_end, Vec3(CCRANDOM_MINUS1_1(), CCRANDOM_MINUS1_1(), CCRANDOM_MINUS1_1()), &perpendicular);
+            Vec3::cross(_end, Vec3(AXRANDOM_MINUS1_1(), AXRANDOM_MINUS1_1(), AXRANDOM_MINUS1_1()), &perpendicular);
             perpendicular.normalize();
 
             // Determine a random point near the line.
-            Vec3 targetPosition = particle->originalPosition + _scaledMaxDeviation * CCRANDOM_0_1() * perpendicular;
+            Vec3 targetPosition = particle->originalPosition + _scaledMaxDeviation * AXRANDOM_0_1() * perpendicular;
 
             /** Set the new position.
             @remarks
@@ -175,4 +175,4 @@ void PULineAffector::copyAttributesTo(PUAffector* affector)
     lineAffector->_oneMinusDrift = _oneMinusDrift;
 }
 
-NS_CC_END
+NS_AX_END

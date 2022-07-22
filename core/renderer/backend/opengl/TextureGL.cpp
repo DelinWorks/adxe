@@ -31,7 +31,7 @@
 #include "renderer/backend/opengl/MacrosGL.h"
 #include "renderer/backend/opengl/UtilsGL.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 #define ISPOW2(n) (((n) & (n - 1)) == 0)
 
@@ -98,12 +98,12 @@ void TextureInfoGL::setCurrentTexParameters(GLenum target)
 void TextureInfoGL::apply(int slot, int index, GLenum target) const
 {
     glActiveTexture(GL_TEXTURE0 + slot);
-    glBindTexture(target, index < CC_META_TEXTURES ? textures[index] : textures[0]);
+    glBindTexture(target, index < AX_META_TEXTURES ? textures[index] : textures[0]);
 }
 
 GLuint TextureInfoGL::ensure(int index, GLenum target)
 {
-    if (index >= CC_META_TEXTURES)
+    if (index >= AX_META_TEXTURES)
         return 0;
     // glActiveTexture(GL_TEXTURE0 + index);
     auto& texID = this->textures[index];
@@ -122,7 +122,7 @@ GLuint TextureInfoGL::ensure(int index, GLenum target)
 void TextureInfoGL::recreateAll(GLenum target)
 {
     int idx = 0;
-    for (auto& texID : textures)
+    for (auto&& texID : textures)
     {
         if (texID)
         {
@@ -139,7 +139,7 @@ Texture2DGL::Texture2DGL(const TextureDescriptor& descriptor)
 {
     updateTextureDescriptor(descriptor);
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     // Listen this event to restored texture id after coming to foreground on Android.
     _backToForegroundListener = EventListenerCustom::create(EVENT_RENDERER_RECREATED, [this](EventCustom*) {
         _textureInfo.recreateAll(GL_TEXTURE_2D);
@@ -149,7 +149,7 @@ Texture2DGL::Texture2DGL(const TextureDescriptor& descriptor)
 #endif
 }
 
-void Texture2DGL::updateTextureDescriptor(const cocos2d::backend::TextureDescriptor& descriptor, int index)
+void Texture2DGL::updateTextureDescriptor(const axis::backend::TextureDescriptor& descriptor, int index)
 {
     TextureBackend::updateTextureDescriptor(descriptor, index);
 
@@ -184,7 +184,7 @@ void Texture2DGL::initWithZeros()
 
 Texture2DGL::~Texture2DGL()
 {
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundListener);
 #endif
 }
@@ -318,7 +318,7 @@ TextureCubeGL::TextureCubeGL(const TextureDescriptor& descriptor)
     _textureType = TextureType::TEXTURE_CUBE;
     updateTextureDescriptor(descriptor);
 
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     // Listen this event to restored texture id after coming to foreground on Android.
     _backToForegroundListener = EventListenerCustom::create(
         EVENT_COME_TO_FOREGROUND, [this](EventCustom*) { _textureInfo.recreateAll(GL_TEXTURE_CUBE_MAP); });
@@ -327,7 +327,7 @@ TextureCubeGL::TextureCubeGL(const TextureDescriptor& descriptor)
     CHECK_GL_ERROR_DEBUG();
 }
 
-void TextureCubeGL::updateTextureDescriptor(const cocos2d::backend::TextureDescriptor& descriptor, int index)
+void TextureCubeGL::updateTextureDescriptor(const axis::backend::TextureDescriptor& descriptor, int index)
 {
     backend::TextureCubemapBackend::updateTextureDescriptor(descriptor, index);
 
@@ -339,7 +339,7 @@ void TextureCubeGL::updateTextureDescriptor(const cocos2d::backend::TextureDescr
 
 TextureCubeGL::~TextureCubeGL()
 {
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     Director::getInstance()->getEventDispatcher()->removeEventListener(_backToForegroundListener);
 #endif
 }
@@ -379,4 +379,4 @@ void TextureCubeGL::generateMipmaps()
     }
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

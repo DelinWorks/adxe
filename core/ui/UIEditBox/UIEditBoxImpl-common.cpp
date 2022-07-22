@@ -33,19 +33,19 @@
 #include "2d/CCLabel.h"
 #include "ui/UIHelper.h"
 
-static const int CC_EDIT_BOX_PADDING = 5;
+static const int AX_EDIT_BOX_PADDING = 5;
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
 #    define PASSWORD_CHAR "*"
 #else
 #    define PASSWORD_CHAR "\u25CF"
 #endif
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 static Vec2 applyPadding(const Vec2& sizeToCorrect)
 {
-    return Vec2(sizeToCorrect.width - CC_EDIT_BOX_PADDING * 2, sizeToCorrect.height);
+    return Vec2(sizeToCorrect.width - AX_EDIT_BOX_PADDING * 2, sizeToCorrect.height);
 }
 
 namespace ui
@@ -116,20 +116,20 @@ void EditBoxImplCommon::placeInactiveLabels(const Vec2& size)
 
     if (_editBoxInputMode == EditBox::InputMode::ANY)
     {
-        _label->setPosition(Vec2((float)CC_EDIT_BOX_PADDING, size.height - CC_EDIT_BOX_PADDING));
+        _label->setPosition(Vec2((float)AX_EDIT_BOX_PADDING, size.height - AX_EDIT_BOX_PADDING));
         _label->setVerticalAlignment(TextVAlignment::TOP);
         _label->enableWrap(true);
 
-        _labelPlaceHolder->setPosition(Vec2((float)CC_EDIT_BOX_PADDING, size.height - CC_EDIT_BOX_PADDING));
+        _labelPlaceHolder->setPosition(Vec2((float)AX_EDIT_BOX_PADDING, size.height - AX_EDIT_BOX_PADDING));
         _labelPlaceHolder->setVerticalAlignment(TextVAlignment::TOP);
     }
     else
     {
         _label->enableWrap(false);
-        _label->setPosition(Vec2((float)CC_EDIT_BOX_PADDING, size.height));
+        _label->setPosition(Vec2((float)AX_EDIT_BOX_PADDING, size.height));
         _label->setVerticalAlignment(TextVAlignment::CENTER);
 
-        _labelPlaceHolder->setPosition(Vec2((float)CC_EDIT_BOX_PADDING, (size.height + placeholderSize.height) / 2));
+        _labelPlaceHolder->setPosition(Vec2((float)AX_EDIT_BOX_PADDING, (size.height + placeholderSize.height) / 2));
         _labelPlaceHolder->setVerticalAlignment(TextVAlignment::CENTER);
     }
 }
@@ -213,7 +213,7 @@ void EditBoxImplCommon::setMaxLength(int maxLength)
     this->setNativeMaxLength(maxLength);
 }
 
-void EditBoxImplCommon::setTextHorizontalAlignment(cocos2d::TextHAlignment alignment)
+void EditBoxImplCommon::setTextHorizontalAlignment(axis::TextHAlignment alignment)
 {
     _alignment = alignment;
     this->setNativeTextHorizontalAlignment(alignment);
@@ -295,7 +295,7 @@ void EditBoxImplCommon::setVisible(bool visible)
 void EditBoxImplCommon::setContentSize(const Vec2& size)
 {
     _contentSize = applyPadding(size);
-    CCLOG("[Edit text] content size = (%f, %f)", _contentSize.width, _contentSize.height);
+    AXLOG("[Edit text] content size = (%f, %f)", _contentSize.width, _contentSize.height);
     placeInactiveLabels(_contentSize);
 }
 
@@ -357,19 +357,19 @@ void EditBoxImplCommon::onEndEditing(std::string_view /*text*/)
 void EditBoxImplCommon::editBoxEditingDidBegin()
 {
     // LOGD("textFieldShouldBeginEditing...");
-    cocos2d::ui::EditBoxDelegate* pDelegate = _editBox->getDelegate();
+    axis::ui::EditBoxDelegate* pDelegate = _editBox->getDelegate();
 
     if (pDelegate != nullptr)
     {
         pDelegate->editBoxEditingDidBegin(_editBox);
     }
 
-#if CC_ENABLE_SCRIPT_BINDING
+#if AX_ENABLE_SCRIPT_BINDING
     if (NULL != _editBox && 0 != _editBox->getScriptEditBoxHandler())
     {
-        cocos2d::CommonScriptData data(_editBox->getScriptEditBoxHandler(), "began", _editBox);
-        cocos2d::ScriptEvent event(cocos2d::kCommonEvent, (void*)&data);
-        cocos2d::ScriptEngineManager::sendEventToLua(event);
+        axis::CommonScriptData data(_editBox->getScriptEditBoxHandler(), "began", _editBox);
+        axis::ScriptEvent event(axis::kCommonEvent, (void*)&data);
+        axis::ScriptEngineManager::sendEventToLua(event);
     }
 #endif
 }
@@ -379,23 +379,23 @@ void EditBoxImplCommon::editBoxEditingDidEnd(std::string_view text, EditBoxDeleg
     // LOGD("textFieldShouldEndEditing...");
     _text = text;
 
-    cocos2d::ui::EditBoxDelegate* pDelegate = _editBox->getDelegate();
+    axis::ui::EditBoxDelegate* pDelegate = _editBox->getDelegate();
     if (pDelegate != nullptr)
     {
         pDelegate->editBoxEditingDidEndWithAction(_editBox, action);
         pDelegate->editBoxReturn(_editBox);
     }
 
-#if CC_ENABLE_SCRIPT_BINDING
+#if AX_ENABLE_SCRIPT_BINDING
     if (_editBox != nullptr && 0 != _editBox->getScriptEditBoxHandler())
     {
-        cocos2d::CommonScriptData data(_editBox->getScriptEditBoxHandler(), "ended", _editBox);
-        cocos2d::ScriptEvent event(cocos2d::kCommonEvent, (void*)&data);
-        cocos2d::ScriptEngineManager::sendEventToLua(event);
+        axis::CommonScriptData data(_editBox->getScriptEditBoxHandler(), "ended", _editBox);
+        axis::ScriptEvent event(axis::kCommonEvent, (void*)&data);
+        axis::ScriptEngineManager::sendEventToLua(event);
         memset(data.eventName, 0, sizeof(data.eventName));
         strncpy(data.eventName, "return", sizeof(data.eventName));
         event.data = (void*)&data;
-        cocos2d::ScriptEngineManager::sendEventToLua(event);
+        axis::ScriptEngineManager::sendEventToLua(event);
     }
 #endif
 
@@ -408,23 +408,23 @@ void EditBoxImplCommon::editBoxEditingDidEnd(std::string_view text, EditBoxDeleg
 void EditBoxImplCommon::editBoxEditingChanged(std::string_view text)
 {
     // LOGD("editBoxTextChanged...");
-    cocos2d::ui::EditBoxDelegate* pDelegate = _editBox->getDelegate();
+    axis::ui::EditBoxDelegate* pDelegate = _editBox->getDelegate();
     _text                                   = text;
     if (pDelegate != nullptr)
     {
         pDelegate->editBoxTextChanged(_editBox, text);
     }
 
-#if CC_ENABLE_SCRIPT_BINDING
+#if AX_ENABLE_SCRIPT_BINDING
     if (NULL != _editBox && 0 != _editBox->getScriptEditBoxHandler())
     {
-        cocos2d::CommonScriptData data(_editBox->getScriptEditBoxHandler(), "changed", _editBox);
-        cocos2d::ScriptEvent event(cocos2d::kCommonEvent, (void*)&data);
-        cocos2d::ScriptEngineManager::sendEventToLua(event);
+        axis::CommonScriptData data(_editBox->getScriptEditBoxHandler(), "changed", _editBox);
+        axis::ScriptEvent event(axis::kCommonEvent, (void*)&data);
+        axis::ScriptEngineManager::sendEventToLua(event);
     }
 #endif
 }
 
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

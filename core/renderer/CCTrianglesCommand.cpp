@@ -28,7 +28,7 @@
 #include "renderer/CCTexture2D.h"
 #include "base//ccUtils.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 TrianglesCommand::TrianglesCommand()
 {
@@ -49,7 +49,7 @@ void TrianglesCommand::init(float globalOrder,
     {
         unsigned int count    = _triangles.indexCount;
         _triangles.indexCount = count / 3 * 3;
-        CCLOGERROR("Resize indexCount from %d to %d, size must be multiple times of 3", count, _triangles.indexCount);
+        AXLOGERROR("Resize indexCount from %d to %d, size must be multiple times of 3", count, _triangles.indexCount);
     }
     _mv = mv;
 
@@ -110,4 +110,4 @@ void TrianglesCommand::generateMaterialID()
     _materialID        = XXH32((const void*)&hashMe, sizeof(hashMe), 0);
 }
 
-NS_CC_END
+NS_AX_END

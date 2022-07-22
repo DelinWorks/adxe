@@ -27,7 +27,7 @@
 #include "CCPURandomiser.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const Vec3 PURandomiser::DEFAULT_MAX_DEVIATION(0, 0, 0);
@@ -114,7 +114,7 @@ void PURandomiser::preUpdateAffector(float deltaTime)
 //-----------------------------------------------------------------------
 void PURandomiser::updatePUAffector(PUParticle3D* particle, float /*deltaTime*/)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         if (_update)
@@ -122,8 +122,8 @@ void PURandomiser::updatePUAffector(PUParticle3D* particle, float /*deltaTime*/)
             if (_randomDirection)
             {
                 // Random direction: Change the direction after each update
-                particle->direction.add(CCRANDOM_MINUS1_1() * _maxDeviationX, CCRANDOM_MINUS1_1() * _maxDeviationY,
-                                        CCRANDOM_MINUS1_1() * _maxDeviationZ);
+                particle->direction.add(AXRANDOM_MINUS1_1() * _maxDeviationX, AXRANDOM_MINUS1_1() * _maxDeviationY,
+                                        AXRANDOM_MINUS1_1() * _maxDeviationZ);
             }
             else
             {
@@ -132,9 +132,9 @@ void PURandomiser::updatePUAffector(PUParticle3D* particle, float /*deltaTime*/)
                     return;
 
                 // Random position: Add the position deviation after each update
-                particle->position.add(CCRANDOM_MINUS1_1() * _maxDeviationX * _affectorScale.x,
-                                       CCRANDOM_MINUS1_1() * _maxDeviationY * _affectorScale.y,
-                                       CCRANDOM_MINUS1_1() * _maxDeviationZ * _affectorScale.z);
+                particle->position.add(AXRANDOM_MINUS1_1() * _maxDeviationX * _affectorScale.x,
+                                       AXRANDOM_MINUS1_1() * _maxDeviationY * _affectorScale.y,
+                                       AXRANDOM_MINUS1_1() * _maxDeviationZ * _affectorScale.z);
             }
         }
     }
@@ -165,4 +165,4 @@ void PURandomiser::copyAttributesTo(PUAffector* affector)
     randomiser->_randomDirection = _randomDirection;
 }
 
-NS_CC_END
+NS_AX_END

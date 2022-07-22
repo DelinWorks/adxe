@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "base/CCEventListenerKeyboard.h"
 #include "base/CCEventDispatcher.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -55,32 +55,32 @@ InputDelegate::~InputDelegate(void)
     Device::setAccelerometerEnabled(false);
 }
 
-void InputDelegate::didAccelerate(cocos2d::Acceleration* /*accelerationValue*/) {}
+void InputDelegate::didAccelerate(axis::Acceleration* /*accelerationValue*/) {}
 
-bool InputDelegate::ccTouchBegan(cocos2d::Touch* /*touch*/, cocos2d::Event* /*event*/)
+bool InputDelegate::ccTouchBegan(axis::Touch* /*touch*/, axis::Event* /*event*/)
 {
     return false;
 }
 
-void InputDelegate::ccTouchMoved(cocos2d::Touch* /*touch*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchMoved(axis::Touch* /*touch*/, axis::Event* /*event*/) {}
 
-void InputDelegate::ccTouchEnded(cocos2d::Touch* /*touch*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchEnded(axis::Touch* /*touch*/, axis::Event* /*event*/) {}
 
-void InputDelegate::ccTouchCancelled(cocos2d::Touch* /*touch*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchCancelled(axis::Touch* /*touch*/, axis::Event* /*event*/) {}
 
-void InputDelegate::ccTouchesBegan(cocos2d::__Set* /*touches*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchesBegan(axis::__Set* /*touches*/, axis::Event* /*event*/) {}
 
-void InputDelegate::ccTouchesMoved(cocos2d::__Set* /*touches*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchesMoved(axis::__Set* /*touches*/, axis::Event* /*event*/) {}
 
-void InputDelegate::ccTouchesEnded(cocos2d::__Set* /*touches*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchesEnded(axis::__Set* /*touches*/, axis::Event* /*event*/) {}
 
-void InputDelegate::ccTouchesCancelled(cocos2d::__Set* /*touches*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::ccTouchesCancelled(axis::__Set* /*touches*/, axis::Event* /*event*/) {}
 
-void InputDelegate::onAcceleration(cocos2d::Acceleration* /*acc*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::onAcceleration(axis::Acceleration* /*acc*/, axis::Event* /*event*/) {}
 
-void InputDelegate::onKeyPressed(cocos2d::EventKeyboard::KeyCode /*keyCode*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::onKeyPressed(axis::EventKeyboard::KeyCode /*keyCode*/, axis::Event* /*event*/) {}
 
-void InputDelegate::onKeyReleased(cocos2d::EventKeyboard::KeyCode /*keyCode*/, cocos2d::Event* /*event*/) {}
+void InputDelegate::onKeyReleased(axis::EventKeyboard::KeyCode /*keyCode*/, axis::Event* /*event*/) {}
 
 bool InputDelegate::onTouchBegan(Touch* /*pTouch*/, Event* /*pEvent*/)
 {
@@ -119,10 +119,10 @@ void InputDelegate::setTouchEnabled(bool enabled)
                 // Register Touch Event
                 auto listener = EventListenerTouchAllAtOnce::create();
 
-                listener->onTouchesBegan     = CC_CALLBACK_2(InputDelegate::onTouchesBegan, this);
-                listener->onTouchesMoved     = CC_CALLBACK_2(InputDelegate::onTouchesMoved, this);
-                listener->onTouchesEnded     = CC_CALLBACK_2(InputDelegate::onTouchesEnded, this);
-                listener->onTouchesCancelled = CC_CALLBACK_2(InputDelegate::onTouchesCancelled, this);
+                listener->onTouchesBegan     = AX_CALLBACK_2(InputDelegate::onTouchesBegan, this);
+                listener->onTouchesMoved     = AX_CALLBACK_2(InputDelegate::onTouchesMoved, this);
+                listener->onTouchesEnded     = AX_CALLBACK_2(InputDelegate::onTouchesEnded, this);
+                listener->onTouchesCancelled = AX_CALLBACK_2(InputDelegate::onTouchesCancelled, this);
 
                 dispatcher->addEventListenerWithFixedPriority(listener, _touchPriority);
                 _touchListener = listener;
@@ -133,10 +133,10 @@ void InputDelegate::setTouchEnabled(bool enabled)
                 auto listener = EventListenerTouchOneByOne::create();
                 listener->setSwallowTouches(true);
 
-                listener->onTouchBegan     = CC_CALLBACK_2(InputDelegate::onTouchBegan, this);
-                listener->onTouchMoved     = CC_CALLBACK_2(InputDelegate::onTouchMoved, this);
-                listener->onTouchEnded     = CC_CALLBACK_2(InputDelegate::onTouchEnded, this);
-                listener->onTouchCancelled = CC_CALLBACK_2(InputDelegate::onTouchCancelled, this);
+                listener->onTouchBegan     = AX_CALLBACK_2(InputDelegate::onTouchBegan, this);
+                listener->onTouchMoved     = AX_CALLBACK_2(InputDelegate::onTouchMoved, this);
+                listener->onTouchEnded     = AX_CALLBACK_2(InputDelegate::onTouchEnded, this);
+                listener->onTouchCancelled = AX_CALLBACK_2(InputDelegate::onTouchCancelled, this);
 
                 dispatcher->addEventListenerWithFixedPriority(listener, _touchPriority);
                 _touchListener = listener;
@@ -206,7 +206,7 @@ void InputDelegate::setAccelerometerEnabled(bool enabled)
 
         if (enabled)
         {
-            auto listener = EventListenerAcceleration::create(CC_CALLBACK_2(InputDelegate::onAcceleration, this));
+            auto listener = EventListenerAcceleration::create(AX_CALLBACK_2(InputDelegate::onAcceleration, this));
             dispatcher->addEventListenerWithFixedPriority(listener, -1);
             _accelerometerListener = listener;
         }
@@ -230,8 +230,8 @@ void InputDelegate::setKeypadEnabled(bool enabled)
         if (enabled)
         {
             auto listener           = EventListenerKeyboard::create();
-            listener->onKeyPressed  = CC_CALLBACK_2(InputDelegate::onKeyPressed, this);
-            listener->onKeyReleased = CC_CALLBACK_2(InputDelegate::onKeyReleased, this);
+            listener->onKeyPressed  = AX_CALLBACK_2(InputDelegate::onKeyPressed, this);
+            listener->onKeyReleased = AX_CALLBACK_2(InputDelegate::onKeyReleased, this);
 
             dispatcher->addEventListenerWithFixedPriority(listener, -1);
             _keyboardListener = listener;

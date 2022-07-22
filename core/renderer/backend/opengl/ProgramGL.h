@@ -35,7 +35,7 @@
 #include <vector>
 #include <unordered_map>
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 class ShaderModuleGL;
 
@@ -156,7 +156,7 @@ private:
     bool getAttributeLocation(std::string_view attributeName, unsigned int& location) const;
     void computeUniformInfos();
     void computeLocations();
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     virtual void reloadProgram();
     virtual int getMappedLocation(int location) const override;
     virtual int getOriginalLocation(int location) const override;
@@ -172,7 +172,7 @@ private:
 
     std::vector<AttributeInfo> _attributeInfos;
     hlookup::string_map<UniformInfo> _activeUniformInfos;
-#if CC_ENABLE_CACHE_TEXTURE_DATA
+#if AX_ENABLE_CACHE_TEXTURE_DATA
     std::unordered_map<std::string, int>
         _originalUniformLocations;  ///< record the uniform location when shader was first created.
     std::unordered_map<int, int> _mapToCurrentActiveLocation;  ///<
@@ -188,4 +188,4 @@ private:
 };
 // end of _opengl group
 /// @}
-CC_BACKEND_END
+NS_AX_BACKEND_END

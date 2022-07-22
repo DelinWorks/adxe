@@ -1,6 +1,6 @@
 #include "SpineSkeletonDataCache.h"
 
-#if !defined(CC_USE_SPINE_CPP) || CC_USE_SPINE_CPP
+#if !defined(AX_USE_SPINE_CPP) || AX_USE_SPINE_CPP
 SpineSkeletonDataCache* SpineSkeletonDataCache::getInstance()
 {
     static SpineSkeletonDataCache internalShared;
@@ -9,7 +9,7 @@ SpineSkeletonDataCache* SpineSkeletonDataCache::getInstance()
 
 SpineSkeletonDataCache::SpineSkeletonDataCache()
 {
-    _reportError = &cocos2d::log;
+    _reportError = &axis::log;
 }
 
 void SpineSkeletonDataCache::setErrorReportFunc(void (*errorfunc)(const char* pszFormat, ...))
@@ -41,7 +41,7 @@ SpineSkeletonDataCache::SkeletonData* SpineSkeletonDataCache::addData(const char
     spine::AttachmentLoader* loader   = nullptr;
     bool ok                           = false;
 
-    auto fileExtension = cocos2d::FileUtils::getInstance()->getFileExtension(dataFile);
+    auto fileExtension = axis::FileUtils::getInstance()->getFileExtension(dataFile);
 
     static spine::Cocos2dTextureLoader s_textureLoader;
 
@@ -109,7 +109,7 @@ SpineSkeletonDataCache::SkeletonData* SpineSkeletonDataCache::addData(const char
 
 void SpineSkeletonDataCache::removeAllData(void)
 {
-    for (auto& e : _cacheTable)
+    for (auto&& e : _cacheTable)
     {
         e.second->release();
     }
@@ -142,7 +142,7 @@ SpineSkeletonDataCache* SpineSkeletonDataCache::getInstance()
 
 SpineSkeletonDataCache::SpineSkeletonDataCache()
 {
-    _reportError = &cocos2d::log;
+    _reportError = &axis::log;
 }
 
 void SpineSkeletonDataCache::setErrorReportFunc(void (*errorfunc)(const char* pszFormat, ...))
@@ -174,7 +174,7 @@ SpineSkeletonDataCache::SkeletonData* SpineSkeletonDataCache::addData(const char
     spAttachmentLoader* loader   = nullptr;
     bool ok                      = false;
 
-    auto fileExtension = cocos2d::FileUtils::getInstance()->getFileExtension(dataFile);
+    auto fileExtension = axis::FileUtils::getInstance()->getFileExtension(dataFile);
 
     do
     {
@@ -260,7 +260,7 @@ SpineSkeletonDataCache::SkeletonData* SpineSkeletonDataCache::addData(const char
 
 void SpineSkeletonDataCache::removeAllData(void)
 {
-    for (auto& e : _cacheTable)
+    for (auto&& e : _cacheTable)
     {
         e.second->release();
     }

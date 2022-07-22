@@ -33,7 +33,7 @@ THE SOFTWARE.
 #include <string>
 #include <vector>
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup platform
@@ -41,7 +41,7 @@ NS_CC_BEGIN
  */
 
 //! @brief  Helper class to handle file operations
-class CC_DLL FileUtilsWin32 : public FileUtils
+class AX_DLL FileUtilsWin32 : public FileUtils
 {
     friend class FileUtils;
 
@@ -140,4 +140,4 @@ protected:
 // end of platform group
 /// @}
 
-NS_CC_END
+NS_AX_END

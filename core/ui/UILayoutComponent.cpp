@@ -29,7 +29,7 @@
 #include "ui/GUIDefine.h"
 #include "ui/UIHelper.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -71,7 +71,7 @@ LayoutComponent* LayoutComponent::bindLayoutComponent(Node* node)
         node->addComponent(layout);
         return layout;
     }
-    CC_SAFE_DELETE(layout);
+    AX_SAFE_DELETE(layout);
     return nullptr;
 }
 
@@ -649,7 +649,7 @@ void LayoutComponent::refreshLayout()
         page->forceDoLayout();
 
         Vector<Widget*> _widgetVector = page->getItems();
-        for (auto& item : _widgetVector)
+        for (auto&& item : _widgetVector)
         {
             ui::Helper::doLayout(item);
         }
@@ -671,4 +671,4 @@ void LayoutComponent::setPercentOnlyEnabled(bool enable)
 }
 }  // namespace ui
 
-NS_CC_END
+NS_AX_END

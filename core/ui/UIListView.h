@@ -33,7 +33,7 @@ THE SOFTWARE.
  * @addtogroup ui
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace ui
 {
@@ -45,7 +45,7 @@ namespace ui
  *to be displayed, use  `TableView` instead. ListView is a subclass of  `ScrollView`, so it shares many features of
  *ScrollView.
  */
-class CC_GUI_DLL ListView : public ScrollView
+class AX_GUI_DLL ListView : public ScrollView
 {
 
     DECLARE_CLASS_GUI_INFO
@@ -479,7 +479,7 @@ protected:
 };
 
 }  // namespace ui
-NS_CC_END
+NS_AX_END
 // end of ui group
 /// @}
 

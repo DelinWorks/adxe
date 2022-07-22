@@ -34,12 +34,12 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /** @class EventAcceleration
  * @brief Accelerometer event.
  */
-class CC_DLL EventAcceleration : public Event
+class AX_DLL EventAcceleration : public Event
 {
 public:
     /** Constructor.
@@ -53,7 +53,7 @@ private:
     friend class EventListenerAcceleration;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

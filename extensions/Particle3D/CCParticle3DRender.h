@@ -36,7 +36,7 @@
 #include "math/CCMath.h"
 #include "ExtensionExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class ParticleSystem3D;
 class Renderer;
@@ -50,7 +50,7 @@ class Texture2D;
 /**
  * 3d particle render
  */
-class CC_EX_DLL Particle3DRender : public Ref
+class AX_EX_DLL Particle3DRender : public Ref
 {
     friend class ParticleSystem3D;
 
@@ -92,7 +92,7 @@ protected:
 };
 
 // particle render for quad
-class CC_EX_DLL Particle3DQuadRender : public Particle3DRender
+class AX_EX_DLL Particle3DQuadRender : public Particle3DRender
 {
 public:
     static Particle3DQuadRender* create(std::string_view texFile = "");
@@ -142,7 +142,7 @@ protected:
 };
 
 // particle renderer using MeshRenderer
-class CC_EX_DLL Particle3DModelRender : public Particle3DRender
+class AX_EX_DLL Particle3DModelRender : public Particle3DRender
 {
 public:
     static Particle3DModelRender* create(std::string_view modelFile, std::string_view texFile = "");
@@ -160,4 +160,4 @@ protected:
     Vec3 _meshSize;
 };
 
-NS_CC_END
+NS_AX_END

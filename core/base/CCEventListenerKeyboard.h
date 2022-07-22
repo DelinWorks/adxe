@@ -35,7 +35,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class Event;
 
@@ -43,7 +43,7 @@ class Event;
  * @brief Keyboard event listener.
  * @js cc._EventListenerKeyboard
  */
-class CC_DLL EventListenerKeyboard : public EventListener
+class AX_DLL EventListenerKeyboard : public EventListener
 {
 public:
     static const std::string LISTENER_ID;
@@ -64,7 +64,7 @@ public:
     bool init();
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

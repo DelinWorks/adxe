@@ -5,7 +5,7 @@
 #include "platform/CCFileStream.h"
 #include "platform/CCPlatformConfig.h"
 #include <string>
-#if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32
+#if AX_TARGET_PLATFORM == AX_PLATFORM_WIN32
 #    include <io.h>
 #    include <direct.h>
 #else
@@ -17,7 +17,7 @@
 
 #include "platform/CCPlatformMacros.h"
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 #    include "platform/android/CCFileUtils-android.h"
 #    include <jni.h>
 #    include <android/asset_manager.h>
@@ -64,13 +64,13 @@
 #    define posix_fsetsize(fd, size) (::ftruncate(fd, size), ::lseek(fd, 0, SEEK_SET))
 #endif
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct UnzFileStream;
 union PXFileHandle
 {
     int _fd = -1;
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
     AAsset* _asset;
     ZipFileStream _zfs;
 #endif
@@ -78,7 +78,7 @@ union PXFileHandle
 
 struct PXIoF;
 
-class CC_DLL PosixFileStream : public FileStream
+class AX_DLL PosixFileStream : public FileStream
 {
 public:
     PosixFileStream() = default;
@@ -132,4 +132,4 @@ private:
     const PXIoF* _iof{};
 };
 
-NS_CC_END
+NS_AX_END

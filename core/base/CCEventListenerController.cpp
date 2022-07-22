@@ -29,7 +29,7 @@
 #include "base/ccMacros.h"
 #include "base/CCController.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 const std::string EventListenerController::LISTENER_ID = "__cc_controller";
 
@@ -42,7 +42,7 @@ EventListenerController* EventListenerController::create()
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -93,7 +93,7 @@ bool EventListenerController::init()
         }
         break;
         default:
-            CCASSERT(false, "Invalid EventController type");
+            AXASSERT(false, "Invalid EventController type");
             break;
         }
     };
@@ -115,4 +115,4 @@ EventListenerController* EventListenerController::clone()
     return nullptr;
 }
 
-NS_CC_END
+NS_AX_END

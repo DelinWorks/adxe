@@ -12,7 +12,7 @@
 #include <float.h>
 #include "renderer/backend/Device.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 #ifdef CSM_TARGET_WIN_GL
 #include <Windows.h>
@@ -580,8 +580,8 @@ CubismClippingContext::CubismClippingContext(CubismClippingManager_Cocos2dx* man
 
 
         drawCommandBuffer = CSM_NEW CubismCommandBuffer_Cocos2dx::DrawCommandBuffer();
-        drawCommandBuffer->GetCommandDraw()->GetCommand()->setDrawType(cocos2d::CustomCommand::DrawType::ELEMENT);
-        drawCommandBuffer->GetCommandDraw()->GetCommand()->setPrimitiveType(cocos2d::backend::PrimitiveType::TRIANGLE);
+        drawCommandBuffer->GetCommandDraw()->GetCommand()->setDrawType(axis::CustomCommand::DrawType::ELEMENT);
+        drawCommandBuffer->GetCommandDraw()->GetCommand()->setPrimitiveType(axis::backend::PrimitiveType::TRIANGLE);
         drawCommandBuffer->CreateVertexBuffer(vertexSize, drawableVertexCount * 2);      // Vertices + UVs
         drawCommandBuffer->CreateIndexBuffer(drawableVertexIndexCount);
 
@@ -745,7 +745,7 @@ void CubismShader_Cocos2dx::ReleaseShaderProgram()
 
 // SetupMask
 static const csmChar* VertShaderSrcSetupMask =
-#if !defined(CC_PLATFORM_MOBILE) && !defined(CC_USE_GLES)
+#if !defined(AX_PLATFORM_MOBILE) && !defined(AX_USE_GLES)
     "#version 120\n"
 #endif
     "attribute vec2 a_position;"
@@ -777,7 +777,7 @@ static const csmChar* FragShaderSrcSetupMask =
 
     "gl_FragColor = u_channelFlag * texture2D(s_texture0 , v_texCoord).a * isInside;"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcSetupMaskTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -801,7 +801,7 @@ static const csmChar* FragShaderSrcSetupMaskTegra =
 //----- バーテックスシェーダプログラム -----
 // Normal & Add & Mult 共通
 static const csmChar* VertShaderSrc =
-#if !defined(CC_PLATFORM_MOBILE) && !defined(CC_USE_GLES)
+#if !defined(AX_PLATFORM_MOBILE) && !defined(AX_USE_GLES)
     "#version 120\n"
 #endif
     "attribute vec2 a_position;" //v.vertex
@@ -818,7 +818,7 @@ static const csmChar* VertShaderSrc =
 
 // Normal & Add & Mult 共通（クリッピングされたものの描画用）
 static const csmChar* VertShaderSrcMasked =
-#if !defined(CC_PLATFORM_MOBILE) && !defined(CC_USE_GLES)
+#if !defined(AX_PLATFORM_MOBILE) && !defined(AX_USE_GLES)
     "#version 120\n"
 #endif
     "attribute vec2 a_position;"
@@ -832,7 +832,7 @@ static const csmChar* VertShaderSrcMasked =
     "vec4 pos = vec4(a_position.x, a_position.y, 0.0, 1.0);"
     "gl_Position = u_matrix * pos;"
     "v_clipPos = u_clipMatrix * pos;"
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
     "v_clipPos = vec4(v_clipPos.x, 1.0 - v_clipPos.y, v_clipPos.zw);"
 #endif
     "v_texCoord = a_texCoord;"
@@ -850,7 +850,7 @@ static const csmChar* FragShaderSrc =
     "vec4 color = texture2D(s_texture0 , v_texCoord) * u_baseColor;"
     "gl_FragColor = vec4(color.rgb * color.a,  color.a);"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -873,7 +873,7 @@ static const csmChar* FragShaderSrcPremultipliedAlpha =
     "{"
     "gl_FragColor = texture2D(s_texture0 , v_texCoord) * u_baseColor;"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcPremultipliedAlphaTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -903,7 +903,7 @@ static const csmChar* FragShaderSrcMask =
     "col_formask = col_formask * maskVal;"
     "gl_FragColor = col_formask;"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcMaskTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -941,7 +941,7 @@ static const csmChar* FragShaderSrcMaskInverted =
     "col_formask = col_formask * (1.0 - maskVal);"
     "gl_FragColor = col_formask;"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcMaskInvertedTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -978,7 +978,7 @@ static const csmChar* FragShaderSrcMaskPremultipliedAlpha =
     "col_formask = col_formask * maskVal;"
     "gl_FragColor = col_formask;"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcMaskPremultipliedAlphaTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -1014,7 +1014,7 @@ static const csmChar* FragShaderSrcMaskInvertedPremultipliedAlpha =
     "col_formask = col_formask * (1.0 - maskVal);"
     "gl_FragColor = col_formask;"
     "}";
-#if CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID
+#if AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID
 static const csmChar* FragShaderSrcMaskInvertedPremultipliedAlphaTegra =
     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
     "precision mediump float;"
@@ -1318,7 +1318,7 @@ void CubismShader_Cocos2dx::GenerateShaders()
     _shaderSets[18]->UniformBaseColorLocation = _shaderSets[18]->ShaderProgram->getUniformLocation("u_baseColor");
 }
 
-void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::DrawCommandBuffer::DrawCommand* drawCommand, CubismRenderer_Cocos2dx* renderer, cocos2d::Texture2D* texture
+void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::DrawCommandBuffer::DrawCommand* drawCommand, CubismRenderer_Cocos2dx* renderer, axis::Texture2D* texture
                                                 , csmInt32 vertexCount, csmFloat32* vertexArray
                                                 , csmFloat32* uvArray, csmFloat32 opacity
                                                 , CubismRenderer::CubismBlendMode colorBlendMode
@@ -1331,10 +1331,10 @@ void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::Dra
         GenerateShaders();
     }
 
-    cocos2d::backend::BlendDescriptor* blendDescriptor = drawCommand->GetBlendDescriptor();
-    cocos2d::PipelineDescriptor* pipelineDescriptor = drawCommand->GetPipelineDescriptor();
+    axis::backend::BlendDescriptor* blendDescriptor = drawCommand->GetBlendDescriptor();
+    axis::PipelineDescriptor* pipelineDescriptor = drawCommand->GetPipelineDescriptor();
 
-    cocos2d::backend::ProgramState* programState = pipelineDescriptor->programState;
+    axis::backend::ProgramState* programState = pipelineDescriptor->programState;
 
     if (renderer->GetClippingContextBufferForMask() != NULL) // マスク生成時
     {
@@ -1342,7 +1342,7 @@ void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::Dra
 
         if (!programState)
         {
-            programState = new cocos2d::backend::ProgramState(shaderSet->ShaderProgram);
+            programState = new axis::backend::ProgramState(shaderSet->ShaderProgram);
         }
 
 
@@ -1350,9 +1350,9 @@ void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::Dra
         programState->setTexture(shaderSet->SamplerTexture0Location, 0, texture->getBackendTexture());
 
         // 頂点配列の設定
-        programState->getVertexLayout()->setAttribute("a_position", shaderSet->AttributePositionLocation, cocos2d::backend::VertexFormat::FLOAT2, 0, false);
+        programState->getVertexLayout()->setAttribute("a_position", shaderSet->AttributePositionLocation, axis::backend::VertexFormat::FLOAT2, 0, false);
         // テクスチャ頂点の設定
-        programState->getVertexLayout()->setAttribute("a_texCoord", shaderSet->AttributeTexCoordLocation, cocos2d::backend::VertexFormat::FLOAT2, sizeof(csmFloat32) * 2, false);
+        programState->getVertexLayout()->setAttribute("a_texCoord", shaderSet->AttributeTexCoordLocation, axis::backend::VertexFormat::FLOAT2, sizeof(csmFloat32) * 2, false);
 
         // チャンネル
         const csmInt32 channelNo = renderer->GetClippingContextBufferForMask()->_layoutChannelNo;
@@ -1372,10 +1372,10 @@ void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::Dra
                                     rect->GetBottom() * 2.0f - 1.0f };
         programState->setUniform(shaderSet->UniformBaseColorLocation, base, sizeof(float) * 4);
 
-        blendDescriptor->sourceRGBBlendFactor = cocos2d::backend::BlendFactor::ZERO;
-        blendDescriptor->destinationRGBBlendFactor = cocos2d::backend::BlendFactor::ONE_MINUS_SRC_COLOR;
-        blendDescriptor->sourceAlphaBlendFactor = cocos2d::backend::BlendFactor::ZERO;
-        blendDescriptor->destinationAlphaBlendFactor = cocos2d::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
+        blendDescriptor->sourceRGBBlendFactor = axis::backend::BlendFactor::ZERO;
+        blendDescriptor->destinationRGBBlendFactor = axis::backend::BlendFactor::ONE_MINUS_SRC_COLOR;
+        blendDescriptor->sourceAlphaBlendFactor = axis::backend::BlendFactor::ZERO;
+        blendDescriptor->destinationAlphaBlendFactor = axis::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
     }
     else // マスク生成以外の場合
     {
@@ -1388,43 +1388,43 @@ void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::Dra
         case CubismRenderer::CubismBlendMode_Normal:
         default:
             shaderSet = _shaderSets[ShaderNames_Normal + offset];
-            blendDescriptor->sourceRGBBlendFactor = cocos2d::backend::BlendFactor::ONE;
-            blendDescriptor->destinationRGBBlendFactor = cocos2d::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
-            blendDescriptor->sourceAlphaBlendFactor = cocos2d::backend::BlendFactor::ONE;
-            blendDescriptor->destinationAlphaBlendFactor = cocos2d::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
+            blendDescriptor->sourceRGBBlendFactor = axis::backend::BlendFactor::ONE;
+            blendDescriptor->destinationRGBBlendFactor = axis::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
+            blendDescriptor->sourceAlphaBlendFactor = axis::backend::BlendFactor::ONE;
+            blendDescriptor->destinationAlphaBlendFactor = axis::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
             break;
 
         case CubismRenderer::CubismBlendMode_Additive:
             shaderSet = _shaderSets[ShaderNames_Add + offset];
-            blendDescriptor->sourceRGBBlendFactor = cocos2d::backend::BlendFactor::ONE;
-            blendDescriptor->destinationRGBBlendFactor = cocos2d::backend::BlendFactor::ONE;
-            blendDescriptor->sourceAlphaBlendFactor = cocos2d::backend::BlendFactor::ZERO;
-            blendDescriptor->destinationAlphaBlendFactor = cocos2d::backend::BlendFactor::ONE;
+            blendDescriptor->sourceRGBBlendFactor = axis::backend::BlendFactor::ONE;
+            blendDescriptor->destinationRGBBlendFactor = axis::backend::BlendFactor::ONE;
+            blendDescriptor->sourceAlphaBlendFactor = axis::backend::BlendFactor::ZERO;
+            blendDescriptor->destinationAlphaBlendFactor = axis::backend::BlendFactor::ONE;
             break;
 
         case CubismRenderer::CubismBlendMode_Multiplicative:
             shaderSet = _shaderSets[ShaderNames_Mult + offset];
-            blendDescriptor->sourceRGBBlendFactor = cocos2d::backend::BlendFactor::DST_COLOR;
-            blendDescriptor->destinationRGBBlendFactor = cocos2d::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
-            blendDescriptor->sourceAlphaBlendFactor = cocos2d::backend::BlendFactor::ZERO;
-            blendDescriptor->destinationAlphaBlendFactor = cocos2d::backend::BlendFactor::ONE;
+            blendDescriptor->sourceRGBBlendFactor = axis::backend::BlendFactor::DST_COLOR;
+            blendDescriptor->destinationRGBBlendFactor = axis::backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
+            blendDescriptor->sourceAlphaBlendFactor = axis::backend::BlendFactor::ZERO;
+            blendDescriptor->destinationAlphaBlendFactor = axis::backend::BlendFactor::ONE;
             break;
         }
 
         if (!programState)
         {
-            programState = new cocos2d::backend::ProgramState(shaderSet->ShaderProgram);
+            programState = new axis::backend::ProgramState(shaderSet->ShaderProgram);
         }
 
         // 頂点配列の設定
-        programState->getVertexLayout()->setAttribute("a_position", shaderSet->AttributePositionLocation, cocos2d::backend::VertexFormat::FLOAT2, 0, false);
+        programState->getVertexLayout()->setAttribute("a_position", shaderSet->AttributePositionLocation, axis::backend::VertexFormat::FLOAT2, 0, false);
         // テクスチャ頂点の設定
-        programState->getVertexLayout()->setAttribute("a_texCoord", shaderSet->AttributeTexCoordLocation, cocos2d::backend::VertexFormat::FLOAT2, sizeof(csmFloat32) * 2, false);
+        programState->getVertexLayout()->setAttribute("a_texCoord", shaderSet->AttributeTexCoordLocation, axis::backend::VertexFormat::FLOAT2, sizeof(csmFloat32) * 2, false);
 
         if (masked)
         {
             // frameBufferに書かれたテクスチャ
-            cocos2d::Texture2D* tex = renderer->_offscreenFrameBuffer.GetColorBuffer();
+            axis::Texture2D* tex = renderer->_offscreenFrameBuffer.GetColorBuffer();
 
             programState->setTexture(shaderSet->SamplerTexture1Location, 1, tex->getBackendTexture());
 
@@ -1455,11 +1455,11 @@ void CubismShader_Cocos2dx::SetupShaderProgram(CubismCommandBuffer_Cocos2dx::Dra
     pipelineDescriptor->programState = programState;
 }
 
-cocos2d::backend::Program* CubismShader_Cocos2dx::LoadShaderProgram(const csmChar* vertShaderSrc, const csmChar* fragShaderSrc)
+axis::backend::Program* CubismShader_Cocos2dx::LoadShaderProgram(const csmChar* vertShaderSrc, const csmChar* fragShaderSrc)
 {
     // cocos2dx対応
     // Create shader program.
-    return cocos2d::backend::Device::getInstance()->newProgram(vertShaderSrc, fragShaderSrc);
+    return axis::backend::Device::getInstance()->newProgram(vertShaderSrc, fragShaderSrc);
 }
 
 /*********************************************************************************************************************
@@ -1542,8 +1542,8 @@ void CubismRenderer_Cocos2dx::Initialize(CubismModel* model)
         const csmSizeInt vertexSize = sizeof(csmFloat32) * 2;
 
         _drawableDrawCommandBuffer[i] = CSM_NEW CubismCommandBuffer_Cocos2dx::DrawCommandBuffer();
-        _drawableDrawCommandBuffer[i]->GetCommandDraw()->GetCommand()->setDrawType(cocos2d::CustomCommand::DrawType::ELEMENT);
-        _drawableDrawCommandBuffer[i]->GetCommandDraw()->GetCommand()->setPrimitiveType(cocos2d::backend::PrimitiveType::TRIANGLE);
+        _drawableDrawCommandBuffer[i]->GetCommandDraw()->GetCommand()->setDrawType(axis::CustomCommand::DrawType::ELEMENT);
+        _drawableDrawCommandBuffer[i]->GetCommandDraw()->GetCommand()->setPrimitiveType(axis::backend::PrimitiveType::TRIANGLE);
         _drawableDrawCommandBuffer[i]->CreateVertexBuffer(vertexSize, drawableVertexCount * 2);      // Vertices + UVs
 
         if (drawableVertexIndexCount > 0)
@@ -1794,7 +1794,7 @@ void CubismRenderer_Cocos2dx::DrawMeshCocos2d(CubismCommandBuffer_Cocos2dx::Draw
         }
     }
 
-    cocos2d::Texture2D* drawTexture;   // シェーダに渡すテクスチャ
+    axis::Texture2D* drawTexture;   // シェーダに渡すテクスチャ
 
     // テクスチャマップからバインド済みテクスチャIDを取得
     // バインドされていなければダミーのテクスチャIDをセットする
@@ -1853,12 +1853,12 @@ void CubismRenderer_Cocos2dx::RestoreProfile()
     _rendererProfile.Restore();
 }
 
-void CubismRenderer_Cocos2dx::BindTexture(csmUint32 modelTextureNo, cocos2d::Texture2D* texture)
+void CubismRenderer_Cocos2dx::BindTexture(csmUint32 modelTextureNo, axis::Texture2D* texture)
 {
     _textures[modelTextureNo] = texture;
 }
 
-const csmMap<csmInt32, cocos2d::Texture2D*>& CubismRenderer_Cocos2dx::GetBindedTextures() const
+const csmMap<csmInt32, axis::Texture2D*>& CubismRenderer_Cocos2dx::GetBindedTextures() const
 {
     return _textures;
 }

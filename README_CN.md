@@ -2,7 +2,7 @@
 
 [![dev](https://img.shields.io/github/v/release/axis-project/axis?include_prereleases&label=release)](https://github.com/axis-project/axis/releases)
 [![LICENSE](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/axis-project/axis/blob/master/LICENSE)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/1c5628dea478449ea0c6e1b0e30c3be9)](https://app.codacy.com/gh/axis-project/axis?utm_source=github.com&utm_medium=referral&utm_content=axis-project/axis&utm_campaign=Badge_Grade_Settings)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/81fa1aba09ab41a98b949064b928d06e)](https://www.codacy.com/gh/axis-project/axis/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=axis-project/axis&amp;utm_campaign=Badge_Grade)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](https://github.com/axis-project/axis/pulls)
   
 [![Windows Build Status](https://github.com/axis-project/axis/actions/workflows/windows-ci.yml/badge.svg)](https://github.com/axis-project/axis/actions/workflows/windows-ci.yml)
@@ -85,11 +85,11 @@
   ```sudo xcode-select -switch /Applications/Xcode.app/Contents/Developer```  
   3. 生成xcode工程, 进入axis根目录执行如下命令之一:  
      - for arm64:  
-     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=cmake/ios.mini.cmake -DCMAKE_OSX_ARCHITECTURES=arm64```
+     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=$AXIS_ROOT/cmake/ios.mini.cmake -DCMAKE_OSX_ARCHITECTURES=arm64```
      - for armv7,arm64 combined:  
-     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=cmake/ios.mini.cmake "-DCMAKE_OSX_ARCHITECTURES=armv7;arm64"```
+     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=$AXIS_ROOT/cmake/ios.mini.cmake "-DCMAKE_OSX_ARCHITECTURES=armv7;arm64"```
      - for simulator x86_64:  
-     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=cmake/ios.mini.cmake -DCMAKE_OSX_ARCHITECTURES=x86_64```
+     ```cmake -S . -B build -GXcode -DCMAKE_TOOLCHAIN_FILE=$AXIS_ROOT/cmake/ios.mini.cmake -DCMAKE_OSX_ARCHITECTURES=x86_64```
 
   4. 之后就可以用xcode打开, 选择cpp-tests编译运行
 
@@ -107,9 +107,6 @@
   * official v4: https://gitee.com/mirrors/cocos2d-x
   * Git快速手册: https://github.com/axis-project/axis/discussions/411
 
-### axis项目的活跃贡献者
+### Axis项目活跃状态
 
-- @halx99
-- @rh101
-- @aismann
-- @weiwest
+![Alt](https://repobeats.axiom.co/api/embed/e46f10898672224fde3b102d81a28482164faf2e.svg "Repobeats analytics image")

@@ -59,7 +59,7 @@ THE SOFTWARE.
 
 using namespace std::string_view_literals;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 int ccNextPOT(int x)
 {
@@ -82,7 +82,7 @@ void captureScreen(std::function<void(RefPtr<Image>)> imageCallback)
 {
     if (s_captureScreenListener)
     {
-        CCLOG("Warning: CaptureScreen has been called already, don't call more than once in one frame.");
+        AXLOG("Warning: CaptureScreen has been called already, don't call more than once in one frame.");
         return;
     }
 
@@ -91,7 +91,7 @@ void captureScreen(std::function<void(RefPtr<Image>)> imageCallback)
     auto eventDispatcher = director->getEventDispatcher();
 
     // !!!Metal: needs setFrameBufferOnly before draw
-#if defined(CC_USE_METAL)
+#if defined(AX_USE_METAL)
     s_captureScreenListener =
         eventDispatcher->addCustomEventListener(Director::EVENT_BEFORE_DRAW, [=](EventCustom* /*event*/) {
 #else
@@ -119,7 +119,7 @@ void captureNode(Node* startNode, std::function<void(RefPtr<Image>)> imageCallba
 {
     if (s_captureNodeListener.find(startNode) != s_captureNodeListener.end())
     {
-        CCLOG("Warning: current node has been captured already");
+        AXLOG("Warning: current node has been captured already");
         return;
     }
 
@@ -255,7 +255,7 @@ Rect getCascadeBoundingBox(Node* node)
     // check all children bounding box, get maximize box
     Node* child = nullptr;
     bool merge  = false;
-    for (auto object : node->getChildren())
+    for (auto&& object : node->getChildren())
     {
         child = dynamic_cast<Node*>(object);
         if (!child->isVisible())
@@ -305,11 +305,11 @@ Sprite* createSpriteFromBase64Cached(const char* base64String, const char* key)
 
         Image* image     = new Image();
         bool imageResult = image->initWithImageData(decoded, length, true);
-        CCASSERT(imageResult, "Failed to create image from base64!");
+        AXASSERT(imageResult, "Failed to create image from base64!");
 
         if (!imageResult)
         {
-            CC_SAFE_RELEASE_NULL(image);
+            AX_SAFE_RELEASE_NULL(image);
             return nullptr;
         }
 
@@ -329,11 +329,11 @@ Sprite* createSpriteFromBase64(const char* base64String)
 
     Image* image     = new Image();
     bool imageResult = image->initWithImageData(decoded, length, decoded);
-    CCASSERT(imageResult, "Failed to create image from base64!");
+    AXASSERT(imageResult, "Failed to create image from base64!");
 
     if (!imageResult)
     {
-        CC_SAFE_RELEASE_NULL(image);
+        AX_SAFE_RELEASE_NULL(image);
         return nullptr;
     }
 
@@ -359,7 +359,7 @@ Node* findChild(Node* levelRoot, std::string_view name)
         return target;
 
     // Find recursively
-    for (auto& child : levelRoot->getChildren())
+    for (auto&& child : levelRoot->getChildren())
     {
         target = findChild(child, name);
         if (target != nullptr)
@@ -379,7 +379,7 @@ Node* findChild(Node* levelRoot, int tag)
         return target;
 
     // Find recursively
-    for (auto& child : levelRoot->getChildren())
+    for (auto&& child : levelRoot->getChildren())
     {
         target = findChild(child, tag);
         if (target != nullptr)
@@ -609,7 +609,7 @@ backend::SamplerFilter toBackendSamplerFilter(int mode)
     case GLTexParamConst::NEAREST_MIPMAP_NEAREST:
         return backend::SamplerFilter::NEAREST;
     default:
-        CCASSERT(false, "invalid GL sampler filter!");
+        AXASSERT(false, "invalid GL sampler filter!");
         return backend::SamplerFilter::LINEAR;
     }
 }
@@ -626,14 +626,14 @@ backend::SamplerAddressMode toBackendAddressMode(int mode)
     case GLTexParamConst::MIRROR_REPEAT:
         return backend::SamplerAddressMode::MIRROR_REPEAT;
     default:
-        CCASSERT(false, "invalid GL address mode");
+        AXASSERT(false, "invalid GL address mode");
         return backend::SamplerAddressMode::REPEAT;
     }
 }
 
 const Mat4& getAdjustMatrix()
 {
-    static cocos2d::Mat4 adjustMatrix = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0.5, 0, 0, 0, 1};
+    static axis::Mat4 adjustMatrix = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0.5, 0.5, 0, 0, 0, 1};
 
     return adjustMatrix;
 }
@@ -671,7 +671,7 @@ std::vector<int> parseIntegerList(std::string_view intsString)
             if (errno == ERANGE)
             {
                 errno = 0;
-                CCLOGWARN("%s contains out of range integers", intsString.data());
+                AXLOGWARN("%s contains out of range integers", intsString.data());
             }
             result.push_back(static_cast<int>(i));
             cStr = endptr;
@@ -780,7 +780,7 @@ std::string urlDecode(std::string_view st)
     return decoded;
 }
 
-CC_DLL uint32_t fourccValue(std::string_view str)
+AX_DLL uint32_t fourccValue(std::string_view str)
 {
     if (str.empty() || str[0] != '#')
         return (uint32_t)-1;
@@ -791,4 +791,4 @@ CC_DLL uint32_t fourccValue(std::string_view str)
 
 }  // namespace utils
 
-NS_CC_END
+NS_AX_END

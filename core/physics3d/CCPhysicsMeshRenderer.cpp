@@ -25,16 +25,16 @@
 
 #include "physics3d/CCPhysics3D.h"
 
-#if CC_USE_3D_PHYSICS
+#if AX_USE_3D_PHYSICS
 
-#    if (CC_ENABLE_BULLET_INTEGRATION)
+#    if (AX_ENABLE_BULLET_INTEGRATION)
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 PhysicsMeshRenderer* PhysicsMeshRenderer::create(std::string_view modelPath,
                                          Physics3DRigidBodyDes* rigidDes,
-                                         const cocos2d::Vec3& translateInPhysics,
-                                         const cocos2d::Quaternion& rotInPhsyics)
+                                         const axis::Vec3& translateInPhysics,
+                                         const axis::Quaternion& rotInPhsyics)
 {
     auto ret = new PhysicsMeshRenderer();
     if (ret->initWithFile(modelPath))
@@ -46,14 +46,14 @@ PhysicsMeshRenderer* PhysicsMeshRenderer::create(std::string_view modelPath,
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    AX_SAFE_DELETE(ret);
     return ret;
 }
 
 PhysicsMeshRenderer* PhysicsMeshRenderer::createWithCollider(std::string_view modelPath,
                                                      Physics3DColliderDes* colliderDes,
-                                                     const cocos2d::Vec3& translateInPhysics,
-                                                     const cocos2d::Quaternion& rotInPhsyics)
+                                                     const axis::Vec3& translateInPhysics,
+                                                     const axis::Quaternion& rotInPhsyics)
 {
     auto ret = new PhysicsMeshRenderer();
     if (ret->initWithFile(modelPath))
@@ -65,7 +65,7 @@ PhysicsMeshRenderer* PhysicsMeshRenderer::createWithCollider(std::string_view mo
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    AX_SAFE_DELETE(ret);
     return ret;
 }
 
@@ -95,8 +95,8 @@ void PhysicsMeshRenderer::syncPhysicsToNode()
 PhysicsMeshRenderer::PhysicsMeshRenderer() : _physicsComponent(nullptr) {}
 PhysicsMeshRenderer::~PhysicsMeshRenderer() {}
 
-NS_CC_END
+NS_AX_END
 
-#    endif  // CC_ENABLE_BULLET_INTEGRATION
+#    endif  // AX_ENABLE_BULLET_INTEGRATION
 
-#endif  // CC_USE_3D_PHYSICS
+#endif  // AX_USE_3D_PHYSICS

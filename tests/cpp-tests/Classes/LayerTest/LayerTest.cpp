@@ -26,7 +26,7 @@
 #include "../testResource.h"
 #include "../core/ui/UIText.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 enum
 {
@@ -315,9 +315,9 @@ void LayerTest1::onEnter()
     LayerTest::onEnter();
 
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesBegan = CC_CALLBACK_2(LayerTest1::onTouchesBegan, this);
-    listener->onTouchesMoved = CC_CALLBACK_2(LayerTest1::onTouchesMoved, this);
-    listener->onTouchesEnded = CC_CALLBACK_2(LayerTest1::onTouchesEnded, this);
+    listener->onTouchesBegan = AX_CALLBACK_2(LayerTest1::onTouchesBegan, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(LayerTest1::onTouchesMoved, this);
+    listener->onTouchesEnded = AX_CALLBACK_2(LayerTest1::onTouchesEnded, this);
 
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
@@ -419,7 +419,7 @@ LayerTestBlend::LayerTestBlend()
     sister1->setPosition(Vec2(s.width * 1 / 3, s.height / 2));
     sister2->setPosition(Vec2(s.width * 2 / 3, s.height / 2));
 
-    schedule(CC_SCHEDULE_SELECTOR(LayerTestBlend::newBlend), 1.0f);
+    schedule(AX_SCHEDULE_SELECTOR(LayerTestBlend::newBlend), 1.0f);
 }
 
 void LayerTestBlend::newBlend(float dt)
@@ -460,7 +460,7 @@ LayerGradientTest::LayerGradientTest()
     addChild(layer1, 0, kTagLayer);
 
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesMoved = CC_CALLBACK_2(LayerGradientTest::onTouchesMoved, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(LayerGradientTest::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     auto label1 = Label::createWithTTF("Compressed Interpolation: Enabled", "fonts/Marker Felt.ttf", 26);
@@ -468,7 +468,7 @@ LayerGradientTest::LayerGradientTest()
     auto item1  = MenuItemLabel::create(label1);
     auto item2  = MenuItemLabel::create(label2);
     auto item =
-        MenuItemToggle::createWithCallback(CC_CALLBACK_1(LayerGradientTest::toggleItem, this), item1, item2, nullptr);
+        MenuItemToggle::createWithCallback(AX_CALLBACK_1(LayerGradientTest::toggleItem, this), item1, item2, nullptr);
 
     auto menu = Menu::create(item, nullptr);
     addChild(menu);
@@ -554,7 +554,7 @@ void LayerIgnoreAnchorPointPos::onEnter()
     child->setPosition(Vec2(lsize.width / 2, lsize.height / 2));
 
     auto item =
-        MenuItemFont::create("Toggle ignore anchor point", CC_CALLBACK_1(LayerIgnoreAnchorPointPos::onToggle, this));
+        MenuItemFont::create("Toggle ignore anchor point", AX_CALLBACK_1(LayerIgnoreAnchorPointPos::onToggle, this));
 
     auto menu = Menu::create(item, nullptr);
     this->addChild(menu);
@@ -602,7 +602,7 @@ void LayerIgnoreAnchorPointRot::onEnter()
     child->setPosition(Vec2(lsize.width / 2, lsize.height / 2));
 
     auto item =
-        MenuItemFont::create("Toggle ignore anchor point", CC_CALLBACK_1(LayerIgnoreAnchorPointRot::onToggle, this));
+        MenuItemFont::create("Toggle ignore anchor point", AX_CALLBACK_1(LayerIgnoreAnchorPointRot::onToggle, this));
 
     auto menu = Menu::create(item, nullptr);
     this->addChild(menu);
@@ -653,7 +653,7 @@ void LayerIgnoreAnchorPointScale::onEnter()
     child->setPosition(Vec2(lsize.width / 2, lsize.height / 2));
 
     auto item =
-        MenuItemFont::create("Toggle ignore anchor point", CC_CALLBACK_1(LayerIgnoreAnchorPointScale::onToggle, this));
+        MenuItemFont::create("Toggle ignore anchor point", AX_CALLBACK_1(LayerIgnoreAnchorPointScale::onToggle, this));
 
     auto menu = Menu::create(item, nullptr);
     this->addChild(menu);
@@ -736,7 +736,7 @@ void LayerBug3162A::onEnter()
 
     this->addChild(_layer[0]);
 
-    schedule(CC_SCHEDULE_SELECTOR(LayerBug3162A::step), 0.5, CC_REPEAT_FOREVER, 0);
+    schedule(AX_SCHEDULE_SELECTOR(LayerBug3162A::step), 0.5, AX_REPEAT_FOREVER, 0);
 }
 
 void LayerBug3162A::step(float dt)
@@ -782,7 +782,7 @@ void LayerBug3162B::onEnter()
     _layer[1]->setCascadeColorEnabled(true);
     _layer[2]->setCascadeColorEnabled(true);
 
-    schedule(CC_SCHEDULE_SELECTOR(LayerBug3162B::step), 0.5, CC_REPEAT_FOREVER, 0);
+    schedule(AX_SCHEDULE_SELECTOR(LayerBug3162B::step), 0.5, AX_REPEAT_FOREVER, 0);
 }
 
 void LayerBug3162B::step(float dt)
@@ -855,14 +855,14 @@ void LayerRadialGradientTest::onEnter()
     addChild(listview);
 }
 
-cocos2d::ui::Slider* LayerRadialGradientTest::createSlider()
+axis::ui::Slider* LayerRadialGradientTest::createSlider()
 {
     auto slider = ui::Slider::create();
     slider->setTouchEnabled(true);
     slider->loadBarTexture("cocosui/sliderTrack.png");
     slider->loadSlidBallTextures("cocosui/sliderThumb.png", "cocosui/sliderThumb.png", "");
     slider->loadProgressBarTexture("cocosui/sliderProgress.png");
-    slider->addEventListener(CC_CALLBACK_2(LayerRadialGradientTest::sliderCallback, this));
+    slider->addEventListener(AX_CALLBACK_2(LayerRadialGradientTest::sliderCallback, this));
     slider->setRotation(90);
     slider->setTag(101);
     slider->setPercent(50);
@@ -870,18 +870,18 @@ cocos2d::ui::Slider* LayerRadialGradientTest::createSlider()
     return slider;
 }
 
-void LayerRadialGradientTest::listviewCallback(cocos2d::Ref* sender, cocos2d::ui::ListView::EventType type)
+void LayerRadialGradientTest::listviewCallback(axis::Ref* sender, axis::ui::ListView::EventType type)
 {
     // clear all text to white
-    auto listview = static_cast<cocos2d::ui::ListView*>(sender);
-    for (auto& item : listview->getItems())
-        static_cast<cocos2d::ui::Text*>(item)->setColor(cocos2d::Color3B::WHITE);
+    auto listview = static_cast<axis::ui::ListView*>(sender);
+    for (auto&& item : listview->getItems())
+        static_cast<axis::ui::Text*>(item)->setColor(axis::Color3B::WHITE);
 
     _currentSeletedItemIndex = (int)listview->getCurSelectedIndex();
-    listview->getItem(_currentSeletedItemIndex)->setColor(cocos2d::Color3B::RED);
+    listview->getItem(_currentSeletedItemIndex)->setColor(axis::Color3B::RED);
 
     int percent = 100;
-    auto slider = static_cast<cocos2d::ui::Slider*>(getChildByTag(101));
+    auto slider = static_cast<axis::ui::Slider*>(getChildByTag(101));
     switch (_currentSeletedItemIndex)
     {
     case 0:
@@ -910,68 +910,68 @@ void LayerRadialGradientTest::listviewCallback(cocos2d::Ref* sender, cocos2d::ui
     }
 }
 
-void LayerRadialGradientTest::sliderCallback(cocos2d::Ref* sender, cocos2d::ui::Slider::EventType type)
+void LayerRadialGradientTest::sliderCallback(axis::Ref* sender, axis::ui::Slider::EventType type)
 {
-    auto slider   = static_cast<cocos2d::ui::Slider*>(sender);
+    auto slider   = static_cast<axis::ui::Slider*>(sender);
     float percent = slider->getPercent() / 100.f;
     switch (_currentSeletedItemIndex)
     {
     case 0:
         // scale
         _layer->setScale(percent * 2);
-        CCLOG("scale is %f", percent * 2);
+        AXLOG("scale is %f", percent * 2);
         break;
     case 1:
         // skewx
         _layer->setSkewX(90 * percent);
-        CCLOG("SkewX is %f", 90 * percent);
+        AXLOG("SkewX is %f", 90 * percent);
         break;
     case 2:
         // skewy
         _layer->setSkewY(90 * percent);
-        CCLOG("SkewY is %f", 90 * percent);
+        AXLOG("SkewY is %f", 90 * percent);
         break;
     case 3:
         // expand
         _layer->setExpand(percent);
-        CCLOG("expand is %f", percent);
+        AXLOG("expand is %f", percent);
         break;
     case 4:
         // radius
         _layer->setRadius(300 * percent);
-        CCLOG("radius is %f", 300 * percent);
+        AXLOG("radius is %f", 300 * percent);
         break;
     default:
         break;
     }
 }
 
-cocos2d::ui::ListView* LayerRadialGradientTest::createListView()
+axis::ui::ListView* LayerRadialGradientTest::createListView()
 {
-    auto listview = cocos2d::ui::ListView::create();
+    auto listview = axis::ui::ListView::create();
 
-    auto scale = cocos2d::ui::Text::create();
+    auto scale = axis::ui::Text::create();
     scale->setString("scale[0-2]");
-    scale->setColor(cocos2d::Color3B::RED);  // default seleted item
+    scale->setColor(axis::Color3B::RED);  // default seleted item
     scale->setTouchEnabled(true);
     listview->pushBackCustomItem(scale);
 
-    auto skewx = cocos2d::ui::Text::create();
+    auto skewx = axis::ui::Text::create();
     skewx->setString("skewx[0-90]");
     skewx->setTouchEnabled(true);
     listview->pushBackCustomItem(skewx);
 
-    auto skewy = cocos2d::ui::Text::create();
+    auto skewy = axis::ui::Text::create();
     skewy->setString("skewy[0-90]");
     skewy->setTouchEnabled(true);
     listview->pushBackCustomItem(skewy);
 
-    auto expand = cocos2d::ui::Text::create();
+    auto expand = axis::ui::Text::create();
     expand->setString("expand[0-1]");
     expand->setTouchEnabled(true);
     listview->pushBackCustomItem(expand);
 
-    auto radius = cocos2d::ui::Text::create();
+    auto radius = axis::ui::Text::create();
     radius->setString("radius[0-300]");
     radius->setTouchEnabled(true);
     listview->pushBackCustomItem(radius);
@@ -980,7 +980,7 @@ cocos2d::ui::ListView* LayerRadialGradientTest::createListView()
     listview->setCurSelectedIndex(0);
     listview->setTouchEnabled(true);
     listview->addEventListener(
-        (ui::ListView::ccListViewCallback)CC_CALLBACK_2(LayerRadialGradientTest::listviewCallback, this));
+        (ui::ListView::ccListViewCallback)AX_CALLBACK_2(LayerRadialGradientTest::listviewCallback, this));
     listview->setTag(100);
 
     return listview;

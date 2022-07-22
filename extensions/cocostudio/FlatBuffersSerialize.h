@@ -97,7 +97,7 @@ class CCS_DLL FlatBuffersSerialize
 public:
     static FlatBuffersSerialize* getInstance();
     /** @deprecated Use method destroyInstance() instead */
-    CC_DEPRECATED_ATTRIBUTE static void purge();
+    AX_DEPRECATED_ATTRIBUTE static void purge();
     static void destroyInstance();
 
     FlatBuffersSerialize();
@@ -138,7 +138,7 @@ public:
 
     int getResourceType(std::string_view key);
     std::string getGUIClassName(std::string_view name);
-    std::string getWidgetReaderClassName(cocos2d::ui::Widget* widget);
+    std::string getWidgetReaderClassName(axis::ui::Widget* widget);
 
     /* create flat buffers with XML */
     flatbuffers::FlatBufferBuilder* createFlatBuffersWithXMLFileForSimulator(std::string_view xmlFileName);

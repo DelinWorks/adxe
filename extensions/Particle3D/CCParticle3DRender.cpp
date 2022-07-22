@@ -37,7 +37,7 @@
 #include "3d/CCMeshRenderer.h"
 #include "2d/CCCamera.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 Particle3DQuadRender::Particle3DQuadRender()
     : _texture(nullptr), _programState(nullptr), _indexBuffer(nullptr), _vertexBuffer(nullptr), _texFile("")
@@ -45,10 +45,10 @@ Particle3DQuadRender::Particle3DQuadRender()
 
 Particle3DQuadRender::~Particle3DQuadRender()
 {
-    // CC_SAFE_RELEASE(_texture);
-    CC_SAFE_RELEASE(_programState);
-    CC_SAFE_RELEASE(_vertexBuffer);
-    CC_SAFE_RELEASE(_indexBuffer);
+    // AX_SAFE_RELEASE(_texture);
+    AX_SAFE_RELEASE(_programState);
+    AX_SAFE_RELEASE(_vertexBuffer);
+    AX_SAFE_RELEASE(_indexBuffer);
 }
 
 Particle3DQuadRender* Particle3DQuadRender::create(std::string_view texFile)
@@ -61,7 +61,7 @@ Particle3DQuadRender* Particle3DQuadRender::create(std::string_view texFile)
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
 
     return ret;
@@ -82,7 +82,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4& transform, Par
                                                       backend::BufferType::VERTEX, backend::BufferUsage::DYNAMIC);
         if (_vertexBuffer == nullptr)
         {
-            CCLOG("Particle3DQuadRender::render create vertex buffer failed");
+            AXLOG("Particle3DQuadRender::render create vertex buffer failed");
             return;
         }
     }
@@ -94,7 +94,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4& transform, Par
                                                       backend::BufferType::INDEX, backend::BufferUsage::DYNAMIC);
         if (_indexBuffer == nullptr)
         {
-            CCLOG("Particle3DQuadRender::render create index buffer failed");
+            AXLOG("Particle3DQuadRender::render create index buffer failed");
             return;
         }
     }
@@ -117,7 +117,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4& transform, Par
     Vec3 position;  // particle position
     int vertexindex = 0;
     int index       = 0;
-    for (auto iter : activeParticleList)
+    for (auto&& iter : activeParticleList)
     {
         auto particle   = iter;
         Vec3 halfwidth  = particle->width * 0.5f * right;
@@ -167,8 +167,8 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4& transform, Par
     auto afterCommand = renderer->nextCallbackCommand();
     afterCommand->init(depthZ);
 
-    beforeCommand->func = [=]() { onBeforeDraw(); };  // CC_CALLBACK_0(Particle3DQuadRender::onBeforeDraw, this);
-    afterCommand->func  = [=]() { onAfterDraw(); };   // CC_CALLBACK_0(Particle3DQuadRender::onAfterDraw, this);
+    beforeCommand->func = [=]() { onBeforeDraw(); };  // AX_CALLBACK_0(Particle3DQuadRender::onBeforeDraw, this);
+    afterCommand->func  = [=]() { onAfterDraw(); };   // AX_CALLBACK_0(Particle3DQuadRender::onAfterDraw, this);
 
     _meshCommand.setVertexBuffer(_vertexBuffer);
     _meshCommand.setIndexBuffer(_indexBuffer, MeshCommand::IndexFormat::U_SHORT);
@@ -193,7 +193,7 @@ void Particle3DQuadRender::render(Renderer* renderer, const Mat4& transform, Par
 
 bool Particle3DQuadRender::initQuadRender(std::string_view texFile)
 {
-    CC_SAFE_RELEASE_NULL(_programState);
+    AX_SAFE_RELEASE_NULL(_programState);
 
     if (!texFile.empty())
     {
@@ -283,7 +283,7 @@ void Particle3DQuadRender::reset()
 Particle3DModelRender::Particle3DModelRender() : _meshSize(Vec3::ONE) {}
 Particle3DModelRender::~Particle3DModelRender()
 {
-    for (auto iter : _meshList)
+    for (auto&& iter : _meshList)
     {
         iter->release();
     }
@@ -309,7 +309,7 @@ void Particle3DModelRender::render(Renderer* renderer, const Mat4& transform, Pa
             MeshRenderer* mesh = MeshRenderer::create(_modelFile);
             if (mesh == nullptr)
             {
-                CCLOG("failed to load file %s", _modelFile.c_str());
+                AXLOG("failed to load file %s", _modelFile.c_str());
                 continue;
             }
             mesh->setTexture(_texFile);
@@ -333,7 +333,7 @@ void Particle3DModelRender::render(Renderer* renderer, const Mat4& transform, Pa
     Quaternion q;
     transform.decompose(nullptr, &q, nullptr);
     unsigned int index = 0;
-    for (auto iter : activeParticleList)
+    for (auto&& iter : activeParticleList)
     {
         auto particle = iter;
         Mat4::createRotation(q * particle->orientation, &rotMat);
@@ -350,7 +350,7 @@ void Particle3DModelRender::render(Renderer* renderer, const Mat4& transform, Pa
 
 void Particle3DModelRender::reset()
 {
-    for (auto iter : _meshList)
+    for (auto&& iter : _meshList)
     {
         iter->release();
     }
@@ -412,4 +412,4 @@ void Particle3DRender::setBlendFunc(const BlendFunc& blendFunc)
     _stateBlock.setBlendFunc(blendFunc);
 }
 
-NS_CC_END
+NS_AX_END

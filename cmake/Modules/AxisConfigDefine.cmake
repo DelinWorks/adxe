@@ -55,7 +55,7 @@ message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
 
 # custom target property for lua/js link
 define_property(TARGET
-    PROPERTY CC_LUA_DEPEND
+    PROPERTY AX_LUA_DEPEND
     BRIEF_DOCS "axis lua depend libs"
     FULL_DOCS "use to save depend libs of axis lua project"
 ) 
@@ -109,7 +109,7 @@ endif()
 
 # Set macro definitions for special platforms
 function(use_axis_compile_define target)
-    target_compile_definitions(${target} PUBLIC $<$<CONFIG:Debug>:COCOS2D_DEBUG=1>)
+    target_compile_definitions(${target} PUBLIC $<$<CONFIG:Debug>:AXIS_DEBUG=1>)
     
     # !important axis not use double precision
     # target_compile_definitions(${target} PUBLIC CP_USE_CGTYPES=0)
@@ -151,7 +151,7 @@ function(use_axis_compile_define target)
                 PRIVATE _USEGUIDLL # ui
             )
         else()
-            target_compile_definitions(${target} PUBLIC CC_STATIC)
+            target_compile_definitions(${target} PUBLIC AX_STATIC)
         endif()
     endif()
 endfunction()

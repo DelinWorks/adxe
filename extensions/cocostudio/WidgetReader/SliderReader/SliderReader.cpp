@@ -12,7 +12,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -46,10 +46,10 @@ SliderReader* SliderReader::getInstance()
 
 void SliderReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceSliderReader);
+    AX_SAFE_DELETE(instanceSliderReader);
 }
 
-void SliderReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void SliderReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     this->beginSetBasicProperties(widget);
 
@@ -65,9 +65,9 @@ void SliderReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* c
         std::string value = stChildArray[i].GetValue(cocoLoader);
 
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         // control custom properties
         else if (key == P_Scale9Enable) { slider->setScale9Enabled(valueToBool(value)); }
@@ -437,7 +437,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
     return *(Offset<Table>*)(&options);
 }
 
-void SliderReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* sliderOptions)
+void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* sliderOptions)
 {
     Slider* slider = static_cast<Slider*>(node);
 

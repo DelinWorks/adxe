@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "CCDataReaderHelper.h"
 #include "CCSpriteFrameCacheHelper.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -42,7 +42,7 @@ ArmatureDataManager* ArmatureDataManager::getInstance()
         s_sharedArmatureDataManager = new ArmatureDataManager();
         if (!s_sharedArmatureDataManager->init())
         {
-            CC_SAFE_DELETE(s_sharedArmatureDataManager);
+            AX_SAFE_DELETE(s_sharedArmatureDataManager);
         }
     }
     return s_sharedArmatureDataManager;
@@ -52,7 +52,7 @@ void ArmatureDataManager::destroyInstance()
 {
     SpriteFrameCacheHelper::purge();
     DataReaderHelper::purge();
-    CC_SAFE_RELEASE_NULL(s_sharedArmatureDataManager);
+    AX_SAFE_RELEASE_NULL(s_sharedArmatureDataManager);
 }
 
 ArmatureDataManager::ArmatureDataManager(void)
@@ -236,15 +236,15 @@ bool ArmatureDataManager::isAutoLoadSpriteFile()
     return _autoLoadSpriteFile;
 }
 
-const cocos2d::StringMap<ArmatureData*>& ArmatureDataManager::getArmatureDatas() const
+const axis::StringMap<ArmatureData*>& ArmatureDataManager::getArmatureDatas() const
 {
     return _armarureDatas;
 }
-const cocos2d::StringMap<AnimationData*>& ArmatureDataManager::getAnimationDatas() const
+const axis::StringMap<AnimationData*>& ArmatureDataManager::getAnimationDatas() const
 {
     return _animationDatas;
 }
-const cocos2d::StringMap<TextureData*>& ArmatureDataManager::getTextureDatas() const
+const axis::StringMap<TextureData*>& ArmatureDataManager::getTextureDatas() const
 {
     return _textureDatas;
 }

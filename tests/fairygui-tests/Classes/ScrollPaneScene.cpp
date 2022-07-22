@@ -1,7 +1,7 @@
 #include "ScrollPaneScene.h"
 #include "GList.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 void ScrollPaneScene::continueInit()
 {
@@ -13,10 +13,10 @@ void ScrollPaneScene::continueInit()
     _groot->addChild(_view);
 
     _list = _view->getChild("list")->as<GList>();
-    _list->itemRenderer = CC_CALLBACK_2(ScrollPaneScene::renderListItem, this);
+    _list->itemRenderer = AX_CALLBACK_2(ScrollPaneScene::renderListItem, this);
     _list->setVirtual();
     _list->setNumItems(1000);
-    _list->addEventListener(UIEventType::TouchBegin, CC_CALLBACK_1(ScrollPaneScene::onClickList, this));
+    _list->addEventListener(UIEventType::TouchBegin, AX_CALLBACK_1(ScrollPaneScene::onClickList, this));
 }
 
 void ScrollPaneScene::renderListItem(int index, GObject* obj)
@@ -26,8 +26,8 @@ void ScrollPaneScene::renderListItem(int index, GObject* obj)
     item->getScrollPane()->setPosX(0); //reset scroll pos
 
     //Be carefull, RenderListItem is calling repeatedly, add tag to avoid adding duplicately.
-    item->getChild("b0")->addClickListener(CC_CALLBACK_1(ScrollPaneScene::onClickStick, this), EventTag(this));
-    item->getChild("b1")->addClickListener(CC_CALLBACK_1(ScrollPaneScene::onClickDelete, this), EventTag(this));
+    item->getChild("b0")->addClickListener(AX_CALLBACK_1(ScrollPaneScene::onClickStick, this), EventTag(this));
+    item->getChild("b1")->addClickListener(AX_CALLBACK_1(ScrollPaneScene::onClickDelete, this), EventTag(this));
 }
 
 void ScrollPaneScene::onClickStick(EventContext * context)
@@ -56,7 +56,7 @@ void ScrollPaneScene::onClickList(EventContext * context)
                 return;
             }
             item->getScrollPane()->setPosX(0, true);
-            //avoid scroll pane default behavior¡£
+            //avoid scroll pane default behaviorï¿½ï¿½
             item->getScrollPane()->cancelDragging();
             _list->getScrollPane()->cancelDragging();
             break;

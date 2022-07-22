@@ -24,11 +24,11 @@
 
 #include <stdio.h>
 
-USING_NS_CC;
-USING_NS_CC_EXT;
+USING_NS_AX;
+USING_NS_AX_EXT;
 
-#if defined(CC_PLATFORM_PC)
-extern cocos2d::Label* labelDebugDraw;
+#if defined(AX_PLATFORM_PC)
+extern axis::Label* labelDebugDraw;
 #endif
 
 void DestructionListener::SayGoodbye(b2Joint* joint)
@@ -464,7 +464,7 @@ void Test::initShader(void)
 
 void Test::DrawString(int x, int y, const char* fmt, ...)
 {
-#if defined(CC_PLATFORM_PC)
+#if defined(AX_PLATFORM_PC)
     debugString.append(std::string(fmt));
     debugString.append("\n");
     labelDebugDraw->setString(debugString);
@@ -474,7 +474,7 @@ void Test::DrawString(int x, int y, const char* fmt, ...)
 
 void Test::DrawString(const b2Vec2& pw, const char* fmt, ...)
 {
-#if defined(CC_PLATFORM_PC)
+#if defined(AX_PLATFORM_PC)
     debugString.append(std::string(fmt));
     debugString.append("\n");
     labelDebugDraw->setString(debugString);

@@ -26,7 +26,7 @@ THE SOFTWARE.
 #include "ui/UIListView.h"
 #include "ui/UIHelper.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 static const float DEFAULT_TIME_IN_SEC_FOR_SCROLL_TO_ITEM = 1.0f;
 
@@ -56,7 +56,7 @@ ListView::ListView()
 ListView::~ListView()
 {
     _items.clear();
-    CC_SAFE_RELEASE(_model);
+    AX_SAFE_RELEASE(_model);
 }
 
 ListView* ListView::create()
@@ -67,7 +67,7 @@ ListView* ListView::create()
         widget->autorelease();
         return widget;
     }
-    CC_SAFE_DELETE(widget);
+    AX_SAFE_DELETE(widget);
     return nullptr;
 }
 
@@ -85,12 +85,12 @@ void ListView::setItemModel(Widget* model)
 {
     if (nullptr == model)
     {
-        CCLOG("Can't set a nullptr to item model!");
+        AXLOG("Can't set a nullptr to item model!");
         return;
     }
-    CC_SAFE_RELEASE_NULL(_model);
+    AX_SAFE_RELEASE_NULL(_model);
     _model = model;
-    CC_SAFE_RETAIN(_model);
+    AX_SAFE_RETAIN(_model);
 }
 
 void ListView::handleReleaseLogic(Touch* touch)
@@ -116,7 +116,7 @@ void ListView::updateInnerContainerSize()
     {
         size_t length     = _items.size();
         float totalHeight = (length == 0) ? 0.0f : (length - 1) * _itemsMargin + (_topPadding + _bottomPadding);
-        for (auto& item : _items)
+        for (auto&& item : _items)
         {
             totalHeight += item->getContentSize().height * item->getScaleY();
         }
@@ -129,7 +129,7 @@ void ListView::updateInnerContainerSize()
     {
         size_t length    = _items.size();
         float totalWidth = (length == 0) ? 0.0f : (length - 1) * _itemsMargin + (_leftPadding + _rightPadding);
-        for (auto& item : _items)
+        for (auto&& item : _items)
         {
             totalWidth += item->getContentSize().width * item->getScaleX();
         }
@@ -145,7 +145,7 @@ void ListView::updateInnerContainerSize()
 
 void ListView::remedyVerticalLayoutParameter(LinearLayoutParameter* layoutParameter, ssize_t itemIndex)
 {
-    CCASSERT(nullptr != layoutParameter, "Layout parameter can't be nullptr!");
+    AXASSERT(nullptr != layoutParameter, "Layout parameter can't be nullptr!");
 
     switch (_gravity)
     {
@@ -178,7 +178,7 @@ void ListView::remedyVerticalLayoutParameter(LinearLayoutParameter* layoutParame
 
 void ListView::remedyHorizontalLayoutParameter(LinearLayoutParameter* layoutParameter, ssize_t itemIndex)
 {
-    CCASSERT(nullptr != layoutParameter, "Layout parameter can't be nullptr!");
+    AXASSERT(nullptr != layoutParameter, "Layout parameter can't be nullptr!");
 
     switch (_gravity)
     {
@@ -210,7 +210,7 @@ void ListView::remedyHorizontalLayoutParameter(LinearLayoutParameter* layoutPara
 
 void ListView::remedyLayoutParameter(Widget* item)
 {
-    CCASSERT(nullptr != item, "ListView Item can't be nullptr!");
+    AXASSERT(nullptr != item, "ListView Item can't be nullptr!");
 
     LinearLayoutParameter* linearLayoutParameter = (LinearLayoutParameter*)(item->getLayoutParameter());
     bool isLayoutParameterExists                 = true;
@@ -270,7 +270,7 @@ void ListView::pushBackCustomItem(Widget* item)
     requestDoLayout();
 }
 
-void ListView::addChild(cocos2d::Node* child, int zOrder, int tag)
+void ListView::addChild(axis::Node* child, int zOrder, int tag)
 {
     ScrollView::addChild(child, zOrder, tag);
 
@@ -282,12 +282,12 @@ void ListView::addChild(cocos2d::Node* child, int zOrder, int tag)
     }
 }
 
-void ListView::addChild(cocos2d::Node* child)
+void ListView::addChild(axis::Node* child)
 {
     ListView::addChild(child, child->getLocalZOrder(), child->getName());
 }
 
-void ListView::addChild(cocos2d::Node* child, int zOrder)
+void ListView::addChild(axis::Node* child, int zOrder)
 {
     ListView::addChild(child, zOrder, child->getName());
 }
@@ -304,7 +304,7 @@ void ListView::addChild(Node* child, int zOrder, std::string_view name)
     }
 }
 
-void ListView::removeChild(cocos2d::Node* child, bool cleanup)
+void ListView::removeChild(axis::Node* child, bool cleanup)
 {
     Widget* widget = dynamic_cast<Widget*>(child);
     if (nullptr != widget)
@@ -657,7 +657,7 @@ static Widget* findClosestItem(const Vec2& targetPosition,
                                ssize_t lastIndex,
                                float distanceFromLast)
 {
-    CCASSERT(firstIndex >= 0 && lastIndex < items.size() && firstIndex <= lastIndex, "");
+    AXASSERT(firstIndex >= 0 && lastIndex < items.size() && firstIndex <= lastIndex, "");
     if (firstIndex == lastIndex)
     {
         return items.at(firstIndex);
@@ -892,7 +892,7 @@ void ListView::setCurSelectedIndex(int itemIndex)
         return;
     }
     _curSelectedIndex = itemIndex;
-    this->selectedItemEvent(cocos2d::ui::Widget::TouchEventType::ENDED);
+    this->selectedItemEvent(axis::ui::Widget::TouchEventType::ENDED);
 }
 
 void ListView::onSizeChanged()
@@ -914,7 +914,7 @@ Widget* ListView::createCloneInstance()
 void ListView::copyClonedWidgetChildren(Widget* model)
 {
     auto& arrayItems = static_cast<ListView*>(model)->getItems();
-    for (auto& item : arrayItems)
+    for (auto&& item : arrayItems)
     {
         pushBackCustomItem(item->clone());
     }
@@ -1090,4 +1090,4 @@ void ListView::startMagneticScroll()
 }
 
 }  // namespace ui
-NS_CC_END
+NS_AX_END

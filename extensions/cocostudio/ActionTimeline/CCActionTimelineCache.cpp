@@ -43,7 +43,7 @@ THE SOFTWARE.
 
 #include <fstream>
 
-using namespace cocos2d;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -99,7 +99,7 @@ ActionTimelineCache* ActionTimelineCache::getInstance()
 
 void ActionTimelineCache::destroyInstance()
 {
-    CC_SAFE_DELETE(_sharedActionCache);
+    AX_SAFE_DELETE(_sharedActionCache);
 }
 
 void ActionTimelineCache::purge()
@@ -194,7 +194,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithContent(std::string_
     doc.Parse<0>(content.data(), content.length());
     if (doc.HasParseError())
     {
-        CCLOG("GetParseError %d\n", doc.GetParseError());
+        AXLOG("GetParseError %d\n", doc.GetParseError());
     }
 
     const rapidjson::Value& json = DICTOOL->getSubDictionary_json(doc, ACTION);
@@ -443,7 +443,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFlatBuffersFile(std:
 
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName);
 
-    CC_ASSERT(FileUtils::getInstance()->isFileExist(fullPath));
+    AX_ASSERT(FileUtils::getInstance()->isFileExist(fullPath));
 
     Data buf = FileUtils::getInstance()->getDataFromFile(fullPath);
     action   = createActionWithDataBuffer(buf);
@@ -452,7 +452,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationActionWithFlatBuffersFile(std:
     return action;
 }
 
-ActionTimeline* ActionTimelineCache::loadAnimationWithDataBuffer(const cocos2d::Data& data, std::string_view fileName)
+ActionTimeline* ActionTimelineCache::loadAnimationWithDataBuffer(const axis::Data& data, std::string_view fileName)
 {
     // if already exists an action with filename, then return this action
     ActionTimeline* action = _animationActions.at(fileName);
@@ -461,7 +461,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationWithDataBuffer(const cocos2d::
 
     std::string fullPath = FileUtils::getInstance()->fullPathForFilename(fileName);
 
-    CC_ASSERT(FileUtils::getInstance()->isFileExist(fullPath));
+    AX_ASSERT(FileUtils::getInstance()->isFileExist(fullPath));
 
     action = createActionWithDataBuffer(data);
     _animationActions.insert(fileName, action);
@@ -469,7 +469,7 @@ ActionTimeline* ActionTimelineCache::loadAnimationWithDataBuffer(const cocos2d::
     return action;
 }
 
-ActionTimeline* ActionTimelineCache::createActionWithDataBuffer(const cocos2d::Data& data)
+ActionTimeline* ActionTimelineCache::createActionWithDataBuffer(const axis::Data& data)
 {
     auto csparsebinary = GetCSParseBinary(data.getBytes());
 
@@ -599,7 +599,7 @@ Timeline* ActionTimelineCache::loadTimelineWithFlatBuffers(const flatbuffers::Ti
 
             if (!frame)
             {
-                CCLOG("frame is invalid.");
+                AXLOG("frame is invalid.");
                 continue;
             }
             timeline->addFrame(frame);
@@ -904,7 +904,7 @@ Frame* ActionTimelineCache::loadInnerActionFrameWithFlatBuffers(const flatbuffer
 Frame* ActionTimelineCache::loadBlendFrameWithFlatBuffers(const flatbuffers::BlendFrame* flatbuffers)
 {
     BlendFuncFrame* frame = BlendFuncFrame::create();
-    cocos2d::BlendFunc blend;
+    axis::BlendFunc blend;
     blend.src = backend::BlendFactor::ONE;
     blend.dst = backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
     if (nullptr != flatbuffers->blendFunc())
@@ -934,7 +934,7 @@ void ActionTimelineCache::loadEasingDataWithFlatBuffers(cocostudio::timeline::Fr
                                                         const flatbuffers::EasingData* flatbuffers)
 {
     int type = flatbuffers->type();
-    frame->setTweenType((cocos2d::tweenfunc::TweenType)type);
+    frame->setTweenType((axis::tweenfunc::TweenType)type);
     auto points = flatbuffers->points();
     if (points)
     {

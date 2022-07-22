@@ -23,8 +23,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_BUNDLE_READER_H__
-#define __CC_BUNDLE_READER_H__
+#ifndef __AX_BUNDLE_READER_H__
+#define __AX_BUNDLE_READER_H__
 
 #include <string>
 #include <vector>
@@ -33,7 +33,7 @@
 #include "platform/CCPlatformMacros.h"
 #include "base/CCConsole.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -45,7 +45,7 @@ NS_CC_BEGIN
  * @js NA
  * @lua NA
  */
-class BundleReader : public cocos2d::Ref
+class BundleReader : public axis::Ref
 {
 public:
     /**
@@ -188,7 +188,7 @@ inline bool BundleReader::read<char>(char* ptr)
 template <>
 inline bool BundleReader::read<std::string>(std::string* /*ptr*/)
 {
-    CCLOG("can not read std::string, use readString() instead");
+    AXLOG("can not read std::string, use readString() instead");
     return false;
 }
 
@@ -218,6 +218,6 @@ inline bool BundleReader::readArray<std::string>(unsigned int* length, std::vect
 // end of 3d group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif

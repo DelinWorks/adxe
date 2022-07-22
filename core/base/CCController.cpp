@@ -26,21 +26,21 @@
 
 #include "base/CCController.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || \
-     CC_TARGET_PLATFORM == CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX ||   \
-     CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID || AX_TARGET_PLATFORM == AX_PLATFORM_IOS || \
+     AX_TARGET_PLATFORM == AX_PLATFORM_MAC || AX_TARGET_PLATFORM == AX_PLATFORM_LINUX ||   \
+     AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
 
 #    include "base/CCEventDispatcher.h"
 #    include "base/CCEventController.h"
 #    include "base/CCDirector.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 std::vector<Controller*> Controller::s_allController;
 
 Controller* Controller::getControllerByTag(int tag)
 {
-    for (auto controller : Controller::s_allController)
+    for (auto&& controller : Controller::s_allController)
     {
         if (controller->_controllerTag == tag)
         {
@@ -52,7 +52,7 @@ Controller* Controller::getControllerByTag(int tag)
 
 Controller* Controller::getControllerByDeviceId(int deviceId)
 {
-    for (auto controller : Controller::s_allController)
+    for (auto&& controller : Controller::s_allController)
     {
         if (controller->_deviceId == deviceId)
         {
@@ -125,7 +125,7 @@ void Controller::onAxisEvent(int axisCode, float value, bool isAnalog)
     _eventDispatcher->dispatchEvent(_axisEvent);
 }
 
-NS_CC_END
+NS_AX_END
 
-#endif  // (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID || CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM ==
-        // CC_PLATFORM_MAC || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX || CC_TARGET_PLATFORM == CC_PLATFORM_WIN32)
+#endif  // (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID || AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM ==
+        // AX_PLATFORM_MAC || AX_TARGET_PLATFORM == AX_PLATFORM_LINUX || AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)

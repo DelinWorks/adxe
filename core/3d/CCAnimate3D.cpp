@@ -32,7 +32,7 @@
 #include "base/CCDirector.h"
 #include "base/CCEventDispatcher.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 std::unordered_map<Node*, Animate3D*> Animate3D::s_fadeInAnimates;
 std::unordered_map<Node*, Animate3D*> Animate3D::s_fadeOutAnimates;
@@ -224,7 +224,7 @@ void Animate3D::startWithTarget(Node* target)
 
         if (!hasCurve)
         {
-            CCLOG("warning: no animation found for the skeleton");
+            AXLOG("warning: no animation found for the skeleton");
         }
     }
 
@@ -411,7 +411,7 @@ void Animate3D::update(float t)
                         }
                     }
                     std::sort(eventInfos.begin(), eventInfos.end(), _playReverse ? cmpEventInfoDes : cmpEventInfoAsc);
-                    for (auto eventInfo : eventInfos)
+                    for (auto&& eventInfo : eventInfos)
                     {
                         Director::getInstance()->getEventDispatcher()->dispatchEvent(_keyFrameEvent[eventInfo->frame]);
                     }
@@ -434,7 +434,7 @@ void Animate3D::setSpeed(float speed)
 
 void Animate3D::setWeight(float weight)
 {
-    CCASSERT(weight >= 0.0f, "invalid weight");
+    AXASSERT(weight >= 0.0f, "invalid weight");
     _weight = fabsf(weight);
 }
 
@@ -507,13 +507,13 @@ Animate3D::~Animate3D()
 {
     removeFromMap();
 
-    for (auto& it : _keyFrameEvent)
+    for (auto&& it : _keyFrameEvent)
     {
         delete it.second;
     }
     _keyFrameEvent.clear();
 
-    CC_SAFE_RELEASE(_animation);
+    AX_SAFE_RELEASE(_animation);
 }
 
 void Animate3D::removeFromMap()
@@ -535,4 +535,4 @@ void Animate3D::removeFromMap()
     }
 }
 
-NS_CC_END
+NS_AX_END

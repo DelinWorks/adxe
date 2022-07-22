@@ -34,7 +34,7 @@
 #include "2d/CCLabel.h"
 #include "extensions/ExtensionExport.h"
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 /**
  * @addtogroup GUI
@@ -43,7 +43,7 @@ NS_CC_EXT_BEGIN
  * @{
  */
 
-class CC_EX_DLL ControlStepper : public Control
+class AX_EX_DLL ControlStepper : public Control
 {
 public:
     enum class Part
@@ -113,16 +113,16 @@ protected:
     int _autorepeatCount;
 
     // Weak links to children
-    CC_SYNTHESIZE_RETAIN(Sprite*, _minusSprite, MinusSprite)
-    CC_SYNTHESIZE_RETAIN(Sprite*, _plusSprite, PlusSprite)
-    CC_SYNTHESIZE_RETAIN(Label*, _minusLabel, MinusLabel)
-    CC_SYNTHESIZE_RETAIN(Label*, _plusLabel, PlusLabel)
+    AX_SYNTHESIZE_RETAIN(Sprite*, _minusSprite, MinusSprite)
+    AX_SYNTHESIZE_RETAIN(Sprite*, _plusSprite, PlusSprite)
+    AX_SYNTHESIZE_RETAIN(Label*, _minusLabel, MinusLabel)
+    AX_SYNTHESIZE_RETAIN(Label*, _plusLabel, PlusLabel)
 };
 
 // end of GUI group
 /// @}
 /// @}
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif /* __CCCONTROLSTEPPER_H__ */

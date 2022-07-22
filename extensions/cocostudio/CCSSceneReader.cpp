@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "base/ccUtils.h"
 #include "platform/CCFileUtils.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 using namespace ui;
 
 namespace cocostudio
@@ -52,18 +52,18 @@ const char* SceneReader::sceneReaderVersion()
     return "1.0.0.0";
 }
 
-cocos2d::Node* SceneReader::createNodeWithSceneFile(
+axis::Node* SceneReader::createNodeWithSceneFile(
     std::string_view fileName,
     AttachComponentType attachComponent /*= AttachComponentType::EMPTY_NODE*/)
 {
-    std::string fileExtension = cocos2d::FileUtils::getInstance()->getFileExtension(fileName);
+    std::string fileExtension = axis::FileUtils::getInstance()->getFileExtension(fileName);
     if (fileExtension == ".json")
     {
         _node = nullptr;
         rapidjson::Document jsonDict;
         do
         {
-            CC_BREAK_IF(!readJson(fileName, jsonDict));
+            AX_BREAK_IF(!readJson(fileName, jsonDict));
             _node = createObject(jsonDict, nullptr, attachComponent);
             TriggerMng::getInstance()->parse(jsonDict);
         } while (0);
@@ -77,7 +77,7 @@ cocos2d::Node* SceneReader::createNodeWithSceneFile(
             std::string binaryFilePath = FileUtils::getInstance()->fullPathForFilename(fileName);
             auto fileData              = FileUtils::getInstance()->getDataFromFile(binaryFilePath);
             auto fileDataBytes         = fileData.getBytes();
-            CC_BREAK_IF(fileData.isNull());
+            AX_BREAK_IF(fileData.isNull());
             CocoLoader tCocoLoader;
             if (tCocoLoader.ReadCocoBinBuff((char*)fileDataBytes))
             {
@@ -86,7 +86,7 @@ cocos2d::Node* SceneReader::createNodeWithSceneFile(
                 if (rapidjson::kObjectType == tType)
                 {
                     stExpCocoNode* tpChildArray = tpRootCocoNode->GetChildArray(&tCocoLoader);
-                    CC_BREAK_IF(tpRootCocoNode->GetChildNum() == 0);
+                    AX_BREAK_IF(tpRootCocoNode->GetChildNum() == 0);
                     _node      = Node::create();
                     int nCount = 0;
                     std::vector<Component*> _vecComs;
@@ -131,7 +131,7 @@ cocos2d::Node* SceneReader::createNodeWithSceneFile(
                             }
                             else
                             {
-                                CC_SAFE_RELEASE_NULL(pCom);
+                                AX_SAFE_RELEASE_NULL(pCom);
                             }
                         }
                         if (_fnSelector != nullptr)
@@ -173,7 +173,7 @@ bool SceneReader::readJson(std::string_view fileName, rapidjson::Document& doc)
         std::string jsonpath   = FileUtils::getInstance()->fullPathForFilename(fileName);
         std::string contentStr = FileUtils::getInstance()->getStringFromFile(jsonpath);
         doc.Parse<0>(contentStr.c_str());
-        CC_BREAK_IF(doc.HasParseError());
+        AX_BREAK_IF(doc.HasParseError());
         ret = true;
     } while (0);
     return ret;
@@ -209,7 +209,7 @@ Node* SceneReader::nodeByTag(Node* parent, int tag)
     return _retNode;
 }
 
-cocos2d::Component* SceneReader::createComponent(std::string_view classname)
+axis::Component* SceneReader::createComponent(std::string_view classname)
 {
     std::string name = this->getComponentClassName(classname);
     Ref* object      = ObjectFactory::getInstance()->createObject(name);
@@ -242,14 +242,14 @@ std::string SceneReader::getComponentClassName(std::string_view name)
     }
     else
     {
-        CCASSERT(false, "Unregistered Component!");
+        AXASSERT(false, "Unregistered Component!");
     }
 
     return comName;
 }
 
 Node* SceneReader::createObject(const rapidjson::Value& dict,
-                                cocos2d::Node* parent,
+                                axis::Node* parent,
                                 AttachComponentType attachComponent)
 {
     const char* className = DICTOOL->getStringValue_json(dict, "classname");
@@ -292,7 +292,7 @@ Node* SceneReader::createObject(const rapidjson::Value& dict,
                     }
                 }
             }
-            CC_SAFE_DELETE(data);
+            AX_SAFE_DELETE(data);
             if (_fnSelector != nullptr)
             {
                 _fnSelector(com, data);
@@ -352,9 +352,9 @@ Node* SceneReader::createObject(const rapidjson::Value& dict,
     return nullptr;
 }
 
-cocos2d::Node* SceneReader::createObject(CocoLoader* cocoLoader,
+axis::Node* SceneReader::createObject(CocoLoader* cocoLoader,
                                          stExpCocoNode* cocoNode,
-                                         cocos2d::Node* parent,
+                                         axis::Node* parent,
                                          AttachComponentType attachComponent)
 {
     stExpCocoNode* pNodeArray = cocoNode->GetChildArray(cocoLoader);
@@ -406,7 +406,7 @@ cocos2d::Node* SceneReader::createObject(CocoLoader* cocoLoader,
                 }
                 else
                 {
-                    CC_SAFE_RELEASE_NULL(pCom);
+                    AX_SAFE_RELEASE_NULL(pCom);
                 }
             }
             if (_fnSelector != nullptr)
@@ -414,7 +414,7 @@ cocos2d::Node* SceneReader::createObject(CocoLoader* cocoLoader,
                 _fnSelector(pCom, (void*)(data));
             }
         }
-        CC_SAFE_DELETE(data);
+        AX_SAFE_DELETE(data);
 
         if (parent != nullptr)
         {
@@ -431,7 +431,7 @@ cocos2d::Node* SceneReader::createObject(CocoLoader* cocoLoader,
                 gb = pRender->getNode();
                 gb->retain();
                 pRender->setNode(nullptr);
-                CC_SAFE_RELEASE_NULL(pRender);
+                AX_SAFE_RELEASE_NULL(pRender);
             }
             parent->addChild(gb);
         }
@@ -455,7 +455,7 @@ cocos2d::Node* SceneReader::createObject(CocoLoader* cocoLoader,
     return nullptr;
 }
 
-void SceneReader::setTarget(const std::function<void(cocos2d::Ref* obj, void* doc)>& selector)
+void SceneReader::setTarget(const std::function<void(axis::Ref* obj, void* doc)>& selector)
 {
     _fnSelector = selector;
 }
@@ -473,7 +473,7 @@ Node* SceneReader::getNodeByTag(int nTag)
     return nodeByTag(_node, nTag);
 }
 
-void SceneReader::setPropertyFromJsonDict(const rapidjson::Value& root, cocos2d::Node* node)
+void SceneReader::setPropertyFromJsonDict(const rapidjson::Value& root, axis::Node* node)
 {
     float x = DICTOOL->getFloatValue_json(root, "x");
     float y = DICTOOL->getFloatValue_json(root, "y");
@@ -500,7 +500,7 @@ void SceneReader::setPropertyFromJsonDict(const rapidjson::Value& root, cocos2d:
     node->setName(sName);
 }
 
-void SceneReader::setPropertyFromJsonDict(CocoLoader* cocoLoader, stExpCocoNode* cocoNode, cocos2d::Node* node)
+void SceneReader::setPropertyFromJsonDict(CocoLoader* cocoLoader, stExpCocoNode* cocoNode, axis::Node* node)
 {
     stExpCocoNode* stChildArray = cocoNode->GetChildArray(cocoLoader);
 
@@ -562,7 +562,7 @@ void SceneReader::destroyInstance()
     DictionaryHelper::destroyInstance();
     TriggerMng::destroyInstance();
     // CocosDenshion::SimpleAudioEngine::end();
-    CC_SAFE_DELETE(s_sharedReader);
+    AX_SAFE_DELETE(s_sharedReader);
 }
 
 }  // namespace cocostudio

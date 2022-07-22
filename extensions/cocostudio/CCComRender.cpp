@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "2d/CCParticleSystemQuad.h"
 #include "2d/CCSpriteFrameCache.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -44,7 +44,7 @@ ComRender::ComRender() : _render(nullptr)
     _name = COMPONENT_NAME;
 }
 
-ComRender::ComRender(cocos2d::Node* node, const char* comName)
+ComRender::ComRender(axis::Node* node, const char* comName)
 {
     if (node != nullptr)
     {
@@ -56,7 +56,7 @@ ComRender::ComRender(cocos2d::Node* node, const char* comName)
 
 ComRender::~ComRender()
 {
-    CC_SAFE_RELEASE_NULL(_render);
+    AX_SAFE_RELEASE_NULL(_render);
 }
 
 void ComRender::onEnter()
@@ -91,12 +91,12 @@ void ComRender::onRemove()
     }
 }
 
-cocos2d::Node* ComRender::getNode()
+axis::Node* ComRender::getNode()
 {
     return _render;
 }
 
-void ComRender::setNode(cocos2d::Node* node)
+void ComRender::setNode(axis::Node* node)
 {
     if (_render != nullptr)
     {
@@ -116,7 +116,7 @@ bool ComRender::serialize(void* r)
     bool ret = false;
     do
     {
-        CC_BREAK_IF(r == nullptr);
+        AX_BREAK_IF(r == nullptr);
         SerData* serData          = (SerData*)(r);
         const rapidjson::Value* v = serData->_rData;
         stExpCocoNode* cocoNode   = serData->_cocoNode;
@@ -131,25 +131,25 @@ bool ComRender::serialize(void* r)
         if (v != nullptr)
         {
             className = DICTOOL->getStringValue_json(*v, "classname");
-            CC_BREAK_IF(className == nullptr);
+            AX_BREAK_IF(className == nullptr);
             comName                          = DICTOOL->getStringValue_json(*v, "name");
             const rapidjson::Value& fileData = DICTOOL->getSubDictionary_json(*v, "fileData");
-            CC_BREAK_IF(!DICTOOL->checkObjectExist_json(fileData));
+            AX_BREAK_IF(!DICTOOL->checkObjectExist_json(fileData));
             file  = DICTOOL->getStringValue_json(fileData, "path");
             plist = DICTOOL->getStringValue_json(fileData, "plistFile");
-            CC_BREAK_IF(file == nullptr && plist == nullptr);
+            AX_BREAK_IF(file == nullptr && plist == nullptr);
             resType = DICTOOL->getIntValue_json(fileData, "resourceType", -1);
         }
         else if (cocoNode != nullptr)
         {
             className = cocoNode[1].GetValue(cocoLoader);
-            CC_BREAK_IF(className == nullptr);
+            AX_BREAK_IF(className == nullptr);
             comName                  = cocoNode[2].GetValue(cocoLoader);
             stExpCocoNode* pfileData = cocoNode[4].GetChildArray(cocoLoader);
-            CC_BREAK_IF(!pfileData);
+            AX_BREAK_IF(!pfileData);
             file  = pfileData[0].GetValue(cocoLoader);
             plist = pfileData[1].GetValue(cocoLoader);
-            CC_BREAK_IF(file == nullptr && plist == nullptr);
+            AX_BREAK_IF(file == nullptr && plist == nullptr);
             resType = atoi(pfileData[2].GetValue(cocoLoader));
         }
         if (comName != nullptr)
@@ -163,11 +163,11 @@ bool ComRender::serialize(void* r)
 
         if (file != nullptr)
         {
-            filePath.assign(cocos2d::FileUtils::getInstance()->fullPathForFilename(file));
+            filePath.assign(axis::FileUtils::getInstance()->fullPathForFilename(file));
         }
         if (plist != nullptr)
         {
-            plistPath.assign(cocos2d::FileUtils::getInstance()->fullPathForFilename(plist));
+            plistPath.assign(axis::FileUtils::getInstance()->fullPathForFilename(plist));
         }
         if (resType == 0)
         {
@@ -232,7 +232,7 @@ bool ComRender::serialize(void* r)
                     std::string binaryFilePath = FileUtils::getInstance()->fullPathForFilename(filePath);
                     auto fileData              = FileUtils::getInstance()->getDataFromFile(binaryFilePath);
                     auto fileDataBytes         = fileData.getBytes();
-                    CC_BREAK_IF(fileData.isNull());
+                    AX_BREAK_IF(fileData.isNull());
                     CocoLoader tCocoLoader;
                     if (tCocoLoader.ReadCocoBinBuff((char*)fileDataBytes))
                     {
@@ -304,7 +304,7 @@ bool ComRender::serialize(void* r)
                 std::string fileExtension = FileUtils::getInstance()->getFileExtension(filePath);
                 if (fileExtension == ".json" || fileExtension == ".exportjson")
                 {
-                    cocos2d::ui::Widget* widget = GUIReader::getInstance()->widgetFromJsonFile(filePath.c_str());
+                    axis::ui::Widget* widget = GUIReader::getInstance()->widgetFromJsonFile(filePath.c_str());
                     _render                     = widget;
                     _render->retain();
 
@@ -312,7 +312,7 @@ bool ComRender::serialize(void* r)
                 }
                 else if (fileExtension == ".csb")
                 {
-                    cocos2d::ui::Widget* widget = GUIReader::getInstance()->widgetFromBinaryFile(filePath.c_str());
+                    axis::ui::Widget* widget = GUIReader::getInstance()->widgetFromBinaryFile(filePath.c_str());
                     _render                     = widget;
                     _render->retain();
 
@@ -321,7 +321,7 @@ bool ComRender::serialize(void* r)
             }
             else
             {
-                CC_BREAK_IF(true);
+                AX_BREAK_IF(true);
             }
         }
         else if (resType == 1)
@@ -343,12 +343,12 @@ bool ComRender::serialize(void* r)
             }
             else
             {
-                CC_BREAK_IF(true);
+                AX_BREAK_IF(true);
             }
         }
         else
         {
-            CC_BREAK_IF(true);
+            AX_BREAK_IF(true);
         }
     } while (0);
 
@@ -364,12 +364,12 @@ ComRender* ComRender::create()
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
 
-ComRender* ComRender::create(cocos2d::Node* node, const char* comName)
+ComRender* ComRender::create(axis::Node* node, const char* comName)
 {
     ComRender* ret = new ComRender(node, comName);
     if (ret->init())
@@ -378,7 +378,7 @@ ComRender* ComRender::create(cocos2d::Node* node, const char* comName)
     }
     else
     {
-        CC_SAFE_DELETE(ret);
+        AX_SAFE_DELETE(ret);
     }
     return ret;
 }
@@ -390,7 +390,7 @@ bool ComRender::readJson(std::string_view fileName, rapidjson::Document& doc)
     {
         std::string contentStr = FileUtils::getInstance()->getStringFromFile(fileName);
         doc.Parse<0>(contentStr.c_str());
-        CC_BREAK_IF(doc.HasParseError());
+        AX_BREAK_IF(doc.HasParseError());
         ret = true;
     } while (0);
     return ret;

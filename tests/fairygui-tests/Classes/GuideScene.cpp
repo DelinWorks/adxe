@@ -1,6 +1,6 @@
 #include "GuideScene.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 GuideScene::GuideScene():_guideLayer(nullptr)
 {
@@ -9,7 +9,7 @@ GuideScene::GuideScene():_guideLayer(nullptr)
 
 GuideScene::~GuideScene()
 {
-    CC_SAFE_RELEASE(_guideLayer);
+    AX_SAFE_RELEASE(_guideLayer);
 }
 
 void GuideScene::continueInit()

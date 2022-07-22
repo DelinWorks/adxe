@@ -24,14 +24,14 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_SPHERE_SURFACE_EMITTER_H__
-#define __CC_PU_PARTICLE_3D_SPHERE_SURFACE_EMITTER_H__
+#ifndef __AX_PU_PARTICLE_3D_SPHERE_SURFACE_EMITTER_H__
+#define __AX_PU_PARTICLE_3D_SPHERE_SURFACE_EMITTER_H__
 
 #include "extensions/Particle3D/PU/CCPUEmitter.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_EX_DLL PUSphereSurfaceEmitter : public PUEmitter
+class AX_EX_DLL PUSphereSurfaceEmitter : public PUEmitter
 {
 public:
     // Constants
@@ -61,6 +61,6 @@ protected:
     float _radius;
     Vec3 _randomVector;
 };
-NS_CC_END
+NS_AX_END
 
 #endif

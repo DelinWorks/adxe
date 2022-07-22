@@ -33,7 +33,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace backend
 {
@@ -46,7 +46,7 @@ executed. You can do some logic opertion in the callback, such as invoking
 renderer to set depth/stencil test. Don't suggest to invoke backen API in
 the callback function.
 */
-class CC_DLL CallbackCommand : public RenderCommand
+class AX_DLL CallbackCommand : public RenderCommand
 {
     // only allow render to manage the callbackCommand
     friend class Renderer;
@@ -71,7 +71,7 @@ public:
     std::function<void()> func;
 };
 
-NS_CC_END
+NS_AX_END
 /**
  end of support group
  @}

@@ -36,15 +36,16 @@
 
 struct zlib_filefunc_def_s;
 
-namespace cocos2d
-{
+NS_AX_BEGIN
+
 namespace network
 {
 class Downloader;
 }
-}  // namespace cocos2d
 
-NS_CC_EXT_BEGIN
+NS_AX_END  // namespace axis
+
+NS_AX_EXT_BEGIN
 
 class AssetsManagerDelegateProtocol;
 
@@ -53,7 +54,7 @@ class AssetsManagerDelegateProtocol;
  *  The updated package should be a zip file. And there should be a file named
  *  version in the server, which contains version code.
  */
-class CC_EX_DLL AssetsManager : public Node
+class AX_EX_DLL AssetsManager : public Node
 {
 public:
     enum class ErrorCode
@@ -193,7 +194,7 @@ private:
 
     std::string _downloadedVersion;
 
-    cocos2d::network::Downloader* _downloader;
+    axis::network::Downloader* _downloader;
 
     unsigned int _connectionTimeout;
 
@@ -234,6 +235,6 @@ public:
     virtual void onSuccess() {}
 };
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif /* defined(__AssetsManager__) */

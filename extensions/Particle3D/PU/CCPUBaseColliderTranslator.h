@@ -24,16 +24,16 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_BASE_COLLIDER_TRANSLATOR_H__
-#define __CC_PU_PARTICLE_3D_BASE_COLLIDER_TRANSLATOR_H__
+#ifndef __AX_PU_PARTICLE_3D_BASE_COLLIDER_TRANSLATOR_H__
+#define __AX_PU_PARTICLE_3D_BASE_COLLIDER_TRANSLATOR_H__
 
 #include "extensions/Particle3D/PU/CCPUScriptTranslator.h"
 #include "extensions/Particle3D/PU/CCPUScriptCompiler.h"
 #include "extensions/Particle3D/PU/CCPUBaseCollider.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
-class CC_EX_DLL PUBaseColliderTranslator : public PUScriptTranslator
+class AX_EX_DLL PUBaseColliderTranslator : public PUScriptTranslator
 {
 public:
     PUBaseColliderTranslator();
@@ -43,6 +43,6 @@ public:
     virtual bool translateChildObject(PUScriptCompiler* compiler, PUAbstractNode* node);
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

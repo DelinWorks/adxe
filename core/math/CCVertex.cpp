@@ -28,7 +28,7 @@
 #include "math/CCVertex.h"
 #include "base/ccMacros.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 void ccVertexLineToPolygon(Vec2* points, float stroke, Vec2* vertices, unsigned int offset, unsigned int nuPoints)
 {
@@ -62,9 +62,9 @@ void ccVertexLineToPolygon(Vec2* points, float stroke, Vec2* vertices, unsigned 
             // Calculate angle between vectors
             float angle = acosf(p2p1.dot(p0p1));
 
-            if (angle < CC_DEGREES_TO_RADIANS(70))
+            if (angle < AX_DEGREES_TO_RADIANS(70))
                 perpVector = p2p1.getMidpoint(p0p1).getNormalized().getPerp();
-            else if (angle < CC_DEGREES_TO_RADIANS(170))
+            else if (angle < AX_DEGREES_TO_RADIANS(170))
                 perpVector = p2p1.getMidpoint(p0p1).getNormalized();
             else
                 perpVector = (p2 - p0).getNormalized().getPerp();
@@ -143,4 +143,4 @@ bool ccVertexLineIntersect(float Ax, float Ay, float Bx, float By, float Cx, flo
     return true;
 }
 
-NS_CC_END
+NS_AX_END

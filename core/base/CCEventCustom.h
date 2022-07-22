@@ -34,12 +34,12 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /** @class EventCustom
  * @brief Custom event.
  */
-class CC_DLL EventCustom : public Event
+class AX_DLL EventCustom : public Event
 {
 public:
     /** Constructor.
@@ -72,7 +72,7 @@ protected:
     std::string _eventName;
 };
 
-NS_CC_END
+NS_AX_END
 
 // end of base group
 /// @}

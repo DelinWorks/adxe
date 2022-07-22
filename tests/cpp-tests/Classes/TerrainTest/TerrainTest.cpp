@@ -24,7 +24,7 @@
 
 #include "TerrainTest.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 TerrainTests::TerrainTests()
 {
@@ -58,7 +58,7 @@ TerrainSimple::TerrainSimple()
     _terrain->setCameraMask(2);
     _terrain->setDrawWire(false);
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesMoved = CC_CALLBACK_2(TerrainSimple::onTouchesMoved, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(TerrainSimple::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
     //     add Particle3D for test blend
     auto rootps = PUParticleSystem3D::create("Particle3D/scripts/mp_torch.pu");
@@ -78,7 +78,7 @@ std::string TerrainSimple::subtitle() const
     return "Drag to walkThru";
 }
 
-void TerrainSimple::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void TerrainSimple::onTouchesMoved(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     float delta           = Director::getInstance()->getDeltaTime();
     auto touch            = touches[0];
@@ -113,8 +113,8 @@ std::string TerrainWalkThru::subtitle() const
 TerrainWalkThru::TerrainWalkThru()
 {
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesBegan = CC_CALLBACK_2(TerrainWalkThru::onTouchesBegan, this);
-    listener->onTouchesEnded = CC_CALLBACK_2(TerrainWalkThru::onTouchesEnd, this);
+    listener->onTouchesBegan = AX_CALLBACK_2(TerrainWalkThru::onTouchesBegan, this);
+    listener->onTouchesEnded = AX_CALLBACK_2(TerrainWalkThru::onTouchesEnd, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 
     Size visibleSize = Director::getInstance()->getVisibleSize();
@@ -168,9 +168,9 @@ TerrainWalkThru::TerrainWalkThru()
     addChild(_terrain);
 }
 
-void TerrainWalkThru::onTouchesBegan(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event) {}
+void TerrainWalkThru::onTouchesBegan(const std::vector<axis::Touch*>& touches, axis::Event* event) {}
 
-void TerrainWalkThru::onTouchesEnd(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void TerrainWalkThru::onTouchesEnd(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     auto touch    = touches[0];
     auto location = touch->getLocationInView();
@@ -334,7 +334,7 @@ Player* Player::create(const char* file, Camera* cam, Terrain* terrain)
         player->scheduleUpdate();
         return player;
     }
-    CC_SAFE_DELETE(player);
+    AX_SAFE_DELETE(player);
     return nullptr;
 }
 
@@ -361,7 +361,7 @@ TerrainWithLightMap::TerrainWithLightMap()
     _terrain->setDrawWire(false);
     _terrain->setLightMap("TerrainTest/Lightmap.png");
     auto listener            = EventListenerTouchAllAtOnce::create();
-    listener->onTouchesMoved = CC_CALLBACK_2(TerrainWithLightMap::onTouchesMoved, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(TerrainWithLightMap::onTouchesMoved, this);
     _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
 }
 std::string TerrainWithLightMap::title() const
@@ -372,7 +372,7 @@ std::string TerrainWithLightMap::subtitle() const
 {
     return "Drag to walkThru";
 }
-void TerrainWithLightMap::onTouchesMoved(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void TerrainWithLightMap::onTouchesMoved(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     float delta           = Director::getInstance()->getDeltaTime();
     auto touch            = touches[0];

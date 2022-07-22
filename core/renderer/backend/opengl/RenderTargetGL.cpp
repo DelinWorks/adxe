@@ -2,7 +2,7 @@
 #include "DeviceGL.h"
 #include "renderer/backend/opengl/MacrosGL.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 RenderTargetGL::RenderTargetGL(bool defaultRenderTarget, DeviceGL* deviceGL) : RenderTarget(defaultRenderTarget)
 {
@@ -60,7 +60,7 @@ void RenderTargetGL::update() const {
                     bufs[i] = GL_COLOR_ATTACHMENT0 + i;
                 }
             }
-    #if CC_TARGET_PLATFORM == CC_PLATFORM_WIN32 || CC_TARGET_PLATFORM == CC_PLATFORM_LINUX
+    #if AX_TARGET_PLATFORM == AX_PLATFORM_WIN32 || AX_TARGET_PLATFORM == AX_PLATFORM_LINUX
             glDrawBuffers(MAX_COLOR_ATTCHMENT, bufs);
     #endif
             CHECK_GL_ERROR_DEBUG();
@@ -80,4 +80,4 @@ void RenderTargetGL::update() const {
     _dirty = false;
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include "2d/CCNodeGrid.h"
 #include "renderer/CCRenderer.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 TransitionPageTurn::TransitionPageTurn()
 {
@@ -44,8 +44,8 @@ TransitionPageTurn::TransitionPageTurn()
 
 TransitionPageTurn::~TransitionPageTurn()
 {
-    CC_SAFE_RELEASE(_inSceneProxy);
-    CC_SAFE_RELEASE(_outSceneProxy);
+    AX_SAFE_RELEASE(_inSceneProxy);
+    AX_SAFE_RELEASE(_outSceneProxy);
 }
 
 /** creates a base transition with duration and incoming scene */
@@ -119,14 +119,14 @@ void TransitionPageTurn::onEnter()
     if (!_back)
     {
         _outSceneProxy->runAction(Sequence::create(
-            action, CallFunc::create(CC_CALLBACK_0(TransitionScene::finish, this)), StopGrid::create(), nullptr));
+            action, CallFunc::create(AX_CALLBACK_0(TransitionScene::finish, this)), StopGrid::create(), nullptr));
     }
     else
     {
         // to prevent initial flicker
         _inSceneProxy->setVisible(false);
         _inSceneProxy->runAction(Sequence::create(Show::create(), action,
-                                                  CallFunc::create(CC_CALLBACK_0(TransitionScene::finish, this)),
+                                                  CallFunc::create(AX_CALLBACK_0(TransitionScene::finish, this)),
                                                   StopGrid::create(), nullptr));
     }
 }
@@ -154,4 +154,4 @@ ActionInterval* TransitionPageTurn::actionWithSize(const Vec2& vector)
     }
 }
 
-NS_CC_END
+NS_AX_END

@@ -27,7 +27,7 @@
 #include "CCPULinearForceAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 //-----------------------------------------------------------------------
 void PULinearForceAffector::preUpdateAffector(float deltaTime)
@@ -39,7 +39,7 @@ void PULinearForceAffector::preUpdateAffector(float deltaTime)
 
 void PULinearForceAffector::updatePUAffector(PUParticle3D* particle, float /*deltaTime*/)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         //  Affect the direction and take the specialisation into account
@@ -66,4 +66,4 @@ void PULinearForceAffector::copyAttributesTo(PUAffector* affector)
     PUBaseForceAffector::copyAttributesTo(affector);
 }
 
-NS_CC_END
+NS_AX_END

@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_LUA_VALUE_H_
-#define __CC_LUA_VALUE_H_
+#ifndef __AX_LUA_VALUE_H_
+#define __AX_LUA_VALUE_H_
 
 #include <string>
 #include <map>
@@ -38,7 +38,7 @@ extern "C" {
 #include "base/ccTypes.h"
 #include "base/CCRef.h"
 
-#if CC_TARGET_PLATFORM == CC_PLATFORM_BLACKBERRY
+#if AX_TARGET_PLATFORM == AX_PLATFORM_BLACKBERRY
 using std::memcpy;
 using std::memset;
 #endif
@@ -48,7 +48,7 @@ using std::memset;
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 typedef int LUA_FUNCTION;
 typedef int LUA_TABLE;
@@ -277,8 +277,8 @@ inline std::string_view axislua_tosv(lua_State* L, int arg)
     return std::string_view{s, l};
 }
 
-NS_CC_END
+NS_AX_END
 
 // end group
 /// @}
-#endif  // __CC_LUA_VALUE_H_
+#endif  // __AX_LUA_VALUE_H_

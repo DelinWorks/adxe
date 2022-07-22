@@ -11,7 +11,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -39,10 +39,10 @@ TextBMFontReader* TextBMFontReader::getInstance()
 
 void TextBMFontReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceTextBMFontReader);
+    AX_SAFE_DELETE(instanceTextBMFontReader);
 }
 
-void TextBMFontReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void TextBMFontReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     this->beginSetBasicProperties(widget);
 
@@ -55,9 +55,9 @@ void TextBMFontReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoade
         std::string key   = stChildArray[i].GetName(cocoLoader);
         std::string value = stChildArray[i].GetValue(cocoLoader);
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_FileNameData)
         {
@@ -99,7 +99,7 @@ void TextBMFontReader::setPropsFromJsonDictionary(Widget* widget, const rapidjso
         break;
     }
     case 1:
-        CCLOG("Wrong res type of LabelAtlas!");
+        AXLOG("Wrong res type of LabelAtlas!");
         break;
     default:
         break;
@@ -186,7 +186,7 @@ Offset<Table> TextBMFontReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void TextBMFontReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* textBMFontOptions)
+void TextBMFontReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* textBMFontOptions)
 {
     TextBMFont* labelBMFont = static_cast<TextBMFont*>(node);
     auto options            = (TextBMFontOptions*)textBMFontOptions;

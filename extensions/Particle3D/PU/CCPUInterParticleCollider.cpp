@@ -27,7 +27,7 @@
 #include "CCPUInterParticleCollider.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const float PUParticle3DInterParticleCollider::DEFAULT_ADJUSTMENT = 1.0f;
@@ -130,8 +130,8 @@ bool PUParticle3DInterParticleCollider::validateAndExecuteSphereCollision(PUPart
 
 void PUParticle3DInterParticleCollider::updatePUAffector(PUParticle3D* /*particle*/, float /*deltaTime*/)
 {
-    // CCASSERT(0, "nonsupport yet");
-    // for (auto iter : _particleSystem->getParticles())
+    // AXASSERT(0, "nonsupport yet");
+    // for (auto&& iter : _particleSystem->getParticles())
     //{
     //     PUParticle3D *particle = iter;
     //      Fast rejection: only visible, moving particles are able to collide, unless they are colliding already
@@ -186,4 +186,4 @@ void PUParticle3DInterParticleCollider::copyAttributesTo(PUAffector* affector)
     interParticleCollider->_interParticleCollisionResponse = _interParticleCollisionResponse;
 }
 
-NS_CC_END
+NS_AX_END

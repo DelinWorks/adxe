@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include "base/ccUtils.h"
 #include "CCActionManagerEx.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 using namespace ui;
 
 namespace cocostudio
@@ -50,7 +50,7 @@ ActionNode::ActionNode()
     _frameArrayNum = (int)kKeyframeMax;
     for (int i = 0; i < _frameArrayNum; i++)
     {
-        _frameArray.push_back(new cocos2d::Vector<ActionFrame*>());
+        _frameArray.push_back(new axis::Vector<ActionFrame*>());
     }
 }
 
@@ -58,20 +58,20 @@ ActionNode::~ActionNode()
 {
     if (_action == nullptr)
     {
-        CC_SAFE_RELEASE_NULL(_actionSpawn);
+        AX_SAFE_RELEASE_NULL(_actionSpawn);
     }
     else
     {
-        CC_SAFE_RELEASE_NULL(_action);
-        CC_SAFE_RELEASE_NULL(_actionSpawn);
+        AX_SAFE_RELEASE_NULL(_action);
+        AX_SAFE_RELEASE_NULL(_actionSpawn);
     }
 
-    CC_SAFE_RELEASE(_object);
+    AX_SAFE_RELEASE(_object);
 
-    for (auto object : _frameArray)
+    for (auto&& object : _frameArray)
     {
         object->clear();
-        CC_SAFE_DELETE(object);
+        AX_SAFE_DELETE(object);
     }
     _frameArray.clear();
 }
@@ -209,7 +209,7 @@ float ActionNode::valueToFloat(std::string_view value)
     return utils::atof(value.data());
 }
 
-void ActionNode::initWithBinary(CocoLoader* cocoLoader, stExpCocoNode* cocoNode, cocos2d::Ref* root)
+void ActionNode::initWithBinary(CocoLoader* cocoLoader, stExpCocoNode* cocoNode, axis::Ref* root)
 {
 
     stExpCocoNode* stChildNode = cocoNode;
@@ -395,9 +395,9 @@ int ActionNode::getActionTag()
 
 void ActionNode::setObject(Ref* node)
 {
-    CC_SAFE_RELEASE(_object);
+    AX_SAFE_RELEASE(_object);
     _object = node;
-    CC_SAFE_RETAIN(_object);
+    AX_SAFE_RETAIN(_object);
 }
 
 Ref* ActionNode::getObject()
@@ -460,7 +460,7 @@ void ActionNode::deleteFrame(ActionFrame* frame)
 
 void ActionNode::clearAllFrame()
 {
-    for (auto array : _frameArray)
+    for (auto&& array : _frameArray)
     {
         array->clear();
     }
@@ -527,16 +527,16 @@ Spawn* ActionNode::refreshActionProperty()
 
     if (_action == nullptr)
     {
-        CC_SAFE_RELEASE_NULL(_actionSpawn);
+        AX_SAFE_RELEASE_NULL(_actionSpawn);
     }
     else
     {
-        CC_SAFE_RELEASE_NULL(_action);
-        CC_SAFE_RELEASE_NULL(_actionSpawn);
+        AX_SAFE_RELEASE_NULL(_action);
+        AX_SAFE_RELEASE_NULL(_actionSpawn);
     }
 
     _actionSpawn = Spawn::create(cSpawnArray);
-    CC_SAFE_RETAIN(_actionSpawn);
+    AX_SAFE_RETAIN(_actionSpawn);
     return _actionSpawn;
 }
 

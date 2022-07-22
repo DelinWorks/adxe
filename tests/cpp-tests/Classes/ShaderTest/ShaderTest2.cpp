@@ -30,7 +30,7 @@
 #include "renderer/backend/Device.h"
 #include <tuple>
 
-USING_NS_CC;
+USING_NS_AX;
 
 #define SET_UNIFORM(ps, name, value)                          \
     do                                                        \
@@ -87,7 +87,7 @@ public:
             ret->autorelease();
             return ret;
         }
-        CC_SAFE_RELEASE(ret);
+        AX_SAFE_RELEASE(ret);
         return nullptr;
     }
 
@@ -97,9 +97,9 @@ public:
         {
             effect->setTarget(this);
 
-            CC_SAFE_RELEASE(_defaultEffect);
+            AX_SAFE_RELEASE(_defaultEffect);
             _defaultEffect = effect;
-            CC_SAFE_RETAIN(_defaultEffect);
+            AX_SAFE_RETAIN(_defaultEffect);
 
             setProgramState(_defaultEffect->getProgramState());
         }
@@ -116,7 +116,7 @@ public:
 
     void draw(Renderer* renderer, const Mat4& transform, uint32_t flags) override
     {
-#if CC_USE_CULLING
+#if AX_USE_CULLING
         // Don't do calculate the culling if the transform was not updated
         _insideBounds =
             (flags & FLAGS_TRANSFORM_DIRTY) ? renderer->checkVisibility(transform, _contentSize) : _insideBounds;
@@ -126,7 +126,7 @@ public:
         {
             // negative effects: order < 0
             int idx = 0;
-            for (auto& effect : _effects)
+            for (auto&&effect : _effects)
             {
 
                 if (std::get<0>(effect) >= 0)
@@ -149,7 +149,7 @@ public:
             renderer->addCommand(&_trianglesCommand);
 
             // positive effects: order >= 0
-            for (auto it = std::begin(_effects) + idx; it != std::end(_effects); ++it)
+            for (auto&& it = std::begin(_effects) + idx; it != std::end(_effects); ++it)
             {
                 QuadCommand& q     = std::get<2>(*it);
                 auto* programState = std::get<1>(*it)->getProgramState();
@@ -166,11 +166,11 @@ protected:
     EffectSprite() : _defaultEffect(nullptr) { _effects.reserve(2); }
     ~EffectSprite()
     {
-        for (auto& tuple : _effects)
+        for (auto&&tuple : _effects)
         {
             std::get<1>(tuple)->release();
         }
-        CC_SAFE_RELEASE(_defaultEffect);
+        AX_SAFE_RELEASE(_defaultEffect);
     }
 
     std::vector<std::tuple<ssize_t, Effect*, QuadCommand>> _effects;
@@ -187,13 +187,13 @@ bool Effect::initProgramState(std::string_view fragmentFilename)
     auto fragmentFullPath = fileUtiles->fullPathForFilename(fragmentFilename);
     auto fragSource       = fileUtiles->getStringFromFile(fragmentFullPath);
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
     _fragSource = fragSource;
 #endif
     auto program      = backend::Device::getInstance()->newProgram(positionTextureColor_vert, fragSource.c_str());
     auto programState = new backend::ProgramState(program);
-    CC_SAFE_RELEASE(_programState);
-    CC_SAFE_RELEASE(program);
+    AX_SAFE_RELEASE(_programState);
+    AX_SAFE_RELEASE(program);
     _programState = programState;
 
     return _programState != nullptr;
@@ -203,7 +203,7 @@ Effect::Effect() {}
 
 Effect::~Effect()
 {
-    CC_SAFE_RELEASE_NULL(_programState);
+    AX_SAFE_RELEASE_NULL(_programState);
 }
 
 // Blur
@@ -416,7 +416,7 @@ public:
             normalMappedSprite->autorelease();
             return normalMappedSprite;
         }
-        CC_SAFE_DELETE(normalMappedSprite);
+        AX_SAFE_DELETE(normalMappedSprite);
         return nullptr;
     }
     void setKBump(float value);
@@ -566,9 +566,9 @@ bool EffectSpriteLamp::init()
         _sprite->setEffect(lampEffect);
         _effect                  = lampEffect;
         auto listener            = EventListenerTouchAllAtOnce::create();
-        listener->onTouchesBegan = CC_CALLBACK_2(EffectSpriteLamp::onTouchesBegan, this);
-        listener->onTouchesMoved = CC_CALLBACK_2(EffectSpriteLamp::onTouchesMoved, this);
-        listener->onTouchesEnded = CC_CALLBACK_2(EffectSpriteLamp::onTouchesEnded, this);
+        listener->onTouchesBegan = AX_CALLBACK_2(EffectSpriteLamp::onTouchesBegan, this);
+        listener->onTouchesMoved = AX_CALLBACK_2(EffectSpriteLamp::onTouchesMoved, this);
+        listener->onTouchesEnded = AX_CALLBACK_2(EffectSpriteLamp::onTouchesEnded, this);
         _eventDispatcher->addEventListenerWithSceneGraphPriority(listener, this);
         return true;
     }
@@ -577,7 +577,7 @@ bool EffectSpriteLamp::init()
 
 void EffectSpriteLamp::onTouchesBegan(const std::vector<Touch*>& touches, Event* unused_event)
 {
-    for (auto& item : touches)
+    for (auto&&item : touches)
     {
         auto touch         = item;
         auto s             = Director::getInstance()->getWinSize();
@@ -593,7 +593,7 @@ void EffectSpriteLamp::onTouchesBegan(const std::vector<Touch*>& touches, Event*
 
 void EffectSpriteLamp::onTouchesMoved(const std::vector<Touch*>& touches, Event* unused_event)
 {
-    for (auto& item : touches)
+    for (auto&&item : touches)
     {
         auto touch         = item;
         auto s             = Director::getInstance()->getWinSize();
@@ -609,7 +609,7 @@ void EffectSpriteLamp::onTouchesMoved(const std::vector<Touch*>& touches, Event*
 
 void EffectSpriteLamp::onTouchesEnded(const std::vector<Touch*>& touches, Event* unused_event)
 {
-    for (auto& item : touches)
+    for (auto&&item : touches)
     {
         auto touch         = item;
         auto s             = Director::getInstance()->getWinSize();

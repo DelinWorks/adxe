@@ -26,7 +26,7 @@
 #include "DeviceInfoMTL.h"
 #include "base/ccMacros.h"
 #include "UtilsMTL.h"
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 namespace
 {
@@ -374,7 +374,7 @@ DeviceInfoMTL::DeviceInfoMTL(id<MTLDevice> device)
 {
     _deviceName = [device.name UTF8String];
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS)
     const FeatureSet minRequiredFeatureSet = FeatureSet::FeatureSet_iOS_GPUFamily1_v1;
     const FeatureSet maxKnownFeatureSet    = FeatureSet::FeatureSet_iOS_GPUFamily4_v2;
 #else
@@ -455,4 +455,4 @@ bool DeviceInfoMTL::checkForFeatureSupported(FeatureType feature)
     return featureSupported;
 }
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

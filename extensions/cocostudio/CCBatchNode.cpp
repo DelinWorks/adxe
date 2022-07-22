@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "renderer/CCGroupCommand.h"
 #include "base/CCDirector.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 namespace cocostudio
 {
 BatchNode* BatchNode::create()
@@ -40,13 +40,13 @@ BatchNode* BatchNode::create()
         batchNode->autorelease();
         return batchNode;
     }
-    CC_SAFE_DELETE(batchNode);
+    AX_SAFE_DELETE(batchNode);
     return nullptr;
 }
 BatchNode::BatchNode() : _groupCommand(nullptr) {}
 BatchNode::~BatchNode()
 {
-    CC_SAFE_DELETE(_groupCommand);
+    AX_SAFE_DELETE(_groupCommand);
 }
 
 bool BatchNode::init()
@@ -69,7 +69,7 @@ void BatchNode::addChild(Node* child, int zOrder, int tag)
     }
 }
 
-void BatchNode::addChild(cocos2d::Node* child, int zOrder, std::string_view name)
+void BatchNode::addChild(axis::Node* child, int zOrder, std::string_view name)
 {
     Node::addChild(child, zOrder, name);
     Armature* armature = dynamic_cast<Armature*>(child);
@@ -131,10 +131,10 @@ void BatchNode::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
         return;
     }
 
-    //    CC_NODE_DRAW_SETUP();
+    //    AX_NODE_DRAW_SETUP();
 
     bool pushed = false;
-    for (auto object : _children)
+    for (auto&& object : _children)
     {
         Armature* armature = dynamic_cast<Armature*>(object);
         if (armature)

@@ -35,7 +35,7 @@ Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 #include "jni.h"
 #include "android/asset_manager.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class ZipFile;
 
@@ -45,7 +45,7 @@ class ZipFile;
  */
 
 //! @brief  Helper class to handle file operations
-class CC_DLL FileUtilsAndroid : public FileUtils
+class AX_DLL FileUtilsAndroid : public FileUtils
 {
     friend class FileUtils;
 
@@ -84,4 +84,4 @@ private:
 // end of platform group
 /// @}
 
-NS_CC_END
+NS_AX_END

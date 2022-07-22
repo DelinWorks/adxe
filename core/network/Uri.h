@@ -31,7 +31,7 @@
  * @{
  */
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace network
 {
@@ -52,7 +52,7 @@ namespace network
  * UriEscapeMode::QUERY) (for the query, but probably only after splitting at
  * '&' to identify the individual parameters).
  */
-class CC_DLL Uri
+class AX_DLL Uri
 {
 public:
     /**
@@ -183,7 +183,7 @@ private:
 
 }  // namespace network
 
-NS_CC_END
+NS_AX_END
 
 // end group
 /// @}

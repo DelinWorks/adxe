@@ -14,7 +14,7 @@
 using namespace Csm;
 using namespace LAppDefine;
 
-USING_NS_CC;
+USING_NS_AX;
 
 LAppView::LAppView(): DrawNode()
                     , _debugRects(NULL)
@@ -77,9 +77,9 @@ void LAppView::onEnter()
     EventListenerTouchAllAtOnce* listener = EventListenerTouchAllAtOnce::create();
 
     // タッチメソッド設定
-    listener->onTouchesBegan = CC_CALLBACK_2(LAppView::onTouchesBegan, this);
-    listener->onTouchesMoved = CC_CALLBACK_2(LAppView::onTouchesMoved, this);
-    listener->onTouchesEnded = CC_CALLBACK_2(LAppView::onTouchesEnded, this);
+    listener->onTouchesBegan = AX_CALLBACK_2(LAppView::onTouchesBegan, this);
+    listener->onTouchesMoved = AX_CALLBACK_2(LAppView::onTouchesMoved, this);
+    listener->onTouchesEnded = AX_CALLBACK_2(LAppView::onTouchesEnded, this);
 
     // 優先度100でディスパッチャーに登録
     this->getEventDispatcher()->addEventListenerWithFixedPriority(listener, 100);
@@ -94,13 +94,13 @@ void LAppView::onExit()
     delete viewMatrix;
 }
 
-void LAppView::draw(cocos2d::Renderer* renderer, const cocos2d::Mat4& transform, uint32_t flags)
+void LAppView::draw(axis::Renderer* renderer, const axis::Mat4& transform, uint32_t flags)
 {
     DrawNode::draw(renderer, transform, flags);
     onDraw(transform, flags);
 }
 
-void LAppView::onDraw(const cocos2d::Mat4& transform, uint32_t flags)
+void LAppView::onDraw(const axis::Mat4& transform, uint32_t flags)
 {
     _commandBuffer.PushCommandGroup();
 
@@ -160,7 +160,7 @@ void LAppView::onTouchesMoved(const std::vector<Touch*>& touches, Event* event)
     live2DMgr->OnDrag(viewX, viewY);
 }
 
-void LAppView::onTouchesEnded(const std::vector<cocos2d::Touch*>& touches, cocos2d::Event* event)
+void LAppView::onTouchesEnded(const std::vector<axis::Touch*>& touches, axis::Event* event)
 {
     // タッチ終了
     LAppLive2DManager* live2DMgr = LAppLive2DManager::GetInstance();
@@ -261,6 +261,6 @@ LAppView* LAppView::createDrawNode()
         ret->autorelease();
         return ret;
     }
-    CC_SAFE_DELETE(ret);
+    AX_SAFE_DELETE(ret);
     return nullptr;
 }

@@ -34,14 +34,14 @@
  * @{
  */
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 class Mat4;
 
 /**
  * Defines 4-element floating point vector.
  */
-class CC_DLL Vec4
+class AX_DLL Vec4
 {
 public:
 #ifdef __SSE__
@@ -461,7 +461,7 @@ public:
  */
 inline Vec4 operator*(float x, const Vec4& v);
 
-NS_CC_MATH_END
+NS_AX_MATH_END
 /**
  end of base group
  @}

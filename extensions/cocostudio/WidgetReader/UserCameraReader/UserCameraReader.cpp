@@ -35,7 +35,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -60,12 +60,12 @@ UserCameraReader* UserCameraReader::getInstance()
 
 void UserCameraReader::purge()
 {
-    CC_SAFE_DELETE(_instanceUserCameraReader);
+    AX_SAFE_DELETE(_instanceUserCameraReader);
 }
 
 void UserCameraReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceUserCameraReader);
+    AX_SAFE_DELETE(_instanceUserCameraReader);
 }
 
 Vec2 UserCameraReader::getVec2Attribute(pugi::xml_attribute attribute) const
@@ -399,7 +399,7 @@ Offset<Table> UserCameraReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void UserCameraReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* userCameraDOptions)
+void UserCameraReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* userCameraDOptions)
 {
     auto options = (UserCameraOptions*)userCameraDOptions;
 

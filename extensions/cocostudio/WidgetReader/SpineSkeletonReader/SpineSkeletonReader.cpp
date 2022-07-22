@@ -24,7 +24,7 @@
 
 #include "WidgetReader/SpineSkeletonReader/SpineSkeletonReader.h"
 
-#if defined(CC_BUILD_WITH_SPINE)
+#if defined(AX_BUILD_WITH_SPINE)
 #    include "SpineSkeletonDataCache.h"
 
 #    include "2d/CCSprite.h"
@@ -37,7 +37,7 @@
 
 #    include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace flatbuffers;
 
 namespace cocostudio
@@ -62,12 +62,12 @@ SpineSkeletonReader* SpineSkeletonReader::getInstance()
 
 void SpineSkeletonReader::purge()
 {
-    CC_SAFE_DELETE(_instanceSpriteReader);
+    AX_SAFE_DELETE(_instanceSpriteReader);
 }
 
 void SpineSkeletonReader::destroyInstance()
 {
-    CC_SAFE_DELETE(_instanceSpriteReader);
+    AX_SAFE_DELETE(_instanceSpriteReader);
 }
 
 Offset<Table> SpineSkeletonReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -83,7 +83,7 @@ Offset<Table> SpineSkeletonReader::createOptionsWithFlatBuffers(pugi::xml_node o
     bool loop        = false;
     float timeScale  = 1.0f;
 
-    cocos2d::BlendFunc blendFunc = cocos2d::BlendFunc::ALPHA_PREMULTIPLIED;
+    axis::BlendFunc blendFunc = axis::BlendFunc::ALPHA_PREMULTIPLIED;
 
     // attributes
     auto attribute = objectData.first_attribute();
@@ -196,7 +196,7 @@ Offset<Table> SpineSkeletonReader::createOptionsWithFlatBuffers(pugi::xml_node o
     return *(Offset<Table>*)(&options);
 }
 
-void SpineSkeletonReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* spriteOptions)
+void SpineSkeletonReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* spriteOptions)
 {
     Node** ppResult = (Node**)(node);
 

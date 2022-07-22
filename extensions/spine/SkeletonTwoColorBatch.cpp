@@ -40,7 +40,7 @@
 #include "renderer/ccShaders.h"
 #include "renderer/backend/Device.h"
 
-USING_NS_CC;
+USING_NS_AX;
 #define EVENT_AFTER_DRAW_RESET_POSITION "director_after_draw"
 using std::max;
 #define INITIAL_SIZE (10000)
@@ -140,10 +140,10 @@ TwoColorTrianglesCommand::TwoColorTrianglesCommand() :_materialID(0), _texture(n
 	_type = RenderCommand::Type::CUSTOM_COMMAND;
 }
 
-void TwoColorTrianglesCommand::init(float globalOrder, cocos2d::Texture2D *texture, cocos2d::backend::ProgramState* programState, BlendFunc blendType, const TwoColorTriangles& triangles, const Mat4& mv, uint32_t flags) {
+void TwoColorTrianglesCommand::init(float globalOrder, axis::Texture2D *texture, axis::backend::ProgramState* programState, BlendFunc blendType, const TwoColorTriangles& triangles, const Mat4& mv, uint32_t flags) {
 
     updateCommandPipelineDescriptor(programState);
-    const cocos2d::Mat4& projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+    const axis::Mat4& projectionMat = Director::getInstance()->getMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
 
     auto finalMatrix = projectionMat * mv;
 
@@ -157,7 +157,7 @@ void TwoColorTrianglesCommand::init(float globalOrder, cocos2d::Texture2D *textu
     if (_triangles.indexCount % 3 != 0) {
         int count = _triangles.indexCount;
         _triangles.indexCount = count / 3 * 3;
-        CCLOGERROR("Resize indexCount from %d to %d, size must be multiple times of 3", count, _triangles.indexCount);
+        AXLOGERROR("Resize indexCount from %d to %d, size must be multiple times of 3", count, _triangles.indexCount);
     }
 
     _mv = mv;
@@ -181,7 +181,7 @@ void TwoColorTrianglesCommand::init(float globalOrder, cocos2d::Texture2D *textu
 
 
 
-void TwoColorTrianglesCommand::updateCommandPipelineDescriptor(cocos2d::backend::ProgramState* programState)
+void TwoColorTrianglesCommand::updateCommandPipelineDescriptor(axis::backend::ProgramState* programState)
 {
     // OPTIMIZE ME: all commands belong a same Node should share a same programState like SkeletonBatch
     if (!__twoColorProgramState)
@@ -194,19 +194,19 @@ void TwoColorTrianglesCommand::updateCommandPipelineDescriptor(cocos2d::backend:
     if (programState != nullptr)
     {
         if (_programState != programState) {
-            CC_SAFE_RELEASE(_programState);
+            AX_SAFE_RELEASE(_programState);
             _programState = programState; // Because the programState belong to Node, so no need to clone
-            CC_SAFE_RETAIN(_programState);
+            AX_SAFE_RETAIN(_programState);
             needsUpdateStateLayout = true;
         }
     }
     else {
         needsUpdateStateLayout = _programState != nullptr && _programState->getProgram() != __twoColorProgramState->getProgram();
-        CC_SAFE_RELEASE(_programState);
+        AX_SAFE_RELEASE(_programState);
         _programState = __twoColorProgramState->clone();
     }
 
-    CCASSERT(_programState, "programState should not be null");
+    AXASSERT(_programState, "programState should not be null");
     pipelinePS = _programState;
 
     if (needsUpdateStateLayout)
@@ -218,7 +218,7 @@ void TwoColorTrianglesCommand::updateCommandPipelineDescriptor(cocos2d::backend:
 
 TwoColorTrianglesCommand::~TwoColorTrianglesCommand()
 {
-    CC_SAFE_RELEASE_NULL(_programState);
+    AX_SAFE_RELEASE_NULL(_programState);
 }
 
 void TwoColorTrianglesCommand::generateMaterialID() {
@@ -355,7 +355,7 @@ void SkeletonTwoColorBatch::deallocateIndices(uint32_t numIndices) {
 	_indices.setSize(_indices.size() - numIndices, 0);
 }
 
-TwoColorTrianglesCommand* SkeletonTwoColorBatch::addCommand(cocos2d::Renderer* renderer, float globalOrder, cocos2d::Texture2D* texture, backend::ProgramState* programState, cocos2d::BlendFunc blendType, const TwoColorTriangles& triangles, const cocos2d::Mat4& mv, uint32_t flags) {
+TwoColorTrianglesCommand* SkeletonTwoColorBatch::addCommand(axis::Renderer* renderer, float globalOrder, axis::Texture2D* texture, backend::ProgramState* programState, axis::BlendFunc blendType, const TwoColorTriangles& triangles, const axis::Mat4& mv, uint32_t flags) {
 	TwoColorTrianglesCommand* command = nextFreeCommand();
 	command->init(globalOrder, texture, programState, blendType, triangles, mv, flags);
     command->updateVertexAndIndexBuffer(renderer, triangles.verts, triangles.vertCount, triangles.indices, triangles.indexCount);
@@ -363,7 +363,7 @@ TwoColorTrianglesCommand* SkeletonTwoColorBatch::addCommand(cocos2d::Renderer* r
 	return command;
 }
 
-void SkeletonTwoColorBatch::batch (cocos2d::Renderer *renderer, TwoColorTrianglesCommand* command) {
+void SkeletonTwoColorBatch::batch (axis::Renderer *renderer, TwoColorTrianglesCommand* command) {
 	if (_numVerticesBuffer + command->getTriangles().vertCount >= MAX_VERTICES || _numIndicesBuffer + command->getTriangles().indexCount >= MAX_INDICES) {
 		flush(renderer, _lastCommand);
 	}
@@ -394,7 +394,7 @@ void SkeletonTwoColorBatch::batch (cocos2d::Renderer *renderer, TwoColorTriangle
 	_lastCommand = command;
 }
 
-void SkeletonTwoColorBatch::flush (cocos2d::Renderer *renderer, TwoColorTrianglesCommand* materialCommand) {
+void SkeletonTwoColorBatch::flush (axis::Renderer *renderer, TwoColorTrianglesCommand* materialCommand) {
 	if (!materialCommand)
 		return;
 

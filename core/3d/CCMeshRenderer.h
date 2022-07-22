@@ -23,8 +23,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_MESH_RENDERER_H__
-#define __CC_MESH_RENDERER_H__
+#ifndef __AX_MESH_RENDERER_H__
+#define __AX_MESH_RENDERER_H__
 
 #include <unordered_map>
 
@@ -38,7 +38,7 @@
 #include "3d/CCBundle3DData.h"
 #include "3d/CCMeshVertexIndexData.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup _3d
@@ -53,7 +53,7 @@ struct NodeData;
 /** @brief MeshRenderer: A mesh can be loaded from model files, .obj, .c3t, .c3b
  *and a mesh renderer renders a list of these loaded meshes with specified materials
  */
-class CC_DLL MeshRenderer : public Node, public BlendProtocol
+class AX_DLL MeshRenderer : public Node, public BlendProtocol
 {
 public:
     /**
@@ -286,16 +286,16 @@ protected:
 /**
  * @brief MeshRendererCache: the cache data of MeshRenderer, used to speed up the creation process of MeshRenderer
  */
-class CC_DLL MeshRendererCache
+class AX_DLL MeshRendererCache
 {
 public:
-    struct MeshRendererData
+    struct MeshRenderData
     {
         Vector<MeshVertexData*> meshVertexDatas;
         Vector<backend::ProgramState*> programStates;
         NodeDatas* nodedatas;
         MaterialDatas* materialdatas;
-        ~MeshRendererData()
+        ~MeshRenderData()
         {
             if (nodedatas)
                 delete nodedatas;
@@ -314,31 +314,31 @@ public:
      *
      * @lua NA
      */
-    MeshRendererData* getMeshData(std::string_view key) const;
+    MeshRenderData* getMeshRenderData(std::string_view key) const;
 
     /**
      * add a MeshData object into the MeshRenderer with a specified key
      *
      * @lua NA
      */
-    bool addMeshRendererData(std::string_view key, MeshRendererData* meshdata);
+    bool addMeshRenderData(std::string_view key, MeshRenderData* meshdata);
 
     /** remove a MeshData from the MeshRenderer with a specified key */
-    void removeMeshRendererData(std::string_view key);
+    void removeMeshRenderData(std::string_view key);
 
     /** remove all the MeshData objects from the MeshRenderer */
-    void removeAllMeshRendererData();
+    void removeAllMeshRenderData();
 
     MeshRendererCache();
     ~MeshRendererCache();
 
 protected:
     static MeshRendererCache* _cacheInstance;
-    hlookup::string_map<MeshRendererData*> _meshDatas;  // cached mesh data
+    hlookup::string_map<MeshRenderData*> _meshDatas;  // cached mesh data
 };
 
 // end of 3d group
 /// @}
 
-NS_CC_END
-#endif  // __CC_MESH_RENDERER_H__
+NS_AX_END
+#endif  // __AX_MESH_RENDERER_H__

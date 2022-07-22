@@ -26,12 +26,12 @@ THE SOFTWARE.
 
 #include "scripting/lua-bindings/manual/spine/LuaSkeletonAnimation.h"
 
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
+#include "scripting/lua-bindings/manual/base/LuaScriptHandlerMgr.h"
 #include "scripting/lua-bindings/manual/CCLuaStack.h"
 #include "scripting/lua-bindings/manual/CCLuaEngine.h"
 
 using namespace spine;
-USING_NS_CC;
+USING_NS_AX;
 
 LuaSkeletonAnimation::LuaSkeletonAnimation() : spine::SkeletonAnimation() {}
 

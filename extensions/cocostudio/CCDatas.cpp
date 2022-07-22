@@ -25,7 +25,7 @@ THE SOFTWARE.
 #include "CCDatas.h"
 #include "CCTransformHelp.h"
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -99,20 +99,20 @@ void BaseData::subtract(BaseData* from, BaseData* to, bool limit)
     {
         if (skewX > M_PI)
         {
-            skewX -= (float)CC_DOUBLE_PI;
+            skewX -= (float)AX_DOUBLE_PI;
         }
         if (skewX < -M_PI)
         {
-            skewX += (float)CC_DOUBLE_PI;
+            skewX += (float)AX_DOUBLE_PI;
         }
 
         if (skewY > M_PI)
         {
-            skewY -= (float)CC_DOUBLE_PI;
+            skewY -= (float)AX_DOUBLE_PI;
         }
         if (skewY < -M_PI)
         {
-            skewY += (float)CC_DOUBLE_PI;
+            skewY += (float)AX_DOUBLE_PI;
         }
     }
 
@@ -226,7 +226,7 @@ BoneData* ArmatureData::getBoneData(std::string_view boneName)
 FrameData::FrameData(void)
     : frameID(0)
     , duration(1)
-    , tweenEasing(cocos2d::tweenfunc::Linear)
+    , tweenEasing(axis::tweenfunc::Linear)
     , easingParamNumber(0)
     , easingParams(nullptr)
     , isTween(true)
@@ -241,7 +241,7 @@ FrameData::FrameData(void)
 
 FrameData::~FrameData(void)
 {
-    CC_SAFE_DELETE(easingParams);
+    AX_SAFE_DELETE(easingParams);
 }
 
 void FrameData::copy(const BaseData* baseData)
@@ -256,7 +256,7 @@ void FrameData::copy(const BaseData* baseData)
         tweenEasing       = frameData->tweenEasing;
         easingParamNumber = frameData->easingParamNumber;
 
-        CC_SAFE_DELETE(easingParams);
+        AX_SAFE_DELETE(easingParams);
         if (easingParamNumber != 0)
         {
             easingParams = new float[easingParamNumber];
@@ -297,7 +297,7 @@ MovementData::MovementData(void)
     , durationTo(0)
     , durationTween(0)
     , loop(true)
-    , tweenEasing(cocos2d::tweenfunc::Linear)
+    , tweenEasing(axis::tweenfunc::Linear)
 {}
 
 MovementData::~MovementData(void) {}

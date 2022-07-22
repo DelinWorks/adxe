@@ -1,6 +1,6 @@
 #include "ProgramStateRegistry.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 static ProgramStateRegistry* _sharedStateRegistry = nullptr;
 /** returns the shared instance */
@@ -12,7 +12,7 @@ ProgramStateRegistry* ProgramStateRegistry::getInstance()
     _sharedStateRegistry = new ProgramStateRegistry();
     if (!_sharedStateRegistry->init())
     {
-        CC_SAFE_DELETE(_sharedStateRegistry);
+        AX_SAFE_DELETE(_sharedStateRegistry);
     }
 
     return _sharedStateRegistry;
@@ -21,7 +21,7 @@ ProgramStateRegistry* ProgramStateRegistry::getInstance()
 /** purges the cache. It releases the retained instance. */
 void ProgramStateRegistry::destroyInstance()
 {
-    CC_SAFE_RELEASE_NULL(_sharedStateRegistry);
+    AX_SAFE_RELEASE_NULL(_sharedStateRegistry);
 }
 
 bool ProgramStateRegistry::init()
@@ -72,4 +72,4 @@ uint32_t ProgramStateRegistry::getProgramType(uint32_t programType, int textureS
 }
 // end of _backend group
 /// @}
-CC_BACKEND_END
+NS_AX_BACKEND_END

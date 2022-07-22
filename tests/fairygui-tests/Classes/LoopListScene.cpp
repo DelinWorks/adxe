@@ -1,6 +1,6 @@
 #include "LoopListScene.h"
 
-USING_NS_CC;
+USING_NS_AX;
 
 void LoopListScene::continueInit()
 {
@@ -12,10 +12,10 @@ void LoopListScene::continueInit()
     _groot->addChild(_view);
 
     _list = _view->getChild("list")->as<GList>();
-    _list->itemRenderer = CC_CALLBACK_2(LoopListScene::renderListItem, this);
+    _list->itemRenderer = AX_CALLBACK_2(LoopListScene::renderListItem, this);
     _list->setVirtualAndLoop();
     _list->setNumItems(5);
-    _list->addEventListener(UIEventType::Scroll, CC_CALLBACK_1(LoopListScene::doSpecialEffect, this));
+    _list->addEventListener(UIEventType::Scroll, AX_CALLBACK_1(LoopListScene::doSpecialEffect, this));
 
     doSpecialEffect(nullptr);
 }

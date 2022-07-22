@@ -37,7 +37,7 @@
  * @{
  */
 
-NS_CC_MATH_BEGIN
+NS_AX_MATH_BEGIN
 
 // class Plane;
 
@@ -72,7 +72,7 @@ NS_CC_MATH_BEGIN
  *
  * @see Transform
  */
-class CC_DLL Mat4
+class AX_DLL Mat4
 {
 public:
     // //temp add conversion
@@ -1042,7 +1042,7 @@ inline Vec4& operator*=(Vec4& v, const Mat4& m);
  */
 inline Vec4 operator*(const Mat4& m, const Vec4& v);
 
-NS_CC_MATH_END
+NS_AX_MATH_END
 /**
  end of base group
  @}

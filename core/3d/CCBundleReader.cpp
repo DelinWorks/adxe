@@ -26,7 +26,7 @@
 #include "3d/CCBundleReader.h"
 #include "platform/CCFileUtils.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 BundleReader::BundleReader()
 {
@@ -50,7 +50,7 @@ ssize_t BundleReader::read(void* ptr, ssize_t size, ssize_t count)
 {
     if (!_buffer || eof())
     {
-        CCLOG("warning: bundle reader out of range");
+        AXLOG("warning: bundle reader out of range");
         return 0;
     }
 
@@ -72,7 +72,7 @@ ssize_t BundleReader::read(void* ptr, ssize_t size, ssize_t count)
             _position += readLength;
             validCount += 1;
         }
-        CCLOG("warning: bundle reader out of range");
+        AXLOG("warning: bundle reader out of range");
     }
     else
     {
@@ -187,4 +187,4 @@ bool BundleReader::readMatrix(float* m)
     return (read(m, sizeof(float), 16) == 16);
 }
 
-NS_CC_END
+NS_AX_END

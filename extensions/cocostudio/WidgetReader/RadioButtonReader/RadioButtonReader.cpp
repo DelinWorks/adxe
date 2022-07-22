@@ -11,7 +11,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -42,7 +42,7 @@ RadioButtonReader* RadioButtonReader::getInstance()
 
 void RadioButtonReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceCheckBoxReader);
+    AX_SAFE_DELETE(instanceCheckBoxReader);
 }
 
 Offset<Table> RadioButtonReader::createOptionsWithFlatBuffers(pugi::xml_node objectData,
@@ -294,7 +294,7 @@ Offset<Table> RadioButtonReader::createOptionsWithFlatBuffers(pugi::xml_node obj
     return *(Offset<Table>*)&options;
 }
 
-void RadioButtonReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* radioButtonOptions)
+void RadioButtonReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* radioButtonOptions)
 {
     auto options = (RadioButtonOptions*)radioButtonOptions;
 

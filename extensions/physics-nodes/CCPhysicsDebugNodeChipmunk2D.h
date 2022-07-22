@@ -31,7 +31,7 @@
 
 struct cpSpace;
 
-NS_CC_EXT_BEGIN
+NS_AX_EXT_BEGIN
 
 extern Vec2 physicsDebugNodeOffset;
 
@@ -45,7 +45,7 @@ extern Vec2 physicsDebugNodeOffset;
  * @lua NA
  */
 
-class CC_EX_DLL PhysicsDebugNodeChipmunk2D : public DrawNode
+class AX_EX_DLL PhysicsDebugNodeChipmunk2D : public DrawNode
 {
 
 public:
@@ -70,6 +70,6 @@ protected:
     cpSpace* _spacePtr;
 };
 
-NS_CC_EXT_END
+NS_AX_EXT_END
 
 #endif  // __PHYSICSNODES_DEBUGNODE_CHIPMUNK2D_H__

@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "base/ccTypes.h"
 #include "platform/apple/CCDevice-apple.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 static NSAttributedString* __attributedStringWithFontSize(NSMutableAttributedString* attributedString, CGFloat fontSize)
 {
@@ -243,7 +243,7 @@ static NSFont* _createSystemFont(const char* fontName, int size)
     return font;
 }
 
-static CGFloat _calculateTextDrawStartHeight(cocos2d::Device::TextAlign align, CGSize realDimensions, CGSize dimensions)
+static CGFloat _calculateTextDrawStartHeight(axis::Device::TextAlign align, CGSize realDimensions, CGSize dimensions)
 {
     float startH = 0;
     // vertical alignment
@@ -281,16 +281,16 @@ static bool _initWithString(const char* text,
 {
     bool ret = false;
 
-    CCASSERT(text, "Invalid text");
-    CCASSERT(info, "Invalid info");
+    AXASSERT(text, "Invalid text");
+    AXASSERT(info, "Invalid info");
 
     do
     {
         NSString* string = [NSString stringWithUTF8String:text];
-        CC_BREAK_IF(!string);
+        AX_BREAK_IF(!string);
 
         id font = _createSystemFont(fontName, size);
-        CC_BREAK_IF(!font);
+        AX_BREAK_IF(!font);
 
         // color
         NSColor* foregroundColor;
@@ -328,7 +328,7 @@ static bool _initWithString(const char* text,
             realDimensions = _calculateStringSize(stringWithAttributes, font, &dimensions, enableWrap, overflow);
 
         // Mac crashes if the width or height is 0
-        CC_BREAK_IF(realDimensions.width <= 0 || realDimensions.height <= 0);
+        AX_BREAK_IF(realDimensions.width <= 0 || realDimensions.height <= 0);
 
         if (dimensions.width <= 0.f)
             dimensions.width = realDimensions.width;
@@ -432,4 +432,4 @@ void Device::setKeepScreenOn(bool value) {}
 
 void Device::vibrate(float duration) {}
 
-NS_CC_END
+NS_AX_END

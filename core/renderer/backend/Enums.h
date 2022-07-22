@@ -32,7 +32,7 @@
 #include <string>
 #include "base/bitmask.h"
 
-CC_BACKEND_BEGIN
+NS_AX_BACKEND_BEGIN
 
 enum class BufferUsage : uint32_t
 {
@@ -173,6 +173,7 @@ enum class PrimitiveType : uint32_t
 {
     POINT,
     LINE,
+    LINE_LOOP,
     LINE_STRIP,
     TRIANGLE,
     TRIANGLE_STRIP
@@ -263,8 +264,8 @@ enum class ColorWriteMask : uint32_t
     ALPHA     = 1 << ALPHA_BIT,
     ALL       = 0x0000000F
 };
-CC_ENABLE_BITMASK_OPS(ColorWriteMask)
-CC_ENABLE_BITSHIFT_OPS(ColorWriteMask)
+AX_ENABLE_BITMASK_OPS(ColorWriteMask)
+AX_ENABLE_BITSHIFT_OPS(ColorWriteMask)
 
 /**
  * Bitmask for selecting render buffers
@@ -283,7 +284,7 @@ enum class TargetBufferFlags : uint8_t
     DEPTH_AND_STENCIL = DEPTH | STENCIL,             //!< depth and stencil buffer selected.
     ALL               = COLOR_ALL | DEPTH | STENCIL  //!< Color, depth and stencil buffer selected.
 };
-CC_ENABLE_BITMASK_OPS(TargetBufferFlags)
+AX_ENABLE_BITMASK_OPS(TargetBufferFlags)
 
 enum class DepthStencilFlags : unsigned int
 {
@@ -294,8 +295,8 @@ enum class DepthStencilFlags : unsigned int
     DEPTH_STENCIL_TEST = DEPTH_TEST | STENCIL_TEST,
     ALL                = DEPTH_TEST | STENCIL_TEST | DEPTH_WRITE,
 };
-CC_ENABLE_BITMASK_OPS(DepthStencilFlags)
-CC_ENABLE_BITSHIFT_OPS(DepthStencilFlags)
+AX_ENABLE_BITMASK_OPS(DepthStencilFlags)
+AX_ENABLE_BITSHIFT_OPS(DepthStencilFlags)
 
 enum class CullMode : uint32_t
 {
@@ -372,4 +373,4 @@ struct ProgramType
     };
 };
 
-CC_BACKEND_END
+NS_AX_BACKEND_END

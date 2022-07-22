@@ -23,14 +23,14 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  THE SOFTWARE.
  ****************************************************************************/
-#ifndef __CC_PU_PARTICLE_3D_EVENT_HANDLER_TRANSLATOR_H__
-#define __CC_PU_PARTICLE_3D_EVENT_HANDLER_TRANSLATOR_H__
+#ifndef __AX_PU_PARTICLE_3D_EVENT_HANDLER_TRANSLATOR_H__
+#define __AX_PU_PARTICLE_3D_EVENT_HANDLER_TRANSLATOR_H__
 
 #include "extensions/Particle3D/PU/CCPUScriptTranslator.h"
 #include "extensions/Particle3D/PU/CCPUScriptCompiler.h"
 #include "extensions/Particle3D/PU/CCPUEventHandler.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 class PUEventHandlerTranslator : public PUScriptTranslator
 {
@@ -43,6 +43,6 @@ public:
     virtual void translate(PUScriptCompiler* compiler, PUAbstractNode* node);
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__cocos2d_libs__CCParticle3DAffectorTranslator__) */

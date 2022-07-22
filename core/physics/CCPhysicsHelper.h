@@ -28,13 +28,13 @@
 #define __CCPHYSICS_HELPER_H__
 
 #include "base/ccConfig.h"
-#if CC_USE_PHYSICS
+#if AX_USE_PHYSICS
 
 #    include "chipmunk/chipmunk.h"
 #    include "platform/CCPlatformMacros.h"
 #    include "math/CCMath.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup physics
@@ -110,7 +110,7 @@ public:
 /** @} */
 /** @} */
 
-NS_CC_END
+NS_AX_END
 
-#endif  // CC_USE_PHYSICS
+#endif  // AX_USE_PHYSICS
 #endif  // __CCPHYSICS_HELPER_H__

@@ -24,13 +24,13 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_TOUCH_H__
-#define __CC_TOUCH_H__
+#ifndef __AX_TOUCH_H__
+#define __AX_TOUCH_H__
 
 #include "base/CCRef.h"
 #include "math/CCMath.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @addtogroup base
@@ -41,7 +41,7 @@ NS_CC_BEGIN
  * @brief Encapsulates the Touch information, such as touch point, id and so on,
  and provides the methods that commonly used.
  */
-class CC_DLL Touch : public Ref
+class AX_DLL Touch : public Ref
 {
 public:
     /**
@@ -171,6 +171,6 @@ private:
 // end of base group
 /// @}
 
-NS_CC_END
+NS_AX_END
 
 #endif  // __PLATFORM_TOUCH_H__

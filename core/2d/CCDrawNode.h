@@ -39,7 +39,7 @@
 #include "math/CCMath.h"
 #include "base/any_buffer.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 static const int DEFAULT_LINE_WIDTH = 2;
 
@@ -54,7 +54,7 @@ class PointArray;
  * Faster than the "drawing primitives" since they draws everything in one single batch.
  * @since v2.1
  */
-class CC_DLL DrawNode : public Node
+class AX_DLL DrawNode : public Node
 {
 public:
     /** creates and initialize a DrawNode node.
@@ -412,9 +412,9 @@ protected:
     axis::any_buffer _abuf;
 
 private:
-    CC_DISALLOW_COPY_AND_ASSIGN(DrawNode);
+    AX_DISALLOW_COPY_AND_ASSIGN(DrawNode);
 };
 /** @} */
-NS_CC_END
+NS_AX_END
 
 #endif  // __CCDRAWNODES_CCDRAW_NODE_H__

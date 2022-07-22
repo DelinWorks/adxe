@@ -40,7 +40,7 @@ THE SOFTWARE.
 #    include "chipmunk/chipmunk.h"
 #endif
 
-using namespace cocos2d;
+USING_NS_AX;
 
 namespace cocostudio
 {
@@ -53,7 +53,7 @@ Armature* Armature::create()
         armature->autorelease();
         return armature;
     }
-    CC_SAFE_DELETE(armature);
+    AX_SAFE_DELETE(armature);
     return nullptr;
 }
 
@@ -65,7 +65,7 @@ Armature* Armature::create(std::string_view name)
         armature->autorelease();
         return armature;
     }
-    CC_SAFE_DELETE(armature);
+    AX_SAFE_DELETE(armature);
     return nullptr;
 }
 
@@ -77,7 +77,7 @@ Armature* Armature::create(std::string_view name, Bone* parentBone)
         armature->autorelease();
         return armature;
     }
-    CC_SAFE_DELETE(armature);
+    AX_SAFE_DELETE(armature);
     return nullptr;
 }
 
@@ -94,7 +94,7 @@ Armature::~Armature()
     _boneDic.clear();
     _topBoneList.clear();
 
-    CC_SAFE_DELETE(_animation);
+    AX_SAFE_DELETE(_animation);
 }
 
 bool Armature::init()
@@ -109,7 +109,7 @@ bool Armature::init(std::string_view name)
     {
         removeAllChildren();
 
-        CC_SAFE_DELETE(_animation);
+        AX_SAFE_DELETE(_animation);
         _animation = new ArmatureAnimation();
         _animation->init(this);
 
@@ -125,16 +125,16 @@ bool Armature::init(std::string_view name)
         if (!_name.empty())
         {
             AnimationData* animationData = armatureDataManager->getAnimationData(name);
-            CCASSERT(animationData, "AnimationData not exist! ");
+            AXASSERT(animationData, "AnimationData not exist! ");
 
             _animation->setAnimationData(animationData);
 
             ArmatureData* armatureData = armatureDataManager->getArmatureData(name);
-            CCASSERT(armatureData, "armatureData doesn't exists!");
+            AXASSERT(armatureData, "armatureData doesn't exists!");
 
             _armatureData = armatureData;
 
-            for (auto& element : armatureData->boneDataDic)
+            for (auto&& element : armatureData->boneDataDic)
             {
                 Bone* bone = createBone(element.first);
 
@@ -142,13 +142,13 @@ bool Armature::init(std::string_view name)
                 do
                 {
                     MovementData* movData = animationData->getMovement(animationData->movementNames.at(0));
-                    CC_BREAK_IF(!movData);
+                    AX_BREAK_IF(!movData);
 
                     MovementBoneData* movBoneData = movData->getMovementBoneData(bone->getName());
-                    CC_BREAK_IF(!movBoneData || movBoneData->frameList.size() <= 0);
+                    AX_BREAK_IF(!movBoneData || movBoneData->frameList.size() <= 0);
 
                     FrameData* frameData = movBoneData->getFrameData(0);
-                    CC_BREAK_IF(!frameData);
+                    AX_BREAK_IF(!frameData);
 
                     bone->getTweenData()->copy(frameData);
                     bone->changeDisplayWithIndex(frameData->displayIndex, false);
@@ -219,8 +219,8 @@ Bone* Armature::createBone(std::string_view boneName)
 
 void Armature::addBone(Bone* bone, std::string_view parentName)
 {
-    CCASSERT(bone != nullptr, "Argument must be non-nil");
-    CCASSERT(_boneDic.at(bone->getName()) == nullptr, "bone already added. It can't be added again");
+    AXASSERT(bone != nullptr, "Argument must be non-nil");
+    AXASSERT(_boneDic.at(bone->getName()) == nullptr, "bone already added. It can't be added again");
 
     if (!parentName.empty())
     {
@@ -247,7 +247,7 @@ void Armature::addBone(Bone* bone, std::string_view parentName)
 
 void Armature::removeBone(Bone* bone, bool recursion)
 {
-    CCASSERT(bone != nullptr, "bone must be added to the bone dictionary!");
+    AXASSERT(bone != nullptr, "bone must be added to the bone dictionary!");
 
     bone->setArmature(nullptr);
     bone->removeFromParent(recursion);
@@ -267,7 +267,7 @@ Bone* Armature::getBone(std::string_view name) const
 
 void Armature::changeBoneParent(Bone* bone, std::string_view parentName)
 {
-    CCASSERT(bone != nullptr, "bone must be added to the bone dictionary!");
+    AXASSERT(bone != nullptr, "bone must be added to the bone dictionary!");
 
     if (bone->getParentBone())
     {
@@ -294,7 +294,7 @@ void Armature::changeBoneParent(Bone* bone, std::string_view parentName)
     }
 }
 
-const cocos2d::StringMap<Bone*>& Armature::getBoneDic() const
+const axis::StringMap<Bone*>& Armature::getBoneDic() const
 {
     return _boneDic;
 }
@@ -368,14 +368,14 @@ void Armature::update(float dt)
     _armatureTransformDirty = false;
 }
 
-void Armature::draw(cocos2d::Renderer* renderer, const Mat4& transform, uint32_t flags)
+void Armature::draw(axis::Renderer* renderer, const Mat4& transform, uint32_t flags)
 {
     if (_parentBone == nullptr && _batchNode == nullptr)
     {
-        //        CC_NODE_DRAW_SETUP();
+        //        AX_NODE_DRAW_SETUP();
     }
 
-    for (auto& object : _children)
+    for (auto&& object : _children)
     {
         if (Bone* bone = dynamic_cast<Bone*>(object))
         {
@@ -419,7 +419,7 @@ void Armature::draw(cocos2d::Renderer* renderer, const Mat4& transform, uint32_t
             default:
             {
                 node->visit(renderer, transform, flags);
-                //                CC_NODE_DRAW_SETUP();
+                //                AX_NODE_DRAW_SETUP();
             }
             break;
             }
@@ -427,7 +427,7 @@ void Armature::draw(cocos2d::Renderer* renderer, const Mat4& transform, uint32_t
         else if (Node* node = dynamic_cast<Node*>(object))
         {
             node->visit(renderer, transform, flags);
-            //            CC_NODE_DRAW_SETUP();
+            //            AX_NODE_DRAW_SETUP();
         }
     }
 }
@@ -444,7 +444,7 @@ void Armature::onExit()
     unscheduleUpdate();
 }
 
-void Armature::visit(cocos2d::Renderer* renderer, const Mat4& parentTransform, uint32_t parentFlags)
+void Armature::visit(axis::Renderer* renderer, const Mat4& parentTransform, uint32_t parentFlags)
 {
     // quick return if not visible. children won't be drawn.
     if (!_visible)
@@ -460,7 +460,7 @@ void Armature::visit(cocos2d::Renderer* renderer, const Mat4& parentTransform, u
         // To ease the migration to v3.0, we still support the Mat4 stack,
         // but it is deprecated and your code should not rely on it
         Director* director = Director::getInstance();
-        CCASSERT(nullptr != director, "Director is null when setting matrix stack");
+        AXASSERT(nullptr != director, "Director is null when setting matrix stack");
         director->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
         director->loadMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW, _modelViewTransform);
 
@@ -533,7 +533,7 @@ void Armature::setParentBone(Bone* parentBone)
 {
     _parentBone = parentBone;
 
-    for (auto& element : _boneDic)
+    for (auto&& element : _boneDic)
     {
         element.second->setArmature(this);
     }
@@ -548,7 +548,7 @@ Bone* Armature::getParentBone() const
 
 void Armature::setColliderFilter(ColliderFilter* filter)
 {
-    for (auto& element : _boneDic)
+    for (auto&& element : _boneDic)
     {
         element.second->setColliderFilter(filter);
     }
@@ -557,7 +557,7 @@ void Armature::setColliderFilter(ColliderFilter* filter)
 
 void Armature::drawContour()
 {
-    for (auto& element : _boneDic)
+    for (auto&& element : _boneDic)
     {
         Bone* bone                 = element.second;
         ColliderDetector* detector = bone->getColliderDetector();
@@ -565,9 +565,9 @@ void Armature::drawContour()
         if (!detector)
             continue;
 
-        const cocos2d::Vector<ColliderBody*>& bodyList = detector->getColliderBodyList();
+        const axis::Vector<ColliderBody*>& bodyList = detector->getColliderBodyList();
 
-        for (auto& object : bodyList)
+        for (auto&& object : bodyList)
         {
             ColliderBody* body                  = static_cast<ColliderBody*>(object);
             const std::vector<Vec2>& vertexList = body->getCalculatedVertexList();
@@ -587,7 +587,7 @@ void Armature::drawContour()
 #        pragma warning(push)
 #        pragma warning(disable : 4996)
 #    endif
-            cocos2d::log("TODO in %s %s %d", __FILE__, __FUNCTION__, __LINE__);
+            axis::log("TODO in %s %s %d", __FILE__, __FUNCTION__, __LINE__);
 
 #    if defined(__GNUC__) && ((__GNUC__ >= 4) || ((__GNUC__ == 3) && (__GNUC_MINOR__ >= 1)))
 #        pragma GCC diagnostic warning "-Wdeprecated-declarations"
@@ -618,13 +618,13 @@ void Armature::setBody(b2Body* body)
     _body = body;
     _body->SetUserData(this);
 
-    for (auto& object : _children)
+    for (auto&& object : _children)
     {
         if (Bone* bone = dynamic_cast<Bone*>(object))
         {
             auto displayList = bone->getDisplayManager()->getDecorativeDisplayList();
 
-            for (auto displayObject : displayList)
+            for (auto&& displayObject : displayList)
             {
                 ColliderDetector* detector = static_cast<DecorativeDisplay*>(displayObject)->getColliderDetector();
                 if (detector != nullptr)

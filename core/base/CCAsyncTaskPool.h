@@ -43,14 +43,14 @@ THE SOFTWARE.
  * @addtogroup base
  * @{
  */
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /**
  * @class AsyncTaskPool
  * @brief This class allows to perform background operations without having to manipulate threads.
  * @js NA
  */
-class CC_DLL AsyncTaskPool
+class AX_DLL AsyncTaskPool
 {
 public:
     typedef std::function<void(void*)> TaskCallBack;
@@ -174,7 +174,7 @@ protected:
                 // don't allow enqueueing after stopping the pool
                 if (_stop)
                 {
-                    CC_ASSERT(0 && "already stop");
+                    AX_ASSERT(0 && "already stop");
                     return;
                 }
 
@@ -225,7 +225,7 @@ inline void AsyncTaskPool::enqueue(AsyncTaskPool::TaskType type, std::function<v
         type, [](void*) {}, nullptr, std::move(task));
 }
 
-NS_CC_END
+NS_AX_END
 // end group
 /// @}
 #endif  //__CCSYNC_TASK_POOL_H_

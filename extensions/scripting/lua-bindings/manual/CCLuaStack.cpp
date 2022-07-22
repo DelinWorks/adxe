@@ -35,23 +35,23 @@ extern "C" {
 #include "lauxlib.h"
 }
 
-#include "scripting/lua-bindings/manual/Cocos2dxLuaLoader.h"
+#include "scripting/lua-bindings/manual/AxisLuaLoader.h"
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
 #    include "scripting/lua-bindings/manual/platform/ios/CCLuaObjcBridge.h"
 #endif
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
 #    include "scripting/lua-bindings/manual/platform/android/CCLuaJavaBridge.h"
 #endif
 
-#include "scripting/lua-bindings/manual/cocos2d/LuaScriptHandlerMgr.h"
-#include "scripting/lua-bindings/auto/lua_cocos2dx_auto.hpp"
-#include "scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_manual.hpp"
+#include "scripting/lua-bindings/manual/base/LuaScriptHandlerMgr.h"
+#include "scripting/lua-bindings/auto/lua_axis_base_auto.hpp"
+#include "scripting/lua-bindings/manual/base/lua_axis_base_manual.hpp"
 #include "scripting/lua-bindings/manual/LuaBasicConversions.h"
-#include "scripting/lua-bindings/auto/lua_cocos2dx_physics_auto.hpp"
-#include "scripting/lua-bindings/manual/cocos2d/lua_cocos2dx_physics_manual.hpp"
-#include "scripting/lua-bindings/auto/lua_cocos2dx_backend_auto.hpp"
+#include "scripting/lua-bindings/auto/lua_axis_physics_auto.hpp"
+#include "scripting/lua-bindings/manual/physics/lua_axis_physics_manual.hpp"
+#include "scripting/lua-bindings/auto/lua_axis_backend_auto.hpp"
 #include "base/ZipUtils.h"
 #include "platform/CCFileUtils.h"
 
@@ -85,7 +85,7 @@ int lua_print(lua_State* L)
 {
     std::string t;
     get_string_for_print(L, &t);
-    CCLOG("[LUA-print] %s", t.c_str());
+    AXLOG("[LUA-print] %s", t.c_str());
 
     return 0;
 }
@@ -106,7 +106,7 @@ int lua_version(lua_State* L)
 }
 }  // namespace
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 LuaStack::~LuaStack()
 {
@@ -144,33 +144,33 @@ bool LuaStack::init()
     luaL_register(_state, "_G", global_functions);
 
     g_luaType.clear();
-    register_all_cocos2dx(_state);
-    register_all_cocos2dx_backend(_state);
-    register_all_cocos2dx_manual(_state);
-    register_all_cocos2dx_module_manual(_state);
-    register_all_cocos2dx_math_manual(_state);
-    register_all_cocos2dx_shaders_manual(_state);
-    register_all_cocos2dx_bytearray_manual(_state);
+    register_all_axis_base(_state);
+    register_all_axis_backend(_state);
+    register_all_axis_manual(_state);
+    register_all_axis_module_manual(_state);
+    register_all_axis_math_manual(_state);
+    register_all_axis_shaders_manual(_state);
+    register_all_axis_bytearray_manual(_state);
 
     tolua_luanode_open(_state);
     register_luanode_manual(_state);
-#if CC_USE_PHYSICS
-    register_all_cocos2dx_physics(_state);
-    register_all_cocos2dx_physics_manual(_state);
+#if AX_USE_PHYSICS
+    register_all_axis_physics(_state);
+    register_all_axis_physics_manual(_state);
 #endif
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS || CC_TARGET_PLATFORM == CC_PLATFORM_MAC)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
     LuaObjcBridge::luaopen_luaoc(_state);
 #endif
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
     LuaJavaBridge::luaopen_luaj(_state);
 #endif
 
     tolua_script_handler_mgr_open(_state);
 
     // add cocos2dx loader
-    addLuaLoader(cocos2dx_lua_loader);
+    addLuaLoader(axis_lua_loader);
 
     return true;
 }
@@ -262,7 +262,7 @@ int LuaStack::executeGlobalFunction(const char* functionName)
     lua_getglobal(_state, functionName); /* query function by name, stack: function */
     if (!lua_isfunction(_state, -1))
     {
-        CCLOG("[LUA ERROR] name '%s' does not represent a Lua function", functionName);
+        AXLOG("[LUA ERROR] name '%s' does not represent a Lua function", functionName);
         lua_pop(_state, 1);
         return 0;
     }
@@ -375,7 +375,7 @@ bool LuaStack::pushFunctionByHandler(int nHandler)
     toluafix_get_function_by_refid(_state, nHandler); /* L: ... func */
     if (!lua_isfunction(_state, -1))
     {
-        CCLOG("[LUA ERROR] function refid '%d' does not reference a Lua function", nHandler);
+        AXLOG("[LUA ERROR] function refid '%d' does not reference a Lua function", nHandler);
         lua_pop(_state, 1);
         return false;
     }
@@ -387,7 +387,7 @@ int LuaStack::executeFunction(int numArgs)
     int functionIndex = -(numArgs + 1);
     if (!lua_isfunction(_state, functionIndex))
     {
-        CCLOG("value at stack [%d] is not function", functionIndex);
+        AXLOG("value at stack [%d] is not function", functionIndex);
         lua_pop(_state, numArgs + 1);  // remove function and arguments
         return 0;
     }
@@ -412,7 +412,7 @@ int LuaStack::executeFunction(int numArgs)
     {
         if (traceback == 0)
         {
-            CCLOG("[LUA ERROR] %s", lua_tostring(_state, -1)); /* L: ... error */
+            AXLOG("[LUA ERROR] %s", lua_tostring(_state, -1)); /* L: ... error */
             lua_pop(_state, 1);                                // remove error message from stack
         }
         else /* L: ... G error */
@@ -480,7 +480,7 @@ int LuaStack::reallocateScriptHandler(int nHandler)
         toluafix_get_function_by_refid(_state,nNewHandle);
         if (!lua_isfunction(_state, -1))
         {
-            CCLOG("Error!");
+            AXLOG("Error!");
         }
         lua_settop(_state, 0);
     */
@@ -503,7 +503,7 @@ int LuaStack::executeFunction(int handler,
 
         if (!lua_isfunction(_state, functionIndex))
         {
-            CCLOG("value at stack [%d] is not function", functionIndex);
+            AXLOG("value at stack [%d] is not function", functionIndex);
             lua_pop(_state, numArgs + 1);  // remove function and arguments
             return 0;
         }
@@ -529,7 +529,7 @@ int LuaStack::executeFunction(int handler,
         {
             if (traceCallback == 0)
             {
-                CCLOG("[LUA ERROR] %s", lua_tostring(_state, -1)); /* L: ... error */
+                AXLOG("[LUA ERROR] %s", lua_tostring(_state, -1)); /* L: ... error */
                 lua_pop(_state, 1);                                // remove error message from stack
             }
             else /* L: ... G error */
@@ -563,7 +563,7 @@ int LuaStack::reload(const char* moduleFileName)
 {
     if (nullptr == moduleFileName || strlen(moduleFileName) == 0)
     {
-        CCLOG("moudulFileName is null");
+        AXLOG("moudulFileName is null");
         return 1;
     }
 
@@ -597,7 +597,7 @@ int LuaStack::luaLoadChunksFromZIP(lua_State* L)
 {
     if (lua_gettop(L) < 1)
     {
-        CCLOG("luaLoadChunksFromZIP() - invalid arguments");
+        AXLOG("luaLoadChunksFromZIP() - invalid arguments");
         return 0;
     }
 
@@ -627,7 +627,7 @@ int LuaStack::luaLoadChunksFromZIP(lua_State* L)
 
         if (zip)
         {
-            CCLOG("lua_loadChunksFromZIP() - load zip file: %s", zipFilePath.c_str());
+            AXLOG("lua_loadChunksFromZIP() - load zip file: %s", zipFilePath.c_str());
             lua_getglobal(L, "package");
             lua_getfield(L, -1, "preload");
 
@@ -658,7 +658,7 @@ int LuaStack::luaLoadChunksFromZIP(lua_State* L)
                             character = '.';
                         }
                     }
-                    CCLOG("[luaLoadChunksFromZIP] add %s to preload", filename.c_str());
+                    AXLOG("[luaLoadChunksFromZIP] add %s to preload", filename.c_str());
                     if (stack->luaLoadBuffer(L, (char*)zbuffer, (int)bufferSize, filename.c_str()) == 0)
                     {
                         lua_setfield(L, -2, filename.c_str());
@@ -668,7 +668,7 @@ int LuaStack::luaLoadChunksFromZIP(lua_State* L)
                 }
                 filename = zip->getNextFilename();
             }
-            CCLOG("lua_loadChunksFromZIP() - loaded chunks count: %d", count);
+            AXLOG("lua_loadChunksFromZIP() - loaded chunks count: %d", count);
             lua_pop(L, 2);
             lua_pushboolean(L, 1);
 
@@ -676,7 +676,7 @@ int LuaStack::luaLoadChunksFromZIP(lua_State* L)
         }
         else
         {
-            CCLOG("lua_loadChunksFromZIP() - not found or invalid zip file: %s", zipFilePath.c_str());
+            AXLOG("lua_loadChunksFromZIP() - not found or invalid zip file: %s", zipFilePath.c_str());
             lua_pushboolean(L, 0);
         }
 
@@ -712,29 +712,29 @@ int LuaStack::luaLoadBuffer(lua_State* L, const char* chunk, int chunkSize, cons
     skipBOM(chunk, chunkSize);
     r = luaL_loadbuffer(L, chunk, chunkSize, chunkName);
 
-#if defined(COCOS2D_DEBUG) && COCOS2D_DEBUG > 0
+#if defined(AXIS_DEBUG) && AXIS_DEBUG > 0
     if (r)
     {
         switch (r)
         {
         case LUA_ERRSYNTAX:
-            CCLOG("[LUA ERROR] load \"%s\", error: syntax error during pre-compilation.", chunkName);
+            AXLOG("[LUA ERROR] load \"%s\", error: syntax error during pre-compilation.", chunkName);
             break;
 
         case LUA_ERRMEM:
-            CCLOG("[LUA ERROR] load \"%s\", error: memory allocation error.", chunkName);
+            AXLOG("[LUA ERROR] load \"%s\", error: memory allocation error.", chunkName);
             break;
 
         case LUA_ERRFILE:
-            CCLOG("[LUA ERROR] load \"%s\", error: cannot open/read file.", chunkName);
+            AXLOG("[LUA ERROR] load \"%s\", error: cannot open/read file.", chunkName);
             break;
 
         default:
-            CCLOG("[LUA ERROR] load \"%s\", error: unknown.", chunkName);
+            AXLOG("[LUA ERROR] load \"%s\", error: unknown.", chunkName);
         }
     }
 #endif
     return r;
 }
 
-NS_CC_END
+NS_AX_END

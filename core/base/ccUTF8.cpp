@@ -33,12 +33,12 @@
 
 using namespace llvm;
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 namespace StringUtils
 {
 
-std::string CC_DLL format(const char* format, ...)
+std::string AX_DLL format(const char* format, ...)
 {
     va_list args;
     va_start(args, format);
@@ -56,8 +56,8 @@ std::string CC_DLL format(const char* format, ...)
 */
 std::string vformat(const char* format, va_list ap)
 {
-#define CC_VSNPRINTF_BUFFER_LENGTH 512
-    std::string buf(CC_VSNPRINTF_BUFFER_LENGTH, '\0');
+#define AX_VSNPRINTF_BUFFER_LENGTH 512
+    std::string buf(AX_VSNPRINTF_BUFFER_LENGTH, '\0');
 
     va_list args;
     va_copy(args, ap);
@@ -344,7 +344,7 @@ bool UTF32ToUTF16(std::u32string_view utf32, std::u16string& outUtf16)
     return utfConvert(utf32, outUtf16, ConvertUTF32toUTF16);
 }
 
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID)
 std::string getStringUTFCharsJNI(JNIEnv* env, jstring srcjStr, bool* ret)
 {
     std::string utf8Str;
@@ -378,7 +378,7 @@ std::string getStringUTFCharsJNI(JNIEnv* env, jstring srcjStr, bool* ret)
 jstring newStringUTFJNI(JNIEnv* env, std::string_view utf8Str, bool* ret)
 {
     std::u16string utf16Str;
-    bool flag = cocos2d::StringUtils::UTF8ToUTF16(utf8Str, utf16Str);
+    bool flag = axis::StringUtils::UTF8ToUTF16(utf8Str, utf16Str);
 
     if (ret)
     {
@@ -478,7 +478,7 @@ void StringUTF8::replace(std::string_view newStr)
 
         if (lengthString == 0)
         {
-            CCLOG("Bad utf-8 set string: %s", newStr.data());
+            AXLOG("Bad utf-8 set string: %s", newStr.data());
             return;
         }
 
@@ -559,4 +559,4 @@ bool StringUTF8::insert(std::size_t pos, const StringUTF8& insertStr)
 
 }  // namespace StringUtils
 
-NS_CC_END
+NS_AX_END

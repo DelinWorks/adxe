@@ -24,8 +24,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_PARTICLE_3D_TRANSLATE_MANAGER_H__
-#define __CC_PU_PARTICLE_3D_TRANSLATE_MANAGER_H__
+#ifndef __AX_PU_PARTICLE_3D_TRANSLATE_MANAGER_H__
+#define __AX_PU_PARTICLE_3D_TRANSLATE_MANAGER_H__
 
 #include "base/CCRef.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3DTranslator.h"
@@ -38,7 +38,7 @@
 #include "extensions/Particle3D/PU/CCPUObserverTranslator.h"
 #include "extensions/Particle3D/PU/CCPUBehaviourTranslator.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 class PUMaterialCache;
 class PUTranslateManager
 {
@@ -77,6 +77,6 @@ public:
     virtual ~PUTranslateManager();
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif /* defined(__cocos2d_libs__CCParticle3DTranslateManager__) */

@@ -38,7 +38,7 @@ THE SOFTWARE.
 
 #define DECLARE_GUARD (void)0  // std::lock_guard<std::recursive_mutex> mutexGuard(_mutex)
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 struct FileUtilsApple::IMPL
 {
@@ -54,7 +54,7 @@ FileUtilsApple::FileUtilsApple() : pimpl_(new IMPL([NSBundle mainBundle])) {}
 
 FileUtilsApple::~FileUtilsApple() = default;
 
-#if CC_FILEUTILS_APPLE_ENABLE_OBJC
+#if AX_FILEUTILS_APPLE_ENABLE_OBJC
 void FileUtilsApple::setBundle(NSBundle* bundle)
 {
     pimpl_->setBundle(bundle);
@@ -74,7 +74,7 @@ FileUtils* FileUtils::getInstance()
         {
             delete s_sharedFileUtils;
             s_sharedFileUtils = nullptr;
-            CCLOG("ERROR: Could not init CCFileUtilsApple");
+            AXLOG("ERROR: Could not init CCFileUtilsApple");
         }
     }
     return s_sharedFileUtils;
@@ -161,7 +161,7 @@ bool FileUtilsApple::removeDirectory(std::string_view path) const
 {
     if (path.empty())
     {
-        CCLOGERROR("Fail to remove directory, path is empty!");
+        AXLOGERROR("Fail to remove directory, path is empty!");
         return false;
     }
 
@@ -231,7 +231,7 @@ std::string FileUtilsApple::getFullPathForFilenameWithinDirectory(std::string_vi
 
 bool FileUtilsApple::createDirectory(std::string_view path) const
 {
-    CCASSERT(!path.empty(), "Invalid path");
+    AXASSERT(!path.empty(), "Invalid path");
 
     if (isDirectoryExist(path))
         return true;
@@ -245,10 +245,10 @@ bool FileUtilsApple::createDirectory(std::string_view path) const
 
     if (!result && error != nil)
     {
-        CCLOGERROR("Fail to create directory \"%s\": %s", path.data(), [error.localizedDescription UTF8String]);
+        AXLOGERROR("Fail to create directory \"%s\": %s", path.data(), [error.localizedDescription UTF8String]);
     }
 
     return result;
 }
 
-NS_CC_END
+NS_AX_END

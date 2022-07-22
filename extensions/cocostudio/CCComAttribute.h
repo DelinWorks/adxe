@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
 
-#ifndef __CC_EXTENTIONS_CCCOMATTRIBUTE_H__
-#define __CC_EXTENTIONS_CCCOMATTRIBUTE_H__
+#ifndef __AX_EXTENTIONS_CCCOMATTRIBUTE_H__
+#define __AX_EXTENTIONS_CCCOMATTRIBUTE_H__
 
 #include "CCComBase.h"
 #include "2d/CCComponent.h"
@@ -33,7 +33,7 @@ THE SOFTWARE.
 namespace cocostudio
 {
 
-class CCS_DLL ComAttribute : public cocos2d::Component
+class CCS_DLL ComAttribute : public axis::Component
 {
     DECLARE_CLASS_COMPONENT_INFO
 public:
@@ -65,10 +65,10 @@ public:
     bool parse(std::string_view jsonFile);
 
 private:
-    cocos2d::ValueMap _dict;
+    axis::ValueMap _dict;
     rapidjson::Document _doc;
 };
 
 }  // namespace cocostudio
 
-#endif  // __CC_EXTENTIONS_CCCOMATTRIBUTE_H__
+#endif  // __AX_EXTENTIONS_CCCOMATTRIBUTE_H__

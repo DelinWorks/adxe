@@ -27,7 +27,7 @@
 #include "CCPUVortexAffector.h"
 #include "extensions/Particle3D/PU/CCPUParticleSystem3D.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 // Constants
 const Vec3 PUVortexAffector::DEFAULT_ROTATION_VECTOR(0, 0, 0);
@@ -44,7 +44,7 @@ PUVortexAffector::~PUVortexAffector()
 {
     if (_dynRotationSpeed)
     {
-        CC_SAFE_DELETE(_dynRotationSpeed);
+        AX_SAFE_DELETE(_dynRotationSpeed);
     }
 }
 //-----------------------------------------------------------------------
@@ -66,7 +66,7 @@ PUDynamicAttribute* PUVortexAffector::getRotationSpeed() const
 void PUVortexAffector::setRotationSpeed(PUDynamicAttribute* dynRotationSpeed)
 {
     if (_dynRotationSpeed)
-        CC_SAFE_DELETE(_dynRotationSpeed);
+        AX_SAFE_DELETE(_dynRotationSpeed);
 
     _dynRotationSpeed = dynRotationSpeed;
 }
@@ -80,7 +80,7 @@ float PUVortexAffector::calculateRotationSpeed()
 
 void PUVortexAffector::updatePUAffector(PUParticle3D* particle, float /*deltaTime*/)
 {
-    // for (auto iter : _particleSystem->getParticles())
+    // for (auto&& iter : _particleSystem->getParticles())
     {
         // PUParticle3D *particle = iter;
         //  Explicitly check on 'freezed', because it passes the techniques' validation.
@@ -133,4 +133,4 @@ void PUVortexAffector::copyAttributesTo(PUAffector* affector)
     vortexAffector->setRotationSpeed(getRotationSpeed()->clone());
 }
 
-NS_CC_END
+NS_AX_END

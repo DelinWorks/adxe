@@ -24,15 +24,15 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#ifndef __CC_PU_SCRIPT_LEXER_H__
-#define __CC_PU_SCRIPT_LEXER_H__
+#ifndef __AX_PU_SCRIPT_LEXER_H__
+#define __AX_PU_SCRIPT_LEXER_H__
 
 #include "base/CCRef.h"
 #include <vector>
 #include <string>
 #include "ExtensionExport.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 enum
 {
     TID_LBRACKET = 0,  // {
@@ -77,6 +77,6 @@ private:  // Private utility operations
     bool isNewline(char c) const;
 };
 
-NS_CC_END
+NS_AX_END
 
 #endif

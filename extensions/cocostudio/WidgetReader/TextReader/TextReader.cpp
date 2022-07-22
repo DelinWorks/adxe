@@ -12,7 +12,7 @@
 
 #include "flatbuffers/flatbuffers.h"
 
-USING_NS_CC;
+USING_NS_AX;
 using namespace ui;
 using namespace flatbuffers;
 
@@ -46,10 +46,10 @@ TextReader* TextReader::getInstance()
 
 void TextReader::destroyInstance()
 {
-    CC_SAFE_DELETE(instanceTextReader);
+    AX_SAFE_DELETE(instanceTextReader);
 }
 
-void TextReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void TextReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     this->beginSetBasicProperties(widget);
 
@@ -64,9 +64,9 @@ void TextReader::setPropsFromBinary(cocos2d::ui::Widget* widget, CocoLoader* coc
         std::string key   = stChildArray[i].GetName(cocoLoader);
         std::string value = stChildArray[i].GetValue(cocoLoader);
         // read all basic properties of widget
-        CC_BASIC_PROPERTY_BINARY_READER
+        AX_BASIC_PROPERTY_BINARY_READER
         // read all color related properties of widget
-        CC_COLOR_PROPERTY_BINARY_READER
+        AX_COLOR_PROPERTY_BINARY_READER
 
         else if (key == P_TouchScaleEnable) { label->setTouchScaleChangeEnabled(valueToBool(value)); }
 
@@ -428,7 +428,7 @@ Offset<Table> TextReader::createOptionsWithFlatBuffers(pugi::xml_node objectData
     return *(Offset<Table>*)(&options);
 }
 
-void TextReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers::Table* textOptions)
+void TextReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* textOptions)
 {
     Text* label  = static_cast<Text*>(node);
     auto options = (TextOptions*)textOptions;
@@ -533,7 +533,7 @@ void TextReader::setPropsWithFlatBuffers(cocos2d::Node* node, const flatbuffers:
         label->setContentSize(contentSize);
     }
 
-    auto labelRenderer = dynamic_cast<cocos2d::Label*>(label->getVirtualRenderer());
+    auto labelRenderer = dynamic_cast<axis::Label*>(label->getVirtualRenderer());
     if (options->boldEnabled())
         labelRenderer->enableBold();
     if (options->underlineEnabled())

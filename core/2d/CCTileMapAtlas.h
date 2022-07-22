@@ -31,7 +31,7 @@ THE SOFTWARE.
 #include "2d/CCAtlasNode.h"
 #include "base/CCValue.h"
 
-NS_CC_BEGIN
+NS_AX_BEGIN
 
 /// @cond DO_NOT_SHOW
 
@@ -53,7 +53,7 @@ You SHOULD not use this class.
 Instead, use the newer TMX file format: TMXTiledMap
 @js NA
 */
-class CC_DLL TileMapAtlas : public AtlasNode
+class AX_DLL TileMapAtlas : public AtlasNode
 {
 public:
     /** creates a TileMap with a tile file (atlas) with a map file and the width and height of each tile in points.
@@ -115,6 +115,6 @@ protected:
 
 /// @endcond
 
-NS_CC_END
+NS_AX_END
 
 #endif  //__CCTILE_MAP_ATLAS__
