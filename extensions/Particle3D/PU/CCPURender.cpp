@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -515,7 +515,7 @@ void PUParticle3DModelRender::render(Renderer* renderer, const Mat4& transform, 
             mesh->setBlendFunc(particleSystem->getBlendFunc());
             mesh->setCullFaceEnabled(false);
             mesh->retain();
-            _meshList.push_back(mesh);
+            _meshList.emplace_back(mesh);
         }
         if (!_meshList.empty())
         {
@@ -1035,7 +1035,7 @@ void PUSphereRender::buildBuffers(unsigned short count)
                     _indices[index++] = vertexIndex;
                 }
                 ++vertexIndex;
-                _vertexTemplate.push_back(vi);
+                _vertexTemplate.emplace_back(vi);
             }
         }
     }

@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -149,7 +149,7 @@ void PUBeamRender::particleExpired(PUParticleSystem3D* /*particleSystem*/, PUPar
         PUParticle3DBeamVisualData* beamRendererVisualData =
             static_cast<PUParticle3DBeamVisualData*>(particle->visualData);
         beamRendererVisualData->setVisible(false, 0);  // PU 1.4
-        _visualData.push_back(beamRendererVisualData);
+        _visualData.emplace_back(beamRendererVisualData);
         particle->visualData = nullptr;
     }
 }
@@ -279,8 +279,8 @@ void PUBeamRender::prepare()
             visualData->half[numDev].setZero();
             visualData->destinationHalf[numDev].setZero();
         }
-        _allVisualData.push_back(visualData);  // Managed by this renderer
-        _visualData.push_back(visualData);     // Used to assign to a particle
+        _allVisualData.emplace_back(visualData);  // Managed by this renderer
+        _visualData.emplace_back(visualData);     // Used to assign to a particle
     }
 }
 

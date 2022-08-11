@@ -1,7 +1,7 @@
 /****************************************************************************
  Copyright (c) 2015-2017 Chukong Technologies Inc.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -35,7 +35,7 @@
 USING_NS_AX;
 using namespace cocostudio;
 using namespace flatbuffers;
-using namespace axis::ui;
+using namespace ax::ui;
 
 IMPLEMENT_CLASS_NODE_READER_INFO(TabControlReader)
 
@@ -143,7 +143,7 @@ flatbuffers::Offset<flatbuffers::Table> TabControlReader::createOptionsWithFlatB
                     {
                         auto itemOption =
                             TabItemReader::getInstance()->createTabItemOptionWithFlatBuffers(child, builder);
-                        tabItems.push_back(itemOption);
+                        tabItems.emplace_back(itemOption);
                         break;
                     }
                     else
@@ -164,14 +164,14 @@ flatbuffers::Offset<flatbuffers::Table> TabControlReader::createOptionsWithFlatB
     return *(Offset<Table>*)(&options);
 }
 
-void TabControlReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* nodeOption)
+void TabControlReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* nodeOption)
 {
-    auto tabControl = static_cast<axis::ui::TabControl*>(node);
+    auto tabControl = static_cast<ax::ui::TabControl*>(node);
     auto options    = (flatbuffers::TabControlOption*)nodeOption;
 
     int headerPlace = options->headerPlace();
     tabControl->ignoreHeadersTextureSize(options->ignoreHeaderTextureSize() != 0);
-    tabControl->setHeaderDockPlace((axis::ui::TabControl::Dock)headerPlace);
+    tabControl->setHeaderDockPlace((ax::ui::TabControl::Dock)headerPlace);
     tabControl->setHeaderWidth(options->headerWidth());
     tabControl->setHeaderHeight(options->headerHeight());
     tabControl->setHeaderSelectedZoom(options->selectedTabZoom());
@@ -187,9 +187,9 @@ void TabControlReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffe
     tabControl->setSelectTab(options->selectedTabIndex());
 }
 
-axis::Node* TabControlReader::createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions)
+ax::Node* TabControlReader::createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions)
 {
-    auto node = axis::ui::TabControl::create();
+    auto node = ax::ui::TabControl::create();
 
     auto taboptions = (flatbuffers::TabControlOption*)nodeOptions;
     setPropsWithFlatBuffers(node, nodeOptions);
@@ -229,7 +229,7 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
 
     int fontsize = 12;
     std::string text;
-    axis::Color4B textColor(255, 255, 255, 255);
+    ax::Color4B textColor(255, 255, 255, 255);
     std::string fontName;
 
     int backgroundboxResourceType = 0;
@@ -334,7 +334,7 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
             if (backgroundboxResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "PressedBackFileData")
@@ -369,7 +369,7 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
             if (backGroundBoxSelectedResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "NodeNormalFileData")
@@ -404,7 +404,7 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
             if (frontCrossResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "DisableBackFileData")
@@ -439,7 +439,7 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
             if (backGroundBoxDisabledResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "NodeDisableFileData")
@@ -474,7 +474,7 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
             if (frontCrossDisabledResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "FontResource")
@@ -525,9 +525,9 @@ flatbuffers::Offset<flatbuffers::Table> TabHeaderReader::createOptionsWithFlatBu
     return *(Offset<Table>*)(&option);
 }
 
-void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* nodeOption)
+void TabHeaderReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* nodeOption)
 {
-    auto header  = static_cast<axis::ui::TabHeader*>(node);
+    auto header  = static_cast<ax::ui::TabHeader*>(node);
     auto options = (flatbuffers::TabHeaderOption*)nodeOption;
 
     header->setTitleFontSize(options->fontSize());
@@ -581,7 +581,7 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     case 1:
     {
         std::string plist        = backGroundDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(backGroundTexturePath);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(backGroundTexturePath);
         if (spriteFrame)
         {
             backGroundFileExist = true;
@@ -640,7 +640,7 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     case 1:
     {
         std::string plist        = backGroundSelectedDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(backGroundSelectedTexturePath);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(backGroundSelectedTexturePath);
         if (spriteFrame)
         {
             backGroundSelectedfileExist = true;
@@ -672,7 +672,7 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     if (backGroundSelectedfileExist)
     {
         header->loadTextureBackGroundSelected(backGroundSelectedTexturePath,
-                                              (axis::ui::Widget::TextureResType)backGroundSelectedType);
+                                              (ax::ui::Widget::TextureResType)backGroundSelectedType);
     }
 
     // load frontCross image
@@ -700,7 +700,7 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     case 1:
     {
         std::string plist        = frontCrossDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frontCrossFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(frontCrossFileName);
         if (spriteFrame)
         {
             frontCrossFileExist = true;
@@ -759,7 +759,7 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     case 1:
     {
         std::string plist        = backGroundDisabledDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(backGroundDisabledFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(backGroundDisabledFileName);
         if (spriteFrame)
         {
             backGroundBoxDisabledFileExist = true;
@@ -819,7 +819,7 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     case 1:
     {
         std::string plist        = frontCrossDisabledDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frontCrossDisabledFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(frontCrossDisabledFileName);
         if (spriteFrame)
         {
             frontCrossDisabledFileExist = true;
@@ -855,9 +855,9 @@ void TabHeaderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffer
     }
 }
 
-axis::Node* TabHeaderReader::createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions)
+ax::Node* TabHeaderReader::createNodeWithFlatBuffers(const flatbuffers::Table* nodeOptions)
 {
-    auto node = axis::ui::TabHeader::create();
+    auto node = ax::ui::TabHeader::create();
 
     auto taboptions = (flatbuffers::TabHeaderOption*)nodeOptions;
     setPropsWithFlatBuffers(node, nodeOptions);
@@ -943,12 +943,12 @@ flatbuffers::Offset<flatbuffers::TabItemOption> TabItemReader::createTabItemOpti
     return *(&options);
 }
 
-void TabItemReader::setPropsWithFlatBuffers(axis::Node* /*node*/, const flatbuffers::Table* /*nodeOption*/)
+void TabItemReader::setPropsWithFlatBuffers(ax::Node* /*node*/, const flatbuffers::Table* /*nodeOption*/)
 {
     // do nothing
 }
 
-axis::Node* TabItemReader::createNodeWithFlatBuffers(const flatbuffers::Table* /*nodeOptions*/)
+ax::Node* TabItemReader::createNodeWithFlatBuffers(const flatbuffers::Table* /*nodeOptions*/)
 {
     // do nothing
     return nullptr;

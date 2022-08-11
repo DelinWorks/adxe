@@ -2,7 +2,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -314,7 +314,7 @@ void Particle3DModelRender::render(Renderer* renderer, const Mat4& transform, Pa
             }
             mesh->setTexture(_texFile);
             mesh->retain();
-            _meshList.push_back(mesh);
+            _meshList.emplace_back(mesh);
         }
         if (!_meshList.empty())
         {

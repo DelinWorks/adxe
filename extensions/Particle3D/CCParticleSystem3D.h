@@ -2,7 +2,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -75,7 +75,7 @@ public:
         if (_locked.empty())
             return nullptr;
         T* p = _locked.front();
-        //_released.push_back(p);
+        //_released.emplace_back(p);
         //_locked.erase(_locked.begin());
         _released.splice(_released.end(), _locked, _locked.begin());
         return p;
@@ -83,7 +83,7 @@ public:
 
     void lockLatestData()
     {
-        _locked.push_back(*_releasedIter);
+        _locked.emplace_back(*_releasedIter);
         _releasedIter = _released.erase(_releasedIter);
         if (_releasedIter != _released.begin() && _releasedIter != _released.end())
         {
@@ -135,7 +135,7 @@ public:
     const PoolList& getActiveDataList() const { return _released; };
     const PoolList& getUnActiveDataList() const { return _locked; };
 
-    void addData(T* data) { _locked.push_back(data); }
+    void addData(T* data) { _locked.emplace_back(data); }
 
     bool empty() const { return _released.empty(); };
 

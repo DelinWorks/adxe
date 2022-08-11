@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -44,7 +44,7 @@ void PUParticleSystem3DTranslator::translate(PUScriptCompiler* compiler, PUAbstr
 
     //// Create a particle system with the given name
     //_system = PUParticleSystem3D::create();
-    // PUParticleSystem3DBuilder::Instance()->PUParticleSystem3DList.push_back(_system);
+    // PUParticleSystem3DBuilder::Instance()->PUParticleSystem3DList.emplace_back(_system);
     // if (!mSystem)
     //{
     //	return;

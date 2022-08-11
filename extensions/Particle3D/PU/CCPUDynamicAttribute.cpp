@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -127,7 +127,7 @@ void PUDynamicAttributeRandom::setMinMax(float min, float max)
 //-----------------------------------------------------------------------
 float PUDynamicAttributeRandom::getValue(float /*x*/)
 {
-    return axis::random(_min, _max);
+    return ax::random(_min, _max);
 }
 
 void PUDynamicAttributeRandom::copyAttributesTo(PUDynamicAttribute* dynamicAttribute)
@@ -169,7 +169,7 @@ PUDynamicAttributeCurved::PUDynamicAttributeCurved(const PUDynamicAttributeCurve
     // Copy controlpoints
     for (const auto& controlPoint : dynamicAttributeCurved._controlPoints)
     {
-        _controlPoints.push_back(controlPoint);
+        _controlPoints.emplace_back(controlPoint);
     }
     processControlPoints();
 }
@@ -232,7 +232,7 @@ float PUDynamicAttributeCurved::getValue(float x)
 //-----------------------------------------------------------------------
 void PUDynamicAttributeCurved::addControlPoint(float x, float y)
 {
-    _controlPoints.push_back(Vec2(x, y));
+    _controlPoints.emplace_back(Vec2(x, y));
 }
 //-----------------------------------------------------------------------
 const PUDynamicAttributeCurved::ControlPointList& PUDynamicAttributeCurved::getControlPoints() const
@@ -314,7 +314,7 @@ void PUDynamicAttributeCurved::copyAttributesTo(PUDynamicAttribute* dynamicAttri
     for (it = _controlPoints.begin(); it != itEnd; ++it)
     {
         Vec2 controlPoint = *it;
-        dynAttr->_controlPoints.push_back(controlPoint);
+        dynAttr->_controlPoints.emplace_back(controlPoint);
     }
     dynAttr->processControlPoints();
 }

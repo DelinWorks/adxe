@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 
-https://axis-project.github.io/
+https://axys1.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -185,7 +185,7 @@ void ArmatureAnimation::play(std::string_view animationName, int durationTo, int
 
     int durationTween = _movementData->durationTween == 0 ? _rawDuration : _movementData->durationTween;
 
-    axis::tweenfunc::TweenType tweenEasing = _movementData->tweenEasing;
+    ax::tweenfunc::TweenType tweenEasing = _movementData->tweenEasing;
     loop                                      = (loop < 0) ? _movementData->loop : loop;
 
     _onMovementList = false;
@@ -221,7 +221,7 @@ void ArmatureAnimation::play(std::string_view animationName, int durationTo, int
         Tween* tween = bone->getTween();
         if (movementBoneData && movementBoneData->frameList.size() > 0)
         {
-            _tweenList.push_back(tween);
+            _tweenList.emplace_back(tween);
             movementBoneData->duration = _movementData->duration;
             tween->play(movementBoneData, durationTo, durationTween, loop, tweenEasing);
 
@@ -286,7 +286,7 @@ void ArmatureAnimation::playWithIndexes(const std::vector<int>& movementIndexes,
     for (auto&& index : movementIndexes)
     {
         std::string name = movName.at(index);
-        _movementList.push_back(name);
+        _movementList.emplace_back(name);
     }
 
     updateMovementList();

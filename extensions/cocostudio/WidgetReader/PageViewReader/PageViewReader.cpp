@@ -40,7 +40,7 @@ void PageViewReader::destroyInstance()
     AX_SAFE_DELETE(instancePageViewReader);
 }
 
-void PageViewReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void PageViewReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     LayoutReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 }
@@ -271,7 +271,7 @@ Offset<Table> PageViewReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (resourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -294,7 +294,7 @@ Offset<Table> PageViewReader::createOptionsWithFlatBuffers(pugi::xml_node object
     return *(Offset<Table>*)(&options);
 }
 
-void PageViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* pageViewOptions)
+void PageViewReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* pageViewOptions)
 {
     PageView* pageView = static_cast<PageView*>(node);
     auto options       = (PageViewOptions*)pageViewOptions;
@@ -351,7 +351,7 @@ void PageViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
         case 1:
         {
             std::string plist        = imageFileNameDic->plistFile()->c_str();
-            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(imageFileName);
             if (spriteFrame)
             {
                 fileExist = true;

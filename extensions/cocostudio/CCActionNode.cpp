@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 
-https://axis-project.github.io/
+https://axys1.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -50,7 +50,7 @@ ActionNode::ActionNode()
     _frameArrayNum = (int)kKeyframeMax;
     for (int i = 0; i < _frameArrayNum; i++)
     {
-        _frameArray.push_back(new axis::Vector<ActionFrame*>());
+        _frameArray.emplace_back(new ax::Vector<ActionFrame*>());
     }
 }
 
@@ -100,7 +100,7 @@ void ActionNode::initWithDictionary(const rapidjson::Value& dic, Ref* root)
         for (int j = 0; j < frameTweenParameterNum; j++)
         {
             float value = DICTOOL->getFloatValueFromArray_json(actionFrameDic, "tweenParameter", j);
-            frameTweenParameter.push_back(value);
+            frameTweenParameter.emplace_back(value);
         }
 
         bool existPosition = DICTOOL->checkObjectExist_json(actionFrameDic, "positionx");
@@ -209,7 +209,7 @@ float ActionNode::valueToFloat(std::string_view value)
     return utils::atof(value.data());
 }
 
-void ActionNode::initWithBinary(CocoLoader* cocoLoader, stExpCocoNode* cocoNode, axis::Ref* root)
+void ActionNode::initWithBinary(CocoLoader* cocoLoader, stExpCocoNode* cocoNode, ax::Ref* root)
 {
 
     stExpCocoNode* stChildNode = cocoNode;
@@ -273,7 +273,7 @@ void ActionNode::initWithBinary(CocoLoader* cocoLoader, stExpCocoNode* cocoNode,
                 {
                     std::string t_key   = tweenParameterArray[j].GetName(cocoLoader);
                     std::string t_value = tweenParameterArray[j].GetValue(cocoLoader);
-                    frameTweenParameter.push_back(valueToFloat(t_value));
+                    frameTweenParameter.emplace_back(valueToFloat(t_value));
                 }
             }
             else if (key == "positionx")

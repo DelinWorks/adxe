@@ -44,7 +44,7 @@ void ScrollViewReader::destroyInstance()
     AX_SAFE_DELETE(instanceScrollViewReader);
 }
 
-void ScrollViewReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void ScrollViewReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     // TODO: need to refactor...
     LayoutReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
@@ -368,7 +368,7 @@ Offset<Table> ScrollViewReader::createOptionsWithFlatBuffers(pugi::xml_node obje
             if (resourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -393,7 +393,7 @@ Offset<Table> ScrollViewReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void ScrollViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* scrollViewOptions)
+void ScrollViewReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* scrollViewOptions)
 {
     ScrollView* scrollView = static_cast<ScrollView*>(node);
     auto options           = (ScrollViewOptions*)scrollViewOptions;
@@ -450,7 +450,7 @@ void ScrollViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffe
         case 1:
         {
             std::string plist        = imageFileNameDic->plistFile()->c_str();
-            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(imageFileName);
             if (spriteFrame)
             {
                 fileExist = true;

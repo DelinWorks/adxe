@@ -2,7 +2,7 @@
  Copyright (c) 2014 cocos2d-x.org
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -1231,7 +1231,7 @@ void AssetsManagerEx::batchDownload()
             _sizeCollected++;
         }
 
-        _queue.push_back(iter.first);
+        _queue.emplace_back(iter.first);
     }
     // All collected, enable total size
     if (_sizeCollected == _totalToDownload)

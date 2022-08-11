@@ -49,7 +49,7 @@ void SliderReader::destroyInstance()
     AX_SAFE_DELETE(instanceSliderReader);
 }
 
-void SliderReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void SliderReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     this->beginSetBasicProperties(widget);
 
@@ -273,7 +273,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
             if (barFileNameResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "BallNormalData")
@@ -308,7 +308,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
             if (ballNormalResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "BallPressedData")
@@ -343,7 +343,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
             if (ballPressedResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "BallDisabledData")
@@ -378,7 +378,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
             if (ballDisabledResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "ProgressBarData")
@@ -413,7 +413,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
             if (progressBarResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -437,7 +437,7 @@ Offset<Table> SliderReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
     return *(Offset<Table>*)(&options);
 }
 
-void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* sliderOptions)
+void SliderReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* sliderOptions)
 {
     Slider* slider = static_cast<Slider*>(node);
 
@@ -470,7 +470,7 @@ void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::
     case 1:
     {
         std::string plist        = imageFileNameDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(imageFileName);
         if (spriteFrame)
         {
             imageFileExist = true;
@@ -535,7 +535,7 @@ void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::
     case 1:
     {
         std::string plist        = normalDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(normalFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(normalFileName);
         if (spriteFrame)
         {
             normalFileExist = true;
@@ -600,7 +600,7 @@ void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::
     case 1:
     {
         std::string plist        = pressedDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(pressedFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(pressedFileName);
         if (spriteFrame)
         {
             pressedFileExist = true;
@@ -665,7 +665,7 @@ void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::
     case 1:
     {
         std::string plist        = disabledDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(disabledFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(disabledFileName);
         if (spriteFrame)
         {
             disabledFileExist = true;
@@ -730,7 +730,7 @@ void SliderReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::
     case 1:
     {
         std::string plist        = progressBarDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(progressBarFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(progressBarFileName);
         if (spriteFrame)
         {
             progressFileExist = true;

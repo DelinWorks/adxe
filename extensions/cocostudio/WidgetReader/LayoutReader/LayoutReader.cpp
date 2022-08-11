@@ -65,7 +65,7 @@ void LayoutReader::destroyInstance()
     AX_SAFE_DELETE(instanceLayoutReader);
 }
 
-void LayoutReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void LayoutReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     WidgetReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 
@@ -518,7 +518,7 @@ Offset<Table> LayoutReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
             if (resourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -541,7 +541,7 @@ Offset<Table> LayoutReader::createOptionsWithFlatBuffers(pugi::xml_node objectDa
     return *(Offset<Table>*)(&options);
 }
 
-void LayoutReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* layoutOptions)
+void LayoutReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* layoutOptions)
 {
     Layout* panel = static_cast<Layout*>(node);
     auto options  = (PanelOptions*)layoutOptions;
@@ -598,7 +598,7 @@ void LayoutReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::
         case 1:
         {
             std::string plist        = imageFileNameDic->plistFile()->c_str();
-            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(imageFileName);
             if (spriteFrame)
             {
                 fileExist = true;

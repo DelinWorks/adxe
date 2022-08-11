@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 
-https://axis-project.github.io/
+https://axys1.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -226,7 +226,7 @@ BoneData* ArmatureData::getBoneData(std::string_view boneName)
 FrameData::FrameData(void)
     : frameID(0)
     , duration(1)
-    , tweenEasing(axis::tweenfunc::Linear)
+    , tweenEasing(ax::tweenfunc::Linear)
     , easingParamNumber(0)
     , easingParams(nullptr)
     , isTween(true)
@@ -297,7 +297,7 @@ MovementData::MovementData(void)
     , durationTo(0)
     , durationTween(0)
     , loop(true)
-    , tweenEasing(axis::tweenfunc::Linear)
+    , tweenEasing(ax::tweenfunc::Linear)
 {}
 
 MovementData::~MovementData(void) {}
@@ -319,7 +319,7 @@ AnimationData::~AnimationData(void) {}
 void AnimationData::addMovement(MovementData* movData)
 {
     movementDataDic.insert(movData->name, movData);
-    movementNames.push_back(movData->name);
+    movementNames.emplace_back(movData->name);
 }
 
 MovementData* AnimationData::getMovement(std::string_view movementName)
@@ -343,7 +343,7 @@ bool ContourData::init()
 
 void ContourData::addVertex(Vec2& vertex)
 {
-    vertexList.push_back(vertex);
+    vertexList.emplace_back(vertex);
 }
 
 TextureData::TextureData() : height(0.0f), width(0.0f), pivotX(0.5f), pivotY(0.5f), name("") {}

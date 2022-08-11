@@ -42,7 +42,7 @@ void ListViewReader::destroyInstance()
     AX_SAFE_DELETE(instanceListViewReader);
 }
 
-void ListViewReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void ListViewReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     ScrollViewReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 
@@ -355,7 +355,7 @@ Offset<Table> ListViewReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (resourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -381,7 +381,7 @@ Offset<Table> ListViewReader::createOptionsWithFlatBuffers(pugi::xml_node object
     return *(Offset<Table>*)(&options);
 }
 
-void ListViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* listViewOptions)
+void ListViewReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* listViewOptions)
 {
     ListView* listView = static_cast<ListView*>(node);
     auto options       = (ListViewOptions*)listViewOptions;
@@ -438,7 +438,7 @@ void ListViewReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
         case 1:
         {
             std::string plist        = imageFileNameDic->plistFile()->c_str();
-            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+            SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(imageFileName);
             if (spriteFrame)
             {
                 fileExist = true;

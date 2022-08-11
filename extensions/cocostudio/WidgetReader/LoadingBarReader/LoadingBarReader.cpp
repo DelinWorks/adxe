@@ -49,7 +49,7 @@ void LoadingBarReader::destroyInstance()
     AX_SAFE_DELETE(instanceLoadingBar);
 }
 
-void LoadingBarReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void LoadingBarReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
     WidgetReader::setPropsFromBinary(widget, cocoLoader, cocoNode);
 
@@ -208,7 +208,7 @@ Offset<Table> LoadingBarReader::createOptionsWithFlatBuffers(pugi::xml_node obje
             if (resourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -223,7 +223,7 @@ Offset<Table> LoadingBarReader::createOptionsWithFlatBuffers(pugi::xml_node obje
     return *(Offset<Table>*)(&options);
 }
 
-void LoadingBarReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* loadingBarOptions)
+void LoadingBarReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* loadingBarOptions)
 {
     LoadingBar* loadingBar = static_cast<LoadingBar*>(node);
 
@@ -242,7 +242,7 @@ void LoadingBarReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffe
         {
             fileExist = true;
         }
-        else if (SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName))
+        else if (SpriteFrameCache::getInstance()->findFrame(imageFileName))
         {
             fileExist         = true;
             imageFileNameType = 1;
@@ -258,7 +258,7 @@ void LoadingBarReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffe
     case 1:
     {
         std::string plist        = imageFileNameDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(imageFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(imageFileName);
         if (spriteFrame)
         {
             fileExist = true;

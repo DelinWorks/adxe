@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -384,7 +384,7 @@ const PUTriangle::PositionAndNormal MeshInfo::getRandomPositionAndNormal(const s
 //		t.calculateSquareSurface();
 //		t.calculateSurfaceNormal();
 //		t.calculateEdgeNormals();
-//		_triangles.push_back(t);
+//		_triangles.emplace_back(t);
 //	}
 //
 //	// Delete intermediate arrays

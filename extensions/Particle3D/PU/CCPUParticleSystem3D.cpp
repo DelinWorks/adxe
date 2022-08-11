@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -172,7 +172,7 @@ void PUParticle3D::copyBehaviours(const ParticleBehaviourList& list)
     {
         auto behaviour = it->clone();
         behaviour->retain();
-        behaviours.push_back(behaviour);
+        behaviours.emplace_back(behaviour);
     }
 }
 
@@ -308,7 +308,7 @@ bool PUParticleSystem3D::initWithFilePath(std::string_view filePath)
     if (std::find(loadedFolder.begin(), loadedFolder.end(), materialFolder) == loadedFolder.end())
     {
         PUMaterialCache::Instance()->loadMaterialsFromSearchPaths(materialFolder);
-        loadedFolder.push_back(materialFolder);
+        loadedFolder.emplace_back(materialFolder);
     }
 
     if (!initSystem(fullPath))
@@ -841,7 +841,7 @@ bool PUParticleSystem3D::isExpired(PUParticle3D* particle, float timeElapsed)
     return expired;
 }
 
-axis::Vec3 PUParticleSystem3D::getDerivedPosition()
+ax::Vec3 PUParticleSystem3D::getDerivedPosition()
 {
     // if (_parentParticleSystem && _parentParticleSystem->isKeepLocal()) return Vec3::ZERO;
     // if (_keepLocal) return Vec3::ZERO;
@@ -856,7 +856,7 @@ axis::Vec3 PUParticleSystem3D::getDerivedPosition()
     }
 }
 
-axis::Quaternion PUParticleSystem3D::getDerivedOrientation()
+ax::Quaternion PUParticleSystem3D::getDerivedOrientation()
 {
     // if (_parentParticleSystem && _parentParticleSystem->isKeepLocal()) return Quaternion();
     // if (_keepLocal) return Quaternion();
@@ -873,7 +873,7 @@ axis::Quaternion PUParticleSystem3D::getDerivedOrientation()
     }
 }
 
-axis::Vec3 PUParticleSystem3D::getDerivedScale()
+ax::Vec3 PUParticleSystem3D::getDerivedScale()
 {
     // if (_parentParticleSystem && _parentParticleSystem->isKeepLocal()) return Vec3::ONE;
     // if (_keepLocal) return Vec3::ONE;
@@ -918,7 +918,7 @@ void PUParticleSystem3D::addEmitter(PUEmitter* emitter)
     {
         emitter->_particleSystem = this;
         emitter->retain();
-        _emitters.push_back(emitter);
+        _emitters.emplace_back(emitter);
     }
 }
 
@@ -951,7 +951,7 @@ void PUParticleSystem3D::addListener(PUListener* listener)
     auto iter = std::find(_listeners.begin(), _listeners.end(), listener);
     if (iter == _listeners.end())
     {
-        _listeners.push_back(listener);
+        _listeners.emplace_back(listener);
     }
 }
 
@@ -1036,7 +1036,7 @@ void PUParticleSystem3D::addObserver(PUObserver* observer)
     {
         observer->retain();
         observer->_particleSystem = this;
-        _observers.push_back(observer);
+        _observers.emplace_back(observer);
     }
 }
 
@@ -1142,7 +1142,7 @@ void PUParticleSystem3D::addBehaviourTemplate(PUBehaviour* behaviour)
     {
         behaviour->retain();
         behaviour->_particleSystem = this;
-        _behaviourTemplates.push_back(behaviour);
+        _behaviourTemplates.emplace_back(behaviour);
     }
 }
 

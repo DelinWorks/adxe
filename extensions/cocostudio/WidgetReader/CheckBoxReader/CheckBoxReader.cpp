@@ -45,7 +45,7 @@ void CheckBoxReader::destroyInstance()
     AX_SAFE_DELETE(instanceCheckBoxReader);
 }
 
-void CheckBoxReader::setPropsFromBinary(axis::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
+void CheckBoxReader::setPropsFromBinary(ax::ui::Widget* widget, CocoLoader* cocoLoader, stExpCocoNode* cocoNode)
 {
 
     CheckBox* checkBox = static_cast<CheckBox*>(widget);
@@ -261,7 +261,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (backgroundboxResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "PressedBackFileData")
@@ -296,7 +296,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (backGroundBoxSelectedResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "NodeNormalFileData")
@@ -331,7 +331,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (frontCrossResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "DisableBackFileData")
@@ -366,7 +366,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (backGroundBoxDisabledResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
         else if (name == "NodeDisableFileData")
@@ -401,7 +401,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
             if (frontCrossDisabledResourceType == 1)
             {
                 FlatBuffersSerialize* fbs = FlatBuffersSerialize::getInstance();
-                fbs->_textures.push_back(builder->CreateString(texture));
+                fbs->_textures.emplace_back(builder->CreateString(texture));
             }
         }
 
@@ -425,7 +425,7 @@ Offset<Table> CheckBoxReader::createOptionsWithFlatBuffers(pugi::xml_node object
     return *(Offset<Table>*)&options;
 }
 
-void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers::Table* checkBoxOptions)
+void CheckBoxReader::setPropsWithFlatBuffers(ax::Node* node, const flatbuffers::Table* checkBoxOptions)
 {
 
     auto options = (CheckBoxOptions*)checkBoxOptions;
@@ -458,7 +458,7 @@ void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
     case 1:
     {
         std::string plist        = backGroundDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(backGroundTexturePath);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(backGroundTexturePath);
         if (spriteFrame)
         {
             backGroundFileExist = true;
@@ -518,7 +518,7 @@ void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
     case 1:
     {
         std::string plist        = backGroundSelectedDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(backGroundSelectedTexturePath);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(backGroundSelectedTexturePath);
         if (spriteFrame)
         {
             backGroundSelectedfileExist = true;
@@ -578,7 +578,7 @@ void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
     case 1:
     {
         std::string plist        = frontCrossDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frontCrossFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(frontCrossFileName);
         if (spriteFrame)
         {
             frontCrossFileExist = true;
@@ -637,7 +637,7 @@ void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
     case 1:
     {
         std::string plist        = backGroundDisabledDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(backGroundDisabledFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(backGroundDisabledFileName);
         if (spriteFrame)
         {
             backGroundBoxDisabledFileExist = true;
@@ -697,7 +697,7 @@ void CheckBoxReader::setPropsWithFlatBuffers(axis::Node* node, const flatbuffers
     case 1:
     {
         std::string plist        = frontCrossDisabledDic->plistFile()->c_str();
-        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->getSpriteFrameByName(frontCrossDisabledFileName);
+        SpriteFrame* spriteFrame = SpriteFrameCache::getInstance()->findFrame(frontCrossDisabledFileName);
         if (spriteFrame)
         {
             frontCrossDisabledFileExist = true;

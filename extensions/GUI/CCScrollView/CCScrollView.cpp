@@ -3,7 +3,7 @@
  Copyright (c) 2010 Sangwoo Im
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -713,7 +713,7 @@ bool ScrollView::onTouchBegan(Touch* touch, Event* /*event*/)
 
     if (std::find(_touches.begin(), _touches.end(), touch) == _touches.end())
     {
-        _touches.push_back(touch);
+        _touches.emplace_back(touch);
     }
 
     if (_touches.size() == 1)

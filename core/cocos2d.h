@@ -6,7 +6,7 @@ Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 Copyright (c) 2021-2022 Bytedance Inc.
 
-https://axis-project.github.io/
+https://axys1.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@ THE SOFTWARE.
 #ifndef __COCOS2D_H__
 #define __COCOS2D_H__
 
-#include "axis.h"
+#include "axys.h"
 
 #define COCOS2D_VERSION 0x00040000
 
@@ -49,8 +49,23 @@ using Sprite3DMaterialCache = MeshMaterialCache;
 
 NS_AX_END
 
-namespace cocos2d = axis;
+namespace cocos2d = axys;
 
 #define USING_NS_CC USING_NS_AX
+
+#define CC_SAFE_RELEASE AX_SAFE_RELEASE
+#define CC_SAFE_RELEASE_NULL AX_SAFE_RELEASE_NULL
+#define CC_SAFE_DELETE AX_SAFE_DELETE
+#define CCASSERT AXASSERT
+#define CC_CONSTRUCTOR_ACCESS public
+
+#define CCLOG AXLOG
+#define CCLOGINFO AXLOGINFO
+#define CCLOGWARN AXLOGWARN
+#define CCLOGERROR AXLOGERROR
+
+#define CC_DEPRECATED_ATTRIBUTE AX_DEPRECATED_ATTRIBUTE
+
+#define CC_SAFE_RETAIN AX_SAFE_RETAIN
 
 #endif  // __COCOS2D_H__

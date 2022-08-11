@@ -3,7 +3,7 @@ Copyright (c) 2013      Edward Zhou
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
-https://axis-project.github.io/
+https://axys1.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -45,7 +45,10 @@ LuaSkeletonAnimation* LuaSkeletonAnimation::createWithFile(const char* skeletonD
                                                            float scale)
 {
     LuaSkeletonAnimation* node = new LuaSkeletonAnimation();
-    node->initWithJsonFile(skeletonDataFile, atlasFile, scale);
+    if (FileUtils::getInstance()->getFileExtension(skeletonDataFile) == ".json")
+        node->initWithJsonFile(skeletonDataFile, atlasFile, scale);
+    else
+        node->initWithBinaryFile(skeletonDataFile, atlasFile, scale);
     node->autorelease();
     return node;
 }

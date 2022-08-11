@@ -4,6 +4,7 @@
 # Android ndk version must be ndk-r9b.
 
 
+import argparse
 import sys
 import os, os.path
 import shutil
@@ -11,16 +12,29 @@ import subprocess
 import re
 from contextlib import contextmanager
 
+g_ndk_root = None
 
 def _check_ndk_root_env():
     ''' Checking the environment ANDROID_NDK, which will be used for building
     '''
 
     try:
-        ANDROID_NDK = os.environ['ANDROID_NDK']
-    except Exception:
-        print("ANDROID_NDK not defined. Please define ANDROID_NDK in your environment.")
-        sys.exit(1)
+
+        ANDROID_NDK = None
+
+        sdkRoot = os.environ.get('ANDROID_SDK_ROOT', None)
+        for _, ndkVers, _ in os.walk("{0}{1}ndk".format(sdkRoot, os.path.sep)):
+            for ndkVer in ndkVers:
+                if (ndkVer == '19.2.5345600'):
+                    ANDROID_NDK = "{0}{1}ndk{1}{2}".format(sdkRoot, os.path.sep, ndkVer)
+                    break
+            break
+
+        if ANDROID_NDK == None:
+            ANDROID_NDK = os.environ.get('ANDROID_NDK', None)
+
+    except:
+        print('Exception occurred when check_ndk_root_env!')
 
     return ANDROID_NDK
 
@@ -59,12 +73,13 @@ def _find_all_files_match(dir, cond, all):
 
 
 def _find_toolchain_include_path():
+    global g_ndk_root
     '''
     Search gcc prebuilt include path
     for instance: "$ANDROID_NDK/toolchains/arm-linux-androideabi-4.9/prebuilt/windows-x86_64/lib/gcc/arm-linux-androideabi/4.9.x/include"
     '''
     foundFiles = []
-    _find_all_files_match(os.path.join(_check_ndk_root_env(), "toolchains"), lambda x : os.path.basename(x) == "stdarg.h" and "arm-linux-androideabi" in x , foundFiles)
+    _find_all_files_match(os.path.join(g_ndk_root, "toolchains"), lambda x : os.path.basename(x) == "stdarg.h" and "arm-linux-androideabi" in x , foundFiles)
     if len(foundFiles) == 0:
         return ""
     else:
@@ -75,7 +90,8 @@ def _find_llvm_include_path():
     Search llvm prebuilt include path.
     for instance: "$ANDROID_NDK/toolchains/llvm/prebuilt/windows-x86_64/lib64/clang/6.0.2/include"
     '''
-    versionFile = _find_first_file_in_dir(_check_ndk_root_env(), "AndroidVersion.txt")
+    global g_ndk_root
+    versionFile = _find_first_file_in_dir(g_ndk_root, "AndroidVersion.txt")
     if versionFile is None:
         return ""
     versionDir = os.path.dirname(versionFile)
@@ -111,12 +127,19 @@ def _run_cmd(command):
         raise CmdError(message)
 
 def main():
+    global g_ndk_root
 
     cur_platform= '??'
     llvm_path = '??'
-    ndk_root = _check_ndk_root_env()
+    if (g_ndk_root == None or not os.path.isdir(g_ndk_root)):
+        g_ndk_root = _check_ndk_root_env()
+
+    if not os.path.isdir(g_ndk_root): 
+        print("The ndk-r19c root not specified, please specifiy via --ndk_root '/path/to/ndk'")
+        sys.exit(1)
+
     # del the " in the path
-    ndk_root = re.sub(r"\"", "", ndk_root)
+    g_ndk_root = re.sub(r"\"", "", g_ndk_root)
     python_bin = _check_python_bin_env()
 
     platform = sys.platform
@@ -131,11 +154,11 @@ def main():
         sys.exit(1)
 
     x86_llvm_path = ""
-    x64_llvm_path = os.path.abspath(os.path.join(ndk_root, 'toolchains/llvm/prebuilt', '%s-%s' % (cur_platform, 'x86_64')))
+    x64_llvm_path = os.path.abspath(os.path.join(g_ndk_root, 'toolchains/llvm/prebuilt', '%s-%s' % (cur_platform, 'x86_64')))
     if not os.path.exists(x64_llvm_path):
-        x86_llvm_path = os.path.abspath(os.path.join(ndk_root, 'toolchains/llvm/prebuilt', '%s' % (cur_platform)))
+        x86_llvm_path = os.path.abspath(os.path.join(g_ndk_root, 'toolchains/llvm/prebuilt', '%s' % (cur_platform)))
     if not os.path.exists(x86_llvm_path):
-        x86_llvm_path = os.path.abspath(os.path.join(ndk_root, 'toolchains/llvm/prebuilt', '%s-%s' % (cur_platform, 'x86')))
+        x86_llvm_path = os.path.abspath(os.path.join(g_ndk_root, 'toolchains/llvm/prebuilt', '%s-%s' % (cur_platform, 'x86')))
 
     if os.path.isdir(x64_llvm_path):
         llvm_path = x64_llvm_path
@@ -147,11 +170,11 @@ def main():
         sys.exit(1)
 
     x86_gcc_toolchain_path = ""
-    x64_gcc_toolchain_path = os.path.abspath(os.path.join(ndk_root, 'toolchains/arm-linux-androideabi-4.9/prebuilt', '%s-%s' % (cur_platform, 'x86_64')))
+    x64_gcc_toolchain_path = os.path.abspath(os.path.join(g_ndk_root, 'toolchains/arm-linux-androideabi-4.9/prebuilt', '%s-%s' % (cur_platform, 'x86_64')))
     if not os.path.exists(x64_gcc_toolchain_path):
-        x86_gcc_toolchain_path = os.path.abspath(os.path.join(ndk_root, 'toolchains/arm-linux-androideabi-4.9/prebuilt', '%s' % (cur_platform)))
+        x86_gcc_toolchain_path = os.path.abspath(os.path.join(g_ndk_root, 'toolchains/arm-linux-androideabi-4.9/prebuilt', '%s' % (cur_platform)))
     if not os.path.exists(x86_gcc_toolchain_path):
-        x86_gcc_toolchain_path = os.path.abspath(os.path.join(ndk_root, 'toolchains/arm-linux-androideabi-4.9/prebuilt', '%s-%s' % (cur_platform, 'x86')))
+        x86_gcc_toolchain_path = os.path.abspath(os.path.join(g_ndk_root, 'toolchains/arm-linux-androideabi-4.9/prebuilt', '%s-%s' % (cur_platform, 'x86')))
 
     if os.path.isdir(x64_gcc_toolchain_path):
         gcc_toolchain_path = x64_gcc_toolchain_path
@@ -164,7 +187,7 @@ def main():
 
 
     project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
-    axis_root = os.path.abspath(os.path.join(project_root, ''))
+    axys_root = os.path.abspath(os.path.join(project_root, ''))
     cxx_generator_root = os.path.abspath(os.path.join(project_root, 'tools/bindings-generator'))
 
     extraFlags = _defaultIncludePath()
@@ -177,10 +200,10 @@ def main():
         import ConfigParser
         config = ConfigParser.ConfigParser()
     
-    config.set('DEFAULT', 'androidndkdir', ndk_root)
+    config.set('DEFAULT', 'androidndkdir', g_ndk_root)
     config.set('DEFAULT', 'clangllvmdir', llvm_path)
     config.set('DEFAULT', 'gcc_toolchain_dir', gcc_toolchain_path)
-    config.set('DEFAULT', 'axisdir', axis_root)
+    config.set('DEFAULT', 'axysdir', axys_root)
     config.set('DEFAULT', 'cxxgeneratordir', cxx_generator_root)
     config.set('DEFAULT', 'extra_flags', extraFlags)
 
@@ -205,21 +228,21 @@ def main():
         output_dir = '%s/extensions/scripting/lua-bindings/auto' % project_root
 
         cmd_args = {
-                    'axis_base.ini' : ('axis_base', 'lua_axis_base_auto'), \
-                    'axis_backend.ini' : ('axis_backend', 'lua_axis_backend_auto'), \
-                    'axis_extension.ini' : ('axis_extension', 'lua_axis_extension_auto'), \
-                    'axis_ui.ini' : ('axis_ui', 'lua_axis_ui_auto'), \
-                    'axis_studio.ini' : ('axis_studio', 'lua_axis_studio_auto'), \
-                    'axis_spine.ini' : ('axis_spine', 'lua_axis_spine_auto'), \
-                    'axis_physics.ini' : ('axis_physics', 'lua_axis_physics_auto'), \
-                    'axis_video.ini' : ('axis_video', 'lua_axis_video_auto'), \
-                    'axis_controller.ini' : ('axis_controller', 'lua_axis_controller_auto'), \
-                    'axis_3d.ini': ('axis_3d', 'lua_axis_3d_auto'), \
-                    'axis_audioengine.ini': ('axis_audioengine', 'lua_axis_audioengine_auto'), \
-                    'axis_csloader.ini' : ('axis_csloader', 'lua_axis_csloader_auto'), \
-                    'axis_webview.ini' : ('axis_webview', 'lua_axis_webview_auto'), \
-                    'axis_physics3d.ini' : ('axis_physics3d', 'lua_axis_physics3d_auto'), \
-                    'axis_navmesh.ini' : ('axis_navmesh', 'lua_axis_navmesh_auto'), \
+                    'axys_base.ini' : ('axys_base', 'axlua_base_auto'), \
+                    'axys_backend.ini' : ('axys_backend', 'axlua_backend_auto'), \
+                    'axys_extension.ini' : ('axys_extension', 'axlua_extension_auto'), \
+                    'axys_ui.ini' : ('axys_ui', 'axlua_ui_auto'), \
+                    'axys_studio.ini' : ('axys_studio', 'axlua_studio_auto'), \
+                    'axys_spine.ini' : ('axys_spine', 'axlua_spine_auto'), \
+                    'axys_physics.ini' : ('axys_physics', 'axlua_physics_auto'), \
+                    'axys_video.ini' : ('axys_video', 'axlua_video_auto'), \
+                    'axys_controller.ini' : ('axys_controller', 'axlua_controller_auto'), \
+                    'axys_3d.ini': ('axys_3d', 'axlua_3d_auto'), \
+                    'axys_audioengine.ini': ('axys_audioengine', 'axlua_audioengine_auto'), \
+                    'axys_csloader.ini' : ('axys_csloader', 'axlua_csloader_auto'), \
+                    'axys_webview.ini' : ('axys_webview', 'axlua_webview_auto'), \
+                    'axys_physics3d.ini' : ('axys_physics3d', 'axlua_physics3d_auto'), \
+                    'axys_navmesh.ini' : ('axys_navmesh', 'axlua_navmesh_auto'), \
                     }
         target = 'lua'
         generator_py = '%s/generator.py' % cxx_generator_root
@@ -247,4 +270,8 @@ def main():
 
 # -------------- main --------------
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Install android sdk/ndk')
+    parser.add_argument("--ndk_root", help="Specificy ndk root")
+    args = parser.parse_args()
+    g_ndk_root = args.ndk_root
     main()

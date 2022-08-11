@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -277,7 +277,7 @@ void PUScriptLexer::setToken(std::string_view lexeme, int line, std::string_view
     }
 
     if (!ignore)
-        tokens->push_back(token);
+        tokens->emplace_back(token);
 }
 
 bool PUScriptLexer::isWhitespace(char c) const

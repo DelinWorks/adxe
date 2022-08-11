@@ -1,7 +1,7 @@
 /****************************************************************************
 Copyright (c) 2013-2017 Chukong Technologies Inc.
 
-https://axis-project.github.io/
+https://axys1.github.io/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -179,12 +179,12 @@ void ColliderDetector::addContourData(ContourData* contourData)
     unsigned long num = contourData->vertexList.size();
     for (unsigned long i = 0; i < num; i++)
     {
-        calculatedVertexList.push_back(Vec2());
+        calculatedVertexList.emplace_back(Vec2());
     }
 #endif
 }
 
-void ColliderDetector::addContourDataList(axis::Vector<ContourData*>& contourDataList)
+void ColliderDetector::addContourDataList(ax::Vector<ContourData*>& contourDataList)
 {
     for (const auto& contourData : contourDataList)
     {
@@ -200,7 +200,7 @@ void ColliderDetector::removeContourData(ContourData* contourData)
     {
         if (body && body->getContourData() == contourData)
         {
-            eraseList.push_back(body);
+            eraseList.emplace_back(body);
         }
     }
 
@@ -279,7 +279,7 @@ bool ColliderDetector::getActive()
     return _active;
 }
 
-const axis::Vector<ColliderBody*>& ColliderDetector::getColliderBodyList()
+const ax::Vector<ColliderBody*>& ColliderDetector::getColliderBodyList()
 {
     return _colliderBodyList;
 }
@@ -342,10 +342,10 @@ void ColliderDetector::updateTransform(Mat4& t)
 #endif
 
         unsigned long num              = contourData->vertexList.size();
-        std::vector<axis::Vec2>& vs = contourData->vertexList;
+        std::vector<ax::Vec2>& vs = contourData->vertexList;
 
 #if ENABLE_PHYSICS_SAVE_CALCULATED_VERTEX
-        std::vector<axis::Vec2>& cvs = colliderBody->_calculatedVertexList;
+        std::vector<ax::Vec2>& cvs = colliderBody->_calculatedVertexList;
 #endif
 
         for (unsigned long i = 0; i < num; i++)

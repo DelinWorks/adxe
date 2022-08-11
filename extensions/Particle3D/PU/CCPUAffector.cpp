@@ -3,7 +3,7 @@
  Copyright (c) 2015-2016 Chukong Technologies Inc.
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
- https://axis-project.github.io/
+ https://axys1.github.io/
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
@@ -166,7 +166,7 @@ void PUAffector::addEmitterToExclude(std::string_view emitterName)
     auto iter = std::find(_excludedEmitters.begin(), _excludedEmitters.end(), emitterName);
     if (iter == _excludedEmitters.end())
     {
-        _excludedEmitters.push_back(std::string{emitterName});
+        _excludedEmitters.emplace_back(std::string{emitterName});
     }
 }
 
