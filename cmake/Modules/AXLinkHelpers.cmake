@@ -1,18 +1,4 @@
-option(AX_ENABLE_MSEDGE_WEBVIEW2 "Enable msedge webview2" TRUE)
-
-if(WINDOWS)
-    if(NOT ("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32"))
-        set(WIN64 TRUE)
-        set(ARCH_ALIAS "x64")
-    else()
-        set(WIN32 TRUE)
-        set(ARCH_ALIAS "x86")
-    endif()
-    set(OS "windows")
-else()
-    set(ARCH_ALIAS "x64")
-    set(OS "linux")
-endif()
+include(AXPlatform)
 
 if(NOT CMAKE_GENERATOR STREQUAL "Ninja")
     set(BUILD_CONFIG_DIR "\$\(Configuration\)/")
@@ -20,9 +6,29 @@ else()
     set(BUILD_CONFIG_DIR "")
 endif()
 
-message(STATUS "AX_ENABLE_MSEDGE_WEBVIEW2=${AX_ENABLE_MSEDGE_WEBVIEW2}")
-
 function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
+    load_cache("${AX_ROOT_DIR}/${AX_PREBUILT_DIR}" EXCLUDE thirdparty_LIB_DEPENDS)
+
+    message(STATUS "AX_USE_COMPAT_GL=${AX_USE_COMPAT_GL}")
+
+    message(STATUS "AX_ENABLE_MSEDGE_WEBVIEW2=${AX_ENABLE_MSEDGE_WEBVIEW2}")
+    message(STATUS "AX_ENABLE_MFMEDIA=${AX_ENABLE_MFMEDIA}")
+
+    message(STATUS "AX_ENABLE_EXT_IMGUI=${AX_ENABLE_EXT_IMGUI}")
+    message(STATUS "AX_ENABLE_EXT_FAIRYGUI=${AX_ENABLE_EXT_FAIRYGUI}")
+    message(STATUS "AX_ENABLE_EXT_LIVE2D=${AX_ENABLE_EXT_LIVE2D}")
+    message(STATUS "AX_ENABLE_EXT_GUI=${AX_ENABLE_EXT_GUI}")
+    message(STATUS "AX_ENABLE_EXT_ASSETMANAGER=${AX_ENABLE_EXT_ASSETMANAGER}")
+    message(STATUS "AX_ENABLE_EXT_PARTICLE3D=${AX_ENABLE_EXT_PARTICLE3D}")
+    message(STATUS "AX_ENABLE_EXT_PHYSICS_NODE=${AX_ENABLE_EXT_PHYSICS_NODE}")
+    message(STATUS "AX_ENABLE_EXT_SPINE=${AX_ENABLE_EXT_SPINE}")
+    message(STATUS "AX_ENABLE_EXT_EFFEKSEER=${AX_ENABLE_EXT_EFFEKSEER}")
+    message(STATUS "AX_ENABLE_EXT_LUA=${AX_ENABLE_EXT_LUA}")
+    
+    ax_config_pred(${APP_NAME} AX_USE_COMPAT_GL)
+    ax_config_pred(${APP_NAME} AX_ENABLE_MFMEDIA)
+    ax_config_pred(${APP_NAME} AX_ENABLE_MSEDGE_WEBVIEW2)
+
     if (NOT AX_USE_SHARED_PREBUILT)
         target_compile_definitions(${APP_NAME}
             PRIVATE AX_STATIC=1
@@ -73,14 +79,14 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
 
     SET (CONFIGURATION_SUBFOLDER "")
     target_link_directories(${APP_NAME}
-        PRIVATE ${AX_ROOT_DIR}/thirdparty/openssl/prebuilt/${OS}/${ARCH_ALIAS}
-        PRIVATE ${AX_ROOT_DIR}/thirdparty/zlib/prebuilt/${OS}/${ARCH_ALIAS}
-        PRIVATE ${AX_ROOT_DIR}/thirdparty/jpeg-turbo/prebuilt/${OS}/${ARCH_ALIAS}
-        PRIVATE ${AX_ROOT_DIR}/thirdparty/curl/prebuilt/${OS}/${ARCH_ALIAS}
+        PRIVATE ${AX_ROOT_DIR}/thirdparty/openssl/prebuilt/${platform_name}/${ARCH_ALIAS}
+        PRIVATE ${AX_ROOT_DIR}/thirdparty/zlib/prebuilt/${platform_name}/${ARCH_ALIAS}
+        PRIVATE ${AX_ROOT_DIR}/thirdparty/jpeg-turbo/prebuilt/${platform_name}/${ARCH_ALIAS}
+        PRIVATE ${AX_ROOT_DIR}/thirdparty/curl/prebuilt/${platform_name}/${ARCH_ALIAS}
         PRIVATE ${AX_ROOT_DIR}/${AX_PREBUILT_DIR}/lib  # cmake will auto add suffix '/$(Configuration)', refer to https://github.com/Kitware/CMake/blob/master/Source/cmVisualStudio10TargetGenerator.cxx#L4145
     )
 
-    # Linking OS libs
+    # Linking platform libs
     if (WINDOWS)
         target_link_libraries(${APP_NAME} winmm Version)
     else()
@@ -116,6 +122,11 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
         llhttp
         physics-nodes
     )
+
+    if (AX_ENABLE_EXT_IMGUI)
+        list(APPEND LIBS "ImGui")
+    endif()
+
     if (WINDOWS)
         target_link_libraries(${APP_NAME}
             ${LIBS}
@@ -139,8 +150,6 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
     endif()
 
     # Copy dlls to app bin dir
-        # copy thirdparty dlls to target bin dir
-    # copy_thirdparty_dlls(${APP_NAME} $<TARGET_FILE_DIR:${APP_NAME}>)
     if(WINDOWS)
         set(ssl_dll_suffix "")
         if(WIN64)

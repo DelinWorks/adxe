@@ -206,6 +206,13 @@ THE SOFTWARE.
 #    include "platform/win32/CCStdC-win32.h"
 #endif  // AX_TARGET_PLATFORM == AX_PLATFORM_WIN32
 
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WINRT)
+#    include "platform/winrt/CCApplication-winrt.h"
+#    include "platform/winrt/CCGLViewImpl-winrt.h"
+#    include "platform/winrt/CCGL-winrt.h"
+#    include "platform/winrt/CCStdC-winrt.h"
+#endif  // AX_TARGET_PLATFORM == AX_PLATFORM_WINRT
+
 #if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
 #    include "platform/desktop/CCGLViewImpl-desktop.h"
 #    include "platform/mac/CCApplication-mac.h"
@@ -226,6 +233,7 @@ THE SOFTWARE.
 #include "2d/CCAnimation.h"
 #include "2d/CCAnimationCache.h"
 #include "2d/CCSprite.h"
+#include "2d/CCAnchoredSprite.h"
 #include "2d/CCAutoPolygon.h"
 #include "2d/CCSpriteBatchNode.h"
 #include "2d/CCSpriteFrame.h"

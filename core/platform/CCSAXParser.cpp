@@ -29,7 +29,7 @@
 #include <vector>  // because its based on windows 8 build :P
 
 #include "platform/CCFileUtils.h"
-#include "xsbase/xsxml/xsxml.hpp"
+#include "xsxml/xsxml.hpp"
 
 NS_AX_BEGIN
 
@@ -43,14 +43,14 @@ public:
     {
         _curEleAttrs.reserve(64);
 
-        _sax3Handler.xml_start_element_cb = [=, this](char* name, size_t size) {
+        _sax3Handler.xml_start_element_cb = [this](char* name, size_t size) {
             _curEleName = xsxml::string_view(name, size);
         };
-        _sax3Handler.xml_attr_cb = [=, this](const char* name, size_t, const char* value, size_t) {
+        _sax3Handler.xml_attr_cb = [this](const char* name, size_t, const char* value, size_t) {
             _curEleAttrs.emplace_back(name);
             _curEleAttrs.emplace_back(value);
         };
-        _sax3Handler.xml_end_attr_cb = [=, this]() {
+        _sax3Handler.xml_end_attr_cb = [this]() {
             if (!_curEleAttrs.empty())
             {
                 _curEleAttrs.emplace_back(nullptr);
@@ -66,10 +66,10 @@ public:
                                         (const AX_XML_CHAR**)attrs);
             }
         };
-        _sax3Handler.xml_end_element_cb = [=, this](const char* name, size_t len) {
+        _sax3Handler.xml_end_element_cb = [this](const char* name, size_t len) {
             SAXParser::endElement(_ccsaxParserImp, (const AX_XML_CHAR*)name);
         };
-        _sax3Handler.xml_text_cb = [=, this](const char* s, size_t len) {
+        _sax3Handler.xml_text_cb = [this](const char* s, size_t len) {
             SAXParser::textHandler(_ccsaxParserImp, (const AX_XML_CHAR*)s, len);
         };
     };
@@ -98,36 +98,51 @@ bool SAXParser::init(const char* /*encoding*/)
     return true;
 }
 
-bool SAXParser::parse(const char* xmlData, size_t dataLength)
+bool SAXParser::parse(const char* xmlData, size_t dataLength, ParseOption opt)
 {
     if (xmlData != nullptr && dataLength > 0)
     {
         std::string mutableData(xmlData, dataLength);
-        return this->parseIntrusive(&mutableData.front(), dataLength);
+        return this->parseIntrusive(&mutableData.front(), dataLength, opt);
     }
     return false;
 }
 
-bool SAXParser::parse(std::string_view filename)
+bool SAXParser::parse(std::string_view filename, ParseOption opt)
 {
     bool ret  = false;
     Data data = FileUtils::getInstance()->getDataFromFile(filename);
     if (!data.isNull())
     {
-        ret = parseIntrusive((char*)data.getBytes(), data.getSize());
+        ret = parseIntrusive((char*)data.getBytes(), data.getSize(), opt);
     }
 
     return ret;
 }
 
-bool SAXParser::parseIntrusive(char* xmlData, size_t dataLength)
+bool SAXParser::parseIntrusive(char* xmlData, size_t dataLength, ParseOption opt)
 {
     SAX2Hander handler;
     handler.setSAXParserImp(this);
 
     try
     {
-        xsxml::xml_sax3_parser::parse(xmlData, static_cast<int>(dataLength), handler);
+        switch (opt)
+        {
+        case ParseOption::NORMAL:
+            xsxml::xml_sax3_parser::parse<xsxml::parse_normal>(xmlData, static_cast<int>(dataLength), handler);
+            break;
+        case ParseOption::HTML:
+            xsxml::xml_sax3_parser::parse<xsxml::parse_normal | xsxml::parse_html_entity_translation |
+                                          xsxml::parse_normalize_whitespace>(xmlData, static_cast<int>(dataLength),
+                                                                             handler);
+            break;
+        case ParseOption::TRIM_WHITESPACE:
+            xsxml::xml_sax3_parser::parse<xsxml::parse_normal | xsxml::parse_trim_whitespace>(
+                xmlData, static_cast<int>(dataLength), handler);
+            break;
+        }
+
         return true;
     }
     catch (xsxml::parse_error& e)

@@ -1,40 +1,37 @@
 if(WINDOWS)
-    if(AX_ENABLE_MSEDGE_WEBVIEW2)
+    if(NOT WINRT)
         set(_AX_UI_SPECIFIC_HEADER
             ui/UIEditBox/UIEditBoxImpl-win32.h
-            ui/UIWebView/UIWebViewImpl-win32.h
-            ui/UIWebView/UIWebView.h
-
             )
         set(_AX_UI_SPECIFIC_SRC
             ui/UIEditBox/UIEditBoxImpl-win32.cpp
-            ui/UIWebView/UIWebViewImpl-win32.cpp
-            ui/UIWebView/UIWebView.cpp
             )
     else()
         set(_AX_UI_SPECIFIC_HEADER
-            ui/UIEditBox/UIEditBoxImpl-win32.h
+            ui/UIEditBox/UIEditBoxImpl-winrt.h
             )
         set(_AX_UI_SPECIFIC_SRC
-            ui/UIEditBox/UIEditBoxImpl-win32.cpp
+            ui/UIEditBox/UIEditBoxImpl-winrt.cpp
             )
+    endif()
+
+    if(AX_ENABLE_MSEDGE_WEBVIEW2)
+        list(APPEND _AX_UI_SPECIFIC_HEADER ui/UIWebView/UIWebViewImpl-win32.h ui/UIWebView/UIWebView.h)
+        list(APPEND _AX_UI_SPECIFIC_SRC ui/UIWebView/UIWebViewImpl-win32.cpp ui/UIWebView/UIWebView.cpp)
     endif()
 
     if (AX_ENABLE_MFMEDIA)
         set(_AX_UI_SPECIFIC_HEADER ${_AX_UI_SPECIFIC_HEADER}
-            ui/UIVideoPlayer/MFUtils.h
-            ui/UIVideoPlayer/MFMediaPlayer.h
             ui/UIVideoPlayer/UIVideoPlayer.h
             )
         set(_AX_UI_SPECIFIC_SRC ${_AX_UI_SPECIFIC_SRC}
-            ui/UIVideoPlayer/MFUtils.cpp
-            ui/UIVideoPlayer/MFMediaPlayer.cpp
-            ui/UIVideoPlayer/UIVideoPlayer-win.cpp
+            ui/UIVideoPlayer/UIVideoPlayer.cpp
             )
     endif()
 elseif(APPLE)
     if(MACOSX)
         set(_AX_UI_SPECIFIC_HEADER
+            #ui/UIVideoPlayer/UIVideoPlayer.h
             ui/UIEditBox/UIEditBoxImpl-mac.h
             ui/UIEditBox/Mac/CCUIPasswordTextField.h
             ui/UIEditBox/Mac/CCUIMultilineTextField.h
@@ -44,6 +41,7 @@ elseif(APPLE)
             ui/UIEditBox/Mac/CCUITextFieldFormatter.h
             )
         set(_AX_UI_SPECIFIC_SRC
+            #ui/UIVideoPlayer/UIVideoPlayer.cpp
             ui/UIEditBox/UIEditBoxImpl-mac.mm
             ui/UIEditBox/Mac/CCUIEditBoxMac.mm
             ui/UIEditBox/Mac/CCUIMultilineTextField.m

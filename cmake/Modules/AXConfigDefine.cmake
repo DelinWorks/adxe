@@ -1,62 +1,5 @@
-If(APPLE)
-    if(${CMAKE_VERSION} VERSION_LESS "3.14")
-        message(FATAL_ERROR "Please use CMake 3.14 or newer for Apple platform (macOS, iOS, tvOS or watchOS)")
-    endif()
-endif()
 
- #Please use them everywhere
- #WINDOWS   =   Windows Desktop
- #ANDROID    =  Android
- #IOS    =  iOS
- #MACOSX    =  MacOS X
- #LINUX      =   Linux
-if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
-    set(WINDOWS TRUE)
-    if(NOT ("${CMAKE_GENERATOR_PLATFORM}" STREQUAL "Win32"))
-        set(WIN64 TRUE)
-        set(ARCH_ALIAS "x64")
-     else()
-        set(WIN32 TRUE)
-        set(ARCH_ALIAS "x86")
-     endif()
-    set(PLATFORM_FOLDER win32)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Android")
-    set(PLATFORM_FOLDER android)
-    set(ARCH_ALIAS ${ANDROID_ABI})
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    if(ANDROID)
-        set(PLATFORM_FOLDER android)
-    else()
-        set(LINUX TRUE)
-        set(PLATFORM_FOLDER linux)
-    endif()
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
-    set(APPLE TRUE)
-    set(MACOSX TRUE)
-    set(PLATFORM_FOLDER mac)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "iOS")
-    set(APPLE TRUE)
-    set(IOS TRUE)
-    set(PLATFORM_FOLDER ios)
-elseif(${CMAKE_SYSTEM_NAME} MATCHES "tvOS")
-    set(APPLE TRUE)
-    set(IOS TRUE)
-    set(TVOS TRUE)
-    set(PLATFORM_FOLDER tvos)
-else()
-    message(FATAL_ERROR "Unsupported platform, CMake will exit")
-    return()
-endif()
-
-# generators that are capable of organizing into a hierarchy of folders
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
-# simplify generator condition, please use them everywhere
-if(CMAKE_GENERATOR STREQUAL Xcode)
-    set(XCODE TRUE)
-elseif(CMAKE_GENERATOR MATCHES Visual)
-    set(VS TRUE)
-endif()
-message(STATUS "CMAKE_GENERATOR: ${CMAKE_GENERATOR}")
+include(AXPlatform)
 
 # custom target property for lua/js link
 define_property(TARGET
@@ -65,13 +8,37 @@ define_property(TARGET
     FULL_DOCS "use to save depend libs of axmol lua project"
 )
 
+# UWP min deploy target support, VS property: targetPlatformMinVersion
+if (WINRT)
+    if (NOT DEFINED AX_VS_DEPLOYMENT_TARGET)
+        set(AX_VS_DEPLOYMENT_TARGET "10.0.17763.0")
+    endif()
+    if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}.${CMAKE_PATCH_VERSION}" VERSION_GREATER_EQUAL "3.27.0")
+        if (NOT DEFINED)
+            # The minmal deploy target version: Windows 10, version 1809 (Build 10.0.17763) for building msix package
+            # refer to: https://learn.microsoft.com/en-us/windows/msix/supported-platforms?source=recommendations
+            set(CMAKE_VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION ${AX_VS_DEPLOYMENT_TARGET})
+        endif()
+    else()
+        if(DEFINED CMAKE_VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION)
+            unset(CMAKE_VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION)
+        endif()
+    endif()
+endif()
+
 # config c standard
 if(NOT DEFINED CMAKE_C_STANDARD)
     if (WINDOWS)
         message(STATUS "CMAKE_HOST_SYSTEM_VERSION: ${CMAKE_HOST_SYSTEM_VERSION}")
         message(STATUS "CMAKE_SYSTEM_VERSION: ${CMAKE_SYSTEM_VERSION}")
         message(STATUS "CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION: ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION}")
-        if (${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION} VERSION_GREATER_EQUAL "10.0.22000.0")
+        if (DEFINED CMAKE_VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION)
+            message(STATUS "CMAKE_VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION: ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_MIN_VERSION}")
+        endif()
+        if (NOT CMAKE_SYSTEM_VERSION)
+            set(CMAKE_SYSTEM_VERSION ${CMAKE_VS_WINDOWS_TARGET_PLATFORM_VERSION})
+        endif()
+        if (${CMAKE_SYSTEM_VERSION} VERSION_GREATER_EQUAL "10.0.22000.0")
             set(CMAKE_C_STANDARD 11)
         else()
             # windows sdk < 10.0.22000.0, The c11 header stdalign.h was missing, so workaroud fallback C standard to 99
@@ -89,7 +56,11 @@ endif()
 
 # config c++ standard
 if(NOT DEFINED CMAKE_CXX_STANDARD)
-    set(CMAKE_CXX_STANDARD 20)
+    if (NOT WINRT)
+        set(CMAKE_CXX_STANDARD 20)
+    else()
+        set(CMAKE_CXX_STANDARD 17)
+    endif()
 endif()
 message(STATUS "CMAKE_CXX_STANDARD=${CMAKE_CXX_STANDARD}")
 
@@ -209,5 +180,5 @@ message(STATUS "The nasm compiler speed up libraries: jpeg(libjpeg-turbo)")
 
 if(NOT EXISTS "${CMAKE_ASM_NASM_COMPILER}")
    set(CMAKE_ASM_NASM_COMPILER_LOADED FALSE CACHE BOOL "Does cmake asm nasm compiler loaded" FORCE)
-   message(WARNING "The nasm compiler doesn't present on your system PATH, please download from: https://www.nasm.us/pub/nasm/releasebuilds/2.15.05/")
+   message(WARNING "The nasm compiler doesn't present on your system PATH, please download from: https://www.nasm.us/pub/nasm/releasebuilds/2.16.01/")
 endif()
