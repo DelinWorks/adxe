@@ -4,19 +4,15 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
-
 https://axmolengine.github.io/
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -42,11 +38,9 @@ class FastTMXLayer;
  */
 
 /** @brief FastTMXTiledMap knows how to parse and render a TMX map.
-
  * It adds support for the TMX tiled map format used by http://www.mapeditor.org.
  * It supports isometric, hexagonal and orthogonal tiles.
  * It also supports object groups, objects, and properties.
-
  * Features:
  * - Each tile will be treated as an Sprite.
  * - The sprites are created on demand. They will be created only when you call "layer->tileAt(position)".
@@ -63,12 +57,10 @@ class FastTMXLayer;
  * - Each object group will be treated as an MutableArray.
  * - Object class which will contain all the properties in a dictionary.
  * - Properties can be assigned to the Map, Layer, Object Group, and Object.
-
  * Limitations:
  * - It only supports one tileset per layer.
  * - Embedded images are not supported.
  * - It only supports the XML format (the JSON format is not supported).
-
  * Technical description:
  * Each layer is created using an FastTMXLayer (subclass of SpriteBatchNode). If you have 5 layers, then 5 FastTMXLayer
  will be created,
@@ -76,21 +68,16 @@ class FastTMXLayer;
  * You can obtain the layers (FastTMXLayer objects) at runtime by:
  * - map->getChildByTag(tag_number);  // 0=1st layer, 1=2nd layer, 2=3rd layer, etc...
  * - map->getLayer(name_of_the_layer);
-
  * Each object group is created using a TMXObjectGroup which is a subclass of MutableArray.
  * You can obtain the object groups at runtime by:
  * - map->getObjectGroup(name_of_the_object_group);
-
  * Each object is a TMXObject.
-
  * Each property is stored as a key-value pair in an MutableDictionary.
  * You can obtain the properties at runtime by:
-
  * map->getProperty(name_of_the_property);
  * layer->getProperty(name_of_the_property);
  * objectGroup->getProperty(name_of_the_property);
  * object->getProperty(name_of_the_property);
-
  * @since v3.2
  * @js NA
  */
@@ -198,6 +185,13 @@ public:
 
     virtual std::string getDescription() const override;
 
+    /** Enable layer culling, use this if you want to prioritize rendering over processing.
+     * Or consifer using 'infinite' property to ease the rendering process by using chunks (NOT YET IMPLEMENTED)
+     *
+     * @param enabled: Whther to enable culling or not. default: enabled
+     */
+    void setCullingEnabled(bool enabled);
+
     /** Set all tile animations enabled or not.
      *  animations are not enabled by default
      */
@@ -225,11 +219,11 @@ public:
     /** initializes a TMX Tiled Map with a TMX formatted XML string and a path to TMX resources */
     bool initWithXML(std::string_view tmxString, std::string_view resourcePath);
 
-    void update(float dt) override;
+    void update(float dt);
 
 protected:
-    std::vector<FastTMXLayer*> parseLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
-    TMXTilesetInfo* tilesetForLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
+    FastTMXLayer* parseLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
+    Vector<TMXTilesetInfo*> getLayerTilesets(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
     void buildWithMapInfo(TMXMapInfo* mapInfo);
 
     /** the map's size property measured in tiles */

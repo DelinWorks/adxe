@@ -4,19 +4,15 @@ Copyright (c) 2010-2012 cocos2d-x.org
 Copyright (c) 2011      Zynga Inc.
 Copyright (c) 2013-2016 Chukong Technologies Inc.
 Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
-
 https://axmolengine.github.io/
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in
 all copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -131,7 +127,6 @@ enum
 /** @brief TMXTileAnimFrame contains the information about the frame of a animated tile like:
 - Frame gid
 - duration of this frame
-
 This information is obtained from the TMX file.
 */
 struct AX_DLL TMXTileAnimFrame
@@ -148,7 +143,6 @@ struct AX_DLL TMXTileAnimFrame
 /** @brief TMXTileAnimInfo contains the information about the animated tile like:
 - Animated Tile gid
 - frames the animated tile contains
-
 This information is obtained from the TMX file.
 */
 struct AX_DLL TMXTileAnimInfo : public Ref
@@ -172,7 +166,6 @@ struct AX_DLL TMXTileAnimFlag
 - Layer size
 - Layer opacity at creation time (it can be modified at runtime)
 - Whether the layer is visible (if it's not visible, then the CocosNode won't be created)
-
 This information is obtained from the TMX file.
 */
 class AX_DLL TMXLayerInfo : public Ref
@@ -209,7 +202,6 @@ public:
 - size of the tiles
 - Image used for the tiles
 - Image size
-
 This information is obtained from the TMX file.
 */
 class AX_DLL TMXTilesetInfo : public Ref
@@ -246,14 +238,11 @@ public:
 - Map orientation (hexagonal, isometric or orthogonal)
 - Tile size
 - Map size
-
 And it also contains:
 - Layers (an array of TMXLayerInfo objects)
 - Tilesets (an array of TMXTilesetInfo objects)
 - ObjectGroups (an array of TMXObjectGroupInfo objects)
-
 This information is obtained from the TMX file.
-
 */
 class AX_DLL TMXMapInfo : public Ref, public SAXDelegator
 {

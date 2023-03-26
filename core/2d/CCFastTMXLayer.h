@@ -81,6 +81,56 @@ class Buffer;
  * @js NA
  */
 
+class FastTMXLayer;
+
+struct FastTMXSubLayer
+{
+    FastTMXLayer* _owner;
+
+    /** Tileset information for the layer */
+    TMXTilesetInfo* _tileSet = nullptr;
+
+    /** map from gid of animated tile to its instance. Also useful for optimization*/
+    std::unordered_map<uint32_t, std::vector<TMXTileAnimFlag>> _animTileCoord;
+    /** pointer to the tile animation manager of this layer */
+    TMXTileAnimManager* _tileAnimManager = nullptr;
+
+    Texture2D* _texture = nullptr;
+
+    Vec2 _screenGridSize;
+    Rect _screenGridRect;
+    int _screenTileCount = 0;
+
+    int _vertexZvalue         = 0;
+    bool _useAutomaticVertexZ = false;
+
+    /** data for rendering */
+    bool _quadsDirty          = true;
+    Vec2 _cameraPositionDirty = {INFINITY, INFINITY};
+    float _cameraZoomDirty;
+
+    std::vector<int> _tileToQuadIndex;
+    std::vector<V3F_C4B_T2F_Quad> _totalQuads;
+#ifdef AX_FAST_TILEMAP_32_BIT_INDICES
+    std::vector<unsigned int> _indices;
+#else
+    std::vector<unsigned short> _indices;
+#endif
+    std::map<int /*vertexZ*/, int /*offset to _indices by quads*/> _indicesVertexZOffsets;
+    std::unordered_map<int /*vertexZ*/, int /*number to quads*/> _indicesVertexZNumber;
+    bool _dirty = true;
+
+    backend::Buffer* _vertexBuffer = nullptr;
+    backend::Buffer* _indexBuffer  = nullptr;
+
+    float _alphaFuncValue = 0.f;
+    std::unordered_map<int, CustomCommand*> _customCommands;
+
+    backend::UniformLocation _mvpMatrixLocation;
+    backend::UniformLocation _textureLocation;
+    backend::UniformLocation _alphaValueLocation;
+};
+
 class AX_DLL FastTMXLayer : public Node
 {
 public:
@@ -96,7 +146,7 @@ public:
      * @param mapInfo A map info.
      * @return Return an autorelease object.
      */
-    static FastTMXLayer* create(TMXTilesetInfo* tilesetInfo, TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
+    static FastTMXLayer* create(Vector<TMXTilesetInfo*> tilesetInfos, TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
     /**
      * @js ctor
      */
@@ -155,7 +205,7 @@ public:
     Value getProperty(std::string_view propertyName) const;
 
     /** Creates the tiles. */
-    void setupTiles();
+    void setupTiles(FastTMXSubLayer& sub);
 
     /** Get the tile layer name.
      *
@@ -206,25 +256,34 @@ public:
      */
     void setTiles(uint32_t* tiles)
     {
-        _tiles      = tiles;
-        _quadsDirty = true;
+        _tiles = tiles;
+        for (auto& [_, sub] : _subLayers)
+            sub._quadsDirty = true;
     };
 
     /** Tileset information for the layer.
      *
      * @return Tileset information for the layer.
      */
-    TMXTilesetInfo* getTileSet() const { return _tileSet; }
+    Vector<TMXTilesetInfo*>& getTileSetVector() { return _tileSets; }
+
+    /** Tileset information for the layer.
+     *
+     * @return Tileset information for the layer.
+     */
+    std::map<int, FastTMXSubLayer>& getSubLayers() { return _subLayers; }
 
     /** Set the tileset information for the layer.
      *
      * @param info The new tileset information for the layer.
      */
-    void setTileSet(TMXTilesetInfo* info)
+    void setTileSetVector(Vector<TMXTilesetInfo*> tileSets)
     {
-        AX_SAFE_RETAIN(info);
-        AX_SAFE_RELEASE(_tileSet);
-        _tileSet = info;
+        for (auto& _ : _tileSets)
+            AX_SAFE_RELEASE(_);
+        for (auto& _ : tileSets)
+            AX_SAFE_RETAIN(_);
+        _tileSets = tileSets;
     }
 
     /** Layer orientation, which is the same as the map orientation.
@@ -283,19 +342,27 @@ public:
     virtual void draw(Renderer* renderer, const Mat4& transform, uint32_t flags) override;
     void removeChild(Node* child, bool cleanup = true) override;
 
+    /** Enable layer culling, use this if you want to prioritize rendering over processing.
+     * Or consifer using 'infinite' property to ease the rendering process by using chunks (NOT YET IMPLEMENTED)
+     *
+     * @param enabled: Whther to enable culling or not. default: enabled
+     */
+    void setCullingEnabled(bool enabled) { culling = enabled; }
+
     /** Map from gid of animated tile to its instance.
      *
      * @return Map from gid of animated tile to its instance.
      */
-    const std::unordered_map<uint32_t, std::vector<TMXTileAnimFlag>>* getAnimTileCoord() { return &_animTileCoord; }
+    const std::unordered_map<uint32_t, std::vector<TMXTileAnimFlag>>* getAnimTileCoord(FastTMXSubLayer& sub)
+    {
+        return &sub._animTileCoord;
+    }
 
-    bool hasTileAnimation() const { return !_animTileCoord.empty(); }
+    bool hasTileAnimation(FastTMXSubLayer& sub) { return !sub._animTileCoord.empty(); }
 
-    TMXTileAnimManager* getTileAnimManager() const { return _tileAnimManager; }
+    TMXTileAnimManager* getTileAnimManager(FastTMXSubLayer& sub) { return sub._tileAnimManager; }
 
-    bool initWithTilesetInfo(TMXTilesetInfo* tilesetInfo,
-                                                     TMXLayerInfo* layerInfo,
-                                                     TMXMapInfo* mapInfo);
+    bool initWithTilesetInfo(Vector<TMXTilesetInfo*> tilesetInfo, TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo);
 
     virtual void setOpacity(uint8_t opacity) override;
     void setColor(const Color4B& color);
@@ -304,29 +371,28 @@ public:
 
     bool isVisible() const { return _visible; }
 
-protected:
-    void updateTiles(const Rect& culledRect);
+    void updateTiles(FastTMXSubLayer& sub, const Rect& culledRect);
     Vec2 calculateLayerOffset(const Vec2& offset);
 
     /* The layer recognizes some special properties, like cc_vertexz */
-    void parseInternalProperties();
+    void parseInternalProperties(FastTMXSubLayer& sub);
 
     Mat4 tileToNodeTransform();
     Rect tileBoundsForClipTransform(const Mat4& tileToClip);
 
-    int getVertexZForPos(const Vec2& pos);
+    int getVertexZForPos(FastTMXSubLayer& sub, const Vec2& pos);
 
     // Flip flags is packed into gid
-    void setFlaggedTileGIDByIndex(int index, uint32_t gid);
+    void setFlaggedTileGIDByIndex(FastTMXSubLayer& sub, int index, uint32_t gid);
 
     //
-    void updateTotalQuads();
+    void updateTotalQuads(FastTMXSubLayer& sub);
 
     int getTileIndexByPos(int x, int y) const { return x + y * (int)_layerSize.width; }
 
-    void updateVertexBuffer();
-    void updateIndexBuffer();
-    void updatePrimitives();
+    void updateVertexBuffer(FastTMXSubLayer& sub);
+    void updateIndexBuffer(FastTMXSubLayer& sub);
+    void updatePrimitives(FastTMXSubLayer& sub);
 
     //! name of the layer
     std::string _layerName;
@@ -337,8 +403,6 @@ protected:
     Vec2 _mapTileSize;
     /** pointer to the map of tiles */
     uint32_t* _tiles = nullptr;
-    /** Tileset information for the layer */
-    TMXTilesetInfo* _tileSet = nullptr;
     /** Layer orientation, which is the same as the map orientation */
     int _layerOrientation = FAST_TMX_ORIENTATION_ORTHO;
     int _staggerAxis      = TMXStaggerAxis_Y;
@@ -346,59 +410,21 @@ protected:
     /** properties from the layer. They can be added using Tiled */
     ValueMap _properties;
 
-    /** map from gid of animated tile to its instance. Also useful for optimization*/
-    std::unordered_map<uint32_t, std::vector<TMXTileAnimFlag>> _animTileCoord;
-    /** pointer to the tile animation manager of this layer */
-    TMXTileAnimManager* _tileAnimManager = nullptr;
-
-    Texture2D* _texture = nullptr;
+    /** tile coordinate to node coordinate transform */
+    Mat4 _tileToNodeTransform;
 
     /** container for sprite children. map<index, pair<sprite, gid> > */
-    std::map<int, std::pair<Sprite*, int>> _spriteContainer;
-
-    Vec2 _screenGridSize;
-    Rect _screenGridRect;
-    int _screenTileCount = 0;
-
-    int _vertexZvalue         = 0;
-    bool _useAutomaticVertexZ = false;
+    std::map<int, std::pair<Sprite*, uint32_t>> _spriteContainer;
 
     Color4B _layerColor;
     Color4B _editorColor;
     std::string _hex;
     bool _visible = true;
 
-public:
-    bool _isSubLayer = false;
+    bool culling = true;
 
-protected:
-    /** tile coordinate to node coordinate transform */
-    Mat4 _tileToNodeTransform;
-    /** data for rendering */
-    bool _quadsDirty = true;
-    Vec2 _cameraPositionDirty;
-    float _cameraZoomDirty;
-
-    std::vector<int> _tileToQuadIndex;
-    std::vector<V3F_C4B_T2F_Quad> _totalQuads;
-#ifdef AX_FAST_TILEMAP_32_BIT_INDICES
-    std::vector<unsigned int> _indices;
-#else
-    std::vector<unsigned short> _indices;
-#endif
-    std::map<int /*vertexZ*/, int /*offset to _indices by quads*/> _indicesVertexZOffsets;
-    std::unordered_map<int /*vertexZ*/, int /*number to quads*/> _indicesVertexZNumber;
-    bool _dirty = true;
-
-    backend::Buffer* _vertexBuffer = nullptr;
-    backend::Buffer* _indexBuffer  = nullptr;
-
-    float _alphaFuncValue = 0.f;
-    std::unordered_map<int, CustomCommand*> _customCommands;
-
-    backend::UniformLocation _mvpMatrixLocaiton;
-    backend::UniformLocation _textureLocation;
-    backend::UniformLocation _alphaValueLocation;
+    Vector<TMXTilesetInfo*> _tileSets;
+    std::map<int, FastTMXSubLayer> _subLayers;
 };
 
 /** @brief TMXTileAnimTask represents the frame-tick task of an animated tile.
@@ -408,7 +434,10 @@ class AX_DLL TMXTileAnimTask : public Ref
 {
 public:
     TMXTileAnimTask(FastTMXLayer* layer, TMXTileAnimInfo* animation, const Vec2& tilePos, uint32_t flags = 0);
-    static TMXTileAnimTask* create(FastTMXLayer* layer, TMXTileAnimInfo* animation, const Vec2& tilePos, uint32_t flags = 0);
+    static TMXTileAnimTask* create(FastTMXLayer* layer,
+                                   TMXTileAnimInfo* animation,
+                                   const Vec2& tilePos,
+                                   uint32_t flags = 0);
     void update(float dt);
     void setTimeScale(float dt);
     /** start the animation task */
@@ -418,12 +447,15 @@ public:
     bool isRunning() const { return _isRunning; }
 
 protected:
+    /** tile flag */
+    uint32_t _flag = 0;
+
     /** set texture of tile to current frame */
     void setCurrFrame();
     /** tick to next frame and schedule next tick */
     void tickAndScheduleNext(float dt);
 
-    bool _isRunning = false;
+    bool _isRunning  = false;
     float _currentDt = 0;
     float _timeScale = 1;
     /** key of schedule task for specific animated tile */
@@ -436,7 +468,6 @@ protected:
     /** Index of the frame that should be drawn currently */
     uint32_t _currentFrame = 0;
     uint32_t _frameCount   = 0;
-    uint32_t _tileFlags    = 0;
 };
 
 /** @brief TMXTileAnimManager controls all tile animation of a layer.
@@ -444,8 +475,8 @@ protected:
 class AX_DLL TMXTileAnimManager : public Ref
 {
 public:
-    static TMXTileAnimManager* create(FastTMXLayer* layer);
-    explicit TMXTileAnimManager(FastTMXLayer* layer);
+    static TMXTileAnimManager* create(FastTMXSubLayer& sub);
+    explicit TMXTileAnimManager(FastTMXSubLayer& sub);
 
     /** start all tile animations */
     void startAll();
@@ -460,7 +491,7 @@ protected:
     bool _started = false;
     /** vector contains all tasks of this layer */
     Vector<TMXTileAnimTask*> _tasks;
-    FastTMXLayer* _layer = nullptr;
+    FastTMXSubLayer* _layer = nullptr;
 };
 
 // @API compatible
