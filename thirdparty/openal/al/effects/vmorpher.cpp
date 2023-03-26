@@ -23,7 +23,7 @@ namespace {
 al::optional<VMorpherPhenome> PhenomeFromEnum(ALenum val)
 {
 #define HANDLE_PHENOME(x) case AL_VOCAL_MORPHER_PHONEME_ ## x:                \
-    return VMorpherPhenome::x
+    return al::make_optional(VMorpherPhenome::x)
     switch(val)
     {
     HANDLE_PHENOME(A);
@@ -104,9 +104,9 @@ al::optional<VMorpherWaveform> WaveformFromEmum(ALenum value)
 {
     switch(value)
     {
-    case AL_VOCAL_MORPHER_WAVEFORM_SINUSOID: return VMorpherWaveform::Sinusoid;
-    case AL_VOCAL_MORPHER_WAVEFORM_TRIANGLE: return VMorpherWaveform::Triangle;
-    case AL_VOCAL_MORPHER_WAVEFORM_SAWTOOTH: return VMorpherWaveform::Sawtooth;
+    case AL_VOCAL_MORPHER_WAVEFORM_SINUSOID: return al::make_optional(VMorpherWaveform::Sinusoid);
+    case AL_VOCAL_MORPHER_WAVEFORM_TRIANGLE: return al::make_optional(VMorpherWaveform::Triangle);
+    case AL_VOCAL_MORPHER_WAVEFORM_SAWTOOTH: return al::make_optional(VMorpherWaveform::Sawtooth);
     }
     return al::nullopt;
 }
@@ -267,7 +267,7 @@ public:
 
 class EaxVocalMorpherEffect final : public EaxEffect4<EaxVocalMorpherEffectException, EAXVOCALMORPHERPROPERTIES> {
 public:
-    EaxVocalMorpherEffect(int eax_version);
+    EaxVocalMorpherEffect(const EaxCall& call);
 
 private:
     struct PhonemeAValidator {
@@ -363,8 +363,8 @@ private:
     bool commit_props(const Props& props) override;
 }; // EaxVocalMorpherEffect
 
-EaxVocalMorpherEffect::EaxVocalMorpherEffect(int eax_version)
-    : EaxEffect4{AL_EFFECT_VOCAL_MORPHER, eax_version}
+EaxVocalMorpherEffect::EaxVocalMorpherEffect(const EaxCall& call)
+    : EaxEffect4{AL_EFFECT_VOCAL_MORPHER, call}
 {}
 
 void EaxVocalMorpherEffect::set_defaults(Props& props)
@@ -570,9 +570,9 @@ bool EaxVocalMorpherEffect::commit_props(const Props& props)
 
 } // namespace
 
-EaxEffectUPtr eax_create_eax_vocal_morpher_effect(int eax_version)
+EaxEffectUPtr eax_create_eax_vocal_morpher_effect(const EaxCall& call)
 {
-    return eax_create_eax4_effect<EaxVocalMorpherEffect>(eax_version);
+    return eax_create_eax4_effect<EaxVocalMorpherEffect>(call);
 }
 
 #endif // ALSOFT_EAX

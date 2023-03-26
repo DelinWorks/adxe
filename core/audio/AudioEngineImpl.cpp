@@ -495,7 +495,7 @@ void AudioEngineImpl::_play2d(AudioCache* cache, AUDIO_ID audioID)
     {
         if (player->play2d())
         {
-            _scheduler->runOnAxmolThread([audioID]() {
+            _scheduler->performFunctionInCocosThread([audioID]() {
                 if (AudioEngine::_audioIDInfoMap.find(audioID) != AudioEngine::_audioIDInfoMap.end())
                 {
                     AudioEngine::_audioIDInfoMap[audioID].state = AudioEngine::AudioState::PLAYING;

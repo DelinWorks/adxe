@@ -34,10 +34,9 @@ THE SOFTWARE.
 //  #include "2d/CCTMXTiledMap.h"
 #include "base/ZipUtils.h"
 #include "base/CCDirector.h"
-#include "base/ccUtils.h"
 #include "platform/CCFileUtils.h"
 
-// using namespace std;
+using namespace std;
 
 NS_AX_BEGIN
 
@@ -187,7 +186,7 @@ bool TMXMapInfo::parseXMLString(std::string_view xmlString)
 
     parser.setDelegator(this);
 
-    return parser.parse(xmlString.data(), len, SAXParser::ParseOption::TRIM_WHITESPACE);
+    return parser.parse(xmlString.data(), len);
 }
 
 bool TMXMapInfo::parseXMLFile(std::string_view xmlFilename)
@@ -201,7 +200,7 @@ bool TMXMapInfo::parseXMLFile(std::string_view xmlFilename)
 
     parser.setDelegator(this);
 
-    return parser.parse(xmlFilename, SAXParser::ParseOption::TRIM_WHITESPACE);
+    return parser.parse(FileUtils::getInstance()->fullPathForFilename(xmlFilename));
 }
 
 // the XML parser calls here with all the elements
@@ -290,9 +289,9 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char* name, const char** atts
             _externalTilesetFilename = externalTilesetFilename;
 
             // Tileset file will be relative to the map file. So we need to convert it to an absolute path
-            if (_TMXFileName.find_last_of('/') != std::string::npos)
+            if (_TMXFileName.find_last_of('/') != string::npos)
             {
-                std::string dir         = _TMXFileName.substr(0, _TMXFileName.find_last_of('/') + 1);
+                string dir              = _TMXFileName.substr(0, _TMXFileName.find_last_of('/') + 1);
                 externalTilesetFilename = dir + externalTilesetFilename;
             }
             else
@@ -426,9 +425,9 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char* name, const char** atts
         std::string imagename       = attributeDict["source"].asString();
         tileset->_originSourceImage = imagename;
 
-        if (_TMXFileName.find_last_of('/') != std::string::npos)
+        if (_TMXFileName.find_last_of('/') != string::npos)
         {
-            std::string dir       = _TMXFileName.substr(0, _TMXFileName.find_last_of('/') + 1);
+            string dir            = _TMXFileName.substr(0, _TMXFileName.find_last_of('/') + 1);
             tileset->_sourceImage = dir + imagename;
         }
         else
@@ -588,13 +587,13 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char* name, const char** atts
             pointsArray.reserve(10);
 
             // parse points string into a space-separated set of points
-            std::stringstream pointsStream(value);
-            std::string pointPair;
+            stringstream pointsStream(value);
+            string pointPair;
             while (std::getline(pointsStream, pointPair, ' '))
             {
                 // parse each point combo into a comma-separated x,y point
-                std::stringstream pointStream(pointPair);
-                std::string xStr, yStr;
+                stringstream pointStream(pointPair);
+                string xStr, yStr;
 
                 ValueMap pointDict;
 
@@ -633,13 +632,13 @@ void TMXMapInfo::startElement(void* /*ctx*/, const char* name, const char** atts
             pointsArray.reserve(10);
 
             // parse points string into a space-separated set of points
-            std::stringstream pointsStream(value);
-            std::string pointPair;
+            stringstream pointsStream(value);
+            string pointPair;
             while (std::getline(pointsStream, pointPair, ' '))
             {
                 // parse each point combo into a comma-separated x,y point
-                std::stringstream pointStream(pointPair);
-                std::string xStr, yStr;
+                stringstream pointStream(pointPair);
+                string xStr, yStr;
 
                 ValueMap pointDict;
 
@@ -692,11 +691,17 @@ void TMXMapInfo::endElement(void* /*ctx*/, const char* name)
             tmxMapInfo->setStoringCharacters(false);
 
             TMXLayerInfo* layer = tmxMapInfo->getLayers().back();
+
             auto currentString = tmxMapInfo->getCurrentString();
 
+            auto currentStringView = tmxMapInfo->getCurrentString();
+            std::string currentString;
+            std::regex_replace(std::back_inserter(currentString), currentStringView.begin(), currentStringView.end(),
+                               std::regex("[\n\r ]"), "");
+
             unsigned char* buffer;
-            auto len = utils::base64Decode((unsigned char*)currentString.data(), (unsigned int)currentString.length(),
-                                           &buffer);
+            auto len =
+                utils::base64Decode((unsigned char*)currentString.data(), (unsigned int)currentString.length(), &buffer);
             if (!buffer)
             {
                 AXLOG("axmol: TiledMap: decode data error");
@@ -739,17 +744,25 @@ void TMXMapInfo::endElement(void* /*ctx*/, const char* name)
 
             tmxMapInfo->setStoringCharacters(false);
 
-            auto currentString = tmxMapInfo->getCurrentString();
+            auto currentStringView = tmxMapInfo->getCurrentString();
+            std::string currentString;
+            std::regex_replace(std::back_inserter(currentString), currentStringView.begin(), currentStringView.end(),
+                               std::regex("[\n\r ]"), "");
 
-            std::vector<std::string> gidTokens;
+            string nCurrentString = "";
+            for (int i = 0; i < currentString.length(); i++)
+                if (currentString[i] != '\r' && currentString[i] != '\n')
+                    nCurrentString += currentString[i];
+
+            vector<string> gidTokens;
             std::stringstream filestr;
-            filestr << currentString;
-            std::string sRow;
-            while (std::getline(filestr, sRow, '\n'))
+            filestr << nCurrentString;
+            string sRow;
+            while (getline(filestr, sRow, '\n'))
             {
-                std::string sGID;
-                std::istringstream rowstr(sRow);
-                while (std::getline(rowstr, sGID, ','))
+                string sGID;
+                istringstream rowstr(sRow);
+                while (getline(rowstr, sGID, ','))
                 {
                     gidTokens.emplace_back(sGID);
                 }
@@ -814,7 +827,6 @@ void TMXMapInfo::textHandler(void* /*ctx*/, const char* ch, size_t len)
 {
     TMXMapInfo* tmxMapInfo = this;
     std::string text(ch, 0, len);
-    text = std::regex_replace(text, std::regex("[\n\r ]"), "");
 
     if (tmxMapInfo->isStoringCharacters())
     {

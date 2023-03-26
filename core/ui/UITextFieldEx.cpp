@@ -9,7 +9,7 @@
 
 /// cocos2d singleton objects
 #define CCDIRECTOR ax::Director::getInstance()
-#define CCRUNONGL CCDIRECTOR->getScheduler()->runOnAxmolThread
+#define CCRUNONGL CCDIRECTOR->getScheduler()->performFunctionInCocosThread
 #define CCEVENTMGR CCDIRECTOR->getEventDispatcher()
 #define CCSCHTASKS CCDIRECTOR->getScheduler()
 #define CCACTIONMGR CCDIRECTOR->getActionManager()
@@ -19,7 +19,7 @@
 
 NS_AX_BEGIN
 
-#if defined(WINAPI_FAMILY) && WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
+#ifdef _WIN32
 #    define nxbeep(t) MessageBeep(t)
 #else
 #    define nxbeep(t)
@@ -380,7 +380,7 @@ void TextFieldEx::enableIME(Node* control)
     if (control == nullptr)
         control = this;
 
-    touchListener->onTouchBegan = [control,this](Touch* touch, Event*) {
+    touchListener->onTouchBegan = [=, this](Touch* touch, Event*) {
         bool focus = (engine_inj_checkVisibility(this) && this->editable && this->enabled &&
                       engine_inj_containsTouchPoint(control, touch));
 

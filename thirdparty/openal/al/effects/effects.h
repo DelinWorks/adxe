@@ -6,6 +6,7 @@
 #include "core/except.h"
 
 #ifdef ALSOFT_EAX
+#include "al/eax/call.h"
 #include "al/eax/effect.h"
 #endif // ALSOFT_EAX
 
@@ -22,7 +23,6 @@ public:
     [[gnu::format(printf, 3, 4)]]
 #endif
     effect_exception(ALenum code, const char *msg, ...);
-    ~effect_exception() override;
 
     ALenum errorCode() const noexcept { return mErrorCode; }
 };
@@ -87,7 +87,7 @@ extern const EffectVtable ConvolutionEffectVtable;
 
 
 #ifdef ALSOFT_EAX
-EaxEffectUPtr eax_create_eax_effect(ALenum al_effect_type, int eax_version);
+EaxEffectUPtr eax_create_eax_effect(ALenum al_effect_type, const EaxCall& call);
 #endif // ALSOFT_EAX
 
 #endif /* AL_EFFECTS_EFFECTS_H */

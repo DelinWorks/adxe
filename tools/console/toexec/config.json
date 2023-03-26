@@ -28,6 +28,14 @@
             {
                 "from": "plugins/plugin_package/helper/template",
                 "to": "helper/template"
+            },
+            {
+                "from": "plugins/plugin_generate",
+                "to": "",
+                "include": [
+                    "bin-templates",
+                    "configs"
+                ]
             }
         ],
         "darwin": [
@@ -51,6 +59,10 @@
                     "luajit.exe",
                     "*.dll"
                 ]
+            },
+            {
+                "from": "plugins/plugin_generate/proj_modifier/plutil-win32",
+                "to": "plutil-win32"
             }
         ],
         "linux": [

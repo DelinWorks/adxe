@@ -1,6 +1,6 @@
 /****************************************************************************
  Copyright (c) 2018-2019 Xiamen Yaji Software Co., Ltd.
- Copyright (c) 2021-2023 Bytedance Inc.
+ Copyright (c) 2021-2022 Bytedance Inc.
 
  https://axmolengine.github.io/
 
@@ -305,7 +305,8 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
                                              void* buffer)
 {
     auto basicType      = static_cast<glslopt_basic_type>(uniformInfo.type);
-    
+    char* convertedData = new char[uniformInfo.size];
+    memset(convertedData, 0, uniformInfo.size);
     int offset = 0;
     switch (basicType)
     {
@@ -313,27 +314,23 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
     {
         if (uniformInfo.isMatrix)
         {
-            float m4x3[12];
             for (int i = 0; i < uniformInfo.count; i++)
             {
                 if (offset >= srcSize)
                     break;
 
-                convertMat3ToMat4x3((float*)((uint8_t*)srcData + offset), m4x3);
-                memcpy((uint8_t*)buffer + uniformInfo.location + i * sizeof(m4x3), m4x3, sizeof(m4x3));
+                convertMat3ToMat4x3((float*)srcData + offset, (float*)convertedData + i * MAT4X3_SIZE);
                 offset += MAT3_SIZE;
             }
         }
         else
         {
-            float f4[4];
             for (int i = 0; i < uniformInfo.count; i++)
             {
                 if (offset >= srcSize)
                     break;
 
-                convertVec3ToVec4((float*)((uint8_t*)srcData + offset), f4);
-                memcpy((uint8_t*)buffer + uniformInfo.location + i * sizeof(f4), f4, sizeof(f4));
+                convertVec3ToVec4((float*)srcData + offset, (float*)convertedData + i * VEC4_SIZE);
                 offset += VEC3_SIZE;
             }
         }
@@ -341,28 +338,24 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
     }
     case kGlslTypeBool:
     {
-        bool b4[4];
         for (int i = 0; i < uniformInfo.count; i++)
         {
             if (offset >= srcSize)
                 break;
 
-            convertbVec3TobVec4((bool*)((uint8_t*)srcData + offset), b4);
-            memcpy((uint8_t*)buffer + uniformInfo.location + i * sizeof(b4), b4, sizeof(b4));
+            convertbVec3TobVec4((bool*)srcData + offset, (bool*)convertedData + i * BVEC4_SIZE);
             offset += BVEC3_SIZE;
         }
         break;
     }
     case kGlslTypeInt:
     {
-        int i4[4];
         for (int i = 0; i < uniformInfo.count; i++)
         {
             if (offset >= srcSize)
                 break;
 
-            convertiVec3ToiVec4((int*)((uint8_t*)srcData + offset), i4);
-            memcpy((uint8_t*)buffer + uniformInfo.location + i * sizeof(i4), i4, sizeof(i4));
+            convertiVec3ToiVec4((int*)srcData + offset, (int*)convertedData + i * IVEC4_SIZE);
             offset += IVEC3_SIZE;
         }
         break;
@@ -371,6 +364,9 @@ void ProgramState::convertAndCopyUniformData(const backend::UniformInfo& uniform
         AX_ASSERT(false);
         break;
     }
+
+    memcpy((char*)buffer + uniformInfo.location, convertedData, uniformInfo.size);
+    AX_SAFE_DELETE_ARRAY(convertedData);
 }
 #endif
 

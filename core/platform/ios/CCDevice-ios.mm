@@ -431,7 +431,7 @@ static id _createSystemFont(const char* fontName, int size)
     return font;
 }
 
-static bool _initWithString(std::string_view text,
+static bool _initWithString(const char* text,
                             ax::Device::TextAlign align,
                             const char* fontName,
                             int size,
@@ -443,13 +443,13 @@ static bool _initWithString(std::string_view text,
     bool bRet = false;
     do
     {
-        AX_BREAK_IF(text.empty() || !info);
+        AX_BREAK_IF(!text || !info);
 
         id font = _createSystemFont(fontName, size);
 
         AX_BREAK_IF(!font);
 
-        NSString* str = [NSString stringWithUTF8String:text.data()];
+        NSString* str = [NSString stringWithUTF8String:text];
         AX_BREAK_IF(!str);
 
         CGSize dimensions;
@@ -589,7 +589,7 @@ static bool _initWithString(std::string_view text,
     return bRet;
 }
 
-Data Device::getTextureDataForText(std::string_view text,
+Data Device::getTextureDataForText(const char* text,
                                    const FontDefinition& textDefinition,
                                    TextAlign align,
                                    int& width,

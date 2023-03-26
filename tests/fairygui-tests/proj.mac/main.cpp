@@ -23,7 +23,7 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "AppDelegate.h"
+#include "../Classes/AppDelegate.h"
 
 USING_NS_AX;
 

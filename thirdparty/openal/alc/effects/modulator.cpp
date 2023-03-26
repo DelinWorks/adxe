@@ -84,12 +84,10 @@ struct ModulatorState final : public EffectState {
     uint mStep{1};
 
     struct {
-        uint mTargetChannel{InvalidChannelIndex};
+        BiquadFilter Filter;
 
-        BiquadFilter mFilter;
-
-        float mCurrentGain{};
-        float mTargetGain{};
+        float CurrentGains[MAX_OUTPUT_CHANNELS]{};
+        float TargetGains[MAX_OUTPUT_CHANNELS]{};
     } mChans[MaxAmbiChannels];
 
 
@@ -106,9 +104,8 @@ void ModulatorState::deviceUpdate(const DeviceBase*, const Buffer&)
 {
     for(auto &e : mChans)
     {
-        e.mTargetChannel = InvalidChannelIndex;
-        e.mFilter.clear();
-        e.mCurrentGain = 0.0f;
+        e.Filter.clear();
+        std::fill(std::begin(e.CurrentGains), std::end(e.CurrentGains), 0.0f);
     }
 }
 
@@ -132,17 +129,14 @@ void ModulatorState::update(const ContextBase *context, const EffectSlot *slot,
     float f0norm{props->Modulator.HighPassCutoff / static_cast<float>(device->Frequency)};
     f0norm = clampf(f0norm, 1.0f/512.0f, 0.49f);
     /* Bandwidth value is constant in octaves. */
-    mChans[0].mFilter.setParamsFromBandwidth(BiquadType::HighPass, f0norm, 1.0f, 0.75f);
+    mChans[0].Filter.setParamsFromBandwidth(BiquadType::HighPass, f0norm, 1.0f, 0.75f);
     for(size_t i{1u};i < slot->Wet.Buffer.size();++i)
-        mChans[i].mFilter.copyParamsFrom(mChans[0].mFilter);
+        mChans[i].Filter.copyParamsFrom(mChans[0].Filter);
 
     mOutTarget = target.Main->Buffer;
-    auto set_channel = [this](size_t idx, uint outchan, float outgain)
-    {
-        mChans[idx].mTargetChannel = outchan;
-        mChans[idx].mTargetGain = outgain;
-    };
-    target.Main->setAmbiMixParams(slot->Wet, slot->Gain, set_channel);
+    auto set_gains = [slot,target](auto &chan, al::span<const float,MaxAmbiChannels> coeffs)
+    { ComputePanGains(target.Main, coeffs.data(), slot->Gain, chan.TargetGains); };
+    SetAmbiPanIdentity(std::begin(mChans), slot->Wet.Buffer.size(), set_gains);
 }
 
 void ModulatorState::process(const size_t samplesToDo, const al::span<const FloatBufferLine> samplesIn, const al::span<FloatBufferLine> samplesOut)
@@ -159,18 +153,14 @@ void ModulatorState::process(const size_t samplesToDo, const al::span<const Floa
         auto chandata = std::begin(mChans);
         for(const auto &input : samplesIn)
         {
-            const size_t outidx{chandata->mTargetChannel};
-            if(outidx != InvalidChannelIndex)
-            {
-                alignas(16) float temps[MAX_UPDATE_SAMPLES];
+            alignas(16) float temps[MAX_UPDATE_SAMPLES];
 
-                chandata->mFilter.process({&input[base], td}, temps);
-                for(size_t i{0u};i < td;i++)
-                    temps[i] *= modsamples[i];
+            chandata->Filter.process({&input[base], td}, temps);
+            for(size_t i{0u};i < td;i++)
+                temps[i] *= modsamples[i];
 
-                MixSamples({temps, td}, samplesOut[outidx].data()+base, chandata->mCurrentGain,
-                    chandata->mTargetGain, samplesToDo-base);
-            }
+            MixSamples({temps, td}, samplesOut, chandata->CurrentGains, chandata->TargetGains,
+                samplesToDo-base, base);
             ++chandata;
         }
 

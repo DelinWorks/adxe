@@ -4,7 +4,7 @@ set(target_name ${lib_name})
 
 project(${target_name})
 
-include(AXPlatform)
+include(../cmake/AXConfigThirdparty.cmake)
 
 set(${target_name}_src
   src/ogg/bitwise.c

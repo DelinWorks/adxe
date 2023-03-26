@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 #include "main.h"
-#include "AppDelegate.h"
+#include "../Classes/AppDelegate.h"
 
 USING_NS_AX;
 

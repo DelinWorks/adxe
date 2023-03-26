@@ -23,12 +23,34 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ****************************************************************************/
+
 #pragma once
+
 #include "platform/CCGL.h"
 #include "base/CCRef.h"
 #include "platform/CCCommon.h"
 #include "platform/CCGLView.h"
 #include "glfw3.h"
+
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
+#    ifndef GLFW_EXPOSE_NATIVE_WIN32
+#        define GLFW_EXPOSE_NATIVE_WIN32
+#    endif
+#    ifndef GLFW_EXPOSE_NATIVE_WGL
+#        define GLFW_EXPOSE_NATIVE_WGL
+#    endif
+#    include "glfw3native.h"
+#endif /* (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) */
+
+#if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
+#    ifndef GLFW_EXPOSE_NATIVE_NSGL
+#        define GLFW_EXPOSE_NATIVE_NSGL
+#    endif
+#    ifndef GLFW_EXPOSE_NATIVE_COCOA
+#        define GLFW_EXPOSE_NATIVE_COCOA
+#    endif
+#    include "glfw3native.h"
+#endif  // #if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
 
 NS_AX_BEGIN
 
@@ -41,7 +63,7 @@ public:
     static GLViewImpl* create(std::string_view viewName);
     static GLViewImpl* create(std::string_view viewName, bool resizable);
     static GLViewImpl* createWithRect(std::string_view viewName,
-                                      const Rect& size,
+                                      Rect size,
                                       float frameZoomFactor = 1.0f,
                                       bool resizable        = false);
     static GLViewImpl* createWithFullScreen(std::string_view viewName);
@@ -123,24 +145,24 @@ public:
     int getRetinaFactor() const override { return _retinaFactor; }
 
 #if (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32)
-    HWND getWin32Window() override;
+    HWND getWin32Window() { return glfwGetWin32Window(_mainWindow); }
 #endif /* (AX_TARGET_PLATFORM == AX_PLATFORM_WIN32) */
 
 #if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
-    void* getCocoaWindow() override;
-    void* getNSGLContext() override; // stevetranby: added
+    id getCocoaWindow() override { return glfwGetCocoaWindow(_mainWindow); }
+    id getNSGLContext() override { return glfwGetNSGLContext(_mainWindow); }  // stevetranby: added
 #endif  // #if (AX_TARGET_PLATFORM == AX_PLATFORM_MAC)
 
 protected:
     GLViewImpl(bool initglfw = true);
     virtual ~GLViewImpl();
 
-    bool initWithRect(std::string_view viewName, const Rect& rect, float frameZoomFactor, bool resizable);
+    bool initWithRect(std::string_view viewName, Rect rect, float frameZoomFactor, bool resizable);
     bool initWithFullScreen(std::string_view viewName);
     bool initWithFullscreen(std::string_view viewname, const GLFWvidmode& videoMode, GLFWmonitor* monitor);
-#if (AX_TARGET_PLATFORM != AX_PLATFORM_MAC) // Windows, Linux: use glad to loadGL
+
     bool loadGL();
-#endif
+
     /* update frame layout when enter/exit full screen mode */
     void updateWindowSize();
 

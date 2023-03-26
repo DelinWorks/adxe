@@ -9,7 +9,6 @@ set(_AX_2D_HEADER
     2d/CCActionCamera.h
     2d/CCParticleExamples.h
     2d/CCSprite.h
-    2d/CCAnchoredSprite.h
     2d/CCNode.h
     2d/CCComponentContainer.h
     2d/CCActionProgressTimer.h
@@ -126,7 +125,6 @@ set(_AX_2D_SRC
     2d/CCScene.cpp
     2d/CCSpriteBatchNode.cpp
     2d/CCSprite.cpp
-    2d/CCAnchoredSprite.cpp
     2d/CCSpriteFrameCache.cpp
     2d/CCSpriteFrame.cpp
     2d/CCAutoPolygon.cpp

@@ -1,5 +1,5 @@
 #set has_constructor = False
-#if 'constructor' in $current_class.methods
+#if $current_class.methods.has_key('constructor')
 #set has_constructor = True
 ${current_class.methods.constructor.generate_code($current_class)}
 #end if

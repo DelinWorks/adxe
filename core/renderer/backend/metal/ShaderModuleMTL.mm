@@ -49,9 +49,7 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, std
     {
         NSLog(@"Can not get metal shader:");
         NSLog(@"%s", source.data());
-        NSLog(@"%s", glslopt_get_log(glslShader));
         glslopt_cleanup(ctx);
-        assert(false);
         return;
     }
 
@@ -70,10 +68,8 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, std
     {
         NSLog(@"Can not compile metal shader: %@", error);
         NSLog(@"%s", metalShader);
-        NSLog(@"%s", glslopt_get_log(glslShader));
         glslopt_shader_delete(glslShader);
         glslopt_cleanup(ctx);
-        assert(false);
         return;
     }
 
@@ -85,7 +81,6 @@ ShaderModuleMTL::ShaderModuleMTL(id<MTLDevice> mtlDevice, ShaderStage stage, std
     {
         NSLog(@"metal shader is ---------------");
         NSLog(@"%s", metalShader);
-        NSLog(@"%s", glslopt_get_log(glslShader));
         assert(false);
     }
 

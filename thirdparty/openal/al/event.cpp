@@ -35,7 +35,7 @@ static int EventThread(ALCcontext *context)
 {
     RingBuffer *ring{context->mAsyncEvents.get()};
     bool quitnow{false};
-    while(!quitnow) [[likely]]
+    while(likely(!quitnow))
     {
         auto evt_data = ring->getReadVector().first;
         if(evt_data.len == 0)
@@ -55,20 +55,21 @@ static int EventThread(ALCcontext *context)
             ring->readAdvance(1);
 
             quitnow = evt.EnumType == AsyncEvent::KillThread;
-            if(quitnow) [[unlikely]] break;
+            if(unlikely(quitnow)) break;
 
             if(evt.EnumType == AsyncEvent::ReleaseEffectState)
             {
-                al::intrusive_ptr<EffectState>{evt.u.mEffectState};
+                evt.u.mEffectState->release();
                 continue;
             }
 
-            auto enabledevts = context->mEnabledEvts.load(std::memory_order_acquire);
-            if(!context->mEventCb || !enabledevts.test(evt.EnumType))
-                continue;
+            uint enabledevts{context->mEnabledEvts.load(std::memory_order_acquire)};
+            if(!context->mEventCb) continue;
 
             if(evt.EnumType == AsyncEvent::SourceStateChange)
             {
+                if(!(enabledevts&AsyncEvent::SourceStateChange))
+                    continue;
                 ALuint state{};
                 std::string msg{"Source ID " + std::to_string(evt.u.srcstate.id)};
                 msg += " state has changed to ";
@@ -96,6 +97,8 @@ static int EventThread(ALCcontext *context)
             }
             else if(evt.EnumType == AsyncEvent::BufferCompleted)
             {
+                if(!(enabledevts&AsyncEvent::BufferCompleted))
+                    continue;
                 std::string msg{std::to_string(evt.u.bufcomp.count)};
                 if(evt.u.bufcomp.count == 1) msg += " buffer completed";
                 else msg += " buffers completed";
@@ -105,6 +108,8 @@ static int EventThread(ALCcontext *context)
             }
             else if(evt.EnumType == AsyncEvent::Disconnected)
             {
+                if(!(enabledevts&AsyncEvent::Disconnected))
+                    continue;
                 context->mEventCb(AL_EVENT_TYPE_DISCONNECTED_SOFT, 0, 0,
                     static_cast<ALsizei>(strlen(evt.u.disconnect.msg)), evt.u.disconnect.msg,
                     context->mEventParam);
@@ -150,34 +155,34 @@ AL_API void AL_APIENTRY alEventControlSOFT(ALsizei count, const ALenum *types, A
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if(unlikely(!context)) return;
 
     if(count < 0) context->setError(AL_INVALID_VALUE, "Controlling %d events", count);
     if(count <= 0) return;
-    if(!types) return context->setError(AL_INVALID_VALUE, "NULL pointer");
+    if(!types) SETERR_RETURN(context, AL_INVALID_VALUE,, "NULL pointer");
 
-    ContextBase::AsyncEventBitset flags{};
+    uint flags{0};
     const ALenum *types_end = types+count;
     auto bad_type = std::find_if_not(types, types_end,
         [&flags](ALenum type) noexcept -> bool
         {
             if(type == AL_EVENT_TYPE_BUFFER_COMPLETED_SOFT)
-                flags.set(AsyncEvent::BufferCompleted);
+                flags |= AsyncEvent::BufferCompleted;
             else if(type == AL_EVENT_TYPE_SOURCE_STATE_CHANGED_SOFT)
-                flags.set(AsyncEvent::SourceStateChange);
+                flags |= AsyncEvent::SourceStateChange;
             else if(type == AL_EVENT_TYPE_DISCONNECTED_SOFT)
-                flags.set(AsyncEvent::Disconnected);
+                flags |= AsyncEvent::Disconnected;
             else
                 return false;
             return true;
         }
     );
     if(bad_type != types_end)
-        return context->setError(AL_INVALID_ENUM, "Invalid event type 0x%04x", *bad_type);
+        SETERR_RETURN(context, AL_INVALID_ENUM,, "Invalid event type 0x%04x", *bad_type);
 
     if(enable)
     {
-        auto enabledevts = context->mEnabledEvts.load(std::memory_order_relaxed);
+        uint enabledevts{context->mEnabledEvts.load(std::memory_order_relaxed)};
         while(context->mEnabledEvts.compare_exchange_weak(enabledevts, enabledevts|flags,
             std::memory_order_acq_rel, std::memory_order_acquire) == 0)
         {
@@ -188,7 +193,7 @@ START_API_FUNC
     }
     else
     {
-        auto enabledevts = context->mEnabledEvts.load(std::memory_order_relaxed);
+        uint enabledevts{context->mEnabledEvts.load(std::memory_order_relaxed)};
         while(context->mEnabledEvts.compare_exchange_weak(enabledevts, enabledevts&~flags,
             std::memory_order_acq_rel, std::memory_order_acquire) == 0)
         {
@@ -205,7 +210,7 @@ AL_API void AL_APIENTRY alEventCallbackSOFT(ALEVENTPROCSOFT callback, void *user
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if(unlikely(!context)) return;
 
     std::lock_guard<std::mutex> _{context->mPropLock};
     std::lock_guard<std::mutex> __{context->mEventCbLock};

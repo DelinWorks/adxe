@@ -32,31 +32,25 @@ if(ANDROID)
         platform/android/CCEnhanceAPI-android.cpp
     )
 elseif(WINDOWS)
-
-    if (NOT WINRT)
-        set(_AX_PLATFORM_SPECIFIC_HEADER
-            platform/win32/compat/stdint.h
-            platform/win32/CCApplication-win32.h
-            platform/win32/inet_pton_mingw.h
-            platform/win32/CCGL-win32.h
-            platform/win32/CCFileUtils-win32.h
-            platform/win32/CCStdC-win32.h
-            platform/win32/CCPlatformDefine-win32.h
-            platform/desktop/CCGLViewImpl-desktop.h
-            )
-        set(_AX_PLATFORM_SPECIFIC_SRC
-            platform/win32/CCStdC-win32.cpp
-            platform/win32/CCFileUtils-win32.cpp
-            platform/win32/CCCommon-win32.cpp
-            platform/win32/CCApplication-win32.cpp
-            platform/win32/CCDevice-win32.cpp
-            platform/win32/inet_pton_mingw.cpp
-            platform/desktop/CCGLViewImpl-desktop.cpp
-            )
-    else()
-        file(GLOB _AX_PLATFORM_SPECIFIC_HEADER platform/winrt/*.h)
-        file(GLOB _AX_PLATFORM_SPECIFIC_SRC platform/winrt/*.cpp)
-    endif()
+    set(_AX_PLATFORM_SPECIFIC_HEADER
+        platform/win32/compat/stdint.h
+        platform/win32/CCApplication-win32.h
+        platform/win32/inet_pton_mingw.h
+        platform/win32/CCGL-win32.h
+        platform/win32/CCFileUtils-win32.h
+        platform/win32/CCStdC-win32.h
+        platform/win32/CCPlatformDefine-win32.h
+        platform/desktop/CCGLViewImpl-desktop.h
+        )
+    set(_AX_PLATFORM_SPECIFIC_SRC
+        platform/win32/CCStdC-win32.cpp
+        platform/win32/CCFileUtils-win32.cpp
+        platform/win32/CCCommon-win32.cpp
+        platform/win32/CCApplication-win32.cpp
+        platform/win32/CCDevice-win32.cpp
+        platform/win32/inet_pton_mingw.cpp
+        platform/desktop/CCGLViewImpl-desktop.cpp
+        )
 
 elseif(APPLE)
     set(_AX_PLATFORM_SPECIFIC_HEADER
@@ -71,18 +65,19 @@ elseif(APPLE)
         set(_AX_PLATFORM_SPECIFIC_HEADER
             ${_AX_PLATFORM_SPECIFIC_HEADER}
             platform/mac/CCStdC-mac.h
+            platform/mac/CCGLViewImpl-mac.h
             platform/mac/CCPlatformDefine-mac.h
             platform/mac/CCApplication-mac.h
-            platform/desktop/CCGLViewImpl-desktop.h
+           # platform/desktop/CCGLViewImpl-desktop.h
             )
         set(_AX_PLATFORM_SPECIFIC_SRC
             ${_AX_PLATFORM_SPECIFIC_SRC}
             platform/mac/CCApplication-mac.mm
+            platform/mac/CCGLViewImpl-mac.mm
             platform/mac/CCCommon-mac.mm
             platform/mac/CCDevice-mac.mm
-            platform/desktop/CCGLViewImpl-desktop.cpp
+           # platform/desktop/CCGLViewImpl-desktop.cpp
             )
-        set_source_files_properties(platform/desktop/CCGLViewImpl-desktop.cpp PROPERTIES LANGUAGE OBJCXX)
     elseif(IOS)
         set(_AX_PLATFORM_SPECIFIC_HEADER
             ${_AX_PLATFORM_SPECIFIC_HEADER}

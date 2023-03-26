@@ -97,11 +97,10 @@ void FastTMXTiledMap::update(float dt)
     for (auto&& child : _children)
     {
         FastTMXLayer* layer = dynamic_cast<FastTMXLayer*>(child);
-        for (auto& [_, sub] : layer->getSubLayers())
-            if (layer->hasTileAnimation(sub))
-            {
-                layer->update(dt);
-            }
+        if (layer->hasTileAnimation())
+        {
+            layer->update(dt);
+        }
     }
 }
 
@@ -110,54 +109,76 @@ FastTMXTiledMap::FastTMXTiledMap() : _mapSize(Vec2::ZERO), _tileSize(Vec2::ZERO)
 FastTMXTiledMap::~FastTMXTiledMap() {}
 
 // private
-FastTMXLayer* FastTMXTiledMap::parseLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo)
+std::vector<FastTMXLayer*> FastTMXTiledMap::parseLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo)
 {
-    Vector<TMXTilesetInfo*> tileset = getLayerTilesets(layerInfo, mapInfo);
-    FastTMXLayer* layer = FastTMXLayer::create(tileset, layerInfo, mapInfo);
+    Vec2 size      = layerInfo->_layerSize;
+    auto& tilesets = mapInfo->getTilesets();
 
-    // tell the layerinfo to release the ownership of the tiles map.
-    layerInfo->_ownTiles = false;
-    for (auto& [_, sub] : layer->getSubLayers())
-        layer->setupTiles(sub);
+    TMXTilesetInfo* firstTileset;
+    FastTMXLayer* firstLayer = nullptr;
+    std::vector<FastTMXLayer*> layers;
+    for (auto iter = tilesets.crbegin(), iterCrend = tilesets.crend(); iter != iterCrend; ++iter)
+    {
+        TMXTilesetInfo* tileset = *iter;
+        if (tileset == nullptr)
+            continue;
 
-    return layer;
+        auto layer = FastTMXLayer::create(tileset, layerInfo, mapInfo);
+        layer->setupTiles();
+        layerInfo->_ownTiles = false;
+
+        if (firstLayer)
+            layer->_isSubLayer = true;
+
+        firstLayer = layer;
+
+        layers.push_back(layer);
+    }
+
+    return layers;
 }
 
-Vector<TMXTilesetInfo*> FastTMXTiledMap::getLayerTilesets(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo)
+TMXTilesetInfo* FastTMXTiledMap::tilesetForLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo)
 {
-    Vec2 size           = layerInfo->_layerSize;
-    auto& tilesets      = mapInfo->getTilesets();
-    auto inactive       = std::set<int>();
-    auto activeTilesets = Vector<TMXTilesetInfo*>();
+    Vec2 size      = layerInfo->_layerSize;
+    auto& tilesets = mapInfo->getTilesets();
 
-    for (int y = 0; y < size.height; y++)
+    for (auto iter = tilesets.crbegin(), iterCrend = tilesets.crend(); iter != iterCrend; ++iter)
     {
-        for (int x = 0; x < size.width; x++)
+        TMXTilesetInfo* tilesetInfo = *iter;
+        if (tilesetInfo)
         {
-            uint32_t pos = static_cast<uint32_t>(x + size.width * y);
-            uint32_t gid = layerInfo->_tiles[pos];
-            gid &= kTMXFlippedMask;
-
-            if (gid != 0)
+            for (int y = 0; y < size.height; y++)
             {
-                for (auto iter = tilesets.rbegin(); iter != tilesets.rend(); ++iter)
-                    if (gid >= (*iter)->_firstGid)
+                for (int x = 0; x < size.width; x++)
+                {
+                    uint32_t pos = static_cast<uint32_t>(x + size.width * y);
+                    uint32_t gid = layerInfo->_tiles[pos];
+
+                    // gid are stored in little endian.
+                    // if host is big endian, then swap
+                    // if( o == CFByteOrderBigEndian )
+                    //    gid = CFSwapInt32( gid );
+                    /* We support little endian.*/
+
+                    // FIXME: gid == 0 --> empty tile
+                    if (gid != 0)
                     {
-                        if (inactive.find((*iter)->_firstGid) == inactive.end())
+                        // Optimization: quick return
+                        // if the layer is invalid (more than 1 tileset per layer) an CCAssert will be thrown later
+                        if ((gid & kTMXFlippedMask) >= static_cast<uint32_t>(tilesetInfo->_firstGid))
                         {
-                            activeTilesets.pushBack(*iter);
-                            inactive.insert((*iter)->_firstGid);
+                            return tilesetInfo;
                         }
-                        break;
                     }
+                }
             }
         }
     }
 
     // If all the tiles are 0, return empty tileset
-    if (activeTilesets.size() == 0)
-        AXLOG("axmol: Warning: TMX Layer '%s' has no tiles", layerInfo->_name.c_str());
-    return activeTilesets;
+    AXLOG("axmol: Warning: TMX Layer '%s' has no tiles", layerInfo->_name.c_str());
+    return nullptr;
 }
 
 void FastTMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
@@ -177,22 +198,23 @@ void FastTMXTiledMap::buildWithMapInfo(TMXMapInfo* mapInfo)
     auto& layers = mapInfo->getLayers();
     for (const auto& layerInfo : layers)
     {
-        if (layerInfo->_visible)
+        //if (layerInfo->_visible)
         {
-            FastTMXLayer* child = parseLayer(layerInfo, mapInfo);
-            if (child == nullptr)
+            std::vector<FastTMXLayer*> children = parseLayer(layerInfo, mapInfo);
+            for (auto&& child : children)
             {
-                idx++;
-                continue;
-            }
-            addChild(child, idx, idx);
+                if (child)
+                {
+                    addChild(child, idx, idx);
+                    const Vec2& childSize = child->getContentSize();
 
-            // update content size with the max size
-            const Vec2& childSize = child->getContentSize();
-            Vec2 currentSize      = this->getContentSize();
-            currentSize.width     = std::max(currentSize.width, childSize.width);
-            currentSize.height    = std::max(currentSize.height, childSize.height);
-            this->setContentSize(currentSize);
+                    // update content size with the max size
+                    Vec2 currentSize   = this->getContentSize();
+                    currentSize.width  = std::max(currentSize.width, childSize.width);
+                    currentSize.height = std::max(currentSize.height, childSize.height);
+                    this->setContentSize(currentSize);
+                }
+            }
 
             idx++;
         }
@@ -264,18 +286,6 @@ std::string FastTMXTiledMap::getDescription() const
     return StringUtils::format("<FastTMXTiledMap | Tag = %d, Layers = %d", _tag, static_cast<int>(_children.size()));
 }
 
-void FastTMXTiledMap::setCullingEnabled(bool enabled)
-{
-    for (auto&& child : _children)
-    {
-        FastTMXLayer* layer = dynamic_cast<FastTMXLayer*>(child);
-        if (layer)
-        {
-            layer->setCullingEnabled(enabled);
-        }
-    }
-}
-
 void FastTMXTiledMap::setTileAnimEnabled(bool enabled)
 {
     for (auto&& child : _children)
@@ -283,14 +293,13 @@ void FastTMXTiledMap::setTileAnimEnabled(bool enabled)
         FastTMXLayer* layer = dynamic_cast<FastTMXLayer*>(child);
         if (layer)
         {
-            for (auto& [_, sub] : layer->getSubLayers())
-                if (layer->hasTileAnimation(sub))
-                {
-                    if (enabled)
-                        layer->getTileAnimManager(sub)->startAll();
-                    else
-                        layer->getTileAnimManager(sub)->stopAll();
-                }
+            if (layer->hasTileAnimation())
+            {
+                if (enabled)
+                    layer->getTileAnimManager()->startAll();
+                else
+                    layer->getTileAnimManager()->stopAll();
+            }
         }
     }
 }

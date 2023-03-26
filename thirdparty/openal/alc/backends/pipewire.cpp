@@ -32,7 +32,6 @@
 #include <memory>
 #include <mutex>
 #include <stdint.h>
-#include <thread>
 #include <type_traits>
 #include <utility>
 
@@ -126,7 +125,6 @@ namespace {
 #endif
 
 using std::chrono::seconds;
-using std::chrono::milliseconds;
 using std::chrono::nanoseconds;
 using uint = unsigned int;
 
@@ -367,10 +365,7 @@ using PwStreamPtr = std::unique_ptr<pw_stream,PwStreamDeleter>;
 
 /* Enums for bitflags... again... *sigh* */
 constexpr pw_stream_flags operator|(pw_stream_flags lhs, pw_stream_flags rhs) noexcept
-{ return static_cast<pw_stream_flags>(lhs | al::to_underlying(rhs)); }
-
-constexpr pw_stream_flags& operator|=(pw_stream_flags &lhs, pw_stream_flags rhs) noexcept
-{ lhs = lhs | rhs; return lhs; }
+{ return static_cast<pw_stream_flags>(lhs | std::underlying_type_t<pw_stream_flags>{rhs}); }
 
 class ThreadMainloop {
     pw_thread_loop *mLoop{};
@@ -477,7 +472,7 @@ struct EventManager {
      */
     void waitForInit()
     {
-        if(!mInitDone.load(std::memory_order_acquire)) [[unlikely]]
+        if(unlikely(!mInitDone.load(std::memory_order_acquire)))
         {
             MainloopUniqueLock plock{mLoop};
             plock.wait([this](){ return mInitDone.load(std::memory_order_acquire); });
@@ -554,12 +549,10 @@ enum class NodeType : unsigned char {
 };
 constexpr auto InvalidChannelConfig = DevFmtChannels(255);
 struct DeviceNode {
-    uint32_t mId{};
-
-    uint64_t mSerial{};
     std::string mName;
     std::string mDevName;
 
+    uint32_t mId{};
     NodeType mType{};
     bool mIsHeadphones{};
     bool mIs51Rear{};
@@ -613,7 +606,7 @@ DeviceNode *DeviceNode::Find(uint32_t id)
     { return n.mId == id; };
 
     auto match = std::find_if(sList.begin(), sList.end(), match_id);
-    if(match != sList.end()) return al::to_address(match);
+    if(match != sList.end()) return std::addressof(*match);
 
     return nullptr;
 }
@@ -651,10 +644,6 @@ const spa_audio_channel MonoMap[]{
 }, X71Map[]{
     SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC, SPA_AUDIO_CHANNEL_LFE,
     SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR, SPA_AUDIO_CHANNEL_SL, SPA_AUDIO_CHANNEL_SR
-}, X714Map[]{
-    SPA_AUDIO_CHANNEL_FL, SPA_AUDIO_CHANNEL_FR, SPA_AUDIO_CHANNEL_FC, SPA_AUDIO_CHANNEL_LFE,
-    SPA_AUDIO_CHANNEL_RL, SPA_AUDIO_CHANNEL_RR, SPA_AUDIO_CHANNEL_SL, SPA_AUDIO_CHANNEL_SR,
-    SPA_AUDIO_CHANNEL_TFL, SPA_AUDIO_CHANNEL_TFR, SPA_AUDIO_CHANNEL_TRL, SPA_AUDIO_CHANNEL_TRR
 };
 
 /**
@@ -697,8 +686,8 @@ void DeviceNode::parseSampleRate(const spa_pod *value) noexcept
         auto srates = get_pod_body<int32_t,3>(value);
 
         /* [0] is the default, [1] is the min, and [2] is the max. */
-        TRACE("Device ID %" PRIu64 " sample rate: %d (range: %d -> %d)\n", mSerial, srates[0],
-            srates[1], srates[2]);
+        TRACE("Device ID %u sample rate: %d (range: %d -> %d)\n", mId, srates[0], srates[1],
+            srates[2]);
         mSampleRate = static_cast<uint>(clampi(srates[0], MIN_OUTPUT_RATE, MAX_OUTPUT_RATE));
         return;
     }
@@ -719,7 +708,7 @@ void DeviceNode::parseSampleRate(const spa_pod *value) noexcept
             others += ", ";
             others += std::to_string(srates[i]);
         }
-        TRACE("Device ID %" PRIu64 " sample rate: %d (%s)\n", mSerial, srates[0], others.c_str());
+        TRACE("Device ID %u sample rate: %d (%s)\n", mId, srates[0], others.c_str());
         /* Pick the first rate listed that's within the allowed range (default
          * rate if possible).
          */
@@ -743,7 +732,7 @@ void DeviceNode::parseSampleRate(const spa_pod *value) noexcept
         }
         auto srates = get_pod_body<int32_t,1>(value);
 
-        TRACE("Device ID %" PRIu64 " sample rate: %d\n", mSerial, srates[0]);
+        TRACE("Device ID %u sample rate: %d\n", mId, srates[0]);
         mSampleRate = static_cast<uint>(clampi(srates[0], MIN_OUTPUT_RATE, MAX_OUTPUT_RATE));
         return;
     }
@@ -758,9 +747,7 @@ void DeviceNode::parsePositions(const spa_pod *value) noexcept
 
     mIs51Rear = false;
 
-    if(MatchChannelMap(chanmap, X714Map))
-        mChannels = DevFmtX714;
-    else if(MatchChannelMap(chanmap, X71Map))
+    if(MatchChannelMap(chanmap, X71Map))
         mChannels = DevFmtX71;
     else if(MatchChannelMap(chanmap, X61Map))
         mChannels = DevFmtX61;
@@ -777,7 +764,7 @@ void DeviceNode::parsePositions(const spa_pod *value) noexcept
         mChannels = DevFmtStereo;
     else
         mChannels = DevFmtMono;
-    TRACE("Device ID %" PRIu64 " got %zu position%s for %s%s\n", mSerial, chanmap.size(),
+    TRACE("Device ID %u got %zu position%s for %s%s\n", mId, chanmap.size(),
         (chanmap.size()==1)?"":"s", DevFmtChannelsString(mChannels), mIs51Rear?"(rear)":"");
 }
 
@@ -793,8 +780,8 @@ void DeviceNode::parseChannelCount(const spa_pod *value) noexcept
         mChannels = DevFmtStereo;
     else if(*chancount >= 1)
         mChannels = DevFmtMono;
-    TRACE("Device ID %" PRIu64 " got %d channel%s for %s\n", mSerial, *chancount,
-        (*chancount==1)?"":"s", DevFmtChannelsString(mChannels));
+    TRACE("Device ID %u got %d channel%s for %s\n", mId, *chancount, (*chancount==1)?"":"s",
+        DevFmtChannelsString(mChannels));
 }
 
 
@@ -802,7 +789,6 @@ constexpr char MonitorPrefix[]{"Monitor of "};
 constexpr auto MonitorPrefixLen = al::size(MonitorPrefix) - 1;
 constexpr char AudioSinkClass[]{"Audio/Sink"};
 constexpr char AudioSourceClass[]{"Audio/Source"};
-constexpr char AudioSourceVirtualClass[]{"Audio/Source/Virtual"};
 constexpr char AudioDuplexClass[]{"Audio/Duplex"};
 constexpr char StreamClass[]{"Stream/"};
 
@@ -862,13 +848,12 @@ void NodeProxy::infoCallback(const pw_node_info *info)
     {
         /* Can this actually change? */
         const char *media_class{spa_dict_lookup(info->props, PW_KEY_MEDIA_CLASS)};
-        if(!media_class) [[unlikely]] return;
+        if(unlikely(!media_class)) return;
 
         NodeType ntype{};
         if(al::strcasecmp(media_class, AudioSinkClass) == 0)
             ntype = NodeType::Sink;
-        else if(al::strcasecmp(media_class, AudioSourceClass) == 0
-            || al::strcasecmp(media_class, AudioSourceVirtualClass) == 0)
+        else if(al::strcasecmp(media_class, AudioSourceClass) == 0)
             ntype = NodeType::Source;
         else if(al::strcasecmp(media_class, AudioDuplexClass) == 0)
             ntype = NodeType::Duplex;
@@ -884,26 +869,12 @@ void NodeProxy::infoCallback(const pw_node_info *info)
         if(!nodeName || !*nodeName) nodeName = spa_dict_lookup(info->props, PW_KEY_NODE_NICK);
         if(!nodeName || !*nodeName) nodeName = devName;
 
-#ifdef PW_KEY_OBJECT_SERIAL
-        char *serial_end{};
-        const char *serial_str{spa_dict_lookup(info->props, PW_KEY_OBJECT_SERIAL)};
-        uint64_t serial_id{std::strtoull(serial_str, &serial_end, 0)};
-        if(*serial_end != '\0' || errno == ERANGE)
-        {
-            ERR("Unexpected object serial: %s\n", serial_str);
-            serial_id = info->id;
-        }
-#else
-        uint64_t serial_id{info->id};
-#endif
-
         const char *form_factor{spa_dict_lookup(info->props, PW_KEY_DEVICE_FORM_FACTOR)};
         TRACE("Got %s device \"%s\"%s%s%s\n", AsString(ntype), devName ? devName : "(nil)",
             form_factor?" (":"", form_factor?form_factor:"", form_factor?")":"");
-        TRACE("  \"%s\" = ID %" PRIu64 "\n", nodeName ? nodeName : "(nil)", serial_id);
+        TRACE("  \"%s\" = ID %u\n", nodeName ? nodeName : "(nil)", info->id);
 
         DeviceNode &node = DeviceNode::Add(info->id);
-        node.mSerial = serial_id;
         if(nodeName && *nodeName) node.mName = nodeName;
         else node.mName = "PipeWire node #"+std::to_string(info->id);
         node.mDevName = devName ? devName : "";
@@ -918,7 +889,7 @@ void NodeProxy::paramCallback(int, uint32_t id, uint32_t, uint32_t, const spa_po
     if(id == SPA_PARAM_EnumFormat)
     {
         DeviceNode *node{DeviceNode::Find(mId)};
-        if(!node) [[unlikely]] return;
+        if(unlikely(!node)) return;
 
         if(const spa_pod_prop *prop{spa_pod_find_prop(param, nullptr, SPA_FORMAT_AUDIO_rate)})
             node->parseSampleRate(&prop->value);
@@ -1123,7 +1094,6 @@ void EventManager::addCallback(uint32_t id, uint32_t, const char *type, uint32_t
         /* Specifically, audio sinks and sources (and duplexes). */
         const bool isGood{al::strcasecmp(media_class, AudioSinkClass) == 0
             || al::strcasecmp(media_class, AudioSourceClass) == 0
-            || al::strcasecmp(media_class, AudioSourceVirtualClass) == 0
             || al::strcasecmp(media_class, AudioDuplexClass) == 0};
         if(!isGood)
         {
@@ -1257,7 +1227,6 @@ spa_audio_info_raw make_spa_info(DeviceBase *device, bool is51rear, use_f32p_e u
         break;
     case DevFmtX61: map = X61Map; break;
     case DevFmtX71: map = X71Map; break;
-    case DevFmtX714: map = X714Map; break;
     case DevFmtX3D71: map = X71Map; break;
     case DevFmtAmbi3D:
         info.flags |= SPA_AUDIO_FLAG_UNPOSITIONED;
@@ -1293,7 +1262,7 @@ class PipeWirePlayback final : public BackendBase {
     void stop() override;
     ClockLatency getClockLatency() override;
 
-    uint64_t mTargetId{PwIdAny};
+    uint32_t mTargetId{PwIdAny};
     nanoseconds mTimeBase{0};
     ThreadMainloop mLoop;
     PwContextPtr mContext;
@@ -1343,7 +1312,7 @@ void PipeWirePlayback::ioChangedCallback(uint32_t id, void *area, uint32_t size)
 void PipeWirePlayback::outputCallback()
 {
     pw_buffer *pw_buf{pw_stream_dequeue_buffer(mStream.get())};
-    if(!pw_buf) [[unlikely]] return;
+    if(unlikely(!pw_buf)) return;
 
     const al::span<spa_data> datas{pw_buf->buffer->datas,
         minu(mNumChannels, pw_buf->buffer->n_datas)};
@@ -1359,7 +1328,7 @@ void PipeWirePlayback::outputCallback()
     uint length{mRateMatch ? mRateMatch->size : 0u};
 #endif
     /* If no length is specified, use the device's update size as a fallback. */
-    if(!length) [[unlikely]] length = mDevice->UpdateSize;
+    if(unlikely(!length)) length = mDevice->UpdateSize;
 
     /* For planar formats, each datas[] seems to contain one channel, so store
      * the pointers in an array. Limit the render length in case the available
@@ -1391,7 +1360,7 @@ void PipeWirePlayback::open(const char *name)
 {
     static std::atomic<uint> OpenCount{0};
 
-    uint64_t targetid{PwIdAny};
+    uint32_t targetid{PwIdAny};
     std::string devname{};
     gEventHandler.waitForInit();
     if(!name)
@@ -1416,7 +1385,7 @@ void PipeWirePlayback::open(const char *name)
                     "No PipeWire playback device found"};
         }
 
-        targetid = match->mSerial;
+        targetid = match->mId;
         devname = match->mName;
     }
     else
@@ -1431,7 +1400,7 @@ void PipeWirePlayback::open(const char *name)
             throw al::backend_exception{al::backend_error::NoDevice,
                 "Device name \"%s\" not found", name};
 
-        targetid = match->mSerial;
+        targetid = match->mId;
         devname = match->mName;
     }
 
@@ -1496,7 +1465,7 @@ bool PipeWirePlayback::reset()
         auto&& devlist = DeviceNode::GetList();
 
         auto match_id = [targetid=mTargetId](const DeviceNode &n) -> bool
-        { return targetid == n.mSerial; };
+        { return targetid == n.mId; };
         auto match = std::find_if(devlist.cbegin(), devlist.cend(), match_id);
         if(match != devlist.cend())
         {
@@ -1504,11 +1473,10 @@ bool PipeWirePlayback::reset()
             {
                 /* Scale the update size if the sample rate changes. */
                 const double scale{static_cast<double>(match->mSampleRate) / mDevice->Frequency};
-                const double numbufs{static_cast<double>(mDevice->BufferSize)/mDevice->UpdateSize};
                 mDevice->Frequency = match->mSampleRate;
                 mDevice->UpdateSize = static_cast<uint>(clampd(mDevice->UpdateSize*scale + 0.5,
                     64.0, 8192.0));
-                mDevice->BufferSize = static_cast<uint>(numbufs*mDevice->UpdateSize + 0.5);
+                mDevice->BufferSize = mDevice->UpdateSize * 2;
             }
             if(!mDevice->Flags.test(ChannelsRequest) && match->mChannels != InvalidChannelConfig)
                 mDevice->FmtChans = match->mChannels;
@@ -1534,13 +1502,7 @@ bool PipeWirePlayback::reset()
         throw al::backend_exception{al::backend_error::DeviceError,
             "Failed to set PipeWire audio format parameters"};
 
-    /* TODO: Which properties are actually needed here? Any others that could
-     * be useful?
-     */
-    auto&& binary = GetProcBinary();
-    const char *appname{binary.fname.length() ? binary.fname.c_str() : "OpenAL Soft"};
-    pw_properties *props{pw_properties_new(PW_KEY_NODE_NAME, appname,
-        PW_KEY_NODE_DESCRIPTION, appname,
+    pw_properties *props{pw_properties_new(
         PW_KEY_MEDIA_TYPE, "Audio",
         PW_KEY_MEDIA_CATEGORY, "Playback",
         PW_KEY_MEDIA_ROLE, "Game",
@@ -1550,14 +1512,16 @@ bool PipeWirePlayback::reset()
         throw al::backend_exception{al::backend_error::DeviceError,
             "Failed to create PipeWire stream properties (errno: %d)", errno};
 
+    auto&& binary = GetProcBinary();
+    const char *appname{binary.fname.length() ? binary.fname.c_str() : "OpenAL Soft"};
+    /* TODO: Which properties are actually needed here? Any others that could
+     * be useful?
+     */
+    pw_properties_set(props, PW_KEY_NODE_NAME, appname);
+    pw_properties_set(props, PW_KEY_NODE_DESCRIPTION, appname);
     pw_properties_setf(props, PW_KEY_NODE_LATENCY, "%u/%u", mDevice->UpdateSize,
         mDevice->Frequency);
     pw_properties_setf(props, PW_KEY_NODE_RATE, "1/%u", mDevice->Frequency);
-#ifdef PW_KEY_TARGET_OBJECT
-    pw_properties_setf(props, PW_KEY_TARGET_OBJECT, "%" PRIu64, mTargetId);
-#else
-    pw_properties_setf(props, PW_KEY_NODE_TARGET, "%" PRIu64, mTargetId);
-#endif
 
     MainloopUniqueLock plock{mLoop};
     /* The stream takes overship of 'props', even in the case of failure. */
@@ -1568,11 +1532,9 @@ bool PipeWirePlayback::reset()
     static constexpr pw_stream_events streamEvents{CreateEvents()};
     pw_stream_add_listener(mStream.get(), &mStreamListener, &streamEvents, this);
 
-    pw_stream_flags flags{PW_STREAM_FLAG_AUTOCONNECT | PW_STREAM_FLAG_INACTIVE
-        | PW_STREAM_FLAG_MAP_BUFFERS};
-    if(GetConfigValueBool(mDevice->DeviceName.c_str(), "pipewire", "rt-mix", true))
-        flags |= PW_STREAM_FLAG_RT_PROCESS;
-    if(int res{pw_stream_connect(mStream.get(), PW_DIRECTION_OUTPUT, PwIdAny, flags, &params, 1)})
+    constexpr pw_stream_flags Flags{PW_STREAM_FLAG_AUTOCONNECT | PW_STREAM_FLAG_INACTIVE
+        | PW_STREAM_FLAG_MAP_BUFFERS | PW_STREAM_FLAG_RT_PROCESS};
+    if(int res{pw_stream_connect(mStream.get(), PW_DIRECTION_OUTPUT, mTargetId, Flags, &params, 1)})
         throw al::backend_exception{al::backend_error::DeviceError,
             "Error connecting PipeWire stream (res: %d)", res};
 
@@ -1587,12 +1549,10 @@ bool PipeWirePlayback::reset()
         return state == PW_STREAM_STATE_PAUSED;
     });
 
-    /* TODO: Update mDevice->UpdateSize with the stream's quantum, and
-     * mDevice->BufferSize with the total known buffering delay from the head
-     * of this playback stream to the tail of the device output.
-     *
-     * This info is apparently not available until after the stream starts.
+    /* TODO: Update mDevice->BufferSize with the total known buffering delay
+     * from the head of this playback stream to the tail of the device output.
      */
+    mDevice->BufferSize = mDevice->UpdateSize * 2;
     plock.unlock();
 
     mNumChannels = mDevice->channelsFromFmt();
@@ -1623,62 +1583,11 @@ void PipeWirePlayback::start()
         return state == PW_STREAM_STATE_STREAMING;
     });
 
-    /* HACK: Try to work out the update size and total buffering size. There's
-     * no actual query for this, so we have to work it out from the stream time
-     * info, and assume it stays accurate with future updates. The stream time
-     * info may also not be available right away, so we have to wait until it
-     * is (up to about 2 seconds).
-     */
-    int wait_count{100};
-    do {
-        pw_time ptime{};
-        if(int res{pw_stream_get_time_n(mStream.get(), &ptime, sizeof(ptime))})
-        {
-            ERR("Failed to get PipeWire stream time (res: %d)\n", res);
-            break;
-        }
-
-        /* The rate match size is the update size for each buffer. */
-        const uint updatesize{mRateMatch ? mRateMatch->size : 0u};
-#if PW_CHECK_VERSION(0,3,50)
-        /* Assume ptime.avail_buffers+ptime.queued_buffers is the target buffer
-         * queue size.
-         */
-        if(ptime.rate.denom > 0 && (ptime.avail_buffers || ptime.queued_buffers) && updatesize > 0)
-        {
-            const uint totalbuffers{ptime.avail_buffers + ptime.queued_buffers};
-
-            /* Ensure the delay is in sample frames. */
-            const uint64_t delay{static_cast<uint64_t>(ptime.delay) * mDevice->Frequency *
-                ptime.rate.num / ptime.rate.denom};
-
-            mDevice->UpdateSize = updatesize;
-            mDevice->BufferSize = static_cast<uint>(ptime.buffered + delay +
-                totalbuffers*updatesize);
-            break;
-        }
-#else
-        /* Prior to 0.3.50, we can only measure the delay with the update size,
-         * assuming one buffer and no resample buffering.
-         */
-        if(ptime.rate.denom > 0 && updatesize > 0)
-        {
-            /* Ensure the delay is in sample frames. */
-            const uint64_t delay{static_cast<uint64_t>(ptime.delay) * mDevice->Frequency *
-                ptime.rate.num / ptime.rate.denom};
-
-            mDevice->UpdateSize = updatesize;
-            mDevice->BufferSize = static_cast<uint>(delay + updatesize);
-            break;
-        }
-#endif
-        if(!--wait_count)
-            break;
-
-        plock.unlock();
-        std::this_thread::sleep_for(milliseconds{20});
-        plock.lock();
-    } while(pw_stream_get_state(mStream.get(), nullptr) == PW_STREAM_STATE_STREAMING);
+    if(mRateMatch && mRateMatch->size)
+    {
+        mDevice->UpdateSize = mRateMatch->size;
+        mDevice->BufferSize = mDevice->UpdateSize * 2;
+    }
 }
 
 void PipeWirePlayback::stop()
@@ -1728,7 +1637,7 @@ ClockLatency PipeWirePlayback::getClockLatency()
      */
     nanoseconds monoclock{seconds{tspec.tv_sec} + nanoseconds{tspec.tv_nsec}};
     nanoseconds curtic{}, delay{};
-    if(ptime.rate.denom < 1) [[unlikely]]
+    if(unlikely(ptime.rate.denom < 1))
     {
         /* If there's no stream rate, the stream hasn't had a chance to get
          * going and return time info yet. Just use dummy values.
@@ -1794,7 +1703,7 @@ class PipeWireCapture final : public BackendBase {
     void captureSamples(al::byte *buffer, uint samples) override;
     uint availableSamples() override;
 
-    uint64_t mTargetId{PwIdAny};
+    uint32_t mTargetId{PwIdAny};
     ThreadMainloop mLoop;
     PwContextPtr mContext;
     PwCorePtr mCore;
@@ -1826,7 +1735,7 @@ void PipeWireCapture::stateChangedCallback(pw_stream_state, pw_stream_state, con
 void PipeWireCapture::inputCallback()
 {
     pw_buffer *pw_buf{pw_stream_dequeue_buffer(mStream.get())};
-    if(!pw_buf) [[unlikely]] return;
+    if(unlikely(!pw_buf)) return;
 
     spa_data *bufdata{pw_buf->buffer->datas};
     const uint offset{minu(bufdata->chunk->offset, bufdata->maxsize)};
@@ -1842,7 +1751,7 @@ void PipeWireCapture::open(const char *name)
 {
     static std::atomic<uint> OpenCount{0};
 
-    uint64_t targetid{PwIdAny};
+    uint32_t targetid{PwIdAny};
     std::string devname{};
     gEventHandler.waitForInit();
     if(!name)
@@ -1871,7 +1780,7 @@ void PipeWireCapture::open(const char *name)
                     "No PipeWire capture device found"};
         }
 
-        targetid = match->mSerial;
+        targetid = match->mId;
         if(match->mType != NodeType::Sink) devname = match->mName;
         else devname = MonitorPrefix+match->mName;
     }
@@ -1894,7 +1803,7 @@ void PipeWireCapture::open(const char *name)
             throw al::backend_exception{al::backend_error::NoDevice,
                 "Device name \"%s\" not found", name};
 
-        targetid = match->mSerial;
+        targetid = match->mId;
         devname = name;
     }
 
@@ -1944,7 +1853,7 @@ void PipeWireCapture::open(const char *name)
         auto&& devlist = DeviceNode::GetList();
 
         auto match_id = [targetid=mTargetId](const DeviceNode &n) -> bool
-        { return targetid == n.mSerial; };
+        { return targetid == n.mId; };
         auto match = std::find_if(devlist.cbegin(), devlist.cend(), match_id);
         if(match != devlist.cend())
             is51rear = match->mIs51Rear;
@@ -1960,11 +1869,7 @@ void PipeWireCapture::open(const char *name)
         throw al::backend_exception{al::backend_error::DeviceError,
             "Failed to set PipeWire audio format parameters"};
 
-    auto&& binary = GetProcBinary();
-    const char *appname{binary.fname.length() ? binary.fname.c_str() : "OpenAL Soft"};
     pw_properties *props{pw_properties_new(
-        PW_KEY_NODE_NAME, appname,
-        PW_KEY_NODE_DESCRIPTION, appname,
         PW_KEY_MEDIA_TYPE, "Audio",
         PW_KEY_MEDIA_CATEGORY, "Capture",
         PW_KEY_MEDIA_ROLE, "Game",
@@ -1974,6 +1879,10 @@ void PipeWireCapture::open(const char *name)
         throw al::backend_exception{al::backend_error::DeviceError,
             "Failed to create PipeWire stream properties (errno: %d)", errno};
 
+    auto&& binary = GetProcBinary();
+    const char *appname{binary.fname.length() ? binary.fname.c_str() : "OpenAL Soft"};
+    pw_properties_set(props, PW_KEY_NODE_NAME, appname);
+    pw_properties_set(props, PW_KEY_NODE_DESCRIPTION, appname);
     /* We don't actually care what the latency/update size is, as long as it's
      * reasonable. Unfortunately, when unspecified PipeWire seems to default to
      * around 40ms, which isn't great. So request 20ms instead.
@@ -1981,11 +1890,6 @@ void PipeWireCapture::open(const char *name)
     pw_properties_setf(props, PW_KEY_NODE_LATENCY, "%u/%u", (mDevice->Frequency+25) / 50,
         mDevice->Frequency);
     pw_properties_setf(props, PW_KEY_NODE_RATE, "1/%u", mDevice->Frequency);
-#ifdef PW_KEY_TARGET_OBJECT
-    pw_properties_setf(props, PW_KEY_TARGET_OBJECT, "%" PRIu64, mTargetId);
-#else
-    pw_properties_setf(props, PW_KEY_NODE_TARGET, "%" PRIu64, mTargetId);
-#endif
 
     MainloopUniqueLock plock{mLoop};
     mStream = PwStreamPtr{pw_stream_new(mCore.get(), "Capture Stream", props)};
@@ -1997,7 +1901,7 @@ void PipeWireCapture::open(const char *name)
 
     constexpr pw_stream_flags Flags{PW_STREAM_FLAG_AUTOCONNECT | PW_STREAM_FLAG_INACTIVE
         | PW_STREAM_FLAG_MAP_BUFFERS | PW_STREAM_FLAG_RT_PROCESS};
-    if(int res{pw_stream_connect(mStream.get(), PW_DIRECTION_INPUT, PwIdAny, Flags, params, 1)})
+    if(int res{pw_stream_connect(mStream.get(), PW_DIRECTION_INPUT, mTargetId, Flags, params, 1)})
         throw al::backend_exception{al::backend_error::DeviceError,
             "Error connecting PipeWire stream (res: %d)", res};
 

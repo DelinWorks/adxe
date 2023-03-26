@@ -62,7 +62,7 @@ namespace ip
 {
 #pragma pack(push, 1)
 // ip packet
-struct ip_hdr_st {
+struct ip_header {
   // header size; 5+
   unsigned char header_length : 4;
 
@@ -106,7 +106,7 @@ struct ip_hdr_st {
   unsigned char protocol; // TCP / UDP / Other
 
   // check header of IP-PACKET 's correctness.
-  unsigned short sum;
+  unsigned short checksum;
 
   typedef union {
     unsigned int value;
@@ -122,7 +122,7 @@ struct ip_hdr_st {
   dotted_decimal_t dst_ip;
 };
 
-struct psd_hdr_st {
+struct psd_header {
   unsigned long src_addr;
   unsigned long dst_addr;
   char mbz;
@@ -130,7 +130,7 @@ struct psd_hdr_st {
   unsigned short tcp_length;
 };
 
-struct tcp_hdr_st {
+struct tcp_header {
   unsigned short src_port; // lgtm [cpp/class-many-fields]
   unsigned short dst_port;
   unsigned int seqno;
@@ -139,32 +139,32 @@ struct tcp_hdr_st {
   unsigned char reserved : 4;
   unsigned char flg_fin : 1, flg_syn : 1, flg_rst : 1, flg_psh : 1, flg_ack : 1, flg_urg : 1, flg_reserved : 2;
   unsigned short win_length;
-  unsigned short sum;
+  unsigned short checksum;
   unsigned short urp;
 };
 
-struct udp_hdr_st {
+struct udp_header {
   unsigned short src_port;
   unsigned short dst_port;
   unsigned short length;
-  unsigned short sum;
+  unsigned short checksum;
 };
 
-struct icmp_hdr_st {
-  unsigned char type;   // 8bit type
-  unsigned char code;   // 8bit code
-  unsigned short sum;   // 16bit check sum
-  unsigned short id;    // identifier: usually use process id
-  unsigned short seqno; // message sequence NO.
+struct icmp_header {
+  unsigned char type;      // 8bit type
+  unsigned char code;      // 8bit code
+  unsigned short checksum; // 16bit check sum
+  unsigned short id;       // identifier: usually use process id
+  unsigned short seqno;    // message sequence NO.
 };
 
-struct eth_hdr_st {
+struct eth_header {
   unsigned dst_eth[6];
   unsigned src_eth[6];
   unsigned eth_type;
 };
 
-struct arp_hdr_st {
+struct arp_header {
   unsigned short arp_hw;    // format of hardware address
   unsigned short arp_pro;   // format of protocol address
   unsigned char arp_hlen;   // length of hardware address
@@ -176,9 +176,9 @@ struct arp_hdr_st {
   unsigned long arp_tpa;    // target protocol address;
 };
 
-struct arp_packet_st {
-  eth_hdr_st ethhdr;
-  arp_hdr_st arphdr;
+struct arp_packet {
+  eth_header ethhdr;
+  arp_header arphdr;
 };
 #pragma pack(pop)
 

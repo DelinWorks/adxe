@@ -104,11 +104,9 @@ static GPUTextureFormatInfo s_textureFormats[] = {
     {MTLPixelFormat(40 /*B5G6R5Unorm*/), MTLPixelFormatInvalid},  // R5G6B5
     {MTLPixelFormat(42 /*ABGR4Unorm*/), MTLPixelFormatInvalid},   // RGBA4
     {MTLPixelFormat(41 /*A1BGR5Unorm*/), MTLPixelFormatInvalid},  // RGB5A1
-    {MTLPixelFormatA8Unorm, MTLPixelFormatInvalid},               // A8 In Shader: (0,0,0,A)
-    {MTLPixelFormatR8Unorm, MTLPixelFormatInvalid},               // L8 In Shader: (R,0,0,0)
-    {MTLPixelFormatInvalid, MTLPixelFormatInvalid},               // LA8 In Shader: (L,L,L,A)
-    {MTLPixelFormatRG8Unorm, MTLPixelFormatInvalid},              // RG8 In Shader: (R,G,0,0)
-    {MTLPixelFormatRGBA32Float, MTLPixelFormatInvalid},           // RGBA32F
+    {MTLPixelFormatA8Unorm, MTLPixelFormatInvalid},               // A8
+    {MTLPixelFormatInvalid, MTLPixelFormatInvalid},               // L8
+    {MTLPixelFormatInvalid, MTLPixelFormatInvalid},               // LA8
 
     /* depth stencil */
     {MTLPixelFormat(255 /*Depth24Unorm_Stencil8*/), MTLPixelFormatInvalid},  // D24S8

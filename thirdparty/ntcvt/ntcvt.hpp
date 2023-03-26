@@ -1,4 +1,3 @@
-// v1.0 works on vs2010 or later
 #ifndef SIMDSOFT__NTCVT_HPP
 #define SIMDSOFT__NTCVT_HPP
 
@@ -10,15 +9,15 @@
 #include <string>
 
 #if !defined(NTCVT_CP_DEFAULT)
-#  define NTCVT_CP_DEFAULT CP_UTF8
+#define NTCVT_CP_DEFAULT CP_UTF8
 #endif
 
 namespace ntcvt
 {
 
-namespace detail
-{
 // different with resize, not all of fill new memory with '\0'
+namespace buffer_traits
+{
 template <class _Elem, class _Traits = std::char_traits<_Elem>,
           class _Alloc = std::allocator<_Elem>>
 class intrusive_string : public std::basic_string<_Elem, _Traits, _Alloc>
@@ -41,80 +40,51 @@ public:
   // std::string: use memset (usually implemented with SIMD)
   // std::wstring: for loop (slow performance)
   // only works on msvc currently
-#if !defined(_MSVC) && (!defined(_HAS_CXX23) || !_HAS_CXX23)
-  template <class _Operation> void resize_and_overwrite(const size_t _New_size, _Operation&& _Op)
+  _Elem* resize_nofill(size_t len)
   {
-    this->reserve(_New_size);
-
-#  if _MSC_VER >= 1920 // VS2019+
+    this->reserve(len);
+#if _MSC_VER >= 1920 // VS2019+
     std::_Compressed_pair<_Alty, _Scary_val>* _Myval =
         (std::_Compressed_pair<_Alty, _Scary_val>*)this;
-    auto& _Myval2                 = _Myval->_Myval2;
-    auto result_size              = _Op(_Myval2._Myptr(), _New_size);
-    _Myval2._Mysize               = result_size;
-    _Myval2._Myptr()[result_size] = '\0';
-#  else
-    auto result_size = _Op(this->_Myptr(), _New_size);
-    this->_Eos(result_size);
-#  endif
-  }
+    _Myval->_Myval2._Mysize = len;
+    auto front              = &this->front();
+    front[len]              = '\0';
+    return front;
+#else
+    this->_Eos(len);
+    return &this->front();
 #endif
-};
-
-template <typename _Cont> struct buffer_traits
-{
-  typedef _Cont container_type;
-
-  template <typename _Operation>
-  static inline void resize_and_overwrite(container_type& str, size_t size, _Operation&& op)
-  {
-    typedef typename container_type::value_type _Elem;
-    intrusive_string<_Elem>& helper = (intrusive_string<_Elem>&)str;
-    helper.resize_and_overwrite(size, std::move(op));
   }
 };
 
+template <typename _Cont> inline
+auto prepare(_Cont& str, size_t size)
+{
+  using _Elem = typename _Cont::value_type;
+  intrusive_string<_Elem>& helper = (intrusive_string<_Elem>&)str;
+  return helper.resize_nofill(size);
+}
 #if defined(_AFX)
-template <> struct buffer_traits<CStringW>
-{
-  using container_type = CStringW;
-  template <typename _Operation>
-  static inline void resize_and_overwrite(container_type& str, size_t size, _Operation&& op)
-  {
-    auto ptr  = str.GetBufferSetLength(static_cast<int>(size));
-    auto nret = op(ptr, size);
-    str.ReleaseBufferSetLength(nret);
-  }
-};
-
-template <> struct buffer_traits<CStringA>
-{
-  using container_type = CStringA;
-  template <typename _Operation>
-  static inline void resize_and_overwrite(container_type& str, size_t size, _Operation&& op)
-  {
-    auto ptr  = str.GetBufferSetLength(static_cast<int>(size));
-    auto nret = op(ptr, size);
-    str.ReleaseBufferSetLength(nret);
-  }
-};
+template <> inline
+auto prepare<CStringW>(CStringW& str, size_t size) {
+    return str.GetBufferSetLength(static_cast<int>(size));
+}
+template <> inline
+auto prepare<CStringA>(CStringA& str, size_t size) {
+    return str.GetBufferSetLength(static_cast<int>(size));
+}
 #endif
-} // namespace detail
+} // namespace buffer_traits
 
 template <typename _StringContType>
 inline _StringContType wcbs2a(const wchar_t* wcb, int len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
-    len = wcslen(wcb);
+    len = lstrlenW(wcb);
   _StringContType buffer;
   int cch;
   if (len > 0 && (cch = ::WideCharToMultiByte(cp, 0, wcb, len, NULL, 0, NULL, NULL)) > 0)
-  {
-    detail::buffer_traits<_StringContType>::resize_and_overwrite(
-        buffer, cch, [cp, wcb, len, cch](char* out, size_t) {
-          return ::WideCharToMultiByte(cp, 0, wcb, len, out, cch, NULL, NULL);
-        });
-  }
+    ::WideCharToMultiByte(cp, 0, wcb, len, buffer_traits::prepare(buffer, cch), cch, NULL, NULL);
   return buffer;
 }
 
@@ -122,16 +92,11 @@ template <typename _StringContType>
 inline _StringContType mcbs2w(const char* mcb, int len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
-    len = strlen(mcb);
+    len = lstrlenA(mcb);
   _StringContType buffer;
   int cch;
   if (len > 0 && (cch = ::MultiByteToWideChar(cp, 0, mcb, len, NULL, 0)) > 0)
-  {
-    detail::buffer_traits<_StringContType>::resize_and_overwrite(
-        buffer, cch, [cp, mcb, len, cch](wchar_t* out, size_t) {
-          return ::MultiByteToWideChar(cp, 0, mcb, len, out, cch);
-        });
-  }
+    ::MultiByteToWideChar(cp, 0, mcb, len, buffer_traits::prepare(buffer, cch), cch);
 
   return buffer;
 }
@@ -139,7 +104,7 @@ inline _StringContType mcbs2w(const char* mcb, int len, UINT cp = NTCVT_CP_DEFAU
 inline int mcbs2w(const char* mcb, int len, wchar_t* wbuf, int wbuf_len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
-    len = strlen(mcb);
+    len = lstrlenA(mcb);
   int cch;
   if (len > 0 && (cch = ::MultiByteToWideChar(cp, 0, mcb, len, NULL, 0)) > 0)
     return ::MultiByteToWideChar(cp, 0, mcb, len, wbuf, wbuf_len);
@@ -150,7 +115,7 @@ inline int mcbs2w(const char* mcb, int len, wchar_t* wbuf, int wbuf_len, UINT cp
 inline wchar_t* mcbs2wdup(const char* mcb, int len, int* wbuf_len, UINT cp = NTCVT_CP_DEFAULT)
 {
   if (len == -1)
-    len = strlen(mcb);
+    len = lstrlenA(mcb);
   int cch;
   if (len > 0 && (cch = ::MultiByteToWideChar(cp, 0, mcb, len, NULL, 0)) > 0)
   {
@@ -165,12 +130,12 @@ inline wchar_t* mcbs2wdup(const char* mcb, int len, int* wbuf_len, UINT cp = NTC
 #if _HAS_CXX17
 inline std::string from_chars(const std::wstring_view& wcb, UINT cp = NTCVT_CP_DEFAULT)
 {
-  return wcbs2a<std::string>(wcb.data(), static_cast<int>(wcb.length()), cp);
+  return wcbs2a<std::string>(wcb.data(), wcb.length(), cp);
 }
 
 inline std::wstring from_chars(const std::string_view& mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
-  return mcbs2w<std::wstring>(mcb.data(), static_cast<int>(mcb.length()), cp);
+  return mcbs2w<std::wstring>(mcb.data(), mcb.length(), cp);
 }
 #else
 inline std::string from_chars(const std::wstring& wcb, UINT cp = NTCVT_CP_DEFAULT)
@@ -205,7 +170,7 @@ namespace afx
 #  if _HAS_CXX17
 inline CStringW from_chars(std::string_view mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
-  return mcbs2w<CStringW>(mcb.data(), static_cast<int>(mcb.length()), cp);
+  return mcbs2w<CStringW>(mcb.data(), mcb.length(), cp);
 }
 #  else
 inline CStringW from_chars(const char* str, UINT cp = NTCVT_CP_DEFAULT)
@@ -214,7 +179,7 @@ inline CStringW from_chars(const char* str, UINT cp = NTCVT_CP_DEFAULT)
 }
 inline CStringW from_chars(const std::string& mcb, UINT cp = NTCVT_CP_DEFAULT)
 {
-  return mcbs2w<CStringW>(mcb.c_str(), static_cast<int>(mcb.length()), cp);
+  return mcbs2w<CStringW>(mcb.c_str(), mcb.length(), cp);
 }
 #  endif
 } // namespace afx

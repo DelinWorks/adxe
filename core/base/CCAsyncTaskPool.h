@@ -134,7 +134,7 @@ protected:
                     }
 
                     task();
-                    Director::getInstance()->getScheduler()->runOnAxmolThread(
+                    Director::getInstance()->getScheduler()->performFunctionInCocosThread(
                         std::bind(callback.callback, callback.callbackParam));
                 }
             });

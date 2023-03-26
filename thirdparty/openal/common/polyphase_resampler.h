@@ -37,8 +37,6 @@ struct PPhaseResampler {
     void init(const uint srcRate, const uint dstRate);
     void process(const uint inN, const double *in, const uint outN, double *out);
 
-    explicit operator bool() const noexcept { return !mF.empty(); }
-
 private:
     uint mP, mQ, mM, mL;
     std::vector<double> mF;

@@ -38,6 +38,7 @@ public:
     TargetBufferFlags getTargetFlags() const { return _flags; }
     void setTargetFlags(TargetBufferFlags flags) { 
         _flags = flags; 
+        _dirty = true;
     }
 
     void setColorAttachment(ColorAttachment attachment)

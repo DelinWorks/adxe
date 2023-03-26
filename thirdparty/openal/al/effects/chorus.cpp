@@ -31,8 +31,8 @@ inline al::optional<ChorusWaveform> WaveformFromEnum(ALenum type)
 {
     switch(type)
     {
-    case AL_CHORUS_WAVEFORM_SINUSOID: return ChorusWaveform::Sinusoid;
-    case AL_CHORUS_WAVEFORM_TRIANGLE: return ChorusWaveform::Triangle;
+    case AL_CHORUS_WAVEFORM_SINUSOID: return al::make_optional(ChorusWaveform::Sinusoid);
+    case AL_CHORUS_WAVEFORM_TRIANGLE: return al::make_optional(ChorusWaveform::Triangle);
     }
     return al::nullopt;
 }
@@ -149,7 +149,7 @@ void Chorus_getParamf(const EffectProps *props, ALenum param, float *val)
 void Chorus_getParamfv(const EffectProps *props, ALenum param, float *vals)
 { Chorus_getParamf(props, param, vals); }
 
-EffectProps genDefaultChorusProps() noexcept
+const EffectProps genDefaultChorusProps() noexcept
 {
     EffectProps props{};
     props.Chorus.Waveform = *WaveformFromEnum(AL_CHORUS_DEFAULT_WAVEFORM);
@@ -433,8 +433,8 @@ public:
     using typename Base::State;
     using Base::defer;
 
-    EaxChorusFlangerEffect(int eax_version)
-        : Base{Traits::efx_effect(), eax_version}
+    EaxChorusFlangerEffect(const EaxCall& call)
+        : Base{Traits::efx_effect(), call}
     {}
 
 private:
@@ -712,23 +712,23 @@ private:
 }; // EaxChorusFlangerEffect
 
 template<typename TTraits>
-EaxEffectUPtr eax_create_eax_chorus_flanger_effect(int eax_version)
+EaxEffectUPtr eax_create_eax_chorus_flanger_effect(const EaxCall& call)
 {
-    return eax_create_eax4_effect<EaxChorusFlangerEffect<TTraits>>(eax_version);
+    return eax_create_eax4_effect<EaxChorusFlangerEffect<TTraits>>(call);
 }
 
 } // namespace
 
 // ==========================================================================
 
-EaxEffectUPtr eax_create_eax_chorus_effect(int eax_version)
+EaxEffectUPtr eax_create_eax_chorus_effect(const EaxCall& call)
 {
-    return eax_create_eax_chorus_flanger_effect<EaxChorusTraits>(eax_version);
+    return eax_create_eax_chorus_flanger_effect<EaxChorusTraits>(call);
 }
 
-EaxEffectUPtr eax_create_eax_flanger_effect(int eax_version)
+EaxEffectUPtr eax_create_eax_flanger_effect(const EaxCall& call)
 {
-    return eax_create_eax_chorus_flanger_effect<EaxFlangerTraits>(eax_version);
+    return eax_create_eax_chorus_flanger_effect<EaxFlangerTraits>(call);
 }
 
 #endif // ALSOFT_EAX

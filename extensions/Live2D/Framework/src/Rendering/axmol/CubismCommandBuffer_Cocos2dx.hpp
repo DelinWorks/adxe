@@ -160,6 +160,7 @@ private:
 
     backend::TextureBackend* _currentColorBuffer;
     OperationStateData _operationStateArray[OperationType_TypeMax];
+    ax::GroupCommand _groupCommand;
 };
 
 }}}}

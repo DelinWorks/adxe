@@ -4,20 +4,21 @@
 ares_set_socket_functions \- Set socket io callbacks
 .SH SYNOPSIS
 .nf
-#include <ares.h>
+.B #include <ares.h>
+.PP
+.B struct ares_socket_functions {
+	ares_socket_t(*\fIasocket\fP)(int, int, int, void *);
+	int(*\fIaclose\fP)(ares_socket_t, void *);
+	int(*\fIaconnect\fP)(ares_socket_t, const struct sockaddr *, ares_socklen_t, void *);
+	ares_ssize_t(*\fIarecvfrom\fP)(ares_socket_t, void *, size_t, int, struct sockaddr *, ares_socklen_t *, void *);
+	ares_ssize_t(*\fIasendv\fP)(ares_socket_t, const struct iovec *, int, void *);
+   };
 
-struct ares_socket_functions {
-    ares_socket_t (*\fIasocket\fP)(int, int, int, void *);
-    int (*\fIaclose\fP)(ares_socket_t, void *);
-    int (*\fIaconnect\fP)(ares_socket_t, const struct sockaddr *, ares_socklen_t, void *);
-    ares_ssize_t (*\fIarecvfrom\fP)(ares_socket_t, void *, size_t, int,
-                              struct sockaddr *, ares_socklen_t *, void *);
-    ares_ssize_t (*\fIasendv\fP)(ares_socket_t, const struct iovec *, int, void *);
-};
+.PP
+.B void ares_set_socket_functions(ares_channel \fIchannel\fP,
+				  const struct ares_socket_functions * \fIfunctions\fP,
+				  void *\fIuser_data\fP);
 
-void ares_set_socket_functions(ares_channel \fIchannel\fP,
-                               const struct ares_socket_functions * \fIfunctions\fP,
-                               void *\fIuser_data\fP);
 .fi
 .SH DESCRIPTION
 .PP

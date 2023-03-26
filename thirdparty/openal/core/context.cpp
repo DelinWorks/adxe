@@ -1,7 +1,6 @@
 
 #include "config.h"
 
-#include <cassert>
 #include <memory>
 
 #include "async_event.h"
@@ -14,12 +13,8 @@
 #include "voice_change.h"
 
 
-#ifdef __cpp_lib_atomic_is_always_lock_free
-static_assert(std::atomic<ContextBase::AsyncEventBitset>::is_always_lock_free, "atomic<bitset> isn't lock-free");
-#endif
-
 ContextBase::ContextBase(DeviceBase *device) : mDevice{device}
-{ assert(mEnabledEvts.is_lock_free()); }
+{ }
 
 ContextBase::~ContextBase()
 {
@@ -140,25 +135,4 @@ void ContextBase::allocVoices(size_t addcount)
         mDevice->waitForMix();
         delete oldvoices;
     }
-}
-
-
-EffectSlot *ContextBase::getEffectSlot()
-{
-    for(auto& cluster : mEffectSlotClusters)
-    {
-        for(size_t i{0};i < EffectSlotClusterSize;++i)
-        {
-            if(!cluster[i].InUse)
-                return &cluster[i];
-        }
-    }
-
-    if(1 >= std::numeric_limits<int>::max()/EffectSlotClusterSize - mEffectSlotClusters.size())
-        throw std::runtime_error{"Allocating too many effect slots"};
-    const size_t totalcount{(mEffectSlotClusters.size()+1) * EffectSlotClusterSize};
-    TRACE("Increasing allocated effect slots to %zu\n", totalcount);
-
-    mEffectSlotClusters.emplace_back(std::make_unique<EffectSlot[]>(EffectSlotClusterSize));
-    return getEffectSlot();
 }

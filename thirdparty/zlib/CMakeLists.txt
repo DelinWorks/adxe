@@ -4,7 +4,7 @@ set(target_name dep_${lib_name})
 
 project(${lib_name})
 
-include(AXPlatform)
+include(../cmake/AXConfigThirdparty.cmake)
 
 if(WINDOWS)
   add_library(${target_name} SHARED IMPORTED GLOBAL)

@@ -10,22 +10,27 @@
 
 
 struct FrontStablizer {
-    FrontStablizer(size_t numchans) : ChannelFilters{numchans} { }
+    static constexpr size_t DelayLength{256u};
 
-    alignas(16) std::array<float,BufferLineSize> MidDirect{};
-    alignas(16) std::array<float,BufferLineSize> Side{};
-    alignas(16) std::array<float,BufferLineSize> Temp{};
+    FrontStablizer(size_t numchans) : DelayBuf{numchans} { }
+
+    alignas(16) std::array<float,BufferLineSize + DelayLength> Side{};
+    alignas(16) std::array<float,BufferLineSize + DelayLength> MidDirect{};
+    alignas(16) std::array<float,DelayLength> MidDelay{};
+
+    alignas(16) std::array<float,BufferLineSize + DelayLength> TempBuf{};
 
     BandSplitter MidFilter;
     alignas(16) FloatBufferLine MidLF{};
     alignas(16) FloatBufferLine MidHF{};
 
-    al::FlexArray<BandSplitter,16> ChannelFilters;
+    using DelayLine = std::array<float,DelayLength>;
+    al::FlexArray<DelayLine,16> DelayBuf;
 
     static std::unique_ptr<FrontStablizer> Create(size_t numchans)
     { return std::unique_ptr<FrontStablizer>{new(FamCount(numchans)) FrontStablizer{numchans}}; }
 
-    DEF_FAM_NEWDEL(FrontStablizer, ChannelFilters)
+    DEF_FAM_NEWDEL(FrontStablizer, DelayBuf)
 };
 
 #endif /* CORE_FRONT_STABLIZER_H */

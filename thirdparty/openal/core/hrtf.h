@@ -20,8 +20,8 @@
 struct HrtfStore {
     RefCount mRef;
 
-    uint mSampleRate : 24;
-    uint mIrSize : 8;
+    uint sampleRate;
+    uint irSize;
 
     struct Field {
         float distance;
@@ -30,21 +30,19 @@ struct HrtfStore {
     /* NOTE: Fields are stored *backwards*. field[0] is the farthest field, and
      * field[fdCount-1] is the nearest.
      */
-    al::span<const Field> mFields;
+    uint fdCount;
+    const Field *field;
 
     struct Elevation {
         ushort azCount;
         ushort irOffset;
     };
-    Elevation *mElev;
-    const HrirArray *mCoeffs;
-    const ubyte2 *mDelays;
-
-    void getCoeffs(float elevation, float azimuth, float distance, float spread, HrirArray &coeffs,
-        const al::span<uint,2> delays);
+    Elevation *elev;
+    const HrirArray *coeffs;
+    const ubyte2 *delays;
 
     void add_ref();
-    void dec_ref();
+    void release();
 
     DEF_PLACE_NEWDEL()
 };
@@ -73,7 +71,7 @@ struct DirectHrtfState {
      * high-frequency gains for the decoder. The calculated impulse responses
      * are ordered and scaled according to the matrix input.
      */
-    void build(const HrtfStore *Hrtf, const uint irSize, const bool perHrirMin,
+    void build(const HrtfStore *Hrtf, const uint irSize,
         const al::span<const AngularPoint> AmbiPoints, const float (*AmbiMatrix)[MaxAmbiChannels],
         const float XOverFreq, const al::span<const float,MaxAmbiOrder+1> AmbiOrderHFGain);
 
@@ -85,5 +83,8 @@ struct DirectHrtfState {
 
 al::vector<std::string> EnumerateHrtf(al::optional<std::string> pathopt);
 HrtfStorePtr GetLoadedHrtf(const std::string &name, const uint devrate);
+
+void GetHrtfCoeffs(const HrtfStore *Hrtf, float elevation, float azimuth, float distance,
+    float spread, HrirArray &coeffs, const al::span<uint,2> delays);
 
 #endif /* CORE_HRTF_H */

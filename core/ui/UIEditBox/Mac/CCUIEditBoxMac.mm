@@ -132,7 +132,7 @@
 - (NSWindow*)window
 {
     auto glView = ax::Director::getInstance()->getOpenGLView();
-    return (NSWindow*)glView->getCocoaWindow();
+    return glView->getCocoaWindow();
 }
 
 - (void)openKeyboard

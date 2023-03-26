@@ -151,18 +151,13 @@ void ScrollViewBar::setWidth(float width)
 
 void ScrollViewBar::setAutoHideEnabled(bool autoHideEnabled)
 {
-    if (_autoHideEnabled == autoHideEnabled)
-        return;
-    
     _autoHideEnabled = autoHideEnabled;
-    if (!_autoHideEnabled)
+    if (!_autoHideEnabled && !_touching && _autoHideRemainingTime <= 0)
     {
-        ProtectedNode::setOpacity(255);
+        ProtectedNode::setOpacity(_opacity);
     }
-    else if (!_touching && _autoHideRemainingTime <= 0)
-    {
+    else
         ProtectedNode::setOpacity(0);
-    }
 }
 
 float ScrollViewBar::getWidth() const

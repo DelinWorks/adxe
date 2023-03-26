@@ -31,9 +31,12 @@ public:
 
     /**
      * The all-pass portion of the band splitter. Applies the same phase shift
-     * without splitting or scaling the signal.
+     * without splitting the signal, in reverse. It starts from the back of the
+     * span and works toward the front, creating a phase shift of -n degrees
+     * instead of +n. Note that each use of this method is indepedent, it does
+     * not track history between calls.
      */
-    void processAllPass(const al::span<Real> samples);
+    void applyAllpassRev(const al::span<Real> samples) const;
 };
 using BandSplitter = BandSplitterR<float>;
 

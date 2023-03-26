@@ -108,6 +108,7 @@ CubismCommandBuffer_Cocos2dx::DrawCommandBuffer::DrawCommand* CubismCommandBuffe
 CubismCommandBuffer_Cocos2dx::CubismCommandBuffer_Cocos2dx()
     :_currentColorBuffer(NULL)
 {
+    _groupCommand.init(0.0);
 }
 
 CubismCommandBuffer_Cocos2dx::~CubismCommandBuffer_Cocos2dx()
@@ -116,10 +117,8 @@ CubismCommandBuffer_Cocos2dx::~CubismCommandBuffer_Cocos2dx()
 
 void CubismCommandBuffer_Cocos2dx::PushCommandGroup()
 {
-    auto groupCommand = GetCocos2dRenderer()->getNextGroupCommand();
-    groupCommand->init(0.0);
-    GetCocos2dRenderer()->addCommand(groupCommand);
-    GetCocos2dRenderer()->pushGroup(groupCommand->getRenderQueueID());
+    GetCocos2dRenderer()->addCommand(&_groupCommand);
+    GetCocos2dRenderer()->pushGroup(_groupCommand.getRenderQueueID());
 }
 
 void CubismCommandBuffer_Cocos2dx::PopCommandGroup()

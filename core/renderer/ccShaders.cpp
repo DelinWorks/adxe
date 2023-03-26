@@ -76,6 +76,4 @@ NS_AX_BEGIN
 #include "renderer/shaders/quad.vert"
 #include "renderer/shaders/quad.frag"
 
-#include "renderer/shaders/videoTexture.frag"
-
 NS_AX_END

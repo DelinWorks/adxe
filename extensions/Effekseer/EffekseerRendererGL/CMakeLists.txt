@@ -39,20 +39,12 @@ add_library(${PROJECT_NAME} STATIC ${LOCAL_SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE ${PROJECT_SOURCE_DIR}/../Effekseer ${EFK_THIRDPARTY_INCLUDES})
 set_target_properties(${PROJECT_NAME} PROPERTIES PUBLIC_HEADER "${PublicHeader}")
 target_link_libraries(${PROJECT_NAME} Effekseer)
+target_include_directories(${PROJECT_NAME} 
+    PUBLIC "${_AX_ROOT_PATH}/thirdparty/glad/include"
+    PUBLIC "${_AX_ROOT_PATH}/core"
+    )
 
-if (NOT (${CMAKE_SYSTEM_NAME} MATCHES "WindowsStore"))
-    target_include_directories(${PROJECT_NAME} 
-        PUBLIC "${_AX_ROOT_PATH}/thirdparty/glad/include"
-        PUBLIC "${_AX_ROOT_PATH}/core"
-        )
-
-    target_link_libraries(${PROJECT_NAME} glad)
-else()
-    target_include_directories(${PROJECT_NAME} 
-        PUBLIC "${_AX_ROOT_PATH}/thirdparty/angle/include"
-        PUBLIC "${_AX_ROOT_PATH}/core"
-        )
-endif()
+target_link_libraries(${PROJECT_NAME} glad)
 
 if(CLANG_FORMAT_ENABLED)
     clang_format(${PROJECT_NAME})

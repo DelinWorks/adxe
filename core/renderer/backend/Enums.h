@@ -128,18 +128,14 @@ enum class PixelFormat : uint32_t
     RGBA4,  // !render as ABGR4
     //! 16-bit textures: RGB5A1
     RGB5A1,  // !render as BGR5A1
-    //! 8-bit textures used as masks, in shader: texColor.a or texColor.w
+    //! 8-bit textures used as masks
     A8,
-    //! 8-bit Luminance texture, in shader: texColor.r or texColor.x
+    //! 8-bit Luminance texture
     L8,
-    //! 16-bit Luminance with alpha used as masks, in shader: texColor.xw or texColor.ra, supported GLES 2.0, not supported by Metal backend
+    //! 16-bit Luminance with alpha used as masks
     LA8,
-    //! 16-bit read and green channel, supported OpenGES 3.0 or Metal backend
-    RG8,
 
     //!!!Please append normal pixel format
-    //! 32-bit texture: RGBA8888
-    RGBA32F,
 
     /* below is depth compression format */
     // A packed 32-bit combined depth and stencil pixel format with two nomorlized unsigned integer
@@ -371,13 +367,8 @@ struct ProgramType
         HSV_DUAL_SAMPLER,
         HSV_ETC1 = HSV_DUAL_SAMPLER,
 
-        VIDEO_TEXTURE_YUY2,
-        VIDEO_TEXTURE_NV12,
-        VIDEO_TEXTURE_BGR32,
-        
         BUILTIN_COUNT,
 
-        VIDEO_TEXTURE_RGB32 = POSITION_TEXTURE_COLOR,
         CUSTOM_PROGRAM = 0x1000,  // user-define program, used by engine
     };
 };

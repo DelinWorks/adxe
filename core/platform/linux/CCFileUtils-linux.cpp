@@ -40,17 +40,6 @@ using namespace std;
 
 NS_AX_BEGIN
 
-static std::string _checkPath(const char* path) {
-    std::string ret;
-    ret.resize(PATH_MAX - 1);
-    int n = readlink(path, &ret.front(), PATH_MAX);
-    if (n > 0) {
-        ret.resize(n);
-        return ret;
-    }
-    return std::string{};
-}
-
 FileUtils* FileUtils::getInstance()
 {
     if (s_sharedFileUtils == nullptr)
@@ -71,24 +60,19 @@ FileUtilsLinux::FileUtilsLinux() {}
 bool FileUtilsLinux::init()
 {
     DECLARE_GUARD;
+    // get application path
+    char fullpath[256] = {0};
+    ssize_t length     = readlink("/proc/self/exe", fullpath, sizeof(fullpath) - 1);
 
-    // application path
-    std::string exePath = _checkPath("/proc/self/exe");
-    std::string_view exePathSV{exePath};
-    auto slash = exePath.find_last_of('/');
-    assert(slash != std::string::npos);
-    auto exeDir = exePathSV.substr(0, slash + 1);
-
-    std::string workingDir = _checkPath("/proc/self/cwd");
-    workingDir += '/';
-    bool startedFromSelfLocation = workingDir == exeDir;
-    if (!startedFromSelfLocation || !isDirectoryExistInternal(AX_CONTENT_DIR))
-        _defaultResRootPath = workingDir;
-    else
+    if (length <= 0)
     {
-        _defaultResRootPath.reserve(exeDir.size() + AX_CONTENT_DIR_LEN);
-        _defaultResRootPath.append(exeDir).append(AX_CONTENT_DIR, AX_CONTENT_DIR_LEN);
+        return false;
     }
+
+    fullpath[length]    = '\0';
+    std::string appPath = fullpath;
+    _defaultResRootPath = appPath.substr(0, appPath.find_last_of('/') + 1);
+    _defaultResRootPath += AX_PC_RESOURCES_DIR;
 
     // Set writable path to $XDG_CONFIG_HOME or ~/.config/<app name>/ if $XDG_CONFIG_HOME not exists.
     const char* xdg_config_path = getenv("XDG_CONFIG_HOME");
@@ -103,16 +87,10 @@ bool FileUtilsLinux::init()
         xdgConfigPath = xdg_config_path;
     }
     _writablePath = xdgConfigPath;
-    _writablePath += exePathSV.substr(slash);
+    _writablePath += appPath.substr(appPath.find_last_of('/'));
     _writablePath += "/";
 
-    bool ret = FileUtils::init();
-
-    // make sure any path relative to exe dir can be found when app working directory location not exe path
-    if (!startedFromSelfLocation)
-        addSearchPath(exeDir);
-
-    return ret;
+    return FileUtils::init();
 }
 
 string FileUtilsLinux::getWritablePath() const

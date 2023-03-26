@@ -57,20 +57,15 @@ public:
 #else
     [[gnu::format(printf, 3, 4)]]
 #endif
-    filter_exception(ALenum code, const char *msg, ...);
-    ~filter_exception() override;
-
+    filter_exception(ALenum code, const char *msg, ...) : mErrorCode{code}
+    {
+        std::va_list args;
+        va_start(args, msg);
+        setMessage(msg, args);
+        va_end(args);
+    }
     ALenum errorCode() const noexcept { return mErrorCode; }
 };
-
-filter_exception::filter_exception(ALenum code, const char* msg, ...) : mErrorCode{code}
-{
-    std::va_list args;
-    va_start(args, msg);
-    setMessage(msg, args);
-    va_end(args);
-}
-filter_exception::~filter_exception() = default;
 
 
 #define DEFINE_ALFILTER_VTABLE(T)                                  \
@@ -336,14 +331,14 @@ bool EnsureFilters(ALCdevice *device, size_t needed)
 
     while(needed > count)
     {
-        if(device->FilterList.size() >= 1<<25) [[unlikely]]
+        if UNLIKELY(device->FilterList.size() >= 1<<25)
             return false;
 
         device->FilterList.emplace_back();
         auto sublist = device->FilterList.end() - 1;
         sublist->FreeMask = ~0_u64;
         sublist->Filters = static_cast<ALfilter*>(al_calloc(alignof(ALfilter), sizeof(ALfilter)*64));
-        if(!sublist->Filters) [[unlikely]]
+        if UNLIKELY(!sublist->Filters)
         {
             device->FilterList.pop_back();
             return false;
@@ -391,10 +386,10 @@ inline ALfilter *LookupFilter(ALCdevice *device, ALuint id)
     const size_t lidx{(id-1) >> 6};
     const ALuint slidx{(id-1) & 0x3f};
 
-    if(lidx >= device->FilterList.size()) [[unlikely]]
+    if UNLIKELY(lidx >= device->FilterList.size())
         return nullptr;
     FilterSubList &sublist = device->FilterList[lidx];
-    if(sublist.FreeMask & (1_u64 << slidx)) [[unlikely]]
+    if UNLIKELY(sublist.FreeMask & (1_u64 << slidx))
         return nullptr;
     return sublist.Filters + slidx;
 }
@@ -405,11 +400,11 @@ AL_API void AL_APIENTRY alGenFilters(ALsizei n, ALuint *filters)
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
-    if(n < 0) [[unlikely]]
+    if UNLIKELY(n < 0)
         context->setError(AL_INVALID_VALUE, "Generating %d filters", n);
-    if(n <= 0) [[unlikely]] return;
+    if UNLIKELY(n <= 0) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
@@ -419,7 +414,7 @@ START_API_FUNC
         return;
     }
 
-    if(n == 1) [[likely]]
+    if LIKELY(n == 1)
     {
         /* Special handling for the easy and normal case. */
         ALfilter *filter{AllocFilter(device)};
@@ -445,11 +440,11 @@ AL_API void AL_APIENTRY alDeleteFilters(ALsizei n, const ALuint *filters)
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
-    if(n < 0) [[unlikely]]
+    if UNLIKELY(n < 0)
         context->setError(AL_INVALID_VALUE, "Deleting %d filters", n);
-    if(n <= 0) [[unlikely]] return;
+    if UNLIKELY(n <= 0) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
@@ -460,7 +455,7 @@ START_API_FUNC
 
     const ALuint *filters_end = filters + n;
     auto invflt = std::find_if_not(filters, filters_end, validate_filter);
-    if(invflt != filters_end) [[unlikely]]
+    if UNLIKELY(invflt != filters_end)
     {
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", *invflt);
         return;
@@ -480,7 +475,7 @@ AL_API ALboolean AL_APIENTRY alIsFilter(ALuint filter)
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(context) [[likely]]
+    if LIKELY(context)
     {
         ALCdevice *device{context->mALDevice.get()};
         std::lock_guard<std::mutex> _{device->FilterLock};
@@ -496,13 +491,13 @@ AL_API void AL_APIENTRY alFilteri(ALuint filter, ALenum param, ALint value)
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else
     {
@@ -537,13 +532,13 @@ START_API_FUNC
     }
 
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else try
     {
@@ -560,13 +555,13 @@ AL_API void AL_APIENTRY alFilterf(ALuint filter, ALenum param, ALfloat value)
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else try
     {
@@ -583,13 +578,13 @@ AL_API void AL_APIENTRY alFilterfv(ALuint filter, ALenum param, const ALfloat *v
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else try
     {
@@ -606,13 +601,13 @@ AL_API void AL_APIENTRY alGetFilteri(ALuint filter, ALenum param, ALint *value)
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     const ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else
     {
@@ -641,13 +636,13 @@ START_API_FUNC
     }
 
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     const ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else try
     {
@@ -664,13 +659,13 @@ AL_API void AL_APIENTRY alGetFilterf(ALuint filter, ALenum param, ALfloat *value
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     const ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else try
     {
@@ -687,13 +682,13 @@ AL_API void AL_APIENTRY alGetFilterfv(ALuint filter, ALenum param, ALfloat *valu
 START_API_FUNC
 {
     ContextRef context{GetContextRef()};
-    if(!context) [[unlikely]] return;
+    if UNLIKELY(!context) return;
 
     ALCdevice *device{context->mALDevice.get()};
     std::lock_guard<std::mutex> _{device->FilterLock};
 
     const ALfilter *alfilt{LookupFilter(device, filter)};
-    if(!alfilt) [[unlikely]]
+    if UNLIKELY(!alfilt)
         context->setError(AL_INVALID_NAME, "Invalid filter ID %u", filter);
     else try
     {

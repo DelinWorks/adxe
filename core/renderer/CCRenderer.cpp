@@ -864,7 +864,7 @@ void Renderer::clear(ClearFlag flags, const Color4F& color, float depth, unsigne
 
     CallbackCommand* command = nextCallbackCommand();
     command->init(globalOrder);
-    command->func = [this, flags, color, depth, stencil]() -> void {
+    command->func = [=, this]() -> void {
 
         backend::RenderPassDescriptor descriptor;
 
@@ -995,10 +995,8 @@ void Renderer::TriangleCommandBufferManager::createBuffer()
 {
     auto device = backend::Device::getInstance();
 
-    // Not initializing the buffer before passing it to updateData for Android/OpenGL ES.
-    // This change does fix the Android/OpenGL ES performance problem
-    // If for some reason we get reports of performance issues on OpenGL implementations,
-    // then we can just add pre-processor checks for OpenGL and have the updateData() allocate the full size after buffer creation.
+#ifdef AX_USE_METAL
+    // Metal doesn't need to update buffer to make sure it has the correct size.
     auto vertexBuffer = device->newBuffer(Renderer::VBO_SIZE * sizeof(_verts[0]), backend::BufferType::VERTEX,
                                           backend::BufferUsage::DYNAMIC);
     if (!vertexBuffer)
@@ -1011,6 +1009,32 @@ void Renderer::TriangleCommandBufferManager::createBuffer()
         vertexBuffer->release();
         return;
     }
+#else
+    auto tmpData = malloc(Renderer::VBO_SIZE * sizeof(V3F_C4B_T2F));
+    if (!tmpData)
+        return;
+
+    auto vertexBuffer = device->newBuffer(Renderer::VBO_SIZE * sizeof(V3F_C4B_T2F), backend::BufferType::VERTEX,
+                                          backend::BufferUsage::DYNAMIC);
+    if (!vertexBuffer)
+    {
+        free(tmpData);
+        return;
+    }
+    vertexBuffer->updateData(tmpData, Renderer::VBO_SIZE * sizeof(V3F_C4B_T2F));
+
+    auto indexBuffer = device->newBuffer(Renderer::INDEX_VBO_SIZE * sizeof(unsigned short), backend::BufferType::INDEX,
+                                         backend::BufferUsage::DYNAMIC);
+    if (!indexBuffer)
+    {
+        free(tmpData);
+        vertexBuffer->release();
+        return;
+    }
+    indexBuffer->updateData(tmpData, Renderer::INDEX_VBO_SIZE * sizeof(unsigned short));
+
+    free(tmpData);
+#endif
 
     _vertexBufferPool.emplace_back(vertexBuffer);
     _indexBufferPool.emplace_back(indexBuffer);

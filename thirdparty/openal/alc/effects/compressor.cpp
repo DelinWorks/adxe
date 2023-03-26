@@ -64,10 +64,7 @@ namespace {
 
 struct CompressorState final : public EffectState {
     /* Effect gains for each channel */
-    struct {
-        uint mTarget{InvalidChannelIndex};
-        float mGain{1.0f};
-    } mChans[MaxAmbiChannels];
+    float mGain[MaxAmbiChannels][MAX_OUTPUT_CHANNELS]{};
 
     /* Effect parameters */
     bool mEnabled{true};
@@ -106,12 +103,9 @@ void CompressorState::update(const ContextBase*, const EffectSlot *slot,
     mEnabled = props->Compressor.OnOff;
 
     mOutTarget = target.Main->Buffer;
-    auto set_channel = [this](size_t idx, uint outchan, float outgain)
-    {
-        mChans[idx].mTarget = outchan;
-        mChans[idx].mGain = outgain;
-    };
-    target.Main->setAmbiMixParams(slot->Wet, slot->Gain, set_channel);
+    auto set_gains = [slot,target](auto &gains, al::span<const float,MaxAmbiChannels> coeffs)
+    { ComputePanGains(target.Main, coeffs.data(), slot->Gain, gains); };
+    SetAmbiPanIdentity(std::begin(mGain), slot->Wet.Buffer.size(), set_gains);
 }
 
 void CompressorState::process(const size_t samplesToDo,
@@ -164,22 +158,19 @@ void CompressorState::process(const size_t samplesToDo,
         mEnvFollower = env;
 
         /* Now compress the signal amplitude to output. */
-        auto chan = std::cbegin(mChans);
+        auto changains = std::addressof(mGain[0]);
         for(const auto &input : samplesIn)
         {
-            const size_t outidx{chan->mTarget};
-            if(outidx != InvalidChannelIndex)
+            const float *outgains{*(changains++)};
+            for(FloatBufferLine &output : samplesOut)
             {
-                const float *RESTRICT src{input.data() + base};
-                float *RESTRICT dst{samplesOut[outidx].data() + base};
-                const float gain{chan->mGain};
+                const float gain{*(outgains++)};
                 if(!(std::fabs(gain) > GainSilenceThreshold))
-                {
-                    for(size_t i{0u};i < td;i++)
-                        dst[i] += src[i] * gains[i] * gain;
-                }
+                    continue;
+
+                for(size_t i{0u};i < td;i++)
+                    output[base+i] += input[base+i] * gains[i] * gain;
             }
-            ++chan;
         }
 
         base += td;

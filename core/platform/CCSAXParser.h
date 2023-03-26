@@ -66,14 +66,6 @@ class AX_DLL SAXParser
     SAXDelegator* _delegator;
 
 public:
-
-    enum class ParseOption
-    {
-        NORMAL, // parse_normal
-        HTML, // parse_normal|parse_html_entity_translation|parse_normalize_whitespace
-        TRIM_WHITESPACE, // parse_normal|parse_trim_whitespace
-    };
-
     /**
      * @js NA
      * @lua NA
@@ -93,17 +85,17 @@ public:
      * @js NA
      * @lua NA
      */
-    bool parse(const char* xmlData, size_t dataLength, ParseOption opt = ParseOption::NORMAL);
+    bool parse(const char* xmlData, size_t dataLength);
     /**
      * @js NA
      * @lua NA
      */
-    bool parse(std::string_view filename, ParseOption opt = ParseOption::NORMAL);
+    bool parse(std::string_view filename);
 
     /**
      * New API for performance.
      */
-    bool parseIntrusive(char* xmlData, size_t dataLength, ParseOption opt = ParseOption::NORMAL);
+    bool parseIntrusive(char* xmlData, size_t dataLength);
 
     /**
      * @js NA

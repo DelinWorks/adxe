@@ -91,12 +91,13 @@ void init_keys(const char *passwd, uint32_t *pkeys, const z_crc_t *pcrc_32_tab)
 #ifndef NOCRYPT
 int cryptrand(unsigned char *buf, unsigned int len)
 {
-#  if defined(_WIN32)
-    int rlen = 0;
-    unsigned __int64 pentium_tsc[1];
-#  if WINAPI_FAMILY != WINAPI_FAMILY_APP
+#ifdef _WIN32
     HCRYPTPROV provider;
+    unsigned __int64 pentium_tsc[1];
+    int rlen = 0;
     int result = 0;
+
+
     if (CryptAcquireContext(&provider, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT | CRYPT_SILENT))
     {
         result = CryptGenRandom(provider, len, buf);
@@ -104,7 +105,6 @@ int cryptrand(unsigned char *buf, unsigned int len)
         if (result)
             return len;
     }
-#endif
 
     for (rlen = 0; rlen < (int)len; ++rlen)
     {

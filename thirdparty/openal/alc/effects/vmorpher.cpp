@@ -143,14 +143,12 @@ struct FormantFilter
 
 struct VmorpherState final : public EffectState {
     struct {
-        uint mTargetChannel{InvalidChannelIndex};
-
         /* Effect parameters */
-        FormantFilter mFormants[NUM_FILTERS][NUM_FORMANTS];
+        FormantFilter Formants[NUM_FILTERS][NUM_FORMANTS];
 
         /* Effect gains for each channel */
-        float mCurrentGain{};
-        float mTargetGain{};
+        float CurrentGains[MAX_OUTPUT_CHANNELS]{};
+        float TargetGains[MAX_OUTPUT_CHANNELS]{};
     } mChans[MaxAmbiChannels];
 
     void (*mGetSamples)(float*RESTRICT, uint, const uint, size_t){};
@@ -231,12 +229,11 @@ void VmorpherState::deviceUpdate(const DeviceBase*, const Buffer&)
 {
     for(auto &e : mChans)
     {
-        e.mTargetChannel = InvalidChannelIndex;
-        std::for_each(std::begin(e.mFormants[VOWEL_A_INDEX]), std::end(e.mFormants[VOWEL_A_INDEX]),
+        std::for_each(std::begin(e.Formants[VOWEL_A_INDEX]), std::end(e.Formants[VOWEL_A_INDEX]),
             std::mem_fn(&FormantFilter::clear));
-        std::for_each(std::begin(e.mFormants[VOWEL_B_INDEX]), std::end(e.mFormants[VOWEL_B_INDEX]),
+        std::for_each(std::begin(e.Formants[VOWEL_B_INDEX]), std::end(e.Formants[VOWEL_B_INDEX]),
             std::mem_fn(&FormantFilter::clear));
-        e.mCurrentGain = 0.0f;
+        std::fill(std::begin(e.CurrentGains), std::end(e.CurrentGains), 0.0f);
     }
 }
 
@@ -268,17 +265,14 @@ void VmorpherState::update(const ContextBase *context, const EffectSlot *slot,
     /* Copy the filter coefficients to the input channels. */
     for(size_t i{0u};i < slot->Wet.Buffer.size();++i)
     {
-        std::copy(vowelA.begin(), vowelA.end(), std::begin(mChans[i].mFormants[VOWEL_A_INDEX]));
-        std::copy(vowelB.begin(), vowelB.end(), std::begin(mChans[i].mFormants[VOWEL_B_INDEX]));
+        std::copy(vowelA.begin(), vowelA.end(), std::begin(mChans[i].Formants[VOWEL_A_INDEX]));
+        std::copy(vowelB.begin(), vowelB.end(), std::begin(mChans[i].Formants[VOWEL_B_INDEX]));
     }
 
     mOutTarget = target.Main->Buffer;
-    auto set_channel = [this](size_t idx, uint outchan, float outgain)
-    {
-        mChans[idx].mTargetChannel = outchan;
-        mChans[idx].mTargetGain = outgain;
-    };
-    target.Main->setAmbiMixParams(slot->Wet, slot->Gain, set_channel);
+    auto set_gains = [slot,target](auto &chan, al::span<const float,MaxAmbiChannels> coeffs)
+    { ComputePanGains(target.Main, coeffs.data(), slot->Gain, chan.TargetGains); };
+    SetAmbiPanIdentity(std::begin(mChans), slot->Wet.Buffer.size(), set_gains);
 }
 
 void VmorpherState::process(const size_t samplesToDo, const al::span<const FloatBufferLine> samplesIn, const al::span<FloatBufferLine> samplesOut)
@@ -297,15 +291,8 @@ void VmorpherState::process(const size_t samplesToDo, const al::span<const Float
         auto chandata = std::begin(mChans);
         for(const auto &input : samplesIn)
         {
-            const size_t outidx{chandata->mTargetChannel};
-            if(outidx == InvalidChannelIndex)
-            {
-                ++chandata;
-                continue;
-            }
-
-            auto& vowelA = chandata->mFormants[VOWEL_A_INDEX];
-            auto& vowelB = chandata->mFormants[VOWEL_B_INDEX];
+            auto& vowelA = chandata->Formants[VOWEL_A_INDEX];
+            auto& vowelB = chandata->Formants[VOWEL_B_INDEX];
 
             /* Process first vowel. */
             std::fill_n(std::begin(mSampleBufferA), td, 0.0f);
@@ -326,8 +313,8 @@ void VmorpherState::process(const size_t samplesToDo, const al::span<const Float
                 blended[i] = lerpf(mSampleBufferA[i], mSampleBufferB[i], mLfo[i]);
 
             /* Now, mix the processed sound data to the output. */
-            MixSamples({blended, td}, samplesOut[outidx].data()+base, chandata->mCurrentGain,
-                chandata->mTargetGain, samplesToDo-base);
+            MixSamples({blended, td}, samplesOut, chandata->CurrentGains, chandata->TargetGains,
+                samplesToDo-base, base);
             ++chandata;
         }
 

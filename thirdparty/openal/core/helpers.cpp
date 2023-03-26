@@ -41,7 +41,6 @@ const PathNamePair &GetProcBinary()
     static al::optional<PathNamePair> procbin;
     if(procbin) return *procbin;
 
-#if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
     auto fullpath = al::vector<WCHAR>(256);
     DWORD len{GetModuleFileNameW(nullptr, fullpath.data(), static_cast<DWORD>(fullpath.size()))};
     while(len == fullpath.size())
@@ -52,7 +51,7 @@ const PathNamePair &GetProcBinary()
     if(len == 0)
     {
         ERR("Failed to get process name: error %lu\n", GetLastError());
-        procbin.emplace();
+        procbin = al::make_optional<PathNamePair>();
         return *procbin;
     }
 
@@ -60,18 +59,18 @@ const PathNamePair &GetProcBinary()
     if(fullpath.back() != 0)
         fullpath.push_back(0);
 
-    std::replace(fullpath.begin(), fullpath.end(), '/', '\\');
     auto sep = std::find(fullpath.rbegin()+1, fullpath.rend(), '\\');
+    sep = std::find(fullpath.rbegin()+1, sep, '/');
     if(sep != fullpath.rend())
     {
         *sep = 0;
-        procbin.emplace(wstr_to_utf8(fullpath.data()), wstr_to_utf8(al::to_address(sep.base())));
+        procbin = al::make_optional<PathNamePair>(wstr_to_utf8(fullpath.data()),
+            wstr_to_utf8(&*sep + 1));
     }
     else
-        procbin.emplace(std::string{}, wstr_to_utf8(fullpath.data()));
+        procbin = al::make_optional<PathNamePair>(std::string{}, wstr_to_utf8(fullpath.data()));
 
     TRACE("Got binary: %s, %s\n", procbin->path.c_str(), procbin->fname.c_str());
-#endif
     return *procbin;
 }
 
@@ -84,7 +83,6 @@ void DirectorySearch(const char *path, const char *ext, al::vector<std::string> 
     pathstr += ext;
     TRACE("Searching %s\n", pathstr.c_str());
 
-#if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
     std::wstring wpath{utf8_to_wstr(pathstr.c_str())};
     WIN32_FIND_DATAW fdata;
     HANDLE hdl{FindFirstFileW(wpath.c_str(), &fdata)};
@@ -100,12 +98,11 @@ void DirectorySearch(const char *path, const char *ext, al::vector<std::string> 
         str += wstr_to_utf8(fdata.cFileName);
     } while(FindNextFileW(hdl, &fdata));
     FindClose(hdl);
-    
+
     const al::span<std::string> newlist{results->data()+base, results->size()-base};
     std::sort(newlist.begin(), newlist.end());
     for(const auto &name : newlist)
         TRACE(" got %s\n", name.c_str());
-#    endif
 }
 
 } // namespace
@@ -141,7 +138,6 @@ al::vector<std::string> SearchDataFiles(const char *ext, const char *subdir)
         if(is_slash(path.back()))
             path.pop_back();
     }
-#if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
     else if(WCHAR *cwdbuf{_wgetcwd(nullptr, 0)})
     {
         path = wstr_to_utf8(cwdbuf);
@@ -149,13 +145,11 @@ al::vector<std::string> SearchDataFiles(const char *ext, const char *subdir)
             path.pop_back();
         free(cwdbuf);
     }
-#endif
     else
         path = ".";
     std::replace(path.begin(), path.end(), '/', '\\');
     DirectorySearch(path.c_str(), ext, &results);
 
-#if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
     /* Search the local and global data dirs. */
     static const int ids[2]{ CSIDL_APPDATA, CSIDL_COMMON_APPDATA };
     for(int id : ids)
@@ -172,20 +166,17 @@ al::vector<std::string> SearchDataFiles(const char *ext, const char *subdir)
 
         DirectorySearch(path.c_str(), ext, &results);
     }
-#endif
 
     return results;
 }
 
 void SetRTPriority(void)
 {
-#if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP_APP
     if(RTPrioLevel > 0)
     {
         if(!SetThreadPriority(GetCurrentThread(), THREAD_PRIORITY_TIME_CRITICAL))
             ERR("Failed to set priority level for thread\n");
     }
-#endif
 }
 
 #else
@@ -294,10 +285,11 @@ const PathNamePair &GetProcBinary()
 
     auto sep = std::find(pathname.crbegin(), pathname.crend(), '/');
     if(sep != pathname.crend())
-        procbin.emplace(std::string(pathname.cbegin(), sep.base()-1),
+        procbin = al::make_optional<PathNamePair>(std::string(pathname.cbegin(), sep.base()-1),
             std::string(sep.base(), pathname.cend()));
     else
-        procbin.emplace(std::string{}, std::string(pathname.cbegin(), pathname.cend()));
+        procbin = al::make_optional<PathNamePair>(std::string{},
+            std::string(pathname.cbegin(), pathname.cend()));
 
     TRACE("Got binary: \"%s\", \"%s\"\n", procbin->path.c_str(), procbin->fname.c_str());
     return *procbin;
@@ -505,12 +497,11 @@ bool SetRTPriorityRTKit(int prio)
         if(getrlimit(RLIMIT_RTTIME, &rlim) != 0)
             return errno;
 
-        TRACE("RTTime max: %llu (hard: %llu, soft: %llu)\n", umaxtime,
-            static_cast<ulonglong>(rlim.rlim_max), static_cast<ulonglong>(rlim.rlim_cur));
+        TRACE("RTTime max: %llu (hard: %llu, soft: %llu)\n", umaxtime, ulonglong{rlim.rlim_max},
+            ulonglong{rlim.rlim_cur});
         if(rlim.rlim_max > umaxtime)
         {
-            rlim.rlim_max = static_cast<rlim_t>(std::min<ulonglong>(umaxtime,
-                std::numeric_limits<rlim_t>::max()));
+            rlim.rlim_max = static_cast<rlim_t>(umaxtime);
             rlim.rlim_cur = std::min(rlim.rlim_cur, rlim.rlim_max);
             if(setrlimit(RLIMIT_RTTIME, &rlim) != 0)
                 return errno;
