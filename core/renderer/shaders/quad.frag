@@ -38,6 +38,9 @@ uniform sampler2D u_tex0;
 
 void main(void)
 {
+    if (u_color.a == 0.0)
+        discard;
+
     gl_FragColor = texture2D(u_tex0, TextureCoordOut) * ColorOut * u_color;
 }
 )";
