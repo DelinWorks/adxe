@@ -190,6 +190,12 @@ AABB MeshRenderer::getAABBRecursivelyImp(Node* node)
     return aabb;
 }
 
+void MeshRenderer::removeAllMeshes()
+{
+    _meshVertexDatas.clear();
+    _meshes.clear();
+}
+
 bool MeshRenderer::loadFromCache(std::string_view path)
 {
     auto meshdata = MeshRendererCache::getInstance()->getMeshRenderData(path);
