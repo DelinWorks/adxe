@@ -363,7 +363,11 @@ protected:
     std::string _fontName;
     float _fontSize;
     float _onSelectedScaleOffset;
+
+public:
     Label* _labelRenderer;
+
+protected:
     bool _labelRendererAdaptDirty;
     Type _type;
 };
