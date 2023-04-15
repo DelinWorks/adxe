@@ -421,7 +421,6 @@ void Mesh::draw(Renderer* renderer,
     else
         _material->getStateBlock().setDepthWrite(true);
 
-    _material->getStateBlock().setCullFace(false);
     _material->getStateBlock().setDepthTest(false);
 
     // set default uniforms for Mesh
