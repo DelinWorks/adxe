@@ -602,7 +602,7 @@ void Texture2D::setAliasTexParameters()
 
     backend::SamplerDescriptor descriptor(backend::SamplerFilter::NEAREST,  // magFilter
                                           (_texture->hasMipmaps()) ? backend::SamplerFilter::NEAREST_MIPMAP_NEAREST
-                                                                   : backend::SamplerFilter::LINEAR,  // minFilter
+                                                                   : backend::SamplerFilter::NEAREST,  // minFilter
                                           backend::SamplerAddressMode::DONT_CARE,                      // sAddressMode
                                           backend::SamplerAddressMode::DONT_CARE                       // tAddressMode
     );
