@@ -1486,7 +1486,7 @@ void Label::enableUnderline()
     // remove it, just in case to prevent adding two or more
     if (!_underlineNode)
     {
-        _underlineNode = DrawNode::create();
+        _underlineNode = DrawNode::create(1);
         _underlineNode->setGlobalZOrder(getGlobalZOrder());
         addChild(_underlineNode, 100000);
         _contentDirty = true;
@@ -1707,7 +1707,7 @@ void Label::updateContent()
         {
             // This is the logic for TTF fonts
             const float charheight = (_textDesiredHeight / _numberOfLines);
-            _underlineNode->setLineWidth(charheight / 6);
+            _underlineNode->setLineWidth(1);
 
             // atlas font
             for (int i = 0; i < _numberOfLines; ++i)

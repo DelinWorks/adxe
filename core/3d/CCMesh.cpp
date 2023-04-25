@@ -538,7 +538,6 @@ void Mesh::bindMeshCommand()
     {
         auto& stateBlock = _material->getStateBlock();
         stateBlock.setCullFace(true);
-        stateBlock.setDepthTest(true);
         if (_blend.src != backend::BlendFactor::ONE && _blend.dst != backend::BlendFactor::ONE)
             stateBlock.setBlend(true);
     }

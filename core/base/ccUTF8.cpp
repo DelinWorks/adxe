@@ -46,6 +46,15 @@ std::string AX_DLL format(const char* format, ...)
     va_end(args);
     return ret;
 }
+
+std::wstring AX_DLL wformat(const wchar_t* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    auto ret = vformat(format, args);
+    va_end(args);
+    return ret;
+}
 /*--- This a C++ universal sprintf in the future.
 **  @pitfall: The behavior of vsnprintf between VS2013 and VS2015/2017 is different
 **      VS2013 or Unix-Like System will return -1 when buffer not enough, but VS2015/2017 will return the actural needed
@@ -110,6 +119,68 @@ std::string vformat(const char* format, va_list ap)
         see: http://www.cplusplus.com/reference/cstdio/vsnprintf/
         */
         buf = "strfmt: an error is encountered!";
+#endif
+    }
+
+    return buf;
+}
+
+std::wstring vformat(const wchar_t* format, va_list ap)
+{
+#define AX_VSNPRINTF_BUFFER_LENGTH 512
+    std::wstring buf(AX_VSNPRINTF_BUFFER_LENGTH, '\0');
+
+    va_list args;
+    va_copy(args, ap);
+    int nret = vswprintf(&buf.front(), buf.length() + 1, format, args);
+    va_end(args);
+
+    if (nret >= 0)
+    {
+        if ((unsigned int)nret < buf.length())
+        {
+            buf.resize(nret);
+        }
+        else if ((unsigned int)nret > buf.length())
+        {  // handle return required length when buffer insufficient
+            buf.resize(nret);
+
+            va_copy(args, ap);
+            nret = vswprintf(&buf.front(), buf.length() + 1, format, args);
+            va_end(args);
+        }
+        // else equals, do nothing.
+    }
+    else
+    {   // handle return -1 when buffer insufficient
+        /*
+        vs2013/older & glibc <= 2.0.6, they would return -1 when the output was truncated.
+        see: http://man7.org/linux/man-pages/man3/vsnprintf.3.html
+        */
+#if (defined(__linux__) && ((__GLIBC__ < 2) || ((__GLIBC__ == 2) && (__GLIBC_MINOR__ < 1)))) || \
+    (defined(_MSC_VER) && _MSC_VER < 1900)
+        enum : size_t
+        {
+            enlarge_limits = (1 << 20),  // limits the buffer cost memory less than 2MB
+        };
+        do
+        {
+            buf.resize(buf.length() << 1);
+
+            va_copy(args, ap);
+            nret = vsnprintf(&buf.front(), buf.length() + 1, format, args);
+            va_end(args);
+
+        } while (nret < 0 && buf.size() <= enlarge_limits);
+        if (nret > 0)
+            buf.resize(nret);
+        else
+            buf = "strfmt: an error is encountered!";
+#else
+        /* other standard implementation
+        see: http://www.cplusplus.com/reference/cstdio/vsnprintf/
+        */
+        buf = L"strfmt: an error is encountered!";
 #endif
     }
 
