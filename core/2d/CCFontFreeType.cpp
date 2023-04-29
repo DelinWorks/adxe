@@ -398,8 +398,6 @@ unsigned char* FontFreeType::getGlyphBitmap(char32_t charCode,
 
             if (charUTF8 == "\n")
                 charUTF8 = "\\n";
-            ax::log("The font face: %s doesn't contains char: <%s>", _fontFace->charmap->face->family_name,
-                         charUTF8.c_str());
 
             if (_mssingGlyphCharacter != 0)
             {

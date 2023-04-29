@@ -148,6 +148,19 @@ RenderTexture* RenderTexture::create(int w, int h, bool sharedRenderTarget)
     return nullptr;
 }
 
+RenderTexture* RenderTexture::create()
+{
+    RenderTexture* ret = new RenderTexture();
+
+    if (ret->init())
+    {
+        ret->autorelease();
+        return ret;
+    }
+    AX_SAFE_DELETE(ret);
+    return nullptr;
+}
+
 bool RenderTexture::initWithWidthAndHeight(int w, int h, backend::PixelFormat eFormat, bool sharedRenderTarget)
 {
     return initWithWidthAndHeight(w, h, eFormat, PixelFormat::NONE, sharedRenderTarget);
@@ -160,6 +173,11 @@ bool RenderTexture::initWithWidthAndHeight(int w,
                                            bool sharedRenderTarget)
 {
     AXASSERT(format != backend::PixelFormat::A8, "only RGB and RGBA formats are valid for a render texture");
+
+    AX_SAFE_RELEASE_NULL(_renderTarget);
+    AX_SAFE_RELEASE_NULL(_sprite);
+    AX_SAFE_RELEASE_NULL(_depthStencilTexture);
+    AX_SAFE_RELEASE_NULL(_UITextureImage);
 
     bool ret = false;
     do

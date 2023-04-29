@@ -91,6 +91,10 @@ public:
      */
     static RenderTexture* create(int w, int h, bool sharedRenderTarget = true);
 
+    /** Creates a RenderTexture object
+     */
+    static RenderTexture* create();
+
     // Overrides
     virtual void visit(Renderer* renderer, const Mat4& parentTransform, uint32_t parentFlags) override;
 
