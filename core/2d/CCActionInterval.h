@@ -1570,7 +1570,7 @@ public:
     /**
      *  Callback function used to report back result
      */
-    typedef std::function<void(float value)> ActionFloatCallback;
+    typedef std::function<void(ax::Node* target, float value)> ActionFloatCallback;
 
     /**
      * Creates FloatAction with specified duration, from value, to value and callback to report back
