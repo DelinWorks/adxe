@@ -365,6 +365,26 @@ public:
     inline Vec2 operator+(const Vec2& v) const;
 
     /**
+     * Calculates the sum of this vector with the given float.
+     *
+     * Note: this does not modify this vector.
+     *
+     * @param v The float to add to all axis.
+     * @return The vector sum.
+     */
+    inline Vec2 operator+(float v) const;
+
+    /**
+     * Calculates the sum of this vector with the given float.
+     *
+     * Note: this does not modify this vector.
+     *
+     * @param v The float to add to all axis.
+     * @return The vector sum.
+     */
+    inline Vec2 operator-(float v) const;
+
+    /**
      * Adds the given vector to this vector.
      *
      * @param v The vector to add.
