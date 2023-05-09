@@ -2755,7 +2755,7 @@ void ActionFloat::update(float delta)
     if (_callback)
     {
         // report back value to caller
-        _callback(getTarget(), value);
+        _callback(value);
     }
 }
 
