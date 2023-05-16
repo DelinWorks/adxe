@@ -32,11 +32,11 @@
 # The version number
 set(_AX_VERSION 1.0)
 
+add_compile_definitions(AX_USE_COMPAT_GL)
+
 if(NOT DEFINED _AX_CORE_LIB)
     set(_AX_CORE_LIB axmol CACHE INTERNAL "The axmol core lib name" )
 endif()
-
-add_compile_definitions(AX_USE_COMPAT_GL)
 
 if (NOT DEFINED AX_USE_COMPAT_GL)
     set(AX_USE_COMPAT_GL FALSE CACHE INTERNAL "Enabling AX_USE_COMPAT_GL" )
