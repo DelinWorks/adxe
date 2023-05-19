@@ -58,7 +58,7 @@ Slider::Slider()
     , _slidBallRenderer(nullptr)
     , _barLength(0.0)
     , _percent(0)
-    , _maxPercent(100)
+    , _maxPercent(1)
     , _scale9Enabled(false)
     , _prevIgnoreSize(true)
     , _zoomScale(0.1f)
@@ -432,17 +432,17 @@ void Slider::loadSlidBallTextureDisabled(SpriteFrame* spriteframe)
     this->updateChildrenDisplayedRGBA();
 }
 
-void Slider::setMaxPercent(int percent)
+void Slider::setMaxPercent(float percent)
 {
     _maxPercent = percent;
 }
 
-int Slider::getMaxPercent() const
+float Slider::getMaxPercent() const
 {
     return _maxPercent;
 }
 
-void Slider::setPercent(int percent)
+void Slider::setPercent(float percent)
 {
     if (percent > _maxPercent)
     {
@@ -555,7 +555,7 @@ void Slider::percentChangedEvent(EventType event)
     this->release();
 }
 
-int Slider::getPercent() const
+float Slider::getPercent() const
 {
     return _percent;
 }

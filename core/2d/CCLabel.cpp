@@ -1720,6 +1720,10 @@ void Label::updateContent()
 
                 // Github issue #15214. Uses _displayedColor instead of _textColor for the underline.
                 // This is to have the same behavior of SystemFonts.
+                _underlineNode->drawLine(Vec2(_linesOffsetX[i], y + 1), Vec2(_linesWidth[i] + _linesOffsetX[i], y + 1),
+                                         Color4F::BLACK);
+                _underlineNode->drawLine(Vec2(_linesOffsetX[i], y - 1), Vec2(_linesWidth[i] + _linesOffsetX[i], y - 1),
+                                         Color4F::BLACK);
                 _underlineNode->drawLine(Vec2(_linesOffsetX[i], y), Vec2(_linesWidth[i] + _linesOffsetX[i], y),
                                          Color4F(_displayedColor));
             }

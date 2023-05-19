@@ -203,7 +203,7 @@ public:
      * Changes the progress direction of slider.
      * @param percent  Percent value from 1 to 100.
      */
-    void setPercent(int percent);
+    void setPercent(float percent);
 
     /**
      * Updates the visual elements of the slider.
@@ -215,21 +215,21 @@ public:
      *
      * @return percent Percent value from 1 to 100.
      */
-    int getPercent() const;
+    float getPercent() const;
 
     /**
      * Set a large value could give more control to the precision.
      * @since v3.7
      * @param percent The max percent of Slider.
      */
-    void setMaxPercent(int percent);
+    void setMaxPercent(float percent);
 
     /**
      * Query the maximum percent of Slider. The default value is 100.
      * @since v3.7
      * @return The maximum percent of the Slider.
      */
-    int getMaxPercent() const;
+    float getMaxPercent() const;
 
     /**
      * Add call back function called when slider's percent has changed to slider.
@@ -320,8 +320,8 @@ protected:
     Node* _slidBallRenderer;
 
     float _barLength;
-    int _percent;
-    int _maxPercent;
+    float _percent;
+    float _maxPercent;
 
     bool _scale9Enabled;
     bool _prevIgnoreSize;
