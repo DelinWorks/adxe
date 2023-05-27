@@ -471,7 +471,7 @@ void ParticleSystemQuad::updateParticleQuads()
                 for (int i = 0; i < _particleCount;
                      ++i, ++quad, ++r, ++g, ++b, ++a, ++hue, ++sat, ++val, ++fadeDt, ++fadeLn)
                 {
-                    hsv.fromRgba({*r, *g, *b, *a * (*fadeDt / *fadeLn) * (getOpacity() / 255.0)});
+                    hsv.fromRgba({*r, *g, *b, *a * float((*fadeDt / *fadeLn) * (getOpacity() / 255.0))});
                     hsv.h += *hue;
                     hsv.s     = abs(*sat);
                     hsv.v     = abs(*val);
@@ -492,7 +492,7 @@ void ParticleSystemQuad::updateParticleQuads()
                 for (int i = 0; i < _particleCount;
                      ++i, ++quad, ++r, ++g, ++b, ++a, ++hue, ++sat, ++val, ++fadeDt, ++fadeLn)
                 {
-                    hsv.fromRgba({*r, *g, *b, *a * (*fadeDt / *fadeLn) * (getOpacity() / 255.0)});
+                    hsv.fromRgba({*r, *g, *b, *a * float((*fadeDt / *fadeLn) * (getOpacity() / 255.0))});
                     hsv.h += *hue;
                     hsv.s    = abs(*sat);
                     hsv.v    = abs(*val);
