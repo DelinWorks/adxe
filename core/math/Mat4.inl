@@ -68,6 +68,14 @@ inline Mat4& Mat4::operator*=(const Mat4& mat)
     return *this;
 }
 
+inline bool Mat4::operator==(const Mat4& mat) const
+{
+    for (int i = 0; i < 16; i++)
+        if (this->m[i] != mat.m[i])
+            return false;
+    return true;
+}
+
 inline Vec3& operator*=(Vec3& v, const Mat4& m)
 {
     m.transformVector(&v);

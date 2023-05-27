@@ -179,7 +179,7 @@ Color4F operator/(Color4F lhs, float rhs);
 /**
  * Hue Saturation Value color space composed of 4 floats.
  * @since axmol-1.0.0b7
- * 
+ *
  * Implementation source: https://gist.github.com/fairlight1337/4935ae72bcbcc1ba5c72
  */
 struct AX_DLL HSV
@@ -196,12 +196,12 @@ struct AX_DLL HSV
 
     bool equals(const HSV& other) const { return (*this == other); }
 
-    void set(float r, float g, float b, float a = 1.0F);
-    void get(float& r, float& g, float& b) const;
+    void fromRgba(const Color4F& rgba);
+    Color4F toRgba() const;
 
-    Color3B toColor3B();
-    Color4B toColor4B();
-    Color4F toColor4F();
+    Color3B toColor3B() const;
+    Color4B toColor4B() const;
+    Color4F toColor4F() const;
 
     float h = 0.f;
     float s = 0.f;
@@ -245,14 +245,14 @@ struct AX_DLL HSL
 
     bool equals(const HSL& other) const { return (*this == other); }
 
-    void set(float r, float g, float b, float a = 1.0F);
-    void get(float& r, float& g, float& b) const;
+    void fromRgba(const Color4F& rgba);
+    Color4F toRgba() const;
 
     static float hue2rgb(float p, float q, float t);
 
-    Color3B toColor3B();
-    Color4B toColor4B();
-    Color4F toColor4F();
+    Color3B toColor3B() const;
+    Color4B toColor4B() const;
+    Color4F toColor4F() const;
 
     float h = 0.f;
     float s = 0.f;

@@ -985,6 +985,13 @@ public:
      */
     inline Mat4& operator*=(const Mat4& mat);
 
+    /**
+     * Compares this matrix by the given matrix.
+     *
+     * @param mat The matrix to compare with.
+     */
+    inline bool operator==(const Mat4& mat) const;
+
     /** equals to a matrix full of zeros */
     static const Mat4 ZERO;
     /** equals to the identity matrix */
