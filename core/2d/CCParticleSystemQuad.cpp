@@ -471,7 +471,7 @@ void ParticleSystemQuad::updateParticleQuads()
                 for (int i = 0; i < _particleCount;
                      ++i, ++quad, ++r, ++g, ++b, ++a, ++hue, ++sat, ++val, ++fadeDt, ++fadeLn)
                 {
-                    hsv.fromRgba({*r, *g, *b, *a * (*fadeDt / *fadeLn)});
+                    hsv.fromRgba({*r, *g, *b, *a * (*fadeDt / *fadeLn) * (getOpacity() / 255.0)});
                     hsv.h += *hue;
                     hsv.s     = abs(*sat);
                     hsv.v     = abs(*val);
@@ -492,7 +492,7 @@ void ParticleSystemQuad::updateParticleQuads()
                 for (int i = 0; i < _particleCount;
                      ++i, ++quad, ++r, ++g, ++b, ++a, ++hue, ++sat, ++val, ++fadeDt, ++fadeLn)
                 {
-                    hsv.fromRgba({*r, *g, *b, *a * (*fadeDt / *fadeLn)});
+                    hsv.fromRgba({*r, *g, *b, *a * (*fadeDt / *fadeLn) * (getOpacity() / 255.0)});
                     hsv.h += *hue;
                     hsv.s    = abs(*sat);
                     hsv.v    = abs(*val);
@@ -514,7 +514,7 @@ void ParticleSystemQuad::updateParticleQuads()
                     uint8_t colorR = *r * *a * 255;
                     uint8_t colorG = *g * *a * 255;
                     uint8_t colorB = *b * *a * 255;
-                    uint8_t colorA = *a * (*fadeDt / *fadeLn) * 255;
+                    uint8_t colorA = *a * (*fadeDt / *fadeLn) * getOpacity();
                     quad->bl.colors.set(colorR, colorG, colorB, colorA);
                     quad->br.colors.set(colorR, colorG, colorB, colorA);
                     quad->tl.colors.set(colorR, colorG, colorB, colorA);
@@ -528,7 +528,7 @@ void ParticleSystemQuad::updateParticleQuads()
                     uint8_t colorR = *r * 255;
                     uint8_t colorG = *g * 255;
                     uint8_t colorB = *b * 255;
-                    uint8_t colorA = *a * (*fadeDt / *fadeLn) * 255;
+                    uint8_t colorA = *a * (*fadeDt / *fadeLn) * getOpacity();
                     quad->bl.colors.set(colorR, colorG, colorB, colorA);
                     quad->br.colors.set(colorR, colorG, colorB, colorA);
                     quad->tl.colors.set(colorR, colorG, colorB, colorA);
