@@ -1720,12 +1720,17 @@ void Label::updateContent()
 
                 // Github issue #15214. Uses _displayedColor instead of _textColor for the underline.
                 // This is to have the same behavior of SystemFonts.
-                _underlineNode->drawLine(Vec2(_linesOffsetX[i], y + 1), Vec2(_linesWidth[i] + _linesOffsetX[i], y + 1),
-                                         Color4F::BLACK);
-                _underlineNode->drawLine(Vec2(_linesOffsetX[i], y - 1), Vec2(_linesWidth[i] + _linesOffsetX[i], y - 1),
-                                         Color4F::BLACK);
-                _underlineNode->drawLine(Vec2(_linesOffsetX[i], y), Vec2(_linesWidth[i] + _linesOffsetX[i], y),
-                                         Color4F(_displayedColor));
+                /*_underlineNode->drawLine(Vec2(_linesOffsetX[i], y), Vec2(_linesWidth[i] + _linesOffsetX[i], y),
+                                         Color4F(_displayedColor));*/
+                int count = 0;
+                for (float x = 0; x <= _linesWidth[i] + _linesOffsetX[i]; x += 4)
+                {
+                    if (count % 2 == 0)
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.365f, 0.365f, 0.365f, 1));
+                    else
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.265f, 0.265f, 0.265f, 1));
+                    count++;
+                }
             }
         }
         else if (_textSprite)
@@ -1951,6 +1956,9 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
         else
         {
             ax::Mat4 matrixMVP = matrixProjection * transform;
+
+            matrixMVP.m[12] = round(matrixMVP.m[12]);
+            matrixMVP.m[13] = round(matrixMVP.m[13]);
 
             for (auto&& it : _letters)
             {

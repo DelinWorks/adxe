@@ -856,7 +856,7 @@ bool MeshRenderer::setProgramState(backend::ProgramState* programState, bool nee
 
 void MeshRenderer::setBlendFunc(const BlendFunc& blendFunc)
 {
-    if (_blend.src != blendFunc.src || _blend.dst != blendFunc.dst)
+    //if (_blend.src != blendFunc.src || _blend.dst != blendFunc.dst)
     {
         _blend = blendFunc;
         for (auto&& mesh : _meshes)

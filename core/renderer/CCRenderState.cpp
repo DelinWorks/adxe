@@ -93,16 +93,16 @@ void RenderState::StateBlock::apply(PipelineDescriptor* pipelineDescriptor)
     auto& blend   = pipelineDescriptor->blendDescriptor;
 
     // Update any state that differs from _globalState and flip _globalState bits
-    if ((_modifiedBits & RS_BLEND))
-    {
-        blend.blendEnabled = _blendEnabled;
-    }
+    //if ((_modifiedBits & RS_BLEND))
+    //{
+    //    blend.blendEnabled = _blendEnabled;
+    //}
 
-    if ((_modifiedBits & RS_BLEND_FUNC))
-    {
-        blend.sourceAlphaBlendFactor = blend.sourceRGBBlendFactor = _blendSrc;
-        blend.destinationAlphaBlendFactor = blend.destinationRGBBlendFactor = _blendDst;
-    }
+    //if ((_modifiedBits & RS_BLEND_FUNC))
+    //{
+    //    blend.sourceAlphaBlendFactor = blend.sourceRGBBlendFactor = _blendSrc;
+    //    blend.destinationAlphaBlendFactor = blend.destinationRGBBlendFactor = _blendDst;
+    //}
 
     if ((_modifiedBits & RS_CULL_FACE))
     {

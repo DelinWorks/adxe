@@ -448,6 +448,11 @@ void Mesh::draw(Renderer* renderer,
         command.setTransparent(isTransparent);
         command.set3D(!_material->isForce2DQueue());
         command.setWireframe(wireframe);
+        BlendFunc blendType                  = getBlendFunc();
+        auto& blendDescriptor                = command.getPipelineDescriptor().blendDescriptor;
+        blendDescriptor.blendEnabled         = true;
+        blendDescriptor.sourceRGBBlendFactor = blendDescriptor.sourceAlphaBlendFactor = blendType.src;
+        blendDescriptor.destinationRGBBlendFactor = blendDescriptor.destinationAlphaBlendFactor = blendType.dst;
     }
 
     _meshIndexData->setPrimitiveType(_material->_drawPrimitive);
