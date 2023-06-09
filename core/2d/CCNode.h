@@ -1853,6 +1853,8 @@ public:
     // Compatible old Layer::create
     bool initLayer();
 
+    bool _disregardGraph = false;
+
 protected:
     /// lazy allocs
     void childrenAlloc();

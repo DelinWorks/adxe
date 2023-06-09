@@ -1723,12 +1723,12 @@ void Label::updateContent()
                 /*_underlineNode->drawLine(Vec2(_linesOffsetX[i], y), Vec2(_linesWidth[i] + _linesOffsetX[i], y),
                                          Color4F(_displayedColor));*/
                 int count = 0;
-                for (float x = 0; x <= _linesWidth[i] + _linesOffsetX[i]; x += 4)
+                for (float x = 0; x <= _linesWidth[i] + _linesOffsetX[i]; x += 5)
                 {
                     if (count % 2 == 0)
-                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.365f, 0.365f, 0.365f, 1));
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.465f, 0.465f, 0.465f, 1));
                     else
-                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.265f, 0.265f, 0.265f, 1));
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.365f, 0.365f, 0.365f, 1));
                     count++;
                 }
             }
@@ -1955,10 +1955,11 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
         }
         else
         {
-            ax::Mat4 matrixMVP = matrixProjection * transform;
-
-            matrixMVP.m[12] = round(matrixMVP.m[12]);
-            matrixMVP.m[13] = round(matrixMVP.m[13]);
+            Mat4 m  = matrixProjection * transform;
+            m.m[12] = snap_interval(m.m[12], m.m[0], _scaleX);
+            m.m[13] = snap_interval(m.m[13], m.m[5], _scaleY);
+            //m.m[12] = round(m.m[12]);
+            //m.m[13] = round(m.m[13]);
 
             for (auto&& it : _letters)
             {
@@ -1988,10 +1989,10 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
                     programState->setUniform(_textColorLocation, &textColor, sizeof(Vec4));
                     programState->setTexture(textureAtlas->getTexture()->getBackendTexture());
                 }
-                batch.textCommand.getPipelineDescriptor().programState->setUniform(_mvpMatrixLocation, matrixMVP.m,
-                                                                                   sizeof(matrixMVP.m));
-                batch.outLineCommand.getPipelineDescriptor().programState->setUniform(_mvpMatrixLocation, matrixMVP.m,
-                                                                                      sizeof(matrixMVP.m));
+                batch.textCommand.getPipelineDescriptor().programState->setUniform(_mvpMatrixLocation, m.m,
+                                                                                   sizeof(m.m));
+                batch.outLineCommand.getPipelineDescriptor().programState->setUniform(_mvpMatrixLocation, m.m,
+                                                                                      sizeof(m.m));
                 updateEffectUniforms(batch, textureAtlas, renderer, transform);
             }
         }

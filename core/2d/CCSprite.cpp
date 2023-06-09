@@ -1075,8 +1075,17 @@ void Sprite::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
     if (_insideBounds)
 #endif
     {
-        _trianglesCommand.init(_globalZOrder, _texture, _blendFunc, _polyInfo.triangles, transform, flags);
-        renderer->addCommand(&_trianglesCommand);
+        if (_roundRenderMatrix)
+        {
+            Mat4 m = transform;
+            m.m[12] = snap_interval(m.m[12], m.m[0], _scaleX);
+            m.m[13] = snap_interval(m.m[13], m.m[5], _scaleY);
+            _trianglesCommand.init(_globalZOrder, _texture, _blendFunc, _polyInfo.triangles, m, flags);
+            renderer->addCommand(&_trianglesCommand);
+        } else {
+            _trianglesCommand.init(_globalZOrder, _texture, _blendFunc, _polyInfo.triangles, transform, flags);
+            renderer->addCommand(&_trianglesCommand);
+        }
 
 #if AX_SPRITE_DEBUG_DRAW
         _debugDrawNode->clear();
@@ -1351,10 +1360,13 @@ void Sprite::setContentSize(const Vec2& size)
         AXLOGWARN(
             "Sprite::setContentSize() doesn't stretch the sprite when using QUAD_BATCHNODE or POLYGON render modes");
 
-    Node::setContentSize(size);
+    if (!size.equals(_contentSize))
+    {
+        Node::setContentSize(size);
 
-    updateStretchFactor();
-    updatePoly();
+        updateStretchFactor();
+        updatePoly();
+    }
 }
 
 void Sprite::setStretchEnabled(bool enabled)

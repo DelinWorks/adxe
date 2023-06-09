@@ -357,13 +357,13 @@ void Director::calculateDeltaTime()
         _deltaTime = MAX(0, _deltaTime);
     }
 
-#if _AX_DEBUG
-     //If we are debugging our code, prevent big delta time
-    if (_deltaTime > 0.1f)
-    {
-        _deltaTime = 0;
-    }
-#endif
+//#if _AX_DEBUG
+//     //If we are debugging our code, prevent big delta time
+//    if (_deltaTime > 0.1f)
+//    {
+//        _deltaTime = 0;
+//    }
+//#endif
 }
 
 float Director::getDeltaTime() const

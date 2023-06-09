@@ -624,6 +624,8 @@ public:
 
     void setProgramState(uint32_t type) override;
 
+    bool _roundRenderMatrix = false;
+
 protected:
     virtual void updateColor() override;
     virtual void setTextureCoords(const Rect& rect);

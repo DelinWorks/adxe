@@ -30,6 +30,8 @@ THE SOFTWARE.
 #ifndef __AX_H__
 #define __AX_H__
 
+#define __SSE__
+
 // 0x00 HI ME LO
 // 00   03 08 00
 

@@ -1305,7 +1305,11 @@ void Node::visit(Renderer* renderer, const Mat4& parentTransform, uint32_t paren
             this->draw(renderer, _modelViewTransform, flags);
 
         for (auto it = _children.cbegin() + i, itCend = _children.cend(); it != itCend; ++it)
-            (*it)->visit(renderer, _modelViewTransform, flags);
+        {
+            auto c = (*it);
+            if (!(c->_disregardGraph && !c->isVisible()))
+                (*it)->visit(renderer, _modelViewTransform, flags);
+        }
     }
     else if (visibleByCamera)
     {
@@ -1665,10 +1669,13 @@ AffineTransform Node::getNodeToParentAffineTransform() const
 
 Mat4 Node::getNodeToParentTransform(Node* ancestor) const
 {
+
     Mat4 t(this->getNodeToParentTransform());
 
     for (Node* p = _parent; p != nullptr && p != ancestor; p = p->getParent())
     {
+        if (p->_disregardGraph && !p->isVisible())
+            break;
         t = p->getNodeToParentTransform() * t;
     }
 
