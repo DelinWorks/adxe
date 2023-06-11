@@ -1956,10 +1956,10 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
         else
         {
             Mat4 m  = matrixProjection * transform;
-            m.m[12] = snap_interval(m.m[12], m.m[0], _scaleX);
-            m.m[13] = snap_interval(m.m[13], m.m[5], _scaleY);
-            //m.m[12] = round(m.m[12]);
-            //m.m[13] = round(m.m[13]);
+            //m.m[12] = snap_interval(m.m[12], m.m[0], _scaleX);
+            //m.m[13] = snap_interval(m.m[13], m.m[5], _scaleY);
+            m.m[12] = round(m.m[12]);
+            m.m[13] = round(m.m[13]);
 
             for (auto&& it : _letters)
             {
