@@ -625,6 +625,7 @@ public:
     void setProgramState(uint32_t type) override;
 
     bool _roundRenderMatrix = false;
+    bool _forceBatching = false;
 
 protected:
     virtual void updateColor() override;
