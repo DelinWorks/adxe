@@ -1726,9 +1726,9 @@ void Label::updateContent()
                 for (float x = 0; x <= _linesWidth[i] + _linesOffsetX[i]; x += 5)
                 {
                     if (count % 2 == 0)
-                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.465f, 0.465f, 0.465f, 1));
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(1, 1, 1, 0.3));
                     else
-                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(0.365f, 0.365f, 0.365f, 1));
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(1, 1, 1, 0.2));
                     count++;
                 }
             }
