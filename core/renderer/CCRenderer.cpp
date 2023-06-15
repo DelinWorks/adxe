@@ -309,10 +309,12 @@ void Renderer::processRenderCommand(RenderCommand* command)
         if (_queuedTotalVertexCount + cmd->getVertexCount() > VBO_SIZE ||
             _queuedTotalIndexCount + cmd->getIndexCount() > INDEX_VBO_SIZE)
         {
-            AXASSERT(cmd->getVertexCount() >= 0 && cmd->getVertexCount() < VBO_SIZE,
-                     "VBO for vertex is not big enough, please break the data down or use customized render command");
-            AXASSERT(cmd->getIndexCount() >= 0 && cmd->getIndexCount() < INDEX_VBO_SIZE,
-                     "VBO for index is not big enough, please break the data down or use customized render command");
+            //AXASSERT(cmd->getVertexCount() >= 0 && cmd->getVertexCount() < VBO_SIZE,
+            //         "VBO for vertex is not big enough, please break the data down or use customized render command");
+            //AXASSERT(cmd->getIndexCount() >= 0 && cmd->getIndexCount() < INDEX_VBO_SIZE,
+            //         "VBO for index is not big enough, please break the data down or use customized render command");
+            //if (!(cmd->getVertexCount() >= 0 && cmd->getVertexCount() < VBO_SIZE)) return;
+            //if (!(cmd->getIndexCount() >= 0 && cmd->getIndexCount() < VBO_SIZE)) return;
             drawBatchedTriangles();
 
             _queuedTotalIndexCount = _queuedTotalVertexCount = 0;
@@ -805,7 +807,7 @@ bool Renderer::checkVisibility(const Mat4& transform, const Vec2& size)
     if (!scene || (scene && scene->_defaultCamera != Camera::getVisitingCamera()))
         return true;
 
-    Rect visibleRect(director->getVisibleOrigin(), director->getVisibleSize());
+    Rect visibleRect(director->getVisibleOrigin(), director->getOpenGLView()->getFrameSize());
 
     // transform center point to screen space
     float hSizeX = size.width / 2;

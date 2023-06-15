@@ -412,7 +412,6 @@ void FontAtlas::setAliasTexParameters()
         for (const auto& tex : _atlasTextures)
         {
             tex.second->setAliasTexParameters();
-            tex.second->generateMipmap();
         }
     }
 }
@@ -425,7 +424,6 @@ void FontAtlas::setAntiAliasTexParameters()
         for (const auto& tex : _atlasTextures)
         {
             tex.second->setAntiAliasTexParameters();
-            tex.second->generateMipmap();
         }
     }
 }

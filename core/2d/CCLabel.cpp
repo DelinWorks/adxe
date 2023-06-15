@@ -70,6 +70,10 @@ void updateBlend(backend::BlendDescriptor& blendDescriptor, BlendFunc blendFunc)
         blendDescriptor.destinationRGBBlendFactor   = backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
         blendDescriptor.sourceAlphaBlendFactor      = backend::BlendFactor::ONE;
         blendDescriptor.destinationAlphaBlendFactor = backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
+        //blendDescriptor.sourceRGBBlendFactor        = backend::BlendFactor::ONE_MINUS_DST_COLOR;
+        //blendDescriptor.destinationRGBBlendFactor   = backend::BlendFactor::ONE_MINUS_DST_COLOR;
+        //blendDescriptor.sourceAlphaBlendFactor      = backend::BlendFactor::SRC_ALPHA;
+        //blendDescriptor.destinationAlphaBlendFactor = backend::BlendFactor::ONE_MINUS_SRC_ALPHA;
     }
 }
 }  // namespace
