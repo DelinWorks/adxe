@@ -243,7 +243,7 @@ THE SOFTWARE.
  * To enable set it to a value different than 0. Disabled by default.
  */
 #ifndef AX_ENABLE_PROFILERS
-#    define AX_ENABLE_PROFILERS 0
+#    define AX_ENABLE_PROFILERS 1
 #endif
 
 /** Enable Lua engine debug log. */
@@ -273,7 +273,7 @@ THE SOFTWARE.
 #    if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC ||       \
          AX_TARGET_PLATFORM == AX_PLATFORM_WIN32 || AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID || \
          AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
-#        define AX_USE_3D_PHYSICS 1
+#        define AX_USE_3D_PHYSICS 0
 #    endif
 #endif
 
@@ -286,7 +286,7 @@ THE SOFTWARE.
 
 /** Use 3D navigation API */
 #ifndef AX_USE_NAVMESH
-#    define AX_USE_NAVMESH 1
+#    define AX_USE_NAVMESH 0
 #endif
 
 /** Use culling or not. */
@@ -317,7 +317,7 @@ THE SOFTWARE.
 
 /** Enable Lua Script binding */
 #ifndef AX_ENABLE_SCRIPT_BINDING
-#    define AX_ENABLE_SCRIPT_BINDING 1
+#    define AX_ENABLE_SCRIPT_BINDING 0
 #endif
 
 /** When AX_ENABLE_SCRIPT_BINDING and AX_ENABLE_GC_FOR_NATIVE_OBJECTS are both 1

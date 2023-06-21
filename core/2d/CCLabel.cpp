@@ -1953,8 +1953,13 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
             auto& pipelineQuad = _quadCommand.getPipelineDescriptor();
             pipelineQuad.programState->setUniform(_mvpMatrixLocation, matrixProjection.m, sizeof(matrixProjection.m));
             pipelineQuad.programState->setTexture(texture->getBackendTexture());
+
+            Mat4 m = transform;
+            m.m[12] = snap_interval(m.m[12], m.m[0], 1);
+            m.m[13] = snap_interval(m.m[13], m.m[5], 1);
+
             _quadCommand.init(_globalZOrder, texture, _blendFunc, textureAtlas->getQuads(),
-                              textureAtlas->getTotalQuads(), transform, flags);
+                              textureAtlas->getTotalQuads(), m, flags);
             renderer->addCommand(&_quadCommand);
         }
         else
