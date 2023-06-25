@@ -1669,13 +1669,10 @@ AffineTransform Node::getNodeToParentAffineTransform() const
 
 Mat4 Node::getNodeToParentTransform(Node* ancestor) const
 {
-
     Mat4 t(this->getNodeToParentTransform());
 
     for (Node* p = _parent; p != nullptr && p != ancestor; p = p->getParent())
     {
-        if (p->_disregardGraph && !p->isVisible())
-            break;
         t = p->getNodeToParentTransform() * t;
     }
 
