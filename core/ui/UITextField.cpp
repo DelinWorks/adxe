@@ -836,6 +836,11 @@ void TextField::setCursorFromPoint(const Vec2& point, const Camera* camera)
     _textFieldRenderer->setCursorFromPoint(point, camera);
 }
 
+UICCTextField* TextField::getTextFieldRenderer()
+{
+    return _textFieldRenderer;
+}
+
 }  // namespace ui
 
 NS_AX_END

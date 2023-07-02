@@ -1468,6 +1468,11 @@ public:
     virtual void pause();
 
     /**
+     * is awake method will be called after the first update.
+     */
+    virtual bool isAwake();
+
+    /**
      * Update method will be called automatically every frame if "scheduleUpdate" is called, and the node is "live".
      * @param delta In seconds.
      */
@@ -1848,6 +1853,8 @@ public:
     // Compatible old Layer::create
     bool initLayer();
 
+    bool _disregardGraph = false;
+
 protected:
     /// lazy allocs
     void childrenAlloc();
@@ -1954,9 +1961,12 @@ protected:
     Director* _director;                 // cached director pointer to improve rendering performance
     int _tag;                            ///< a tag. Can be any number you assigned just to identify this node
 
-    std::string _name;     ///< a string label, an user defined string to identify this node
+    std::string _name;  ///< a string label, an user defined string to identify this node
+
+public:
     uint64_t _hashOfName;  ///< hash value of _name, used for speed in getChildByName
 
+protected:
     void* _userData;   ///< A user assigned void pointer, Can be point to any cpp object
     Ref* _userObject;  ///< A user assigned Object
 
@@ -1971,6 +1981,7 @@ protected:
     bool _visible;                       ///< is this node visible
     bool _ignoreAnchorPointForPosition;  ///< true if the Anchor Vec2 will be (0,0) when you position the Node, false
                                          ///< otherwise. Used by Layer and Scene.
+    bool _isFirstUpdate = true;
 
     bool _isTransitionFinished;  ///< flag to indicate whether the transition was finished
     bool _cascadeColorEnabled;

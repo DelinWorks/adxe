@@ -1076,7 +1076,16 @@ void Sprite::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
     if (_insideBounds)
 #endif
     {
-        _trianglesCommand.init(_globalZOrder, _texture, _blendFunc, _polyInfo.triangles, transform, flags);
+        Mat4 m = transform;
+        if (_roundRenderMatrix)
+        {
+            m.m[12] = snap_interval(m.m[12], m.m[0], _scaleX);
+            m.m[13] = snap_interval(m.m[13], m.m[5], _scaleY);
+        }
+
+        _trianglesCommand.init(_globalZOrder, _texture, _blendFunc, _polyInfo.triangles, m, flags);
+        if (_forceBatching)
+            _trianglesCommand.setSkipBatching(false);
         renderer->addCommand(&_trianglesCommand);
 
 #if AX_SPRITE_DEBUG_DRAW

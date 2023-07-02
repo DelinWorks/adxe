@@ -22,15 +22,9 @@
 
 NS_AX_MATH_BEGIN
 
-inline Vec2::Vec2()
-: x(0.0f), y(0.0f)
-{
-}
+inline Vec2::Vec2() : x(0.0f), y(0.0f) {}
 
-inline Vec2::Vec2(float xx, float yy)
-: x(xx), y(yy)
-{
-}
+inline Vec2::Vec2(float xx, float yy) : x(xx), y(yy) {}
 
 inline Vec2::Vec2(const float* array)
 {
@@ -137,6 +131,22 @@ inline Vec2 Vec2::operator+(const Vec2& v) const
     return result;
 }
 
+inline Vec2 Vec2::operator+(float v) const
+{
+    Vec2 result(*this);
+    result.x += v;
+    result.y += v;
+    return result;
+}
+
+inline Vec2 Vec2::operator-(float v) const
+{
+    Vec2 result(*this);
+    result.x -= v;
+    result.y -= v;
+    return result;
+}
+
 inline Vec2& Vec2::operator+=(const Vec2& v)
 {
     add(v);
@@ -201,7 +211,7 @@ inline bool Vec2::operator>(const Vec2& v) const
 
 inline bool Vec2::operator==(const Vec2& v) const
 {
-    return x==v.x && y==v.y;
+    return x == v.x && y == v.y;
 }
 
 inline bool Vec2::operator!=(const Vec2& v) const
@@ -225,6 +235,18 @@ inline Vec2 operator*(float x, const Vec2& v)
 inline Vec2 operator*(const Vec2& left, const Vec2& right)
 {
     return Vec2(left.x * right.x, left.y * right.y);
+}
+
+inline Vec2 operator/(float x, const Vec2& v)
+{
+    Vec2 result(v);
+    result.scale(1.0 / x);
+    return result;
+}
+
+inline Vec2 operator/(const Vec2& left, const Vec2& right)
+{
+    return Vec2(left.x / right.x, left.y / right.y);
 }
 
 NS_AX_MATH_END

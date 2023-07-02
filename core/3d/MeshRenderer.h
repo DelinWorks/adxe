@@ -250,6 +250,8 @@ public:
 
     static AABB getAABBRecursivelyImp(Node* node);
 
+    void removeAllMeshes();
+
 protected:
     /** set specific mesh texture, for private use (create mesh stage) only */
     Texture2D* setMeshTexture(Mesh* mesh,

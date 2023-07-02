@@ -148,6 +148,19 @@ RenderTexture* RenderTexture::create(int w, int h, bool sharedRenderTarget)
     return nullptr;
 }
 
+RenderTexture* RenderTexture::create()
+{
+    RenderTexture* ret = new RenderTexture();
+
+    if (ret->init())
+    {
+        ret->autorelease();
+        return ret;
+    }
+    AX_SAFE_DELETE(ret);
+    return nullptr;
+}
+
 bool RenderTexture::initWithWidthAndHeight(int w, int h, backend::PixelFormat eFormat, bool sharedRenderTarget)
 {
     return initWithWidthAndHeight(w, h, eFormat, PixelFormat::NONE, sharedRenderTarget);

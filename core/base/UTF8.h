@@ -70,6 +70,9 @@ std::string toString(T arg)
 std::string AX_DLL format(const char* format, ...) AX_FORMAT_PRINTF(1, 2);
 std::string AX_DLL vformat(const char* format, va_list ap);
 
+std::wstring AX_DLL wformat(const wchar_t* format, ...) AX_FORMAT_PRINTF(1, 2);
+std::wstring AX_DLL vformat(const wchar_t* format, va_list ap);
+
 /**
  *  @brief Converts from UTF8 string to UTF16 string.
  *

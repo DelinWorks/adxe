@@ -205,7 +205,8 @@ bool Node::init()
     return true;
 }
 
-bool Node::initLayer() {
+bool Node::initLayer()
+{
     _ignoreAnchorPointForPosition = true;
     setAnchorPoint(Vec2(0.5f, 0.5f));
     setContentSize(_director->getWinSize());
@@ -427,7 +428,7 @@ void Node::setRotationSkewY(float rotationY)
 /// scale getter
 float Node::getScale() const
 {
-    AXASSERT(_scaleX == _scaleY, "CCNode#scale. ScaleX != ScaleY. Don't know which one to return");
+    // AXASSERT(_scaleX == _scaleY, "CCNode#scale. ScaleX != ScaleY. Don't know which one to return");
     return _scaleX;
 }
 
@@ -969,16 +970,16 @@ bool Node::doEnumerate(std::string name, std::function<bool(Node*)> callback) co
  */
 void Node::addChild(Node* child, int localZOrder, int tag)
 {
-    AXASSERT(child != nullptr, "Argument must be non-nil");
-    AXASSERT(child->_parent == nullptr, "child already added. It can't be added again");
+    // AXASSERT(child != nullptr, "Argument must be non-nil");
+    // AXASSERT(child->_parent == nullptr, "child already added. It can't be added again");
 
     addChildHelper(child, localZOrder, tag, "", true);
 }
 
 void Node::addChild(Node* child, int localZOrder, std::string_view name)
 {
-    AXASSERT(child != nullptr, "Argument must be non-nil");
-    AXASSERT(child->_parent == nullptr, "child already added. It can't be added again");
+    // AXASSERT(child != nullptr, "Argument must be non-nil");
+    // AXASSERT(child->_parent == nullptr, "child already added. It can't be added again");
 
     addChildHelper(child, localZOrder, INVALID_TAG, name, false);
 }
@@ -1305,7 +1306,11 @@ void Node::visit(Renderer* renderer, const Mat4& parentTransform, uint32_t paren
             this->draw(renderer, _modelViewTransform, flags);
 
         for (auto it = _children.cbegin() + i, itCend = _children.cend(); it != itCend; ++it)
-            (*it)->visit(renderer, _modelViewTransform, flags);
+        {
+            auto c = (*it);
+            if (!(c->_disregardGraph && !c->isVisible()))
+                (*it)->visit(renderer, _modelViewTransform, flags);
+        }
     }
     else if (visibleByCamera)
     {
@@ -1622,6 +1627,16 @@ void Node::pause()
     _scheduler->pauseTarget(this);
     _actionManager->pauseTarget(this);
     _eventDispatcher->pauseEventListenersForTarget(this);
+}
+
+bool Node::isAwake()
+{
+    if (_isFirstUpdate)
+    {
+        _isFirstUpdate = false;
+        return true;
+    }
+    return false;
 }
 
 // override me

@@ -1486,7 +1486,7 @@ void Label::enableUnderline()
     // remove it, just in case to prevent adding two or more
     if (!_underlineNode)
     {
-        _underlineNode = DrawNode::create();
+        _underlineNode = DrawNode::create(1);
         _underlineNode->setGlobalZOrder(getGlobalZOrder());
         addChild(_underlineNode, 100000);
         _contentDirty = true;
@@ -1707,7 +1707,7 @@ void Label::updateContent()
         {
             // This is the logic for TTF fonts
             const float charheight = (_textDesiredHeight / _numberOfLines);
-            _underlineNode->setLineWidth(charheight / 6);
+            _underlineNode->setLineWidth(1);
 
             // atlas font
             for (int i = 0; i < _numberOfLines; ++i)
@@ -1720,8 +1720,17 @@ void Label::updateContent()
 
                 // Github issue #15214. Uses _displayedColor instead of _textColor for the underline.
                 // This is to have the same behavior of SystemFonts.
-                _underlineNode->drawLine(Vec2(_linesOffsetX[i], y), Vec2(_linesWidth[i] + _linesOffsetX[i], y),
-                                         Color4F(_displayedColor));
+                /*_underlineNode->drawLine(Vec2(_linesOffsetX[i], y), Vec2(_linesWidth[i] + _linesOffsetX[i], y),
+                                         Color4F(_displayedColor));*/
+                int count = 0;
+                for (float x = 0; x <= _linesWidth[i] + _linesOffsetX[i]; x += 5)
+                {
+                    if (count % 2 == 0)
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(1, 1, 1, 0.3));
+                    else
+                        _underlineNode->drawPoint(Vec2(x, y), 2, Color4F(1, 1, 1, 0.2));
+                    count++;
+                }
             }
         }
         else if (_textSprite)
@@ -1940,8 +1949,13 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
             auto& pipelineQuad = _quadCommand.getPipelineDescriptor();
             pipelineQuad.programState->setUniform(_mvpMatrixLocation, matrixProjection.m, sizeof(matrixProjection.m));
             pipelineQuad.programState->setTexture(texture->getBackendTexture());
+
+            Mat4 m  = transform;
+            m.m[12] = snap_interval(m.m[12], m.m[0], 10);
+            m.m[13] = snap_interval(m.m[13], m.m[5], 10);
+
             _quadCommand.init(_globalZOrder, texture, _blendFunc, textureAtlas->getQuads(),
-                              textureAtlas->getTotalQuads(), transform, flags);
+                              textureAtlas->getTotalQuads(), m, flags);
             renderer->addCommand(&_quadCommand);
         }
         else

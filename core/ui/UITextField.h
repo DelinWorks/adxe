@@ -604,6 +604,8 @@ public:
      */
     void setCursorFromPoint(const Vec2& point, const Camera* camera);
 
+    UICCTextField* getTextFieldRenderer();
+
     virtual bool init() override;
 
 protected:

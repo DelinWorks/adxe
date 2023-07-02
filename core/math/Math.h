@@ -32,4 +32,13 @@
 #include "math/Rect.h"
 #include "math/Quaternion.h"
 
+NS_AX_BEGIN
+
+inline float snap_interval(float original, float numerator, float denominator)
+{
+    return round(original * denominator / numerator) * numerator / denominator;
+}
+
+NS_AX_END
+
 #endif

@@ -625,6 +625,8 @@ public:
     void setProgramState(uint32_t type) override;
 
     void setAutoUpdatePS(bool bVal) { _autoUpdatePS = bVal; }
+    bool _roundRenderMatrix = false;
+    bool _forceBatching     = false;
 
 protected:
     virtual void updateColor() override;
