@@ -1701,6 +1701,7 @@ void Label::updateContent()
 
     if (_underlineNode)
     {
+        _underlineNode->setGlobalZOrder(getGlobalZOrder() + 1);
         _underlineNode->clear();
 
         if (_numberOfLines)
