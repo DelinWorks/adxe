@@ -421,6 +421,8 @@ void Mesh::draw(Renderer* renderer,
     else
         _material->getStateBlock().setDepthWrite(true);
 
+    _material->getStateBlock().setDepthTest(false);
+
     // set default uniforms for Mesh
     // 'u_color' and others
     const auto scene = Director::getInstance()->getRunningScene();
@@ -446,6 +448,11 @@ void Mesh::draw(Renderer* renderer,
         command.setTransparent(isTransparent);
         command.set3D(!_material->isForce2DQueue());
         command.setWireframe(wireframe);
+        BlendFunc blendType                  = getBlendFunc();
+        auto& blendDescriptor                = command.getPipelineDescriptor().blendDescriptor;
+        blendDescriptor.blendEnabled         = true;
+        blendDescriptor.sourceRGBBlendFactor = blendDescriptor.sourceAlphaBlendFactor = blendType.src;
+        blendDescriptor.destinationRGBBlendFactor = blendDescriptor.destinationAlphaBlendFactor = blendType.dst;
     }
 
     _meshIndexData->setPrimitiveType(_material->_drawPrimitive);
@@ -536,7 +543,6 @@ void Mesh::bindMeshCommand()
     {
         auto& stateBlock = _material->getStateBlock();
         stateBlock.setCullFace(true);
-        stateBlock.setDepthTest(true);
         if (_blend.src != backend::BlendFactor::ONE && _blend.dst != backend::BlendFactor::ONE)
             stateBlock.setBlend(true);
     }

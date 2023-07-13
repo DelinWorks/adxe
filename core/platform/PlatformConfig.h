@@ -52,7 +52,7 @@ THE SOFTWARE.
 #define AX_PLATFORM_MAC 8
 #define AX_PLATFORM_WINRT 13
 
-#define AX_USE_ANGLE 1
+//#define AX_USE_ANGLE 0
 
 // Determine target platform by compile environment macro.
 #define AX_TARGET_PLATFORM AX_PLATFORM_UNKNOWN
