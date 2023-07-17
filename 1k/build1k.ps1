@@ -137,7 +137,7 @@ $manifest = @{
     gcc          = '9.0.0+';
     cmake        = '3.26.4+';
     nuget        = '*'; # any
-    glslcc       = '1.7.6+';
+    # glslcc       = '1.8.0+';
     ninja        = '1.11.1+';
     jdk          = '11.0.19+';
     nsis         = '3.09';
@@ -380,7 +380,7 @@ function setup_cmake() {
         $cmake_root = $(Join-Path $prefix $cmake_dir)
         $cmake_pkg_name = "$cmake_dir$cmake_suffix"
         $cmake_pkg_path = "$cmake_root$cmake_suffix"
-        if ($b1k.isdir($cmake_root)) {
+        if (!$b1k.isdir($cmake_root)) {
             $cmake_base_uri = 'https://github.com/Kitware/CMake/releases/download'
             $cmake_url = "$cmake_base_uri/v$cmake_ver/$cmake_pkg_name"
             if (!$b1k.isfile($cmake_pkg_path)) {
@@ -896,7 +896,7 @@ validHostAndToolchain
 
 ########## setup build tools if not installed #######
 
-$null = setup_glslcc
+# $null = setup_glslcc
 
 $cmake_prog = setup_cmake
 
