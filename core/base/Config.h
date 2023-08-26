@@ -255,7 +255,7 @@ THE SOFTWARE.
 //  It works with:
 // Chipmunk2D or Box2D
 #ifndef AX_USE_PHYSICS
-#    define AX_USE_PHYSICS 1
+#    define AX_USE_PHYSICS 0
 #endif
 #if (AX_USE_PHYSICS)
 /** Use Chipmunk2D physics 2d engine on physics integration API. */
@@ -264,7 +264,7 @@ THE SOFTWARE.
 #    endif
 /** or use Box2D physics 2d engine on physics integration API. */
 #    ifndef AX_ENABLE_BOX2D_INTEGRATION
-#        define AX_ENABLE_BOX2D_INTEGRATION 1
+#        define AX_ENABLE_BOX2D_INTEGRATION 0
 #    endif
 #endif  // AX_USE_PHYSICS
 
@@ -273,7 +273,7 @@ THE SOFTWARE.
 #    if (AX_TARGET_PLATFORM == AX_PLATFORM_IOS || AX_TARGET_PLATFORM == AX_PLATFORM_MAC ||     \
          AX_TARGET_PLATFORM == AX_PLATFORM_WIN32 || AX_TARGET_PLATFORM == AX_PLATFORM_WINRT || \
          AX_TARGET_PLATFORM == AX_PLATFORM_ANDROID || AX_TARGET_PLATFORM == AX_PLATFORM_LINUX)
-#        define AX_USE_3D_PHYSICS 1
+#        define AX_USE_3D_PHYSICS 0
 #    endif
 #endif
 
@@ -286,7 +286,7 @@ THE SOFTWARE.
 
 /** Use 3D navigation API */
 #ifndef AX_USE_NAVMESH
-#    define AX_USE_NAVMESH 1
+#    define AX_USE_NAVMESH 0
 #endif
 
 /** Use culling or not. */
@@ -312,12 +312,12 @@ THE SOFTWARE.
  * size.
  */
 #ifndef AX_USE_WEBP
-#    define AX_USE_WEBP 1
+#    define AX_USE_WEBP 0
 #endif  // AX_USE_WEBP
 
 /** Enable Lua Script binding */
 #ifndef AX_ENABLE_SCRIPT_BINDING
-#    define AX_ENABLE_SCRIPT_BINDING 1
+#    define AX_ENABLE_SCRIPT_BINDING 0
 #endif
 
 /** When AX_ENABLE_SCRIPT_BINDING and AX_ENABLE_GC_FOR_NATIVE_OBJECTS are both 1

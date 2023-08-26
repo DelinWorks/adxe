@@ -1261,7 +1261,7 @@ bool Label::updateQuads()
             {
                 _reusedLetter->setTextureRect(_reusedRect, letterDef.rotated, _reusedRect.size);
                 float letterPositionX = _lettersInfo[ctr].positionX + _linesOffsetX[_lettersInfo[ctr].lineIndex];
-                _reusedLetter->setPosition(letterPositionX, py);
+                _reusedLetter->setPosition(round(letterPositionX), round(py));
                 auto index = static_cast<int>(_batchNodes.at(letterDef.textureID)->getTextureAtlas()->getTotalQuads());
                 _lettersInfo[ctr].atlasIndex = index;
 
