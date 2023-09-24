@@ -75,7 +75,7 @@ Button::Button()
     , _disabledTexType(TextureResType::LOCAL)
     , _fontName("")
 {
-    setTouchEnabled(true);
+    //setTouchEnabled(true);
 }
 
 Button::~Button() {}
