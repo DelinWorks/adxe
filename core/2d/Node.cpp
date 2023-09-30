@@ -2177,8 +2177,8 @@ bool isScreenPointInRect(const Vec2& pt, const Camera* camera, const Mat4& w2l, 
 
     // first, convert pt to near/far plane, get Pn and Pf
     Vec3 Pn(pt.x, pt.y, -1), Pf(pt.x, pt.y, 1);
-    Pn = camera->unprojectGL(Pn);
-    Pf = camera->unprojectGL(Pf);
+    //Pn = camera->unprojectGL(Pn);
+    //Pf = camera->unprojectGL(Pf);
 
     //  then convert Pn and Pf to node space
     w2l.transformPoint(&Pn);

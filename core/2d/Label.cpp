@@ -1261,7 +1261,7 @@ bool Label::updateQuads()
             {
                 _reusedLetter->setTextureRect(_reusedRect, letterDef.rotated, _reusedRect.size);
                 float letterPositionX = _lettersInfo[ctr].positionX + _linesOffsetX[_lettersInfo[ctr].lineIndex];
-                _reusedLetter->setPosition(round(letterPositionX), round(py));
+                _reusedLetter->setPosition(letterPositionX, py);
                 auto index = static_cast<int>(_batchNodes.at(letterDef.textureID)->getTextureAtlas()->getTotalQuads());
                 _lettersInfo[ctr].atlasIndex = index;
 
@@ -1956,7 +1956,7 @@ void Label::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
             m.m[13] = snap_interval(m.m[13], m.m[5], 1);
 
             _quadCommand.init(_globalZOrder, texture, _blendFunc, textureAtlas->getQuads(),
-                              textureAtlas->getTotalQuads(), m, flags);
+                              textureAtlas->getTotalQuads(), transform, flags);
             renderer->addCommand(&_quadCommand);
         }
         else

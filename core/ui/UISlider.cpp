@@ -251,6 +251,13 @@ void Slider::setScale9Enabled(bool able)
     _barRenderer->setScale9Enabled(_scale9Enabled);
     _progressBarRenderer->setScale9Enabled(_scale9Enabled);
 
+    _barRenderer->_roundRenderMatrix = true;
+    _progressBarRenderer->_roundRenderMatrix = true;
+
+    _slidBallNormalRenderer->_roundRenderMatrix = true;
+    _slidBallPressedRenderer->_roundRenderMatrix = true;
+    _slidBallDisabledRenderer->_roundRenderMatrix = true;
+
     if (_scale9Enabled)
     {
         bool ignoreBefore = _ignoreSize;
