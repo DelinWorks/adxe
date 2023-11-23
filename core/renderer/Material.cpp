@@ -520,7 +520,11 @@ void Material::setForce2DQueue(bool value)
 
 Material::Material() : _name(""), _currentTechnique(nullptr), _target(nullptr) {}
 
-Material::~Material() {}
+Material::~Material()
+{
+    AX_SAFE_RELEASE(_currentTechnique);
+    AX_SAFE_RELEASE(_target);
+}
 
 Material* Material::clone() const
 {

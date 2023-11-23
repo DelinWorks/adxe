@@ -160,15 +160,28 @@ void Ref::printLeaks()
     }
     else
     {
-        log("[memory] WARNING: %d Ref objects still active in memory.\n", (int)__refAllocationList.size());
-
+        int count = 0;
         for (const auto& ref : __refAllocationList)
         {
             AX_ASSERT(ref);
             const char* type = typeid(*ref).name();
-            log("[memory] LEAK: Ref object '%s' still active with reference count %d.\n", (type ? type : ""),
-                ref->getReferenceCount());
+            const char* targ = "ProgramGL";
+
+            int SizeA         = 0;
+            int SizeB         = 0;
+            while (type[SizeA] != '\0') SizeA++;
+            while (targ[SizeB] != '\0') SizeB++;
+
+            //if (memcmp(type + SizeA - SizeB, targ, SizeB) == 0)
+            {
+                log("[memory] LEAK: Ref object @'%p' '%s' still active with reference count %d.\n", (void*)ref,
+                    (type ? type : ""),
+                    ref->getReferenceCount());
+                count++;
+            }
         }
+
+        log("[memory] WARNING: %d Ref objects still active in memory.\n", count);
     }
 }
 

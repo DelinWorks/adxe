@@ -303,11 +303,12 @@ public:
     // Adds objects
 
     /** Adds a new element at the end of the Vector. */
-    void pushBack(T object)
+    void pushBack(T object, bool retain = true)
     {
         AXASSERT(object != nullptr, "The object should not be nullptr");
         _data.emplace_back(object);
-        object->retain();
+        if (retain)
+            object->retain();
     }
 
     /** Push all elements of an existing Vector to the end of current Vector. */
@@ -422,12 +423,13 @@ public:
     /** @brief Removes all elements from the Vector (which are destroyed), leaving the container with a size of 0.
      *  @note All the elements in the Vector will be released (reference count will be decreased).
      */
-    void clear()
+    void clear(bool release = true)
     {
-        for (auto&& it : _data)
-        {
-            it->release();
-        }
+        if (release)
+            for (auto&& it : _data)
+            {
+                it->release();
+            }
         _data.clear();
     }
 

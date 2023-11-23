@@ -63,7 +63,11 @@ Technique* Technique::create(Material* material)
 
 Technique::Technique() : _name("") {}
 
-Technique::~Technique() {}
+Technique::~Technique()
+{
+    for (auto _pass : _passes)
+        AX_SAFE_RELEASE(_pass);
+}
 
 bool Technique::init(Material* parent)
 {

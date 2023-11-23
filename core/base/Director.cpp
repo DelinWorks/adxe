@@ -1496,6 +1496,7 @@ void Director::mainLoop()
     {
         _purgeDirectorInNextLoop = false;
         purgeDirector();
+        Ref::printLeaks();
     }
     else if (_restartDirectorInNextLoop)
     {

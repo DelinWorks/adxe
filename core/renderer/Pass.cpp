@@ -135,7 +135,7 @@ void Pass::setProgramState(backend::ProgramState* programState)
     {
         AX_SAFE_RELEASE(_programState);
         _programState = programState;
-        AX_SAFE_RETAIN(_programState);
+        //AX_SAFE_RETAIN(_programState);
         initUniformLocations();
         _hashDirty = true;
     }
