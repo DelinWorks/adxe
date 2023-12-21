@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "platform/PlatformMacros.h"
 #include "base/Config.h"
 
-#define AX_REF_LEAK_DETECTION 1
+#define AX_REF_LEAK_DETECTION 0
 
 /**
  * @addtogroup base
