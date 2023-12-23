@@ -226,12 +226,6 @@ void DrawNode::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 {
     if (_bufferCountTriangle)
     {
-        if (_dirtyTriangle)
-        {
-            _customCommandTriangle.updateVertexBuffer(_bufferTriangle, 0, _bufferCountTriangle * sizeof(V2F_C4B_T2F));
-            _customCommandTriangle.setVertexDrawInfo(0, _bufferCountTriangle);
-            _dirtyTriangle = false;
-        }
         updateBlendState(_customCommandTriangle);
         updateUniforms(transform, _customCommandTriangle);
         _customCommandTriangle.init(_globalZOrder);
@@ -240,12 +234,6 @@ void DrawNode::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 
     if (_bufferCountPoint)
     {
-        if (_dirtyPoint)
-        {
-            _customCommandLine.updateVertexBuffer(_bufferPoint, 0, _bufferCountPoint * sizeof(V2F_C4B_T2F));
-            _customCommandLine.setVertexDrawInfo(0, _bufferCountPoint);
-            _dirtyPoint = false;
-        }
         updateBlendState(_customCommandPoint);
         updateUniforms(transform, _customCommandPoint);
         _customCommandPoint.init(_globalZOrder);
@@ -254,12 +242,6 @@ void DrawNode::draw(Renderer* renderer, const Mat4& transform, uint32_t flags)
 
     if (_bufferCountLine)
     {
-        if (_dirtyLine)
-        {
-            _customCommandLine.updateVertexBuffer(_bufferLine, 0, _bufferCountLine * sizeof(V2F_C4B_T2F));
-            _customCommandLine.setVertexDrawInfo(0, _bufferCountLine);
-            _dirtyLine = false;
-        }
         updateBlendState(_customCommandLine);
         updateUniforms(transform, _customCommandLine);
         _customCommandLine.setLineWidth(_lineWidth);
@@ -275,8 +257,10 @@ void DrawNode::drawPoint(const Vec2& position, const float pointSize, const Colo
     V2F_C4B_T2F* point = _bufferPoint + _bufferCountPoint;
     *point             = {position, color, Tex2F(pointSize, 0)};
 
+    _customCommandPoint.updateVertexBuffer(point, _bufferCountPoint * sizeof(V2F_C4B_T2F), sizeof(V2F_C4B_T2F));
     _bufferCountPoint += 1;
     _dirtyPoint = true;
+    _customCommandPoint.setVertexDrawInfo(0, _bufferCountPoint);
 }
 
 void DrawNode::drawPoints(const Vec2* position, unsigned int numberOfPoints, const Color4B& color)
@@ -297,8 +281,11 @@ void DrawNode::drawPoints(const Vec2* position,
         *(point + i) = {position[i], color, Tex2F(pointSize, 0)};
     }
 
+    _customCommandPoint.updateVertexBuffer(point, _bufferCountPoint * sizeof(V2F_C4B_T2F),
+                                           numberOfPoints * sizeof(V2F_C4B_T2F));
     _bufferCountPoint += numberOfPoints;
     _dirtyPoint = true;
+    _customCommandPoint.setVertexDrawInfo(0, _bufferCountPoint);
 }
 
 void DrawNode::drawLine(const Vec2& origin, const Vec2& destination, const Color4B& color)
@@ -310,8 +297,10 @@ void DrawNode::drawLine(const Vec2& origin, const Vec2& destination, const Color
     *point       = {origin, color, Tex2F(0.0, 0.0)};
     *(point + 1) = {destination, color, Tex2F(0.0, 0.0)};
 
+    _customCommandLine.updateVertexBuffer(point, _bufferCountLine * sizeof(V2F_C4B_T2F), 2 * sizeof(V2F_C4B_T2F));
     _bufferCountLine += 2;
     _dirtyLine = true;
+    _customCommandLine.setVertexDrawInfo(0, _bufferCountLine);
 }
 
 void DrawNode::drawRect(const Vec2& origin, const Vec2& destination, const Color4B& color)
@@ -352,7 +341,10 @@ void DrawNode::drawPoly(const Vec2* poli, unsigned int numberOfPoints, bool clos
         *(point + 1) = {poli[0], color, Tex2F(0.0, 0.0)};
     }
 
+    _customCommandLine.updateVertexBuffer(cursor, _bufferCountLine * sizeof(V2F_C4B_T2F),
+                                          vertex_count * sizeof(V2F_C4B_T2F));
     _bufferCountLine += vertex_count;
+    _customCommandLine.setVertexDrawInfo(0, _bufferCountLine);
 }
 
 void DrawNode::drawCircle(const Vec2& center,
@@ -507,8 +499,11 @@ void DrawNode::drawDot(const Vec2& pos, float radius, const Color4B& color)
     triangles[0]                    = triangle0;
     triangles[1]                    = triangle1;
 
+    _customCommandTriangle.updateVertexBuffer(triangles, _bufferCountTriangle * sizeof(V2F_C4B_T2F),
+                                              vertex_count * sizeof(V2F_C4B_T2F));
     _bufferCountTriangle += vertex_count;
     _dirtyTriangle = true;
+    _customCommandTriangle.setVertexDrawInfo(0, _bufferCountTriangle);
 }
 
 void DrawNode::drawRect(const Vec2& p1, const Vec2& p2, const Vec2& p3, const Vec2& p4, const Color4B& color)
