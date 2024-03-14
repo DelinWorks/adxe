@@ -55,10 +55,13 @@ bool ComponentContainer::add(Component* com)
     {
         auto componentName = com->getName();
 
-        if (_componentMap.find(componentName) != _componentMap.end())
+        auto it = _componentMap.find(componentName);
+        if (it != _componentMap.end())
         {
-            AXASSERT(false, "ComponentContainer already have this kind of component");
-            break;
+            if (it.value()->getPriority() <= com->getPriority())
+                _owner->removeComponent(it.key());
+            else
+                break;
         }
         hlookup::set_item(_componentMap, componentName, com);  //_componentMap[componentName] = com;
         com->retain();

@@ -978,8 +978,8 @@ void Node::addChild(Node* child, int localZOrder, int tag)
 
 void Node::addChild(Node* child, int localZOrder, std::string_view name)
 {
-    AXASSERT(child != nullptr, "Argument must be non-nil");
-    AXASSERT(child->_parent == nullptr, "child already added. It can't be added again");
+    //AXASSERT(child != nullptr, "Argument must be non-nil");
+    //AXASSERT(child->_parent == nullptr, "child already added. It can't be added again");
 
     addChildHelper(child, localZOrder, INVALID_TAG, name, false);
 }
@@ -1638,10 +1638,10 @@ void Node::update(float fDelta)
     }
 #endif
 
-    if (_componentContainer && !_componentContainer->isEmpty())
-    {
-        _componentContainer->visit(fDelta);
-    }
+    //if (_componentContainer && !_componentContainer->isEmpty())
+    //{
+    //    _componentContainer->visit(fDelta);
+    //}
 }
 
 // MARK: coordinates

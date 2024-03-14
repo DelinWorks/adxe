@@ -255,7 +255,7 @@ THE SOFTWARE.
 //  It works with:
 // Chipmunk2D or Box2D
 #ifndef AX_USE_PHYSICS
-#    define AX_USE_PHYSICS 1
+#    define AX_USE_PHYSICS 0
 #endif
 #if (AX_USE_PHYSICS)
 /** Use Chipmunk2D physics 2d engine on physics integration API. */
@@ -264,7 +264,7 @@ THE SOFTWARE.
 #    endif
 /** or use Box2D physics 2d engine on physics integration API. */
 #    ifndef AX_ENABLE_BOX2D_INTEGRATION
-#        define AX_ENABLE_BOX2D_INTEGRATION 1
+#        define AX_ENABLE_BOX2D_INTEGRATION 0
 #    endif
 #endif  // AX_USE_PHYSICS
 
@@ -287,7 +287,7 @@ THE SOFTWARE.
 
 /** Use 3D navigation API */
 #ifndef AX_USE_NAVMESH
-#    define AX_USE_NAVMESH 1
+#    define AX_USE_NAVMESH 0
 #endif
 
 /** Use culling or not. */
@@ -306,19 +306,19 @@ THE SOFTWARE.
  * size.
  */
 #ifndef AX_USE_JPEG
-#    define AX_USE_JPEG 1
+#    define AX_USE_JPEG 0
 #endif  // AX_USE_JPEG
 
 /** Support webp or not. If your application don't use webp format picture, you can undefine this macro to save package
  * size.
  */
 #ifndef AX_USE_WEBP
-#    define AX_USE_WEBP 1
+#    define AX_USE_WEBP 0
 #endif  // AX_USE_WEBP
 
 /** Enable Lua Script binding */
 #ifndef AX_ENABLE_SCRIPT_BINDING
-#    define AX_ENABLE_SCRIPT_BINDING 1
+#    define AX_ENABLE_SCRIPT_BINDING 0
 #endif
 
 /** When AX_ENABLE_SCRIPT_BINDING and AX_ENABLE_GC_FOR_NATIVE_OBJECTS are both 1

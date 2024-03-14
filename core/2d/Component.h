@@ -66,6 +66,9 @@ public:
     Node* getOwner() const { return _owner; }
     virtual void setOwner(Node* owner);
 
+    float getPriority() const { return _priority; }
+    virtual void setPriority(float p) { _priority = p; }
+
     virtual void update(float delta);
     virtual bool serialize(void* r);
 
@@ -83,6 +86,7 @@ protected:
     Node* _owner;
     std::string _name;
     bool _enabled;
+    float _priority = 0;
 };
 
 NS_AX_END

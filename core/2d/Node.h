@@ -2002,7 +2002,9 @@ protected:
                                ///< javascript.
 #endif
 
+public:
     ComponentContainer* _componentContainer;  ///< Dictionary of components
+protected:
 
     // opacity controls
     Color3B _displayedColor;
