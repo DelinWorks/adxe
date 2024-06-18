@@ -1592,6 +1592,8 @@ void Label::createSpriteForSystemFont(const FontDefinition& fontDef)
     _textSprite->setCameraMask(getCameraMask());
     _textSprite->setGlobalZOrder(getGlobalZOrder());
     _textSprite->setAnchorPoint(Vec2::ANCHOR_BOTTOM_LEFT);
+    auto& s = _textSprite->getContentSize();
+    _textSprite->setPosition(Vec2((int)s.x % 2 == 0 ? 0 : 0.5, (int)s.y % 2 == 0 ? 0 : 0.5));
     this->setContentSize(_textSprite->getContentSize());
     texture->release();
     if (_blendFuncDirty)
@@ -2190,7 +2192,7 @@ Sprite* Label::getLetter(int letterIndex)
                     auto px =
                         letterInfo.positionX + _fontScale * uvRect.size.width / 2 + _linesOffsetX[letterInfo.lineIndex];
                     auto py = letterInfo.positionY - _fontScale * uvRect.size.height / 2 + _letterOffsetY;
-                    letter->setPosition(px, py);
+                    letter->setPosition(std::round(px), std::round(py));
                     letter->setOpacity(_realOpacity);
                     this->updateLetterSpriteScale(letter);
                 }

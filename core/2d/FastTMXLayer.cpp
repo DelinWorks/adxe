@@ -81,6 +81,7 @@ bool FastTMXLayer::initWithTilesetInfo(TMXTilesetInfo* tilesetInfo, TMXLayerInfo
     // layerInfo
     _layerName  = layerInfo->_name;
     _layerSize  = layerInfo->_layerSize;
+    _offset  = layerInfo->_offset;
     _tiles      = layerInfo->_tiles;
     _quadsDirty = true;
     setOpacity(layerInfo->_opacity);

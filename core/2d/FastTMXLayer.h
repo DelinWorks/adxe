@@ -332,6 +332,11 @@ protected:
 
     /** size of the layer in tiles */
     Vec2 _layerSize;
+
+public:
+    Vec2 _offset;
+
+protected:
     /** size of the map's tile (could be different from the tile's size) */
     Vec2 _mapTileSize;
     /** pointer to the map of tiles */
