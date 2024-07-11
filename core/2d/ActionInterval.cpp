@@ -580,13 +580,13 @@ void RepeatForever::step(float dt)
     // only action interval should prevent jerk, issue #17808
     if (_innerAction->isDone() && _innerAction->getDuration() > 0)
     {
-        float diff = _innerAction->getElapsed() - _innerAction->getDuration();
-        if (diff > _innerAction->getDuration())
-            diff = fmodf(diff, _innerAction->getDuration());
+        //float diff = _innerAction->getElapsed() - _innerAction->getDuration();
+        //if (diff > _innerAction->getDuration())
+        //    diff = fmodf(diff, _innerAction->getDuration());
         _innerAction->startWithTarget(_target);
         // to prevent jerk. cocos2d-iphone issue #390, 1247
         _innerAction->step(0.0f);
-        _innerAction->step(diff);
+        //_innerAction->step(diff);
     }
 }
 

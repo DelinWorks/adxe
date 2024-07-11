@@ -142,7 +142,7 @@ THE SOFTWARE.
  * To enable set it to 1. Enabled by default.
  */
 #ifndef AX_NODE_RENDER_SUBPIXEL
-#    define AX_NODE_RENDER_SUBPIXEL 1
+#    define AX_NODE_RENDER_SUBPIXEL 0
 #endif
 
 /** @def AX_SPRITEBATCHNODE_RENDER_SUBPIXEL
@@ -151,7 +151,7 @@ THE SOFTWARE.
  * To enable set it to 1. Enabled by default.
  */
 #ifndef AX_SPRITEBATCHNODE_RENDER_SUBPIXEL
-#    define AX_SPRITEBATCHNODE_RENDER_SUBPIXEL 1
+#    define AX_SPRITEBATCHNODE_RENDER_SUBPIXEL 0
 #endif
 
 /** @def AX_TEXTURE_ATLAS_USE_VAO
@@ -292,7 +292,7 @@ THE SOFTWARE.
 
 /** Use culling or not. */
 #ifndef AX_USE_CULLING
-#    define AX_USE_CULLING 1
+#    define AX_USE_CULLING 0
 #endif
 
 /** Support PNG or not. If your application don't use png format picture, you can undefine this macro to save package

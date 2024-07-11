@@ -78,7 +78,6 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
         PRIVATE ${AX_ROOT_DIR}/thirdparty/pugixml
         PRIVATE ${AX_ROOT_DIR}/thirdparty/xxhash
         PRIVATE ${AX_ROOT_DIR}/thirdparty/ConvertUTF
-        PRIVATE ${AX_ROOT_DIR}/thirdparty/openal/include
         PRIVATE ${AX_ROOT_DIR}/thirdparty/ogg/include
         PRIVATE ${AX_ROOT_DIR}/thirdparty/glad/include
         PRIVATE ${AX_ROOT_DIR}/thirdparty/glfw/include
@@ -249,7 +248,6 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
             libcrypto
             libssl
             libcurl_imp
-            OpenAL32
         )
     else()
         target_link_libraries(${APP_NAME}
@@ -259,7 +257,6 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
             curl
             ssl
             crypto
-            openal
         )
     endif()
 
@@ -277,7 +274,6 @@ function(ax_link_cxx_prebuilt APP_NAME AX_ROOT_DIR AX_PREBUILT_DIR)
             "${AX_ROOT_DIR}/thirdparty/openssl/_d/lib/${PLATFORM_NAME}/${ARCH_ALIAS}/libssl-3${ssl_dll_suffix}.dll"
             "${AX_ROOT_DIR}/thirdparty/curl/_d/lib/${PLATFORM_NAME}/${ARCH_ALIAS}/libcurl.dll"
             "${AX_ROOT_DIR}/thirdparty/zlib/_d/lib/${PLATFORM_NAME}/${ARCH_ALIAS}/zlib1.dll"
-            "${AX_ROOT_DIR}/${AX_PREBUILT_DIR}/bin/${BUILD_CONFIG_DIR}OpenAL32.dll"
             $<TARGET_FILE_DIR:${APP_NAME}>)
 
         if (BUILD_SHARED_LIBS)

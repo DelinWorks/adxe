@@ -370,13 +370,13 @@ void Director::calculateDeltaTime()
         _deltaTime = MAX(0, _deltaTime);
     }
 
-#if _AX_DEBUG
-    // If we are debugging our code, prevent big delta time
-    if (_deltaTime > 0.2f)
-    {
-        _deltaTime = 1 / 60.0f;
-    }
-#endif
+//#if _AX_DEBUG
+//    // If we are debugging our code, prevent big delta time
+    //if (_deltaTime > 0.2f)
+    //{
+    //    _deltaTime = 0.016f;
+    //}
+//#endif
 }
 
 float Director::getDeltaTime() const
@@ -990,7 +990,9 @@ void Director::reset()
 
     // Fix github issue: https://github.com/axmolengine/axmol/issues/550
     // !!!The AudioEngine hold scheduler must end before Director destroyed, otherwise, just lead app crash
+#if AX_ENABLE_AUDIO
     AudioEngine::end();
+#endif
 
     // cleanup scheduler
     getScheduler()->unscheduleAll();

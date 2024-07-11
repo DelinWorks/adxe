@@ -202,7 +202,17 @@ include(renderer/CMakeLists.txt)
 include(base/CMakeLists.txt)
 include(ui/CMakeLists.txt)
 include(network/CMakeLists.txt)
-include(audio/CMakeLists.txt)
+
+option(AX_ENABLE_AUDIO "Build audio support" OFF)
+
+if(AX_ENABLE_AUDIO)
+    include(audio/CMakeLists.txt)
+endif()
+
+if(AX_ENABLE_AUDIO)
+    list(APPEND _AX_HEADER ${_AX_AUDIO_HEADER})
+    list(APPEND _AX_SRC ${_AX_AUDIO_SRC})
+endif()
 
 file(GLOB_RECURSE _AX_MEDIA_HEADER media/*.h)
 file(GLOB_RECURSE _AX_MEDIA_SRC media/*.cpp)

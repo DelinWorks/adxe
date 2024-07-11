@@ -34,6 +34,12 @@ option(
   OFF
 )
 
+option(
+  AX_USE_ALSOFT
+  "Disable OpenAL"
+  OFF
+)
+
 set(ANDROID_SHARED_LOADS "" CACHE INTERNAL "The android shared libraries load source code" )
 set(ANDROID_SHARED_LOAD_FILE_NAME "SharedLoader.java" CACHE INTERNAL "The android shared load java file name" )
 set(ANDROID_SHARED_LOAD_FILE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/${ANDROID_SHARED_LOAD_FILE_NAME}.in" CACHE INTERNAL "The android shared libraries load config code file" )
@@ -396,6 +402,7 @@ if(AX_WITH_CURL AND NOT EMSCRIPTEN)
     endif()
 endif()
 
+if(AX_ENABLE_AUDIO)
 # The openal-soft(LGPL 2.1)
 if(AX_USE_ALSOFT AND NOT EMSCRIPTEN)
     set(alsoft_opts "ALSOFT_DLOPEN OFF" "ALSOFT_UTILS OFF" "ALSOFT_EXAMPLES OFF" "ALSOFT_INSTALL OFF")
@@ -435,8 +442,9 @@ if(AX_USE_ALSOFT AND NOT EMSCRIPTEN)
     endif()
 endif()
 
-# The ogg decoder
-ax_add_3rd(ogg)
+	# The ogg decoder
+	ax_add_3rd(ogg)
+endif()
 
 if(WINDOWS OR LINUX OR ANDROID OR WASM)
     ax_add_3rd(glad)
