@@ -1,3 +1,4 @@
+add_definitions(-DAX_ENABLE_AUDIO=1)
 
 # common headers and sources
 set(_AX_AUDIO_HEADER
