@@ -27,7 +27,7 @@ struct FastRNG
     uint32_t _seed  = 0;
 #endif
 
-    FastRNG() { seed_rng((uint32_t)time(NULL)); }
+    FastRNG() { seed_rng((uint32_t)rand()); }
 
     // initialize this object with a uint32_t seed
     void seed_rng(uint32_t seed)

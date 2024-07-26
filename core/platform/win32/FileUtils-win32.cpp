@@ -115,7 +115,7 @@ bool FileUtilsWin32::init()
 
     // make sure any path relative to exe dir can be found when app working directory location not exe path
     if (!startedFromSelfLocation)
-        addSearchPath(s_exeDir);
+        addSearchPath(s_exeDir + "\\content");
 
     return bRet;
 }

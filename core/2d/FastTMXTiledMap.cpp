@@ -83,7 +83,7 @@ bool FastTMXTiledMap::initWithXML(std::string_view tmxString, std::string_view r
 
     TMXMapInfo* mapInfo = TMXMapInfo::createWithXML(tmxString, resourcePath);
 
-    AXASSERT(!mapInfo->getTilesets().empty(), "FastTMXTiledMap: Map not found. Please check the filename.");
+    //AXASSERT(!mapInfo->getTilesets().empty(), "FastTMXTiledMap: Map not found. Please check the filename.");
     buildWithMapInfo(mapInfo);
 
     return true;
@@ -100,8 +100,8 @@ FastTMXTiledMap::~FastTMXTiledMap()
 FastTMXLayer* FastTMXTiledMap::parseLayer(TMXLayerInfo* layerInfo, TMXMapInfo* mapInfo)
 {
     TMXTilesetInfo* tileset = tilesetForLayer(layerInfo, mapInfo);
-    if (tileset == nullptr)
-        return nullptr;
+    //if (tileset == nullptr)
+    //    return nullptr;
 
     FastTMXLayer* layer = FastTMXLayer::create(tileset, layerInfo, mapInfo);
 

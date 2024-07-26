@@ -295,6 +295,8 @@ void FastTMXLayer::updateIndexBuffer()
 // FastTMXLayer - setup Tiles
 void FastTMXLayer::setupTiles()
 {
+    if (!_tileSet) return;
+
     // Optimization: quick hack that sets the image size on the tileset
     _tileSet->_imageSize = _texture->getContentSizeInPixels();
 

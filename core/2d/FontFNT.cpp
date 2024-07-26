@@ -143,6 +143,13 @@ void BMFontConfiguration::purgeFontDefDictionary()
 
 std::set<unsigned int>* BMFontConfiguration::parseConfigFile(std::string_view controlFile)
 {
+    if (controlFile.size() >= (sizeof("BMP") - 1) && memcmp("BMF", controlFile.data(), sizeof("BMP") - 1) == 0)
+    {
+        // Handle fnt file of binary format
+        std::set<unsigned int>* ret = parseBinaryConfigFile((unsigned char*)&controlFile.front(),
+                                                            static_cast<uint32_t>(controlFile.size()), controlFile);
+        return ret;
+    }
     std::string data = FileUtils::getInstance()->getStringFromFile(controlFile);
     if (data.empty())
     {
@@ -310,7 +317,7 @@ std::set<unsigned int>* BMFontConfiguration::parseBinaryConfigFile(unsigned char
             const char* value = (const char*)pData;
             AXASSERT(strlen(value) < blockSize, "Block size should be less then string");
 
-            _atlasName = FileUtils::getInstance()->fullPathFromRelativeFile(value, controlFile);
+            _atlasName = value; // FileUtils::getInstance()->fullPathFromRelativeFile(value, controlFile);
         }
         else if (blockId == 4)
         {
@@ -751,8 +758,12 @@ FontAtlas* FontFNT::newFontAtlas()
     Texture2D* tempTexture = Director::getInstance()->getTextureCache()->addImage(_configuration->getAtlasName());
     if (!tempTexture)
     {
-        AX_SAFE_RELEASE(tempAtlas);
-        return nullptr;
+        tempTexture = Director::getInstance()->getTextureCache()->getTextureForKey(_configuration->getAtlasName());
+        if (!tempTexture)
+        {
+            AX_SAFE_RELEASE(tempAtlas);
+            return nullptr;
+        }
     }
 
     // add the texture
