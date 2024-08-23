@@ -2,10 +2,10 @@
 project(thirdparty)
 
 option(OPT_BOX2D_OPTIMIZED "" OFF)
-option(AX_WITH_BOX2D "Build with internal Box2D support" ON)
-option(AX_WITH_CHIPMUNK "Build with internal chipmunk support" ON)
-option(AX_WITH_RECAST "Build with internal recast support" ON)
-option(AX_WITH_BULLET "Build with internal bullet support" ON)
+option(AX_WITH_BOX2D "Build with internal Box2D support" OFF)
+option(AX_WITH_CHIPMUNK "Build with internal chipmunk support" OFF)
+option(AX_WITH_RECAST "Build with internal recast support" OFF)
+option(AX_WITH_BULLET "Build with internal bullet support" OFF)
 option(AX_WITH_JPEG "Build with internal jpeg support" ON)
 option(AX_WITH_WEBP "Build with internal webp support" ON)
 option(AX_WITH_CLIPPER2 "Build with internal Clipper2 support" ON)
@@ -282,31 +282,31 @@ endif()
 # libpng
 ax_add_3rd(png)
 
-if(AX_WITH_BOX2D)
-    set(box2d_opts "BOX2D_BUILD_UNIT_TESTS OFF" "BOX2D_BUILD_TESTBED OFF")
-    if(OPT_BOX2D_OPTIMIZED)
-        _1kfetch(box2d-optimized "https://github.com/mtsamis/box2d-optimized.git")
-        ax_add_3rd(${box2d-optimized_SOURCE_DIR} TARGETS box2d-optimized OPTIONS ${box2d_opts})
-    else()
-        ax_add_3rd(box2d OPTIONS ${box2d_opts})
-    endif()
-endif()
-
-if(AX_WITH_CHIPMUNK)
-    ax_add_3rd(chipmunk OPTIONS
-        "CP_BUILD_SHARED OFF"
-        "CP_BUILD_STATIC ON"
-        "CP_BUILD_DEMOS OFF"
-        "CP_INSTALL_STATIC OFF"
-    )
-    set_target_properties(chipmunk PROPERTIES
-      INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/chipmunk/include"
-    )
-
-    # !important axmol not use double precision
-    target_compile_definitions(chipmunk PUBLIC CP_USE_CGTYPES=0)
-    target_compile_definitions(chipmunk PUBLIC CP_USE_DOUBLES=0)
-endif()
+# if(AX_WITH_BOX2D)
+#     set(box2d_opts "BOX2D_BUILD_UNIT_TESTS OFF" "BOX2D_BUILD_TESTBED OFF")
+#     if(OPT_BOX2D_OPTIMIZED)
+#         _1kfetch(box2d-optimized "https://github.com/mtsamis/box2d-optimized.git")
+#         ax_add_3rd(${box2d-optimized_SOURCE_DIR} TARGETS box2d-optimized OPTIONS ${box2d_opts})
+#     else()
+#         ax_add_3rd(box2d OPTIONS ${box2d_opts})
+#     endif()
+# endif()
+# 
+# if(AX_WITH_CHIPMUNK)
+#     ax_add_3rd(chipmunk OPTIONS
+#         "CP_BUILD_SHARED OFF"
+#         "CP_BUILD_STATIC ON"
+#         "CP_BUILD_DEMOS OFF"
+#         "CP_INSTALL_STATIC OFF"
+#     )
+#     set_target_properties(chipmunk PROPERTIES
+#       INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/chipmunk/include"
+#     )
+# 
+#     # !important axmol not use double precision
+#     target_compile_definitions(chipmunk PUBLIC CP_USE_CGTYPES=0)
+#     target_compile_definitions(chipmunk PUBLIC CP_USE_DOUBLES=0)
+# endif()
 
 ax_add_3rd(freetype OPTIONS
     "DISABLE_FORCE_DEBUG_POSTFIX ON"
@@ -315,22 +315,23 @@ ax_add_3rd(freetype OPTIONS
     "FT_DISABLE_BROTLI TRUE"
     "FT_DISABLE_BZIP2 TRUE"
 )
-if (WINRT)
-    target_compile_definitions(freetype PUBLIC "generic=GenericFromFreeTypeLibrary")
-endif()
-target_include_directories(thirdparty INTERFACE "freetype/include")
 
-if(AX_WITH_RECAST)
-    ax_add_3rd(recast)
-endif()
+#if (WINRT)
+#    target_compile_definitions(freetype PUBLIC "generic=GenericFromFreeTypeLibrary")
+#endif()
+#target_include_directories(thirdparty INTERFACE "freetype/include")
 
-if(AX_WITH_BULLET)
-    ax_add_3rd(bullet)
-endif()
+# if(AX_WITH_RECAST)
+#     ax_add_3rd(recast)
+# endif()
 
-if(AX_WITH_JPEG AND NOT WINRT AND NOT EMSCRIPTEN)
-    ax_add_3rd(jpeg-turbo)
-endif()
+# if(AX_WITH_BULLET)
+#     ax_add_3rd(bullet)
+# endif()
+
+# if(AX_WITH_JPEG AND NOT WINRT AND NOT EMSCRIPTEN)
+#     ax_add_3rd(jpeg-turbo)
+# endif()
 
 add_subdirectory(openssl)
 if(ANDROID OR LINUX)
@@ -343,16 +344,16 @@ else()
 endif()
 target_compile_definitions(thirdparty INTERFACE OPENSSL_SUPPRESS_DEPRECATED=1)
 
-if(AX_WITH_WEBP)
-    ax_add_3rd(webp)
-endif()
+# if(AX_WITH_WEBP)
+#     ax_add_3rd(webp)
+# endif()
 
 ax_add_3rd(pugixml)
 ax_add_3rd(xxhash)
 
-if (AX_WITH_FASTLZ)
-    ax_add_3rd(fastlz)
-endif()
+# if (AX_WITH_FASTLZ)
+#     ax_add_3rd(fastlz)
+# endif()
 
 if(AX_WITH_LZ4)
     if (NOT BUILD_SHARED_LIBS)
@@ -472,17 +473,17 @@ if((WINDOWS AND NOT WINRT) OR MACOSX OR LINUX)
 endif()
 
 # unzip depend on zlib
-if(AX_WITH_UNZIP)
-    ax_add_3rd(unzip)
-endif()
-
-if(AX_WITH_CARES)
-    ax_add_3rd(c-ares)
-endif()
-
-if(AX_WITH_LLHTTP)
-    ax_add_3rd(llhttp)
-endif()
+ if(AX_WITH_UNZIP)
+     ax_add_3rd(unzip)
+ endif()
+# 
+# if(AX_WITH_CARES)
+#     ax_add_3rd(c-ares)
+# endif()
+# 
+# if(AX_WITH_LLHTTP)
+#     ax_add_3rd(llhttp)
+# endif()
 
 # libvlc
 if (AX_ENABLE_VLC_MEDIA AND (NOT _AX_HAVE_VLC))
@@ -505,10 +506,10 @@ if(AX_WITH_YAML_CPP)
 endif()
 
 # kcp
-if(AX_WITH_KCP)
-    _1kfetch(kcp)
-    ax_add_3rd(${kcp_SOURCE_DIR} TARGETS kcp)
-endif()
+# if(AX_WITH_KCP)
+#     _1kfetch(kcp)
+#     ax_add_3rd(${kcp_SOURCE_DIR} TARGETS kcp)
+# endif()
 
 if (WIN32)
     if (WINRT)

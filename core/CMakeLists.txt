@@ -89,7 +89,7 @@ message(AUTHOR_WARNING "AX_USE_GL=${AX_USE_GL}, AX_USE_METAL=${AX_USE_METAL}, AX
 option (AX_ENABLE_MFMEDIA "Enabling microsoft media foundation" ON)
 
 if (NOT WINRT)
-    option (AX_ENABLE_MSEDGE_WEBVIEW2 "Use Microsoft Edge webview2" ON)
+    set(AX_ENABLE_MSEDGE_WEBVIEW2 OFF CACHE BOOL "Use Microsoft Edge webview2" FORCE)
 else() # we not support webview2 and vidio player for WINRT target
     set(AX_ENABLE_MSEDGE_WEBVIEW2 OFF CACHE BOOL "Use Microsoft Edge webview2" FORCE)
     # set(AX_ENABLE_MFMEDIA OFF CACHE BOOL "Enabling microsoft media foundation for windows video player" FORCE)
@@ -226,32 +226,32 @@ set(_AX_HEADER axmol.h
     ${_AX_2D_HEADER}
     ${_AX_3D_HEADER}
     ${_AX_PLATFORM_HEADER}
-    ${_AX_PHYSICS_HEADER}
-    ${_AX_PHYSICS3D_HEADER}
+    # ${_AX_PHYSICS_HEADER}
+    # ${_AX_PHYSICS3D_HEADER}
     ${_AX_MATH_HEADER}
-    ${_AX_NAVMESH_HEADER}
+    # ${_AX_NAVMESH_HEADER}
     ${_AX_RENDERER_HEADER}
     ${_AX_BASE_HEADER}
-    ${_AX_AUDIO_HEADER}
-    ${_AX_UI_HEADER}
-    ${_AX_NETWORK_HEADER}
-    ${_AX_MEDIA_HEADER}
+    # ${_AX_AUDIO_HEADER}
+    # ${_AX_UI_HEADER}
+    # ${_AX_NETWORK_HEADER}
+    # ${_AX_MEDIA_HEADER}
     )
 
 set(_AX_SRC axmol.cpp
     ${_AX_2D_SRC}
     ${_AX_3D_SRC}
     ${_AX_PLATFORM_SRC}
-    ${_AX_PHYSICS_SRC}
-    ${_AX_PHYSICS3D_SRC}
+    # ${_AX_PHYSICS_SRC}
+    # ${_AX_PHYSICS3D_SRC}
     ${_AX_MATH_SRC}
-    ${_AX_NAVMESH_SRC}
+    # ${_AX_NAVMESH_SRC}
     ${_AX_RENDERER_SRC}
     ${_AX_BASE_SRC}
-    ${_AX_AUDIO_SRC}
-    ${_AX_UI_SRC}
-    ${_AX_NETWORK_SRC}
-    ${_AX_MEDIA_SRC}
+    # ${_AX_AUDIO_SRC}
+    # ${_AX_UI_SRC}
+    # ${_AX_NETWORK_SRC}
+    # ${_AX_MEDIA_SRC}
     )
 
 list(APPEND _AX_SRC ${_AX_HEADER})
@@ -371,17 +371,6 @@ if(WINDOWS)
             VS_PROJECT_IMPORT ${CMAKE_BINARY_DIR}/packages/Microsoft.Windows.CppWinRT/build/native/Microsoft.Windows.CppWinRT.props
         )
         target_link_libraries(${_AX_CORE_LIB} ${CMAKE_BINARY_DIR}/packages/Microsoft.Windows.CppWinRT/build/native/Microsoft.Windows.CppWinRT.targets)
-    endif()
-    if(AX_ENABLE_MSEDGE_WEBVIEW2)
-        execute_process(COMMAND "${NUGET_EXE}"
-            install "Microsoft.Web.WebView2" -Version 1.0.992.28 -ExcludeVersion -OutputDirectory "${CMAKE_BINARY_DIR}/packages")
-
-        if(CMAKE_GENERATOR MATCHES "Ninja")
-            target_link_libraries(${_AX_CORE_LIB} ${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/${ARCH_ALIAS}/WebView2Loader.dll.lib)
-            target_include_directories(${_AX_CORE_LIB} PUBLIC ${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/include)
-        else()
-            target_link_libraries(${_AX_CORE_LIB} ${CMAKE_BINARY_DIR}/packages/Microsoft.Web.WebView2/build/native/Microsoft.Web.WebView2.targets)
-        endif()
     endif()
 endif()
 

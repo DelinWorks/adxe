@@ -281,7 +281,7 @@ THE SOFTWARE.
 #if (AX_USE_3D_PHYSICS)
 /** Use bullet physics engine. */
 #    ifndef AX_ENABLE_BULLET_INTEGRATION
-#        define AX_ENABLE_BULLET_INTEGRATION 1
+#        define AX_ENABLE_BULLET_INTEGRATION 0
 #    endif
 #endif
 

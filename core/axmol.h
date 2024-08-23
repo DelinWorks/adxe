@@ -165,12 +165,12 @@ THE SOFTWARE.
 #include "renderer/TrianglesCommand.h"
 #include "renderer/Shaders.h"
 
-// physics
-#include "physics/PhysicsBody.h"
-#include "physics/PhysicsContact.h"
-#include "physics/PhysicsJoint.h"
-#include "physics/PhysicsShape.h"
-#include "physics/PhysicsWorld.h"
+//// physics
+//#include "physics/PhysicsBody.h"
+//#include "physics/PhysicsContact.h"
+//#include "physics/PhysicsJoint.h"
+//#include "physics/PhysicsShape.h"
+//#include "physics/PhysicsWorld.h"
 
 // platform
 #include "platform/Common.h"
